@@ -1,0 +1,22 @@
+---
+site: bookdown::bookdown_site
+output:
+  bookdown::pdf_document2:
+    latex_engine: xelatex
+    template: Setup/Template.tex
+    include:
+      in_header: [Setup/Statics.tex, Setup/Preamble.tex]
+      before_body: Setup/Settings.tex
+---
+
+```{r setup, include=FALSE}
+options(digits = 4)
+
+# Install the packages needed by this book
+lapply(c("ggplot2"), function(pkg) {
+  if(system.file(package = pkg) == "") install.packages(pkg)
+})
+```
+
+
+
