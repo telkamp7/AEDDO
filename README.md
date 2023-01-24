@@ -1,1 +1,2 @@
-# auto_early_detec_diseases
+# AEDDO 
+## Automated and Early Detection of Disease Outbreaks
