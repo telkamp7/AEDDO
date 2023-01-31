@@ -40,3 +40,6 @@ vignettes/*.pdf
 
 # Exclude data from source control by default
 /data/
+
+# Exlude literature folder
+/literature/

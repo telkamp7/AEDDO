@@ -1,4 +1,4 @@
-\chapter{Introduction}
+\chapter{Introduction} 
 
 This chapter is an overview of the methods that
 we propose to solve an **important problem**.
@@ -14,4 +14,9 @@ kbl(head(carData::Adler)) %>%
 
 
 ```
+
+
+
+
+\cleardoublepage
 
