@@ -9,8 +9,6 @@ library(jsonlite)
 library(stringr)
 library(readr)
 library(dplyr)
-library(ggplot2)
-
 
 # Disease codes ---------------------------------------------------------------------
 
@@ -24,7 +22,7 @@ library(ggplot2)
 diseaseCodes <- c("SYPH", "LEGI", "SHIG", "TUBE", "LEPT", "VTEC")
 
 # Scrape data from multiple diseases from SSI API - and gather them in a data.table
-dat_samlet <- data.table()
+diseaseData <- data.table()
 for (casedef in diseaseCodes){
   dat <- data.table()
   print(casedef)
@@ -48,16 +46,13 @@ for (casedef in diseaseCodes){
   dat[data.table(landsdel=1:12, landsdel_navn = names(tt)[-1]), on = "landsdel", landsdel_navn := i.landsdel_navn]
   dat[, casedef := casedef]
   
-  dat_samlet <- rbind(dat_samlet, dat)
+  diseaseData <- rbind(diseaseData, dat)
   
 }
 
-# ggplot(dat_samlet[year >= 2020], aes(x = maaned, y = value, colour = factor(year), shape = age_label)) +
-#   geom_point() +
-#   facet_wrap(facets = vars(landsdel_navn))
-
-
-write.xlsx(dat_samlet, file="../../data/raw/disease_data_raw.xlsx")
+# Convert into tibble, to allow for easy management in the tidyverse
+diseaseData <- as_tibble(diseaseData)
+write.xlsx(diseaseData, file="../../data/raw/disease_data_raw.xlsx")
 
 # Population data -------------------------------------------------------------------
 
@@ -119,7 +114,7 @@ agegroups <- c("sum(<1 år=0)",
 FOLK1A <- tibble()
 for(age in agegroups){
   
-  variables2 <- list(
+  variables <- list(
     list(code = "område", values = muniId),
     list(code = "køn", values = "TOT"),
     list(code = "alder", values = list(age)),
@@ -131,7 +126,7 @@ for(age in agegroups){
     table = tableId,
     lang = language,
     format = "CSV",
-    variables = variables2
+    variables = variables
   )
   
   # GET data 
@@ -145,11 +140,14 @@ for(age in agegroups){
   
 }
 
+# Save FOLK1A data
 write_csv2(x = FOLK1A, file = "../../data/raw/FOLK1A.csv")
 
-# FOLK1A$ALDER
-# FOLK1A %>%
-#   ggplot(mapping = aes(x = TID, y = INDHOLD)) +
-#   geom_point() +
-#   facet_wrap(facets = vars(ALDER))
+# Download CSV containing specification of 'landsdele' and 'kommuner'
+urlNutsV12007 <- "https://www.dst.dk/klassifikationsbilag/5d18d1e0-400b-4505-92ad-6782915980a3csv_da"
 
+# Provide destination for file
+destFile <- "../../data/raw/NUTS_V1_2007.csv"
+
+# Apply download.file function in 
+download.file(urlNutsV12007, destFile)
