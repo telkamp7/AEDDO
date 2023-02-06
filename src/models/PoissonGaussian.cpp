@@ -3,15 +3,19 @@
 template<class Type>
 Type objective_function<Type>::operator() ()
 {
-  DATA_VECTOR(y);				    // Data vector transmitted from R
-  DATA_FACTOR(ageLabel);    // Data factor transmitted from R
+  DATA_VECTOR(y);				        // Data vector transmitted from R
+  DATA_FACTOR(ageLabel);        // Data factor transmitted from R
 
-  PARAMETER_VECTOR(u);			// Random effects
+  PARAMETER_VECTOR(u);			    // Random effects
    
   // Parameters
-  PARAMETER_VECTOR(lambda);	// Parameter value transmitted from R
-  PARAMETER(sigma_u);				// Parameter value transmitted from R
+  PARAMETER_VECTOR(lambda); 	  // Parameter value transmitted from R
+  PARAMETER(log_sigma_u);				// Parameter value transmitted from R
   
+  Type sigma_u = exp(log_sigma_u);
+
+  ADREPORT(sigma_u);
+
   int nobs = y.size();
   Type mean_ran = Type(0);
   
