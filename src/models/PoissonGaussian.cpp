@@ -14,8 +14,6 @@ Type objective_function<Type>::operator() ()
   
   Type sigma_u = exp(log_sigma_u);
 
-  ADREPORT(sigma_u);
-
   int nobs = y.size();
   Type mean_ran = Type(0);
   
