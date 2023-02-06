@@ -3,24 +3,25 @@
 template<class Type>
 Type objective_function<Type>::operator() ()
 {
-  DATA_VECTOR(y);				// Data vector transmitted from R
-  PARAMETER_VECTOR(u);				// Random effects
-  
+  DATA_VECTOR(y);				    // Data vector transmitted from R
+  DATA_FACTOR(ageLabel);    // Data factor transmitted from R
+
+  PARAMETER_VECTOR(u);			// Random effects
+   
   // Parameters
-  PARAMETER(lambda);				// Parameter value transmitted from R
+  PARAMETER_VECTOR(lambda);	// Parameter value transmitted from R
   PARAMETER(sigma_u);				// Parameter value transmitted from R
   
-  int n = y.size();
+  int nobs = y.size();
   Type mean_ran = Type(0);
   
-  Type f = 0;
-  
-  for(int j=0; j < n; j++){
-    f -= dnorm(u[j],mean_ran,sigma_u,true);
-  }
-  
-  for(int i=0; i < n; i++){
-    f -= dpois(y[i],lambda*exp(u[i]),true);
+  int j;
+
+  Type f = 0;               // Declare the "objective function" (neg. log. likelihood)
+  for(int i=0; i < nobs; i++){
+    f -= dnorm(u[i],mean_ran,sigma_u,true);
+    j = ageLabel[i];
+    f -= dpois(y[i],lambda[j]*exp(u[i]),true);
   }
   
   return f;
