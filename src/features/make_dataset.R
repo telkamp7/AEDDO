@@ -9,49 +9,88 @@ library(jsonlite)
 library(stringr)
 library(readr)
 library(dplyr)
+library(tidyr)
+
 
 # Disease codes ---------------------------------------------------------------------
 
 # Disease codes
-# SYPH - Syphilis
-# LEGI - Legionella
-# SHIG - Shigella
-# TUBE - Tubercolosis
-# LEPT - Leptospirosis
-# VTEC - Shigatoxin producing Escherichia coli.
-diseaseCodes <- c("SYPH", "LEGI", "SHIG", "TUBE", "LEPT", "VTEC")
+diseaseCodes <- c(
+  "AIDS",  # AIDS
+  "BOTU",  # Botulisme
+  "GONO",  # Gonoré
+  "HEPA",  # Hepatitis A
+  "HEPB",  # Hepatitis B
+  "HEPC",  # Hepatitis C
+  "HIB",   # Hæmophilus influenza meningitis
+  "HIV",   # HIV infektion
+  "LEGI",  # Legionella
+  "LEPT",  # Leptospirosis
+  "MEAS",  # Mæslinger
+  "MENAN", # Andre meningitis
+  "MENI",  # Meningokoksygdom
+  "MPOX",  # MPOX
+  "MUMP",  # Fåresyge
+  "NEBO",  # Neuroborreliose
+  "ORNI",  # Ornitose
+  "PERT",  # Kighoste
+  "PNEU",  # Pneumokik meningitis
+  "RUBE",  # Røde hunde
+  "SHIG",  # Shigella
+  "SYPH",  # Syfilis
+  "TETA",  # Stivkrampe
+  "TUBE",  # Tubercolosis
+  "TYPH",  # Tyfus / paratyfus
+  "VTEC"   # Shigatoxin producerende / veratoxin producerende E. coli.
+)
 
 # Scrape data from multiple diseases from SSI API - and gather them in a data.table
-diseaseData <- data.table()
-for (casedef in diseaseCodes){
-  dat <- data.table()
-  print(casedef)
+# diseaseData <- data.table()
+diseaseData <- tibble()
+
+for (cdf in diseaseCodes){
+  dat <- tibble()
+  # dat <- data.table()
+  print(cdf)
   for (ldel in 1:12){
-    for (age_group in 1:12){
-      tt <- read.table(file=paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",age_group,"&landsdelkode=",ldel,"&sygdomskode=",casedef,"&xaxis=Aar&yaxis=Maaned&aar=1994|2023&show=Table&lang=DA"), sep=";", header=TRUE)
-      setDT(tt)
-      print(c(ldel, age_group, dim(tt)))
-      tt2 <- melt(tt, id.vars = 1, variable.name = "year")
-      tt2[, landsdel := ldel][, age_group := age_group]
-      dat <- rbind(dat, tt2)
+    for (agegrp in 1:12){
+      # tt <- read.table(file=paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",age_group,"&landsdelkode=",ldel,"&sygdomskode=",casedef,"&xaxis=Aar&yaxis=Maaned&aar=1994|2023&show=Table&lang=DA"), sep=";", header=TRUE)
+      tt <- read_csv2(file = paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",agegrp,"&landsdelkode=",ldel,"&sygdomskode=",cdf,"&xaxis=Aar&yaxis=Maaned&aar=1994|2023&show=Table&lang=DA"))
+      # setDT(tt)
+      print(c(ldel, agegrp, dim(tt)))
+      tt2 <- tt %>%
+        rename("month" = ...1) %>%
+        pivot_longer(cols = -month, names_to = "year", values_to = "cases") %>%
+        mutate(landsdel = ldel, ageGroup = agegrp)
+      dat <- bind_rows(dat, tt2)
+      
+      # tt2 <- melt(tt, id.vars = 1, variable.name = "year")
+      # tt2[, landsdel := ldel][, age_group := age_group]
+      # dat <- rbind(dat, tt2)
     }
   }
   
-  setnames(dat, "X", "maaned")
-  dat[, year := as.integer(substr(year, 2,5))]
-  
-  # Så mangler vi bare de rigtige landsdelsnavne og aldersgrupper
-  tt <- fread(input = "https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?sygdomskode=SYPH&xaxis=Landsdelkode&yaxis=Aldersgruppe&aar=1994|2023&show=Table&lang=DA", encoding = "Latin-1")
-  dat[data.table(age_group=1:12, age_label = tt$V1), on = "age_group", age_label := i.age_label]
-  dat[data.table(landsdel=1:12, landsdel_navn = names(tt)[-1]), on = "landsdel", landsdel_navn := i.landsdel_navn]
-  dat[, casedef := casedef]
-  
+  dat <- dat %>%
+    mutate(caseDef = cdf)
+
   diseaseData <- rbind(diseaseData, dat)
   
 }
 
+# setnames(dat, "X", "maaned")
+# dat[, year := as.integer(substr(year, 2,5))]
+
+# Så mangler vi bare de rigtige landsdelsnavne og aldersgrupper
+tt <-read_csv2(file = "https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?sygdomskode=SYPH&xaxis=Landsdelkode&yaxis=Aldersgruppe&aar=1994|2023&show=Table&lang=DA", locale=locale(encoding="latin1"))
+diseaseData <- diseaseData %>%
+  mutate(ageGroup = tt$...1[ageGroup], landsdel = names(tt)[-1][landsdel])
+
+# tt <- fread(input = "https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?sygdomskode=SYPH&xaxis=Landsdelkode&yaxis=Aldersgruppe&aar=1994|2023&show=Table&lang=DA", encoding = "Latin-1")
+# dat[data.table(age_group=1:12, age_label = tt$V1), on = "age_group", age_label := i.age_label]
+# dat[data.table(landsdel=1:12, landsdel_navn = names(tt)[-1]), on = "landsdel", landsdel_navn := i.landsdel_navn]
+# dat[, casedef := casedef]
+
 # Convert into tibble, to allow for easy management in the tidyverse
-diseaseData <- as_tibble(diseaseData)
 write.xlsx(diseaseData, file="../../data/raw/disease_data_raw.xlsx")
 
 # Population data -------------------------------------------------------------------
@@ -98,17 +137,17 @@ variables <- list(
 )
 
 # Define agegroups
-agegroups <- c("sum(<1 år=0)",
-               "sum(1-4 år=1;2;3;4)",
-               "sum(5-14 år=5;6;7;8;9;10;11;12;13;14)",
-               "sum(15-24 år=15;16;17;18;19;20;21;22;23;24)",
-               "sum(25-34 år=25;26;27;28;29;30;31;32;33;34)",
-               "sum(35-44 år=35;36;37;38;39;40;41;42;43;44)",
-               "sum(45-54 år=45;46;47;48;49;50;51;52;53;54)",
-               "sum(55-64 år=55;56;57;58;59;60;61;62;63;64)",
-               "sum(65-74 år=65;66;67;68;69;70;71;72;73;74)",
-               "sum(75-84 år=75;76;77;78;79;80;81;82;83;84)",
-               paste0("sum(85+ år=",paste(85:125,collapse = ";"),")")
+agegroups <- c("sum(<1 year=0)",
+               "sum(1-4 years=1;2;3;4)",
+               "sum(5-14 years=5;6;7;8;9;10;11;12;13;14)",
+               "sum(15-24 years=15;16;17;18;19;20;21;22;23;24)",
+               "sum(25-34 years=25;26;27;28;29;30;31;32;33;34)",
+               "sum(35-44 years=35;36;37;38;39;40;41;42;43;44)",
+               "sum(45-54 years=45;46;47;48;49;50;51;52;53;54)",
+               "sum(55-64 years=55;56;57;58;59;60;61;62;63;64)",
+               "sum(65-74 years=65;66;67;68;69;70;71;72;73;74)",
+               "sum(75-84 years=75;76;77;78;79;80;81;82;83;84)",
+               paste0("sum(85+ years=",paste(85:125,collapse = ";"),")")
 )
 
 FOLK1A <- tibble()

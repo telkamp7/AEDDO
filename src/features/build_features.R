@@ -6,7 +6,8 @@ library(tidyr)
 library(stringr)
 library(forcats)
 library(lubridate)
-library(openxlsx)
+# library(openxlsx)
+library(readxl)
 
 locale(date_names = "da")
 # Set locale
@@ -14,8 +15,17 @@ Sys.setlocale(category = "LC_ALL", locale = "da_DK.utf8")
 
 # Import the data
 FOLK1A <- read_csv2("../../data/raw/FOLK1A.csv")
-diseaseData <- read.xlsx(xlsxFile = "../../data/raw/disease_data_raw.xlsx")
+# diseaseData <- read.xlsx(xlsxFile = "../../data/raw/disease_data_raw.xlsx")
+diseaseData <- read_xlsx(path = "../../data/raw/disease_data_raw.xlsx")
 NUTS <- read_csv2("../../data/raw/NUTS_V1_2007.csv")
+
+# Change 'år' to 'years'
+diseaseData <- diseaseData %>%
+  mutate(ageGroup = if_else(
+    ageGroup == "<1 år",
+    str_replace(ageGroup, pattern = "år", replacement = "year"),
+    str_replace(ageGroup, pattern = "år", replacement = "years")
+    ))
 
 # Make reference table for 'landsdele' and 'kommuner'
 NutsCor <- NUTS %>%
@@ -46,37 +56,64 @@ FOLK1AxRegion <- FOLK1AxNutsCor %>%
 
 # Finalize the data set
 datTmp <- diseaseData %>%
-  filter(maaned != "Uoplyst") %>%
-  mutate(TIME = as.Date(paste0(year,"-",maaned,"-1"), format = "%Y-%B-%e")) %>%
-  mutate(QUARTER = quarter(TIME)) %>%
+  filter(month != "Uoplyst") %>%
+  mutate(Date = as.Date(
+    paste0(year,"-",month,"-1"), format = "%Y-%B-%e")
+    ) %>%
+  mutate(QUARTER = quarter(Date)) %>%
   mutate(TID = paste0(year,"Q",QUARTER)) %>%
-  inner_join(y = FOLK1AxLandsdel, by = c("age_label" = "ALDER",
-                                         "landsdel_navn" = "Landsdel",
+  inner_join(y = FOLK1AxLandsdel, by = c("ageGroup" = "ALDER",
+                                         "landsdel" = "Landsdel",
                                          "TID" = "TID")) %>%
-  select(maaned, year, ageLabel = age_label,
-         landsdel = landsdel_navn, caseDef = casedef, cases = value, n)
+  select(Date, ageGroup, landsdel, caseDef, cases, n)
 # ... Note: maaned and year is converted to quarters, in order to add 'n', which
 # is the number of individuals from FOLK1A in each 'landsdel' and age group
 # Hereafter, the data is combined in 'datTmp', which contains the final features
 
 # Extract levels
-maanedLevels <- unique(datTmp$maaned)
-yearLevels <- unique(datTmp$year)
-ageLabelLevels <- unique(datTmp$ageLabel)
+# maanedLevels <- unique(datTmp$maaned)
+# yearLevels <- unique(datTmp$year)
+ageGroupLevels <- unique(datTmp$ageGroup)
 landsdelLevels <- unique(datTmp$landsdel)
 caseDefLevels <- unique(datTmp$caseDef)
+caseDefLabels <- c(
+  "AIDS",
+  "Botulisme",
+  "Gonoré",
+  "Hepatitis A",
+  "Hepatitis B",
+  "Hepatitis C",
+  "Hæmophilus influenza meningitis",
+  "HIV infektion",
+  "Legionella",
+  "Leptospirosis",
+  "Mæslinger",
+  "Andre meningitis",
+  "Meningokoksygdom",
+  "MPOX",
+  "Fåresyge",
+  "Neuroborreliose",
+  "Ornitose",
+  "Kighoste",
+  "Pneumokok meningitis",
+  "Røde hunde",
+  "Shigella",
+  "Syfilis",
+  "Stivkrampe",
+  "Tubercolosis",
+  "Tyfus / paratyfus",
+  "Shiga- og veratoxin producerende E. coli."
+)
 
 # Finalize 'dat'
 dat <- datTmp %>%
-  mutate(maaned = factor(x = maaned, levels = maanedLevels),
-         year = factor(x = year, levels = yearLevels),
-         ageLabel = factor(x = ageLabel, levels = ageLabelLevels),
+  mutate(ageGroup = factor(x = ageGroup, levels = ageGroupLevels),
          landsdel = factor(x = landsdel, level = landsdelLevels),
-         caseDef = factor(x = caseDef, levels = caseDefLevels),
+         caseDef = factor(x = caseDef, level = caseDefLevels, labels = caseDefLabels),
          cases = as.integer(cases),
          n = as.integer(n)) %>%
-  mutate(ageLabel = fct_relevel(ageLabel, "<1 år", "1-4 år")) %>%
-  mutate(ageLabel = fct_relevel(ageLabel, "5-14 år", after = 2))
+  mutate(ageGroup = fct_relevel(ageGroup, "<1 year", "1-4 years")) %>%
+  mutate(ageGroup = fct_relevel(ageGroup, "5-14 years", after = 2))
 
 # Save the processed data, 'dat'
 write_rds(x = dat, file = "../../data/processed/dat.rds")

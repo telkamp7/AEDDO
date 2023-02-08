@@ -1,0 +1,58 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Default packages
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{amsmath}
+
+% Font selection
+% Latin Modern
+\usepackage{lmodern}
+% Verdana font type
+%\usepackage{verdana}
+% Helvetica
+%\usepackage{helvet}
+% Times (text and math)
+%\usepackage{newtx, newtxmath}
+% Nice font combination
+%\usepackage{mathptmx} % math
+%\usepackage{sourcesanspro} % sans-serif
+\usepackage{charter} % serif
+
+%Avoid shaded in RMarkdown
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+
+
+% Use DTU theme, see below for options
+\usetheme[department=compute]{DTU}
+
+\title[$project$]{$title$}
+\author{$author$}
+\institute{$institute$}
+\date{$date$}
+	
+\newcommand{\tabitem}{{\color{dtured}$$\bullet$$} }
+
+\begin{document}
+
+
+\frame{
+	\maketitle
+}
+
+\frame{
+	\frametitle{Outline}
+	\tableofcontents
+}
+
+$body$
+
+
+\end{document}

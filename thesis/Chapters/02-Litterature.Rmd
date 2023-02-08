@@ -1,0 +1,24 @@
+\chapter{Literature}
+
+Here is a review of existing methods.
+
+@Farrington_1996 was improved in @Noufaily_2013
+
+and @Salmon_2016
+
+@Shihao_2015 and @Ning_2029 uses Google Search terms to predict influenza-like ilness (ILI).
+
+@Vega_2013 introduces the *Moving Epidemic Method* (MEM), which is used to compare the intensity level of ILI's in @Vega_2015.
+
+An analysis of ILI spread in Sweden showed that, rates in some large countries could vary
+considerably from one region to another @Skog_2014.
+
+Different methods for monitoring influenza surveillance using only recent data is presented in @Cowling_2006
+
+@Hutwagner_1997 applied cumulative sums (CUSUM), to detect Salmonella outbreaks in US.
+
+@Costagliola_1991 implement a simple regression model and calculates a 95\% CI for a non-epidemic curve and use this threshold to alert when an epidemic begins.
+
+@Stern_1999 discusses an automated algorithm to detect disease outbreaks with salmonella in Australia
+
+\cleardoublepage

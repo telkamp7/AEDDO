@@ -1,0 +1,14 @@
+---
+bibliography: [bibliography.bib]
+site: bookdown::bookdown_site
+---
+
+```{r setup, include=FALSE}
+options(digits = 4)
+
+# Install the packages needed by this book
+lapply(c("ggplot2"), function(pkg) {
+  if(system.file(package = pkg) == "") install.packages(pkg)
+})
+```
+

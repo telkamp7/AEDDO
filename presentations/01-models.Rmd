@@ -1,0 +1,123 @@
+---
+title: "Models"
+project: "Automated and Early Detection of Disease Outbreaks"
+author: "Kasper Schou Telkamp"
+institute: "Section for Dynamical Systems"
+date: "2023-02-09"
+---
+
+```{r setup, include=FALSE}
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  paste0("\n \\", "tiny","\n\n", x, "\n\n \\normalsize")
+})
+library(knitr)
+```
+
+# Data exploration
+
+## VTEC / STEC
+
+```{r VTEC, echo=FALSE, out.width="100%"}
+include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
+```
+
+# Model formulation
+
+## Poisson-Lognormal
+
+\begin{subequations}
+  \begin{alignat}{2}
+    Y_{i} &\sim \mathrm{Pois} \big( \lambda \exp(u_{i}) \big) \label{eq:pois_ln0} \\ 
+    u_i &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
+  \end{alignat}
+\end{subequations}
+
+### Implementation - Test
+
+### Implementation - Objective function in C++
+```{Rcpp, eval=FALSE}
+#include <TMB.hpp>				// Links in the TMB libraries
+
+template<class Type>
+Type objective_function<Type>::operator() ()
+{
+  DATA_VECTOR(y);				        // Data vector transmitted from R
+  DATA_FACTOR(ageGroup);        // Data factor transmitted from R
+
+  PARAMETER_VECTOR(u);			    // Random effects
+   
+  // Parameters
+  PARAMETER_VECTOR(lambda); 	  // Parameter value transmitted from R
+  PARAMETER(log_sigma_u);				// Parameter value transmitted from R
+  
+  Type sigma_u = exp(log_sigma_u);
+
+  int nobs = y.size();
+  Type mean_ran = Type(0);
+  
+  int j;
+
+  Type f = 0;               // Declare the "objective function" (neg. log. likelihood)
+  for(int i=0; i < nobs; i++){
+    f -= dnorm(u[i],mean_ran,sigma_u,true);
+    j = ageGroup[i];
+    f -= dpois(y[i],lambda[j]*exp(u[i]),true);
+  }
+  
+  return f;
+}
+```
+
+### Implementation - Call from R
+
+```{r, eval=FALSE}
+# Import libraries
+library(readr)
+library(dplyr)
+library(TMB)
+
+# Import the data
+dat <- read_rds(file = "../../data/processed/dat.rds")
+
+# Only consider some of the data
+y <- dat %>%
+  filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
+  group_by(Date, ageGroup) %>%
+  summarize(y = sum(cases))
+
+compile(file = "PoissonLognormal.cpp")  # Compile the C++ file
+dyn.load(dynlib("PoissonLognormal"))    # Dynamically link the C++ code
+
+# Function and derivative
+f <- MakeADFun(
+  data = list(y = y$y, ageGroup = y$ageGroup),
+  parameters = list(u = rep(1, length(y$y)),
+                    lambda = rep(1, nlevels(y$ageGroup)),
+                    log_sigma_u = log(1)),
+  random = "u",
+  DLL = "PoissonLognormal"
+)
+
+opt <- nlminb(start = f$par, f$fn, f$gr, lower = c(0.01, 0.01))
+```
+
+
+
+## Poisson-Gamma
+
+\begin{subequations}
+  \begin{alignat}{2}
+    Y_{i} &\sim \mathrm{Pois} (\lambda u_{i}) \label{eq:pois_g0} \\ 
+    u_i &\sim \mathrm{G}(1,\phi) \label{eq:pois_g1}
+  \end{alignat}
+\end{subequations}
+
+
+
+
+
+
+
+
