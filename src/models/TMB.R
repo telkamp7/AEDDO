@@ -17,7 +17,7 @@ compile(file = "PoissonLognormal.cpp")  # Compile the C++ file
 dyn.load(dynlib("PoissonLognormal"))    # Dynamically link the C++ code
 
 # Function and derivative
-f <- MakeADFun(
+PoisLN <- MakeADFun(
   data = list(y = y$y, ageGroup = y$ageGroup),
   parameters = list(u = rep(1, length(y$y)),
                     lambda = rep(1, nlevels(y$ageGroup)),
@@ -26,16 +26,20 @@ f <- MakeADFun(
   DLL = "PoissonLognormal"
 )
 
-f$fn()
-f$gr()
+opt <- nlminb(start = PoisLN$par, PoisLN$fn, PoisLN$gr, lower = c(0.01, 0.01))
+PoisLN$fn()
+PoisLN$gr()
 
-opt <- nlminb(start = f$par, f$fn, f$gr, lower = c(0.01, 0.01))
+
+write_rds(x = PoisLN, file = "PoissonLognormal.rds")
 
 opt$par
 opt$objective
 
 ## report on result
-sdreport(f)
+sdreport(PoisLN)
+
+f$par
 
 rap <- sdreport(f,getJointPrecision = TRUE)
 summary(rap,"random")

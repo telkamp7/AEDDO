@@ -4,11 +4,19 @@ library(readr)
 library(dplyr)
 library(stringr)
 library(ggplot2)
+library(TMB)
+
+# Dynamically link the C++ template
+dyn.load(dynlib(name = "../models/PoissonLognormal"))
 
 # Set global theme options
 theme_set(
   new = theme_bw() +
-    theme(legend.position = "top")
+    theme(legend.position = "top",
+          strip.text = element_text(size = 14),
+          axis.text = element_text(size = 12),
+          axis.title = element_text(size = 18),
+          plot.title = element_text(size = 18))
 )
 
 # DTU colours
@@ -27,6 +35,12 @@ dtuPalette <- c("#990000",
 # Load data
 dat <- read_rds(file = "../../data/processed/dat.rds")
 
+# Only consider some of the data
+y <- dat %>%
+  filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
+  group_by(Date, ageGroup) %>%
+  summarize(y = sum(cases))
+
 # Extract case definitions
 caseDef <- unique(dat$caseDef)
 
@@ -40,7 +54,6 @@ for(c in caseDef){
     geom_point() +
     facet_wrap(facets = vars(landsdel)) +
     scale_y_continuous(name = "Number of cases per 100.000") +
-    scale_x_date() +
     scale_colour_manual(name = "Age group", values = dtuPalette) +
     guides(colour = guide_legend(nrow = 1)) +
     ggtitle(label = c)
@@ -61,8 +74,7 @@ for(c in caseDef){
     geom_point() +
     facet_wrap(facets = vars(ageGroup), scales = "free_y") +
     scale_y_continuous(name = "Number of cases per 100.000") +
-    scale_x_date() +
-    scale_colour_manual(name = "Age group", values = dtuPalette) +
+    scale_colour_manual(values = dtuPalette) +
     guides(colour = "none") +
     ggtitle(label = c)
   ggsave(filename = paste0(
@@ -87,9 +99,31 @@ for(l in landsdel){
     geom_point() +
     facet_wrap(facets = vars(caseDef)) +
     scale_y_continuous(name = "Number of cases per 100.000") +
-    scale_x_date() +
     scale_colour_manual(name = "Age group", values = dtuPalette) +
     guides(colour = guide_legend(nrow = 1)) +
     ggtitle(label = l)
   ggsave(filename = paste0(l,"xCaseDef.png"), path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 }
+
+# Load the Poisson-lognormal model
+PoisLN <- read_rds(file = "../models/PoissonLognormal.rds")
+# ... and generate report
+rep <- sdreport(PoisLN, getJointPrecision = TRUE)
+
+PoisLN.res <- y %>%
+  ungroup() %>%
+  mutate(`Random effects` = rep$par.random,
+         `Std. Error` = sqrt(rep$diag.cov.random))
+
+PoisLN.res %>%
+  ggplot(mapping = aes(x = Date, y = `Random effects`, colour = ageGroup)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(facets = vars(ageGroup), scales = "free_y") +
+  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_colour_manual(values = dtuPalette) +
+  guides(colour = "none") +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.")
+ggsave(filename = "VTECxRandomEffects.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+
+

@@ -93,7 +93,37 @@
 \section{Data exploration}\label{data-exploration}}
 
 \hypertarget{vtec-stec}{%
-\subsection{VTEC / STEC}\label{vtec-stec}}
+\subsection*{VTEC / STEC}\label{vtec-stec}}
+
+\begin{frame}{VTEC / STEC}
+\tiny
+
+\begin{table}
+\centering\begingroup\fontsize{12}{14}\selectfont
+
+\begin{tabular}{lll}
+\toprule
+Date & ageGroup & y\\
+\midrule
+2008-01-01 & <1 year & 2\\
+2008-01-01 & 1-4 years & 2\\
+2008-01-01 & 5-14 years & 2\\
+2008-01-01 & 15-24 years & 1\\
+... & ... & ...\\
+2022-12-01 & 55-64 years & 2\\
+2022-12-01 & 65-74 years & 5\\
+2022-12-01 & 75-84 years & 4\\
+2022-12-01 & 85+ years & 3\\
+\bottomrule
+\end{tabular}
+\endgroup{}
+\end{table}
+
+\normalsize
+\end{frame}
+
+\hypertarget{vtec-stec-1}{%
+\subsection{VTEC / STEC}\label{vtec-stec-1}}
 
 \begin{frame}{VTEC / STEC}
 \tiny
@@ -112,14 +142,10 @@
 \begin{frame}{Poisson-Lognormal}
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{i} &\sim \mathrm{Pois} \big( \lambda \exp(u_{i}) \big) \label{eq:pois_ln0} \\ 
+    Y_{i} &\sim \mathrm{Pois} \big( \lambda_{i} \exp(u_{i}) \big) \label{eq:pois_ln0} \\ 
     u_i &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
-\end{frame}
-
-\begin{frame}{Implementation - Test}
-\protect\hypertarget{implementation---test}{}
 \end{frame}
 
 \begin{frame}[fragile]{Implementation - Objective function in C++}
@@ -188,7 +214,7 @@
 \FunctionTok{dyn.load}\NormalTok{(}\FunctionTok{dynlib}\NormalTok{(}\StringTok{"PoissonLognormal"}\NormalTok{))    }\CommentTok{\# Dynamically link the C++ code}
 
 \CommentTok{\# Function and derivative}
-\NormalTok{f }\OtherTok{\textless{}{-}} \FunctionTok{MakeADFun}\NormalTok{(}
+\NormalTok{PoisLN }\OtherTok{\textless{}{-}} \FunctionTok{MakeADFun}\NormalTok{(}
   \AttributeTok{data =} \FunctionTok{list}\NormalTok{(}\AttributeTok{y =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{ageGroup =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{ageGroup),}
   \AttributeTok{parameters =} \FunctionTok{list}\NormalTok{(}\AttributeTok{u =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{length}\NormalTok{(y}\SpecialCharTok{$}\NormalTok{y)),}
                     \AttributeTok{lambda =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{nlevels}\NormalTok{(y}\SpecialCharTok{$}\NormalTok{ageGroup)),}
@@ -196,8 +222,50 @@
   \AttributeTok{random =} \StringTok{"u"}\NormalTok{,}
   \AttributeTok{DLL =} \StringTok{"PoissonLognormal"}
 \NormalTok{)}
+
+\NormalTok{opt }\OtherTok{\textless{}{-}} \FunctionTok{nlminb}\NormalTok{(}\AttributeTok{start =}\NormalTok{ PoisLN}\SpecialCharTok{$}\NormalTok{par, PoisLN}\SpecialCharTok{$}\NormalTok{fn, PoisLN}\SpecialCharTok{$}\NormalTok{gr, }\AttributeTok{lower =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.01}\NormalTok{, }\FloatTok{0.01}\NormalTok{))}
 \end{Highlighting}
 \end{Shaded}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{Results}
+\protect\hypertarget{results}{}
+\tiny
+
+\begin{table}
+\centering\begingroup\fontsize{10}{12}\selectfont
+
+\begin{tabular}{lrr}
+\toprule
+Parameter & Estimate & Std. Error\\
+\midrule
+$\lambda_{<1 year}$ & 0.83 & 0.09\\
+$\lambda_{1-4 years}$ & 3.39 & 0.29\\
+$\lambda_{5-14 years}$ & 1.73 & 0.16\\
+$\lambda_{15-24 years}$ & 1.78 & 0.17\\
+$\lambda_{25-34 years}$ & 1.38 & 0.14\\
+$\lambda_{35-44 years}$ & 1.02 & 0.11\\
+$\lambda_{45-54 years}$ & 1.29 & 0.13\\
+$\lambda_{55-64 years}$ & 1.25 & 0.12\\
+$\lambda_{65-74 years}$ & 1.31 & 0.13\\
+$\lambda_{75-84 years}$ & 0.90 & 0.10\\
+$\lambda_{85+ years}$ & 0.31 & 0.04\\
+$\log(\sigma_u)$ & 0.01 & 0.03\\
+\bottomrule
+\end{tabular}
+\endgroup{}
+\end{table}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{Results}
+\protect\hypertarget{results-1}{}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/VTECxRandomEffects}
 
 \normalsize
 \end{frame}
@@ -208,7 +276,7 @@
 \begin{frame}{Poisson-Gamma}
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{i} &\sim \mathrm{Pois} (\lambda u_{i}) \label{eq:pois_g0} \\ 
+    Y_{i} &\sim \mathrm{Pois} (\lambda_{i} u_{i}) \label{eq:pois_g0} \\ 
     u_i &\sim \mathrm{G}(1,\phi) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}

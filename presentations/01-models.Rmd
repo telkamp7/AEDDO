@@ -12,14 +12,62 @@ knitr::knit_hooks$set(chunk = function(x, options) {
   x <- def.chunk.hook(x, options)
   paste0("\n \\", "tiny","\n\n", x, "\n\n \\normalsize")
 })
+
+library(dplyr)
+library(kableExtra)
 library(knitr)
+library(psych)
+library(readr)
+library(TMB)
+
+# Dynamically link the C++ template
+dyn.load(dynlib(name = "../src/models/PoissonLognormal"))
+
+# Load in the processed data
+dat <- read_rds(file = "../data/processed/dat.rds")
+
+# Only consider some of the data
+y <- dat %>%
+  filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
+  group_by(Date, ageGroup) %>%
+  summarize(y = sum(cases))
+
+# Load the Poisson-lognormal model
+PoisLN <- read_rds(file = "../src/models/PoissonLognormal.rds")
+# ... and generate report
+rep <- sdreport(PoisLN, getJointPrecision = TRUE)
+
+# Extract agegroups
+ageGroup <- levels(y$ageGroup)
+
+names(rep$par.fixed) <- c(paste0("$\\lambda_{", ageGroup, "}$"), "$\\log(\\sigma_u)$")
+
+res <- tibble(Parameter = names(rep$par.fixed),
+              Estimate = rep$par.fixed,
+              `Std. Error` = sqrt(diag(rep$cov.fixed)))
+
 ```
 
 # Data exploration
 
+## VTEC / STEC {.unlisted .unnumbered}
+
+```{r VTECTable, echo=FALSE}
+
+options(knitr.kable.NA = "...")
+kable(headTail(y),
+      digits = 2, 
+      format = "latex",
+      booktabs = TRUE, 
+      linesep = "") %>%
+  kable_styling(full_width = F, font_size = 12)
+
+```
+
+
 ## VTEC / STEC
 
-```{r VTEC, echo=FALSE, out.width="100%"}
+```{r VTECFigure, echo=FALSE, out.width="100%"}
 include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 ```
 
@@ -29,12 +77,10 @@ include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{i} &\sim \mathrm{Pois} \big( \lambda \exp(u_{i}) \big) \label{eq:pois_ln0} \\ 
+    Y_{i} &\sim \mathrm{Pois} \big( \lambda_{i} \exp(u_{i}) \big) \label{eq:pois_ln0} \\ 
     u_i &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
-
-### Implementation - Test
 
 ### Implementation - Objective function in C++
 ```{Rcpp, eval=FALSE}
@@ -91,7 +137,7 @@ compile(file = "PoissonLognormal.cpp")  # Compile the C++ file
 dyn.load(dynlib("PoissonLognormal"))    # Dynamically link the C++ code
 
 # Function and derivative
-f <- MakeADFun(
+PoisLN <- MakeADFun(
   data = list(y = y$y, ageGroup = y$ageGroup),
   parameters = list(u = rep(1, length(y$y)),
                     lambda = rep(1, nlevels(y$ageGroup)),
@@ -100,16 +146,35 @@ f <- MakeADFun(
   DLL = "PoissonLognormal"
 )
 
-opt <- nlminb(start = f$par, f$fn, f$gr, lower = c(0.01, 0.01))
+opt <- nlminb(start = PoisLN$par, PoisLN$fn, PoisLN$gr, lower = c(0.01, 0.01))
 ```
 
+### Results
 
+```{r PoisLN, echo=FALSE, comment=""}
+res <- tibble(Parameter = names(rep$par.fixed), Estimate = rep$par.fixed, `Std. Error` = sqrt(diag(rep$cov.fixed)))
+
+kable(res,
+      digits = 2, 
+      format = "latex",
+      booktabs = TRUE, 
+      escape = FALSE,
+      linesep = "") %>%
+  kable_styling(full_width = F, font_size = 10)
+
+```
+
+### Results
+
+```{r VTECxRandomEffects, echo=FALSE, out.width="100%"}
+include_graphics("../figures/VTECxRandomEffects.png")
+```
 
 ## Poisson-Gamma
 
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{i} &\sim \mathrm{Pois} (\lambda u_{i}) \label{eq:pois_g0} \\ 
+    Y_{i} &\sim \mathrm{Pois} (\lambda_{i} u_{i}) \label{eq:pois_g0} \\ 
     u_i &\sim \mathrm{G}(1,\phi) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
