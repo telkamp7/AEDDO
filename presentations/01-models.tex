@@ -133,20 +133,24 @@ Date & ageGroup & y\\
 \normalsize
 \end{frame}
 
-\hypertarget{model-formulation}{%
-\section{Model formulation}\label{model-formulation}}
+\hypertarget{hierachical-poisson-normal-model}{%
+\section{Hierachical Poisson Normal
+model}\label{hierachical-poisson-normal-model}}
 
-\hypertarget{poisson-lognormal}{%
-\subsection{Poisson-Lognormal}\label{poisson-lognormal}}
+\hypertarget{fomulation}{%
+\subsection{Fomulation}\label{fomulation}}
 
-\begin{frame}{Poisson-Lognormal}
+\begin{frame}{Fomulation}
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{i} &\sim \mathrm{Pois} \big( \lambda_{i} \exp(u_{i}) \big) \label{eq:pois_ln0} \\ 
-    u_i &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
+    Y_{i}|u_{i} &\sim \mathrm{Pois} \big( \lambda_{i} \exp(u_{i}) \big) \label{eq:pois_ln0} \\ 
+    u_{i} &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
 \end{frame}
+
+\hypertarget{implementation}{%
+\subsection{Implementation}\label{implementation}}
 
 \begin{frame}[fragile]{Implementation - Objective function in C++}
 \protect\hypertarget{implementation---objective-function-in-c}{}
@@ -270,16 +274,60 @@ $\log(\sigma_u)$ & 0.01 & 0.03\\
 \normalsize
 \end{frame}
 
-\hypertarget{poisson-gamma}{%
-\subsection{Poisson-Gamma}\label{poisson-gamma}}
+\hypertarget{hierachical-poisson-gamma-model}{%
+\section{Hierachical Poisson Gamma
+model}\label{hierachical-poisson-gamma-model}}
 
-\begin{frame}{Poisson-Gamma}
+\hypertarget{formulation}{%
+\subsection{Formulation}\label{formulation}}
+
+\begin{frame}{Formulation}
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{i} &\sim \mathrm{Pois} (\lambda_{i} u_{i}) \label{eq:pois_g0} \\ 
-    u_i &\sim \mathrm{G}(1,\phi) \label{eq:pois_g1}
+    Y_{i}|u_{i} &\sim \mathrm{Pois} (\lambda_{i} u_{i}) \label{eq:pois_g0} \\ 
+    u_{i} &\sim \mathrm{G}(1,\phi) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
+\end{frame}
+
+\begin{frame}{Probability function for \(Y\)}
+\protect\hypertarget{probability-function-for-y}{}
+\begin{equation}
+  \begin{aligned}
+    P[Y=y]&=g_{Y}(y;\lambda, \phi) \\
+    &=1234
+  \end{aligned}
+\end{equation}
+\end{frame}
+
+\begin{frame}{Proof}
+\protect\hypertarget{proof}{}
+The probability function for the conditional distribution of \(Y\) for
+given \(u\)
+
+\begin{equation} \label{eq:pdfPois}
+  f_{Y|u}(y;\lambda, u)=\frac{(\lambda u)^y}{y!} \exp (-\lambda u)
+\end{equation}
+
+and the probability density function for the distribution of \(u\) is
+
+\begin{equation} \label{eq:pdfGamma}
+  f_{u}(u;\phi)=\frac{1}{\phi} \exp (-u/\phi)
+\end{equation}
+\end{frame}
+
+\begin{frame}{Proof}
+\protect\hypertarget{proof-1}{}
+Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability
+function for the marginal distribution of \(Y\) is determined from
+
+\begin{equation}
+  \begin{aligned}
+    g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) du \\
+    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi} \exp (-u/\phi) du\\
+    &=\frac{1}{y!\phi} \int_{u=0}^\infty (\lambda u)^y \exp (-u(\lambda+1/\phi)) du
+  \end{aligned}
+\end{equation}
 \end{frame}
 
 

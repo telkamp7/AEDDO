@@ -71,16 +71,18 @@ kable(headTail(y),
 include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 ```
 
-# Model formulation
+# Hierachical Poisson Normal model
 
-## Poisson-Lognormal
+## Fomulation
 
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{i} &\sim \mathrm{Pois} \big( \lambda_{i} \exp(u_{i}) \big) \label{eq:pois_ln0} \\ 
-    u_i &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
+    Y_{i}|u_{i} &\sim \mathrm{Pois} \big( \lambda_{i} \exp(u_{i}) \big) \label{eq:pois_ln0} \\ 
+    u_{i} &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
+
+## Implementation
 
 ### Implementation - Objective function in C++
 ```{Rcpp, eval=FALSE}
@@ -170,15 +172,51 @@ kable(res,
 include_graphics("../figures/VTECxRandomEffects.png")
 ```
 
-## Poisson-Gamma
+# Hierachical Poisson Gamma model
+
+## Formulation
 
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{i} &\sim \mathrm{Pois} (\lambda_{i} u_{i}) \label{eq:pois_g0} \\ 
-    u_i &\sim \mathrm{G}(1,\phi) \label{eq:pois_g1}
+    Y_{i}|u_{i} &\sim \mathrm{Pois} (\lambda_{i} u_{i}) \label{eq:pois_g0} \\ 
+    u_{i} &\sim \mathrm{G}(1,\phi) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
 
+### Probability function for $Y$
+
+\begin{equation}
+  \begin{aligned}
+    P[Y=y]&=g_{Y}(y;\lambda, \phi) \\
+    &=1234
+  \end{aligned}
+\end{equation}
+
+### Proof
+
+The probability function for the conditional distribution of $Y$ for given $u$
+
+\begin{equation} \label{eq:pdfPois}
+  f_{Y|u}(y;\lambda, u)=\frac{(\lambda u)^y}{y!} \exp (-\lambda u)
+\end{equation}
+
+and the probability density function for the distribution of $u$ is
+
+\begin{equation} \label{eq:pdfGamma}
+  f_{u}(u;\phi)=\frac{1}{\phi} \exp (-u/\phi)
+\end{equation}
+
+### Proof
+
+Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability function for the marginal distribution of $Y$ is determined from
+
+\begin{equation}
+  \begin{aligned}
+    g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) du \\
+    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi} \exp (-u/\phi) du\\
+    &=\frac{1}{y!\phi} \int_{u=0}^\infty (\lambda u)^y \exp (-u(\lambda+1/\phi)) du
+  \end{aligned}
+\end{equation}
 
 
 
