@@ -101,19 +101,19 @@
 \begin{table}
 \centering\begingroup\fontsize{12}{14}\selectfont
 
-\begin{tabular}{lll}
+\begin{tabular}{llll}
 \toprule
-Date & ageGroup & y\\
+Date & ageGroup & y & n\\
 \midrule
-2008-01-01 & <1 year & 2\\
-2008-01-01 & 1-4 years & 2\\
-2008-01-01 & 5-14 years & 2\\
-2008-01-01 & 15-24 years & 1\\
-... & ... & ...\\
-2022-12-01 & 55-64 years & 2\\
-2022-12-01 & 65-74 years & 5\\
-2022-12-01 & 75-84 years & 4\\
-2022-12-01 & 85+ years & 3\\
+2008-01-01 & <1 year & 2 & 10120\\
+2009-01-01 & <1 year & 1 & 10288\\
+2010-01-01 & <1 year & 1 & 10654\\
+2011-01-01 & <1 year & 0 & 11199\\
+... & ... & ... & ...\\
+2019-12-01 & 85+ years & 1 & 14153\\
+2020-12-01 & 85+ years & 0 & 14613\\
+2021-12-01 & 85+ years & 2 & 14976\\
+2022-12-01 & 85+ years & 3 & 15203\\
 \bottomrule
 \end{tabular}
 \endgroup{}
@@ -143,8 +143,8 @@ model}\label{hierachical-poisson-normal-model}}
 \begin{frame}{Fomulation}
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{i}|u_{i} &\sim \mathrm{Pois} \big( \lambda_{i} \exp(u_{i}) \big) \label{eq:pois_ln0} \\ 
-    u_{i} &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
+    Y_{t}^{a}|u_{t}^{a} &\sim \mathrm{Pois} \big( w_{t}^{a} \lambda_{a} \exp(u_{t}^{a}) \big) \label{eq:pois_ln0} \\ 
+    u_{t}^{a} &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
 \end{frame}
@@ -164,6 +164,7 @@ model}\label{hierachical-poisson-normal-model}}
 \NormalTok{Type objective\_function}\OperatorTok{\textless{}}\NormalTok{Type}\OperatorTok{\textgreater{}::}\KeywordTok{operator}\OperatorTok{()} \OperatorTok{()}
 \OperatorTok{\{}
 \NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{y}\OperatorTok{);}                       \CommentTok{// Data vector transmitted from R}
+\NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{w}\OperatorTok{)}                \CommentTok{// Data vector transmitted from R}
 \NormalTok{  DATA\_FACTOR}\OperatorTok{(}\NormalTok{ageGroup}\OperatorTok{);}        \CommentTok{// Data factor transmitted from R}
 
 \NormalTok{  PARAMETER\_VECTOR}\OperatorTok{(}\NormalTok{u}\OperatorTok{);}              \CommentTok{// Random effects}
@@ -183,7 +184,7 @@ model}\label{hierachical-poisson-normal-model}}
   \ControlFlowTok{for}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ i}\OperatorTok{=}\DecValTok{0}\OperatorTok{;}\NormalTok{ i }\OperatorTok{\textless{}}\NormalTok{ nobs}\OperatorTok{;}\NormalTok{ i}\OperatorTok{++)\{}
 \NormalTok{    f }\OperatorTok{{-}=}\NormalTok{ dnorm}\OperatorTok{(}\NormalTok{u}\OperatorTok{[}\NormalTok{i}\OperatorTok{],}\NormalTok{mean\_ran}\OperatorTok{,}\NormalTok{sigma\_u}\OperatorTok{,}\KeywordTok{true}\OperatorTok{);}
 \NormalTok{    j }\OperatorTok{=}\NormalTok{ ageGroup}\OperatorTok{[}\NormalTok{i}\OperatorTok{];}
-\NormalTok{    f }\OperatorTok{{-}=}\NormalTok{ dpois}\OperatorTok{(}\NormalTok{y}\OperatorTok{[}\NormalTok{i}\OperatorTok{],}\NormalTok{lambda}\OperatorTok{[}\NormalTok{j}\OperatorTok{]*}\NormalTok{exp}\OperatorTok{(}\NormalTok{u}\OperatorTok{[}\NormalTok{i}\OperatorTok{]),}\KeywordTok{true}\OperatorTok{);}
+\NormalTok{    f }\OperatorTok{{-}=}\NormalTok{ dpois}\OperatorTok{(}\NormalTok{y}\OperatorTok{[}\NormalTok{i}\OperatorTok{],}\NormalTok{exp}\OperatorTok{(}\NormalTok{log}\OperatorTok{(}\NormalTok{lambda}\OperatorTok{[}\NormalTok{j}\OperatorTok{]){-}}\NormalTok{log}\OperatorTok{(}\NormalTok{w}\OperatorTok{[}\NormalTok{j}\OperatorTok{]))*}\NormalTok{exp}\OperatorTok{(}\NormalTok{u}\OperatorTok{[}\NormalTok{i}\OperatorTok{]),}\KeywordTok{true}\OperatorTok{);}
   \OperatorTok{\}}
   
   \ControlFlowTok{return}\NormalTok{ f}\OperatorTok{;}
@@ -212,14 +213,15 @@ model}\label{hierachical-poisson-normal-model}}
 \NormalTok{y }\OtherTok{\textless{}{-}}\NormalTok{ dat }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(caseDef }\SpecialCharTok{==} \StringTok{"Shiga{-} og veratoxin producerende E. coli."}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{group\_by}\NormalTok{(Date, ageGroup) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{y =} \FunctionTok{sum}\NormalTok{(cases))}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{y =} \FunctionTok{sum}\NormalTok{(cases)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(Date, ageGroup, y, n)}
 
 \FunctionTok{compile}\NormalTok{(}\AttributeTok{file =} \StringTok{"PoissonLognormal.cpp"}\NormalTok{)  }\CommentTok{\# Compile the C++ file}
 \FunctionTok{dyn.load}\NormalTok{(}\FunctionTok{dynlib}\NormalTok{(}\StringTok{"PoissonLognormal"}\NormalTok{))    }\CommentTok{\# Dynamically link the C++ code}
 
 \CommentTok{\# Function and derivative}
 \NormalTok{PoisLN }\OtherTok{\textless{}{-}} \FunctionTok{MakeADFun}\NormalTok{(}
-  \AttributeTok{data =} \FunctionTok{list}\NormalTok{(}\AttributeTok{y =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{ageGroup =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{ageGroup),}
+  \AttributeTok{data =} \FunctionTok{list}\NormalTok{(}\AttributeTok{y =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{ageGroup =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{ageGroup, }\AttributeTok{w =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{n),}
   \AttributeTok{parameters =} \FunctionTok{list}\NormalTok{(}\AttributeTok{u =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{length}\NormalTok{(y}\SpecialCharTok{$}\NormalTok{y)),}
                     \AttributeTok{lambda =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{nlevels}\NormalTok{(y}\SpecialCharTok{$}\NormalTok{ageGroup)),}
                     \AttributeTok{log\_sigma\_u =} \FunctionTok{log}\NormalTok{(}\DecValTok{1}\NormalTok{)),}
@@ -245,18 +247,18 @@ model}\label{hierachical-poisson-normal-model}}
 \toprule
 Parameter & Estimate & Std. Error\\
 \midrule
-$\lambda_{<1 year}$ & 0.83 & 0.09\\
-$\lambda_{1-4 years}$ & 3.39 & 0.29\\
-$\lambda_{5-14 years}$ & 1.73 & 0.16\\
-$\lambda_{15-24 years}$ & 1.78 & 0.17\\
-$\lambda_{25-34 years}$ & 1.38 & 0.14\\
-$\lambda_{35-44 years}$ & 1.02 & 0.11\\
-$\lambda_{45-54 years}$ & 1.29 & 0.13\\
-$\lambda_{55-64 years}$ & 1.25 & 0.12\\
-$\lambda_{65-74 years}$ & 1.31 & 0.13\\
-$\lambda_{75-84 years}$ & 0.90 & 0.10\\
-$\lambda_{85+ years}$ & 0.31 & 0.04\\
-$\log(\sigma_u)$ & 0.01 & 0.03\\
+$\log(\lambda_{<1 year})$ & 8438.14 & 276.06\\
+$\log(\lambda_{1-4 years})$ & 34772.54 & 905.76\\
+$\log(\lambda_{5-14 years})$ & 18464.41 & 528.24\\
+$\log(\lambda_{15-24 years})$ & 19674.21 & 584.60\\
+$\log(\lambda_{25-34 years})$ & 15130.53 & 473.09\\
+$\log(\lambda_{35-44 years})$ & 11256.22 & 353.22\\
+$\log(\lambda_{45-54 years})$ & 13601.67 & 408.42\\
+$\log(\lambda_{55-64 years})$ & 13508.84 & 405.98\\
+$\log(\lambda_{65-74 years})$ & 14753.44 & 442.70\\
+$\log(\lambda_{75-84 years})$ & 10622.91 & 345.14\\
+$\log(\lambda_{85+ years})$ & 3586.71 & 158.77\\
+$\log(\sigma_u)$ & 0.01 & 0.01\\
 \bottomrule
 \end{tabular}
 \endgroup{}

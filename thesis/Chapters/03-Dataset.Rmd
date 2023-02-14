@@ -1,0 +1,20 @@
+\chapter{Dataset}
+
+Test
+
+```{r 03_processed_data, echo=FALSE}
+# Import the data
+dat <- read_rds(file = "../data/processed/dat.rds")
+
+options(knitr.kable.NA = "...")
+kable(headTail(dat),
+      digits = 2, 
+      format = "latex",
+      booktabs = TRUE, 
+      linesep = "") %>%
+  kable_styling(latex_options="scale_down")
+```
+
+
+
+\cleardoublepage

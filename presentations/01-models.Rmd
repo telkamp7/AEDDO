@@ -30,7 +30,8 @@ dat <- read_rds(file = "../data/processed/dat.rds")
 y <- dat %>%
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
   group_by(Date, ageGroup) %>%
-  summarize(y = sum(cases))
+  mutate(y = sum(cases)) %>%
+  select(Date, ageGroup, y, n)
 
 # Load the Poisson-lognormal model
 PoisLN <- read_rds(file = "../src/models/PoissonLognormal.rds")
@@ -40,7 +41,7 @@ rep <- sdreport(PoisLN, getJointPrecision = TRUE)
 # Extract agegroups
 ageGroup <- levels(y$ageGroup)
 
-names(rep$par.fixed) <- c(paste0("$\\lambda_{", ageGroup, "}$"), "$\\log(\\sigma_u)$")
+names(rep$par.fixed) <- c(paste0("$\\log(\\lambda_{", ageGroup, "})$"), "$\\log(\\sigma_u)$")
 
 res <- tibble(Parameter = names(rep$par.fixed),
               Estimate = rep$par.fixed,
@@ -77,8 +78,8 @@ include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{i}|u_{i} &\sim \mathrm{Pois} \big( \lambda_{i} \exp(u_{i}) \big) \label{eq:pois_ln0} \\ 
-    u_{i} &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
+    Y_{t}^{a}|u_{t}^{a} &\sim \mathrm{Pois} \big( w_{t}^{a} \lambda_{a} \exp(u_{t}^{a}) \big) \label{eq:pois_ln0} \\ 
+    u_{t}^{a} &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
 
@@ -87,11 +88,11 @@ include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 ### Implementation - Objective function in C++
 ```{Rcpp, eval=FALSE}
 #include <TMB.hpp>				// Links in the TMB libraries
-
 template<class Type>
 Type objective_function<Type>::operator() ()
 {
   DATA_VECTOR(y);				        // Data vector transmitted from R
+  DATA_VECTOR(w)                // Data vector transmitted from R
   DATA_FACTOR(ageGroup);        // Data factor transmitted from R
 
   PARAMETER_VECTOR(u);			    // Random effects
@@ -111,7 +112,7 @@ Type objective_function<Type>::operator() ()
   for(int i=0; i < nobs; i++){
     f -= dnorm(u[i],mean_ran,sigma_u,true);
     j = ageGroup[i];
-    f -= dpois(y[i],lambda[j]*exp(u[i]),true);
+    f -= dpois(y[i],exp(log(lambda[j])-log(w[j]))*exp(u[i]),true);
   }
   
   return f;
@@ -133,14 +134,15 @@ dat <- read_rds(file = "../../data/processed/dat.rds")
 y <- dat %>%
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
   group_by(Date, ageGroup) %>%
-  summarize(y = sum(cases))
+  mutate(y = sum(cases)) %>%
+  select(Date, ageGroup, y, n)
 
 compile(file = "PoissonLognormal.cpp")  # Compile the C++ file
 dyn.load(dynlib("PoissonLognormal"))    # Dynamically link the C++ code
 
 # Function and derivative
 PoisLN <- MakeADFun(
-  data = list(y = y$y, ageGroup = y$ageGroup),
+  data = list(y = y$y, ageGroup = y$ageGroup, w = y$n),
   parameters = list(u = rep(1, length(y$y)),
                     lambda = rep(1, nlevels(y$ageGroup)),
                     log_sigma_u = log(1)),
@@ -154,8 +156,6 @@ opt <- nlminb(start = PoisLN$par, PoisLN$fn, PoisLN$gr, lower = c(0.01, 0.01))
 ### Results
 
 ```{r PoisLN, echo=FALSE, comment=""}
-res <- tibble(Parameter = names(rep$par.fixed), Estimate = rep$par.fixed, `Std. Error` = sqrt(diag(rep$cov.fixed)))
-
 kable(res,
       digits = 2, 
       format = "latex",
@@ -163,7 +163,6 @@ kable(res,
       escape = FALSE,
       linesep = "") %>%
   kable_styling(full_width = F, font_size = 10)
-
 ```
 
 ### Results

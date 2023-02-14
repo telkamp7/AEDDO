@@ -1,0 +1,16 @@
+\chapter{Methods}
+
+
+## Hierachical Poisson Normal model
+
+### Fomulation
+
+\begin{subequations}
+  \begin{alignat}{2}
+    Y_{t}^{a}|u_{t}^{a} &\sim \mathrm{Pois} \big( w_{t}^{a} \lambda_{a} \exp(u_{t}^{a}) \big) \label{eq:pois_ln0} \\ 
+    u_{t}^{a} &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
+  \end{alignat}
+\end{subequations}
+
+
+\cleardoublepage
