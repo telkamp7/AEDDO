@@ -8,6 +8,10 @@
 # User-specific files
 .Ruserdata
 
+# Exlude C object files and shared library files
+*.o
+*.so
+
 # Example code in package build process
 *-Ex.R
 
