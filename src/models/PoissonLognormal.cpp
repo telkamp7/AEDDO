@@ -4,6 +4,7 @@ template<class Type>
 Type objective_function<Type>::operator() ()
 {
   DATA_VECTOR(y);				        // Data vector transmitted from R
+  DATA_VECTOR(w)                // Data vector transmitted from R
   DATA_FACTOR(ageGroup);        // Data factor transmitted from R
 
   PARAMETER_VECTOR(u);			    // Random effects
@@ -23,7 +24,7 @@ Type objective_function<Type>::operator() ()
   for(int i=0; i < nobs; i++){
     f -= dnorm(u[i],mean_ran,sigma_u,true);
     j = ageGroup[i];
-    f -= dpois(y[i],lambda[j]*exp(u[i]),true);
+    f -= dpois(y[i],exp(log(lambda[j])-log(w[j]))*exp(u[i]),true);
   }
   
   return f;

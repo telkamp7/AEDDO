@@ -39,7 +39,8 @@ dat <- read_rds(file = "../../data/processed/dat.rds")
 y <- dat %>%
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
   group_by(Date, ageGroup) %>%
-  summarize(y = sum(cases))
+  mutate(y = sum(cases)) %>%
+  select(Date, ageGroup, y, n)
 
 # Extract case definitions
 caseDef <- unique(dat$caseDef)
@@ -119,8 +120,8 @@ PoisLN.res %>%
   ggplot(mapping = aes(x = Date, y = `Random effects`, colour = ageGroup)) +
   geom_point() +
   geom_line() +
-  facet_wrap(facets = vars(ageGroup), scales = "free_y") +
-  scale_y_continuous(name = "Number of cases per 100.000") +
+  facet_wrap(facets = vars(ageGroup)) +
+  scale_y_continuous(name = expression(paste("Random effect, ", u[t]^a))) +
   scale_colour_manual(values = dtuPalette) +
   guides(colour = "none") +
   ggtitle(label = "Shiga- og veratoxin producerende E. coli.")

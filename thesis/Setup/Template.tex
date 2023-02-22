@@ -3,6 +3,11 @@
 \input{Setup/Preamble.tex}
 \input{Setup/Settings.tex}
 
+%Avoid shaded in RMarkdown
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
 \begin{document}
 
 \pagenumbering{roman}
@@ -26,12 +31,6 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \pagenumbering{arabic}
 $body$
-%\input{Chapters/01_Introduction.tex}
-%\cleardoublepage 
-%\input{Chapters/02_Colours.tex}
-%\cleardoublepage 
-%\input{Chapters/03_Examples.tex}
-%\cleardoublepage 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \printbibliography[heading=bibintoc,title={Bibliography}]

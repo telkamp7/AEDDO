@@ -7,8 +7,17 @@ site: bookdown::bookdown_site
 options(digits = 4)
 
 # Install the packages needed by this book
-lapply(c("ggplot2"), function(pkg) {
+lapply(c("ggplot2", "readr", "kableExtra", "psych"), function(pkg) {
   if(system.file(package = pkg) == "") install.packages(pkg)
 })
+
+# Import libraries
+library(knitr)
+library(readr)
+library(kableExtra)
+library(psych)
+library(ggplot2)
+
+
 ```
 

@@ -77,6 +77,8 @@
 	
 \newcommand{\tabitem}{{\color{dtured}$\bullet$} }
 
+\DeclareMathOperator{\E}{E}
+
 \begin{document}
 
 
@@ -101,19 +103,19 @@
 \begin{table}
 \centering\begingroup\fontsize{12}{14}\selectfont
 
-\begin{tabular}{lll}
+\begin{tabular}{llll}
 \toprule
-Date & ageGroup & y\\
+Date & ageGroup & y & n\\
 \midrule
-2008-01-01 & <1 year & 2\\
-2008-01-01 & 1-4 years & 2\\
-2008-01-01 & 5-14 years & 2\\
-2008-01-01 & 15-24 years & 1\\
-... & ... & ...\\
-2022-12-01 & 55-64 years & 2\\
-2022-12-01 & 65-74 years & 5\\
-2022-12-01 & 75-84 years & 4\\
-2022-12-01 & 85+ years & 3\\
+2008-01-01 & <1 year & 2 & 10120\\
+2009-01-01 & <1 year & 1 & 10288\\
+2010-01-01 & <1 year & 1 & 10654\\
+2011-01-01 & <1 year & 0 & 11199\\
+... & ... & ... & ...\\
+2019-12-01 & 85+ years & 1 & 14153\\
+2020-12-01 & 85+ years & 0 & 14613\\
+2021-12-01 & 85+ years & 2 & 14976\\
+2022-12-01 & 85+ years & 3 & 15203\\
 \bottomrule
 \end{tabular}
 \endgroup{}
@@ -133,20 +135,24 @@ Date & ageGroup & y\\
 \normalsize
 \end{frame}
 
-\hypertarget{model-formulation}{%
-\section{Model formulation}\label{model-formulation}}
+\hypertarget{hierachical-poisson-normal-model}{%
+\section{Hierachical Poisson-Normal
+model}\label{hierachical-poisson-normal-model}}
 
-\hypertarget{poisson-lognormal}{%
-\subsection{Poisson-Lognormal}\label{poisson-lognormal}}
+\hypertarget{fomulation}{%
+\subsection{Fomulation}\label{fomulation}}
 
-\begin{frame}{Poisson-Lognormal}
+\begin{frame}{Fomulation}
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{i} &\sim \mathrm{Pois} \big( \lambda_{i} \exp(u_{i}) \big) \label{eq:pois_ln0} \\ 
-    u_i &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
+    Y_{t}^{a}|u_{t}^{a} &\sim \mathrm{Pois} \big( w_{t}^{a} \lambda_{a} \exp(u_{t}^{a}) \big) \label{eq:pois_ln0} \\ 
+    u_{t}^{a} &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
 \end{frame}
+
+\hypertarget{implementation}{%
+\subsection{Implementation}\label{implementation}}
 
 \begin{frame}[fragile]{Implementation - Objective function in C++}
 \protect\hypertarget{implementation---objective-function-in-c}{}
@@ -155,11 +161,11 @@ Date & ageGroup & y\\
 \begin{Shaded}
 \begin{Highlighting}[]
 \PreprocessorTok{\#include }\ImportTok{\textless{}TMB.hpp\textgreater{}}\PreprocessorTok{              }\CommentTok{// Links in the TMB libraries}
-
 \KeywordTok{template}\OperatorTok{\textless{}}\KeywordTok{class}\NormalTok{ Type}\OperatorTok{\textgreater{}}
 \NormalTok{Type objective\_function}\OperatorTok{\textless{}}\NormalTok{Type}\OperatorTok{\textgreater{}::}\KeywordTok{operator}\OperatorTok{()} \OperatorTok{()}
 \OperatorTok{\{}
 \NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{y}\OperatorTok{);}                       \CommentTok{// Data vector transmitted from R}
+\NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{w}\OperatorTok{)}                \CommentTok{// Data vector transmitted from R}
 \NormalTok{  DATA\_FACTOR}\OperatorTok{(}\NormalTok{ageGroup}\OperatorTok{);}        \CommentTok{// Data factor transmitted from R}
 
 \NormalTok{  PARAMETER\_VECTOR}\OperatorTok{(}\NormalTok{u}\OperatorTok{);}              \CommentTok{// Random effects}
@@ -179,7 +185,7 @@ Date & ageGroup & y\\
   \ControlFlowTok{for}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ i}\OperatorTok{=}\DecValTok{0}\OperatorTok{;}\NormalTok{ i }\OperatorTok{\textless{}}\NormalTok{ nobs}\OperatorTok{;}\NormalTok{ i}\OperatorTok{++)\{}
 \NormalTok{    f }\OperatorTok{{-}=}\NormalTok{ dnorm}\OperatorTok{(}\NormalTok{u}\OperatorTok{[}\NormalTok{i}\OperatorTok{],}\NormalTok{mean\_ran}\OperatorTok{,}\NormalTok{sigma\_u}\OperatorTok{,}\KeywordTok{true}\OperatorTok{);}
 \NormalTok{    j }\OperatorTok{=}\NormalTok{ ageGroup}\OperatorTok{[}\NormalTok{i}\OperatorTok{];}
-\NormalTok{    f }\OperatorTok{{-}=}\NormalTok{ dpois}\OperatorTok{(}\NormalTok{y}\OperatorTok{[}\NormalTok{i}\OperatorTok{],}\NormalTok{lambda}\OperatorTok{[}\NormalTok{j}\OperatorTok{]*}\NormalTok{exp}\OperatorTok{(}\NormalTok{u}\OperatorTok{[}\NormalTok{i}\OperatorTok{]),}\KeywordTok{true}\OperatorTok{);}
+\NormalTok{    f }\OperatorTok{{-}=}\NormalTok{ dpois}\OperatorTok{(}\NormalTok{y}\OperatorTok{[}\NormalTok{i}\OperatorTok{],}\NormalTok{exp}\OperatorTok{(}\NormalTok{log}\OperatorTok{(}\NormalTok{lambda}\OperatorTok{[}\NormalTok{j}\OperatorTok{]){-}}\NormalTok{log}\OperatorTok{(}\NormalTok{w}\OperatorTok{[}\NormalTok{j}\OperatorTok{]))*}\NormalTok{exp}\OperatorTok{(}\NormalTok{u}\OperatorTok{[}\NormalTok{i}\OperatorTok{]),}\KeywordTok{true}\OperatorTok{);}
   \OperatorTok{\}}
   
   \ControlFlowTok{return}\NormalTok{ f}\OperatorTok{;}
@@ -208,14 +214,15 @@ Date & ageGroup & y\\
 \NormalTok{y }\OtherTok{\textless{}{-}}\NormalTok{ dat }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(caseDef }\SpecialCharTok{==} \StringTok{"Shiga{-} og veratoxin producerende E. coli."}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{group\_by}\NormalTok{(Date, ageGroup) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{summarize}\NormalTok{(}\AttributeTok{y =} \FunctionTok{sum}\NormalTok{(cases))}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{y =} \FunctionTok{sum}\NormalTok{(cases)) }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{select}\NormalTok{(Date, ageGroup, y, n)}
 
 \FunctionTok{compile}\NormalTok{(}\AttributeTok{file =} \StringTok{"PoissonLognormal.cpp"}\NormalTok{)  }\CommentTok{\# Compile the C++ file}
 \FunctionTok{dyn.load}\NormalTok{(}\FunctionTok{dynlib}\NormalTok{(}\StringTok{"PoissonLognormal"}\NormalTok{))    }\CommentTok{\# Dynamically link the C++ code}
 
 \CommentTok{\# Function and derivative}
 \NormalTok{PoisLN }\OtherTok{\textless{}{-}} \FunctionTok{MakeADFun}\NormalTok{(}
-  \AttributeTok{data =} \FunctionTok{list}\NormalTok{(}\AttributeTok{y =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{ageGroup =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{ageGroup),}
+  \AttributeTok{data =} \FunctionTok{list}\NormalTok{(}\AttributeTok{y =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{ageGroup =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{ageGroup, }\AttributeTok{w =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{n),}
   \AttributeTok{parameters =} \FunctionTok{list}\NormalTok{(}\AttributeTok{u =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{length}\NormalTok{(y}\SpecialCharTok{$}\NormalTok{y)),}
                     \AttributeTok{lambda =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{nlevels}\NormalTok{(y}\SpecialCharTok{$}\NormalTok{ageGroup)),}
                     \AttributeTok{log\_sigma\_u =} \FunctionTok{log}\NormalTok{(}\DecValTok{1}\NormalTok{)),}
@@ -241,18 +248,18 @@ Date & ageGroup & y\\
 \toprule
 Parameter & Estimate & Std. Error\\
 \midrule
-$\lambda_{<1 year}$ & 0.83 & 0.09\\
-$\lambda_{1-4 years}$ & 3.39 & 0.29\\
-$\lambda_{5-14 years}$ & 1.73 & 0.16\\
-$\lambda_{15-24 years}$ & 1.78 & 0.17\\
-$\lambda_{25-34 years}$ & 1.38 & 0.14\\
-$\lambda_{35-44 years}$ & 1.02 & 0.11\\
-$\lambda_{45-54 years}$ & 1.29 & 0.13\\
-$\lambda_{55-64 years}$ & 1.25 & 0.12\\
-$\lambda_{65-74 years}$ & 1.31 & 0.13\\
-$\lambda_{75-84 years}$ & 0.90 & 0.10\\
-$\lambda_{85+ years}$ & 0.31 & 0.04\\
-$\log(\sigma_u)$ & 0.01 & 0.03\\
+$\log(\lambda_{<1 year})$ & 8438.14 & 276.06\\
+$\log(\lambda_{1-4 years})$ & 34772.54 & 905.76\\
+$\log(\lambda_{5-14 years})$ & 18464.41 & 528.24\\
+$\log(\lambda_{15-24 years})$ & 19674.21 & 584.60\\
+$\log(\lambda_{25-34 years})$ & 15130.53 & 473.09\\
+$\log(\lambda_{35-44 years})$ & 11256.22 & 353.22\\
+$\log(\lambda_{45-54 years})$ & 13601.67 & 408.42\\
+$\log(\lambda_{55-64 years})$ & 13508.84 & 405.98\\
+$\log(\lambda_{65-74 years})$ & 14753.44 & 442.70\\
+$\log(\lambda_{75-84 years})$ & 10622.91 & 345.14\\
+$\log(\lambda_{85+ years})$ & 3586.71 & 158.77\\
+$\log(\sigma_u)$ & 0.01 & 0.01\\
 \bottomrule
 \end{tabular}
 \endgroup{}
@@ -270,16 +277,119 @@ $\log(\sigma_u)$ & 0.01 & 0.03\\
 \normalsize
 \end{frame}
 
-\hypertarget{poisson-gamma}{%
-\subsection{Poisson-Gamma}\label{poisson-gamma}}
+\hypertarget{hierachical-poisson-gamma-model}{%
+\section{Hierachical Poisson-Gamma
+model}\label{hierachical-poisson-gamma-model}}
 
-\begin{frame}{Poisson-Gamma}
-\begin{subequations}
+\hypertarget{formulation}{%
+\subsection{Formulation}\label{formulation}}
+
+\begin{frame}{Formulation}
+\begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
-    Y_{i} &\sim \mathrm{Pois} (\lambda_{i} u_{i}) \label{eq:pois_g0} \\ 
-    u_i &\sim \mathrm{G}(1,\phi) \label{eq:pois_g1}
+    Y_{i}|u_{i} &\sim \mathrm{Pois} (\lambda_{i} u_{i}) \label{eq:pois_g0} \\ 
+    u_{i} &\sim \mathrm{G}(1,\phi) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
+\end{frame}
+
+\begin{frame}{Probability function for \(Y\)}
+\protect\hypertarget{probability-function-for-y}{}
+\begin{equation} \label{eq:pdfMix}
+  \begin{aligned}
+    P[Y=y]&=g_{Y}(y;\lambda, \phi) \\
+    &=\frac{\phi^{y}\lambda^{y}}{(\lambda \phi + 1)^{y+1}} 
+  \end{aligned}
+\end{equation}
+\end{frame}
+
+\begin{frame}{Proof}
+\protect\hypertarget{proof}{}
+The probability function for the conditional distribution of \(Y\) for
+given \(u\)
+
+\begin{equation} \label{eq:pdfPois}
+  f_{Y|u}(y;\lambda, u)=\frac{(\lambda u)^y}{y!} \exp (-\lambda u)
+\end{equation}
+
+and the probability density function for the distribution of \(u\) is
+
+\begin{equation} \label{eq:pdfGamma}
+  f_{u}(u;\phi)=\frac{1}{\phi} \exp (-u/\phi)
+\end{equation}
+\end{frame}
+
+\begin{frame}{Proof}
+\protect\hypertarget{proof-1}{}
+Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability
+function for the marginal distribution of \(Y\) is determined from
+
+\begin{equation} \label{eq:marMix}
+  \begin{aligned}
+    g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) \,du \\
+    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi} \exp (-u/\phi) \,du\\
+    &=\frac{\lambda^{y}}{y!\phi} \int_{u=0}^\infty u^y \exp (-u(\lambda \phi+1)/\phi) \,du
+  \end{aligned}
+\end{equation}
+\end{frame}
+
+\begin{frame}{Proof}
+\protect\hypertarget{proof-2}{}
+In \eqref{eq:marMix} it is noted that the integrand is the \emph{kernel}
+in the probability density function for a Gamma distribution,
+\(G\big(y+1,\phi/(\lambda \phi+1)\big)\). As the integral of the density
+shall equal one, we find by adjusting the norming constant that
+
+\begin{equation}
+  \int_{u=0}^\infty u^y \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1}\Gamma(y+1)}{(\lambda \phi + 1)^{y+1}}
+\end{equation}
+
+and then \eqref{eq:pdfMix} follows
+\end{frame}
+
+\hypertarget{inference-on-individual-group-means}{%
+\subsection{Inference on individual group
+means}\label{inference-on-individual-group-means}}
+
+\begin{frame}{Inference on individual group means}
+Consider the hierarchical Poisson-Gamma model in \eqref{eq:PoisGam}, and
+assume that a value \(Y=y\) has been observed. Then the conditional
+distribution of \emph{u} for given \(Y=y\) is a Gamma distribution,
+
+\begin{equation}
+  u|Y=y\sim G(y+1,\phi/(\lambda \phi+1))
+\end{equation}
+
+with mean
+
+\begin{equation}
+  \E[u|Y=y]=\frac{y+1}{}
+\end{equation}
+\end{frame}
+
+\begin{frame}{Proof}
+\protect\hypertarget{proof-3}{}
+The conditional distribution is found using Bayes Theorem
+
+\begin{equation}
+  \begin{aligned}
+    g_{u}(u|Y=y)&=\frac{f_{y,u}(y,u)}{g_Y(y;\lambda, \phi)} \\
+    &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\phi)} \\
+    &=\frac{1}{g_{Y}(y;\lambda,\phi)}\bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi} \exp (-u/\phi) \bigg) \\
+    &\propto u^{y} \exp \big(- u(\lambda+1)/\phi\big)
+  \end{aligned}
+\end{equation}
+\end{frame}
+
+\begin{frame}{Proof}
+\protect\hypertarget{proof-4}{}
+We identify the \emph{kernel} of the probability density function
+
+\begin{equation}
+  u^{y} \exp \big(- u(\lambda+1)/\phi\big)
+\end{equation}
+
+as the kernel of a Gamma distribution, \(G(y+1,\phi/(\lambda \phi+1))\)
 \end{frame}
 
 

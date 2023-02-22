@@ -6,7 +6,7 @@ Here is a review of existing methods.
 
 and @Salmon_2016
 
-@Shihao_2015 and @Ning_2029 uses Google Search terms to predict influenza-like ilness (ILI).
+@Shihao_2015 and @Ning_2019 uses Google Search terms to predict influenza-like ilness (ILI).
 
 @Vega_2013 introduces the *Moving Epidemic Method* (MEM), which is used to compare the intensity level of ILI's in @Vega_2015.
 
