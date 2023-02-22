@@ -77,6 +77,8 @@
 	
 \newcommand{\tabitem}{{\color{dtured}$\bullet$} }
 
+\DeclareMathOperator{\E}{E}
+
 \begin{document}
 
 
@@ -134,7 +136,7 @@ Date & ageGroup & y & n\\
 \end{frame}
 
 \hypertarget{hierachical-poisson-normal-model}{%
-\section{Hierachical Poisson Normal
+\section{Hierachical Poisson-Normal
 model}\label{hierachical-poisson-normal-model}}
 
 \hypertarget{fomulation}{%
@@ -276,14 +278,14 @@ $\log(\sigma_u)$ & 0.01 & 0.01\\
 \end{frame}
 
 \hypertarget{hierachical-poisson-gamma-model}{%
-\section{Hierachical Poisson Gamma
+\section{Hierachical Poisson-Gamma
 model}\label{hierachical-poisson-gamma-model}}
 
 \hypertarget{formulation}{%
 \subsection{Formulation}\label{formulation}}
 
 \begin{frame}{Formulation}
-\begin{subequations}
+\begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
     Y_{i}|u_{i} &\sim \mathrm{Pois} (\lambda_{i} u_{i}) \label{eq:pois_g0} \\ 
     u_{i} &\sim \mathrm{G}(1,\phi) \label{eq:pois_g1}
@@ -293,10 +295,10 @@ model}\label{hierachical-poisson-gamma-model}}
 
 \begin{frame}{Probability function for \(Y\)}
 \protect\hypertarget{probability-function-for-y}{}
-\begin{equation}
+\begin{equation} \label{eq:pdfMix}
   \begin{aligned}
     P[Y=y]&=g_{Y}(y;\lambda, \phi) \\
-    &=1234
+    &=\frac{\phi^{y}\lambda^{y}}{(\lambda \phi + 1)^{y+1}} 
   \end{aligned}
 \end{equation}
 \end{frame}
@@ -322,13 +324,72 @@ and the probability density function for the distribution of \(u\) is
 Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability
 function for the marginal distribution of \(Y\) is determined from
 
-\begin{equation}
+\begin{equation} \label{eq:marMix}
   \begin{aligned}
-    g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) du \\
-    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi} \exp (-u/\phi) du\\
-    &=\frac{1}{y!\phi} \int_{u=0}^\infty (\lambda u)^y \exp (-u(\lambda+1/\phi)) du
+    g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) \,du \\
+    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi} \exp (-u/\phi) \,du\\
+    &=\frac{\lambda^{y}}{y!\phi} \int_{u=0}^\infty u^y \exp (-u(\lambda \phi+1)/\phi) \,du
   \end{aligned}
 \end{equation}
+\end{frame}
+
+\begin{frame}{Proof}
+\protect\hypertarget{proof-2}{}
+In \eqref{eq:marMix} it is noted that the integrand is the \emph{kernel}
+in the probability density function for a Gamma distribution,
+\(G\big(y+1,\phi/(\lambda \phi+1)\big)\). As the integral of the density
+shall equal one, we find by adjusting the norming constant that
+
+\begin{equation}
+  \int_{u=0}^\infty u^y \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1}\Gamma(y+1)}{(\lambda \phi + 1)^{y+1}}
+\end{equation}
+
+and then \eqref{eq:pdfMix} follows
+\end{frame}
+
+\hypertarget{inference-on-individual-group-means}{%
+\subsection{Inference on individual group
+means}\label{inference-on-individual-group-means}}
+
+\begin{frame}{Inference on individual group means}
+Consider the hierarchical Poisson-Gamma model in \eqref{eq:PoisGam}, and
+assume that a value \(Y=y\) has been observed. Then the conditional
+distribution of \emph{u} for given \(Y=y\) is a Gamma distribution,
+
+\begin{equation}
+  u|Y=y\sim G(y+1,\phi/(\lambda \phi+1))
+\end{equation}
+
+with mean
+
+\begin{equation}
+  \E[u|Y=y]=\frac{y+1}{}
+\end{equation}
+\end{frame}
+
+\begin{frame}{Proof}
+\protect\hypertarget{proof-3}{}
+The conditional distribution is found using Bayes Theorem
+
+\begin{equation}
+  \begin{aligned}
+    g_{u}(u|Y=y)&=\frac{f_{y,u}(y,u)}{g_Y(y;\lambda, \phi)} \\
+    &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\phi)} \\
+    &=\frac{1}{g_{Y}(y;\lambda,\phi)}\bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi} \exp (-u/\phi) \bigg) \\
+    &\propto u^{y} \exp \big(- u(\lambda+1)/\phi\big)
+  \end{aligned}
+\end{equation}
+\end{frame}
+
+\begin{frame}{Proof}
+\protect\hypertarget{proof-4}{}
+We identify the \emph{kernel} of the probability density function
+
+\begin{equation}
+  u^{y} \exp \big(- u(\lambda+1)/\phi\big)
+\end{equation}
+
+as the kernel of a Gamma distribution, \(G(y+1,\phi/(\lambda \phi+1))\)
 \end{frame}
 
 
