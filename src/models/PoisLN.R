@@ -11,8 +11,7 @@ dat <- read_rds(file = "../../data/processed/dat.rds")
 y <- dat %>%
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
   group_by(Date, ageGroup) %>%
-  mutate(y = sum(cases)) %>%
-  select(Date, ageGroup, y, n)
+  reframe(y = sum(cases), n = sum(n))
 
 compile(file = "PoissonLognormal.cpp")  # Compile the C++ file
 dyn.load(dynlib("PoissonLognormal"))    # Dynamically link the C++ code
@@ -39,32 +38,4 @@ opt$objective
 
 ## report on result
 sdreport(PoisLN)
-
-f$par
-
-rap <- sdreport(f,getJointPrecision = TRUE)
-summary(rap,"random")
-rap$par.random
-rap$diag.cov.random
-names(rap)
-
-compile(file = "PoissonGamma.cpp")  # Compile the C++ file
-dyn.load(dynlib("PoissonGamma"))    # Dynamically link the C++ code
-
-# Function and derivative
-f <- MakeADFun(
-  data = list(y = y$y),
-  parameters = list(u = rep(0, length(y$y)),
-                    lambda = 1,
-                    phi = 1),
-  random = "u",
-  DLL = "PoissonGamma"
-)
-
-f$fn()
-f$gr()
-
-opt <- nlminb(start = f$par, f$fn, f$gr, lower = c(0.01, 0.01, 0.01))
-TMB:::op_table(f$env$ADFun)
-TMB:::tape_print(f$env$ADFun)
 
