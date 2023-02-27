@@ -39,8 +39,7 @@ dat <- read_rds(file = "../../data/processed/dat.rds")
 y <- dat %>%
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
   group_by(Date, ageGroup) %>%
-  mutate(y = sum(cases)) %>%
-  select(Date, ageGroup, y, n)
+  reframe(y = sum(cases), n = sum(n))
 
 # Extract case definitions
 caseDef <- unique(dat$caseDef)
@@ -49,8 +48,10 @@ caseDef <- unique(dat$caseDef)
 for(c in caseDef){
   
   # caseDefxLandsdel
-  dat %>%
-    filter(caseDef == c) %>%
+  dat %>% 
+    filter(caseDef == c) %>% 
+    group_by(Date, landsdel) %>%
+    reframe(cases = sum(cases), n = sum(n)) %>%
     ggplot(mapping = aes(x = Date, y = cases/n * 1e5, colour = ageGroup)) +
     geom_point() +
     facet_wrap(facets = vars(landsdel)) +
@@ -69,8 +70,10 @@ for(c in caseDef){
     dpi = "print")
   
   # caseDefxAgeGroup
-  dat %>%
-    filter(caseDef == c) %>%
+  dat %>% 
+    filter(caseDef == c) %>% 
+    group_by(Date, ageGroup) %>%
+    reframe(cases = sum(cases), n = sum(n)) %>%
     ggplot(mapping = aes(x = Date, y = cases/n * 1e5, colour = ageGroup)) +
     geom_point() +
     facet_wrap(facets = vars(ageGroup), scales = "free_y") +
@@ -112,7 +115,6 @@ PoisLN <- read_rds(file = "../models/PoissonLognormal.rds")
 rep <- sdreport(PoisLN, getJointPrecision = TRUE)
 
 PoisLN.res <- y %>%
-  ungroup() %>%
   mutate(`Random effects` = rep$par.random,
          `Std. Error` = sqrt(rep$diag.cov.random))
 
@@ -128,3 +130,52 @@ PoisLN.res %>%
 ggsave(filename = "VTECxRandomEffects.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 
 
+# Load the Farrington-method
+STEC_farrington <- read_rds(file = "../models/STEC_farrington.rds")
+
+observed <- as_tibble(STEC_farrington@observed) %>%
+  mutate(Date = as.Date(x = STEC_farrington@epoch, origin = "1970-01-01")) %>%
+  pivot_longer(cols = -Date, 
+               names_to = "ageGroup",
+               values_to = "y")
+
+upperbound <- as_tibble(STEC_farrington@upperbound) %>%
+  mutate(Date = as.Date(x = STEC_farrington@epoch, origin = "1970-01-01")) %>%
+  pivot_longer(cols = -Date, 
+               names_to = "ageGroup",
+               values_to = "threshold")
+
+alarm <- as_tibble(STEC_farrington@alarm) %>%
+  mutate(Date = as.Date(x = STEC_farrington@epoch, origin = "1970-01-01")) %>%
+  pivot_longer(cols = -Date, 
+               names_to = "ageGroup",
+               values_to = "alarm")
+
+population <- as_tibble(STEC_farrington@populationFrac) %>%
+  mutate(Date = as.Date(x = STEC_farrington@epoch, origin = "1970-01-01")) %>%
+  pivot_longer(cols = -Date, 
+               names_to = "ageGroup",
+               values_to = "n")
+
+STEC_farrington_tbl <- observed %>% 
+  full_join(y = upperbound, join_by(Date, ageGroup)) %>%
+  full_join(y = alarm, join_by(Date, ageGroup)) %>%
+  full_join(y = population, join_by(Date, ageGroup))
+
+STEC_farrington_tbl %>%
+  ggplot(mapping = aes(x = Date, colour = ageGroup)) +
+  geom_point(mapping = aes(y = y/n * 1e5)) +
+  facet_wrap(facets = vars(ageGroup), scales = "free_y") +
+  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_colour_manual(values = dtuPalette) +
+  guides(colour = "none") +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.")
+  
+
+
+autoplot.sts(object = STEC_farrington)
+
+plot(STEC_farrington)
+
+plot(x = STEC_farrington, type = alarm ~ time)
+?surveillance::plot()

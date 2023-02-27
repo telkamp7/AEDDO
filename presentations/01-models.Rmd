@@ -30,8 +30,7 @@ dat <- read_rds(file = "../data/processed/dat.rds")
 y <- dat %>%
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
   group_by(Date, ageGroup) %>%
-  mutate(y = sum(cases)) %>%
-  select(Date, ageGroup, y, n)
+  reframe(y = sum(cases), n = sum(n))
 
 # Load the Poisson-lognormal model
 PoisLN <- read_rds(file = "../src/models/PoissonLognormal.rds")
