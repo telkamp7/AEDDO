@@ -3,6 +3,7 @@
 library(readr)
 library(dplyr)
 library(stringr)
+library(tidyr)
 library(ggplot2)
 library(TMB)
 
@@ -50,7 +51,7 @@ for(c in caseDef){
   # caseDefxLandsdel
   dat %>% 
     filter(caseDef == c) %>% 
-    group_by(Date, landsdel) %>%
+    group_by(Date, landsdel, ageGroup) %>%
     reframe(cases = sum(cases), n = sum(n)) %>%
     ggplot(mapping = aes(x = Date, y = cases/n * 1e5, colour = ageGroup)) +
     geom_point() +
@@ -137,45 +138,106 @@ observed <- as_tibble(STEC_farrington@observed) %>%
   mutate(Date = as.Date(x = STEC_farrington@epoch, origin = "1970-01-01")) %>%
   pivot_longer(cols = -Date, 
                names_to = "ageGroup",
-               values_to = "y")
+               values_to = "y") %>%
+  mutate(ageGroup = factor(x = ageGroup, levels = levels(dat$ageGroup)))
 
 upperbound <- as_tibble(STEC_farrington@upperbound) %>%
   mutate(Date = as.Date(x = STEC_farrington@epoch, origin = "1970-01-01")) %>%
   pivot_longer(cols = -Date, 
                names_to = "ageGroup",
-               values_to = "threshold")
+               values_to = "threshold") %>%
+  mutate(ageGroup = factor(x = ageGroup, levels = levels(dat$ageGroup)))
 
 alarm <- as_tibble(STEC_farrington@alarm) %>%
   mutate(Date = as.Date(x = STEC_farrington@epoch, origin = "1970-01-01")) %>%
   pivot_longer(cols = -Date, 
                names_to = "ageGroup",
-               values_to = "alarm")
+               values_to = "alarm") %>%
+  mutate(ageGroup = factor(x = ageGroup, levels = levels(dat$ageGroup)))
 
 population <- as_tibble(STEC_farrington@populationFrac) %>%
   mutate(Date = as.Date(x = STEC_farrington@epoch, origin = "1970-01-01")) %>%
   pivot_longer(cols = -Date, 
                names_to = "ageGroup",
-               values_to = "n")
+               values_to = "n") %>%
+  mutate(ageGroup = factor(x = ageGroup, levels = levels(dat$ageGroup)))
 
 STEC_farrington_tbl <- observed %>% 
   full_join(y = upperbound, join_by(Date, ageGroup)) %>%
   full_join(y = alarm, join_by(Date, ageGroup)) %>%
-  full_join(y = population, join_by(Date, ageGroup))
+  full_join(y = population, join_by(Date, ageGroup)) %>%
+  mutate(dateOfAlarm = if_else(alarm, Date, NA))
 
 STEC_farrington_tbl %>%
   ggplot(mapping = aes(x = Date, colour = ageGroup)) +
-  geom_point(mapping = aes(y = y/n * 1e5)) +
+  geom_point(mapping = aes(y = y/n*1e5)) +
+  geom_line(mapping = aes(y = threshold/n*1e5), lty = "dotted", size = 0.5) +
+  geom_rug(mapping = aes(x = dateOfAlarm, y = NULL), outside = TRUE, sides = "b", inherit.aes = FALSE) +
+  coord_cartesian(clip = "off") +
   facet_wrap(facets = vars(ageGroup), scales = "free_y") +
   scale_y_continuous(name = "Number of cases per 100.000") +
   scale_colour_manual(values = dtuPalette) +
   guides(colour = "none") +
-  ggtitle(label = "Shiga- og veratoxin producerende E. coli.")
+  theme(panel.spacing.y = unit(1, "lines"), 
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_text(vjust = -1.2)) +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Farrington method")
+ggsave(filename = "STEC_farrington.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+
+# Load the Farrington-method
+STEC_noufaily <- read_rds(file = "../models/STEC_noufaily.rds")
+
+observed <- as_tibble(STEC_noufaily@observed) %>%
+  mutate(Date = as.Date(x = STEC_noufaily@epoch, origin = "1970-01-01")) %>%
+  pivot_longer(cols = -Date, 
+               names_to = "ageGroup",
+               values_to = "y") %>%
+  mutate(ageGroup = factor(x = ageGroup, levels = levels(dat$ageGroup)))
+
+upperbound <- as_tibble(STEC_noufaily@upperbound) %>%
+  mutate(Date = as.Date(x = STEC_noufaily@epoch, origin = "1970-01-01")) %>%
+  pivot_longer(cols = -Date, 
+               names_to = "ageGroup",
+               values_to = "threshold") %>%
+  mutate(ageGroup = factor(x = ageGroup, levels = levels(dat$ageGroup)))
+
+alarm <- as_tibble(STEC_noufaily@alarm) %>%
+  mutate(Date = as.Date(x = STEC_noufaily@epoch, origin = "1970-01-01")) %>%
+  pivot_longer(cols = -Date, 
+               names_to = "ageGroup",
+               values_to = "alarm") %>%
+  mutate(ageGroup = factor(x = ageGroup, levels = levels(dat$ageGroup)))
+
+population <- as_tibble(STEC_noufaily@populationFrac) %>%
+  mutate(Date = as.Date(x = STEC_noufaily@epoch, origin = "1970-01-01")) %>%
+  pivot_longer(cols = -Date, 
+               names_to = "ageGroup",
+               values_to = "n") %>%
+  mutate(ageGroup = factor(x = ageGroup, levels = levels(dat$ageGroup)))
+
+STEC_noufaily_tbl <- observed %>% 
+  full_join(y = upperbound, join_by(Date, ageGroup)) %>%
+  full_join(y = alarm, join_by(Date, ageGroup)) %>%
+  full_join(y = population, join_by(Date, ageGroup)) %>%
+  mutate(dateOfAlarm = if_else(alarm, Date, NA))
+
+STEC_noufaily_tbl %>%
+  ggplot(mapping = aes(x = Date, colour = ageGroup)) +
+  geom_point(mapping = aes(y = y/n*1e5)) +
+  geom_line(mapping = aes(y = threshold/n*1e5), lty = "dotted", size = 0.5) +
+  geom_rug(mapping = aes(x = dateOfAlarm, y = NULL), outside = TRUE, sides = "b", inherit.aes = FALSE) +
+  coord_cartesian(clip = "off") +
+  facet_wrap(facets = vars(ageGroup), scales = "free_y") +
+  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_colour_manual(values = dtuPalette) +
+  guides(colour = "none") +
+  theme(panel.spacing.y = unit(1, "lines"), 
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_text(vjust = -1.2)) +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Noufaily method")
+ggsave(filename = "STEC_noufaily.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+
+
+
   
 
-
-autoplot.sts(object = STEC_farrington)
-
-plot(STEC_farrington)
-
-plot(x = STEC_farrington, type = alarm ~ time)
-?surveillance::plot()

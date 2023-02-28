@@ -70,8 +70,8 @@ con.noufaily <- list(
 STEC_farrington <- farringtonFlexible(sts = STEC, con.farrington)
 STEC_noufaily <- farringtonFlexible(sts = STEC, con.noufaily)
 
-#plot(STEC.farrington)
-#plot(STEC.noufaily)
+plot(STEC_farrington)
+plot(STEC_noufaily)
 
 write_rds(x = STEC_farrington, file = "STEC_farrington.rds")
 write_rds(x = STEC_noufaily, file = "STEC_noufaily.rds")
