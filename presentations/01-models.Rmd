@@ -46,6 +46,9 @@ res <- tibble(Parameter = names(rep$par.fixed),
               Estimate = rep$par.fixed,
               `Std. Error` = sqrt(diag(rep$cov.fixed)))
 
+# Load the Poisson-Gamma model
+PoisG <- read_rds(file = "../src/models/PoissonGamma.rds")
+
 ```
 
 # Data exploration
@@ -77,8 +80,8 @@ include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{t}^{a}|u_{t}^{a} &\sim \Pois \big( w_{t}^{a} \lambda_{a} \exp(u_{t}^{a}) \big) \label{eq:pois_ln0} \\ 
-    u_{t}^{a} &\sim \N(0,\sigma^2) \label{eq:pois_ln1}
+    Y_{it}|u_{it} &\sim \Pois \big( w_{it} \lambda_{i} \exp(u_{it}) \big) \label{eq:pois_ln0} \\ 
+    u_{it} &\sim \N(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
 
@@ -152,7 +155,7 @@ PoisLN <- MakeADFun(
 opt <- nlminb(start = PoisLN$par, PoisLN$fn, PoisLN$gr, lower = c(0.01, 0.01))
 ```
 
-### Results
+## Results
 
 ```{r PoisLN, echo=FALSE, comment=""}
 kable(res,
@@ -164,10 +167,10 @@ kable(res,
   kable_styling(full_width = F, font_size = 10)
 ```
 
-### Results
+## Results
 
-```{r VTECxRandomEffects, echo=FALSE, out.width="100%"}
-include_graphics("../figures/VTECxRandomEffects.png")
+```{r PoisLNxSTEC, echo=FALSE, out.width="100%"}
+include_graphics("../figures/PoisLNxSTEC.png")
 ```
 
 # Hierachical Poisson-Gamma model
@@ -176,8 +179,8 @@ include_graphics("../figures/VTECxRandomEffects.png")
 
 \begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
-    Y_{i}|u_{i} &\sim \Pois (\lambda_{i} u_{i}) \label{eq:pois_g0} \\ 
-    u_{i} &\sim \G(1/\beta,\beta) \label{eq:pois_g1}
+    Y_{it}|u_{it} &\sim \Pois (\lambda_{i} u_{it}) \label{eq:pois_g0} \\ 
+    u_{it} &\sim \G(1/\beta,\beta) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
 
@@ -250,6 +253,12 @@ with mean
   \E[u|Y=y]=\frac{y\beta+1}{\lambda\beta+1}
 \end{equation}
 
+and variance
+
+\begin{equation}
+  \V[u|Y=y]=\frac{(y \beta^2+\beta)}{(\lambda \beta + 1)^2}
+\end{equation}
+
 ### Proof
 
 The conditional distribution is found using Bayes Theorem
@@ -266,7 +275,69 @@ The conditional distribution is found using Bayes Theorem
 We identify the *kernel* of the probability density function
 
 \begin{equation}
-  u^{y} \exp \big(- u(\lambda+1)/\phi\big)
+  u^{y+1/\beta-1} \exp (- u(\lambda\beta+1)/\beta)
 \end{equation}
 
 as the kernel of a Gamma distribution, $\G(y+1/\beta,\beta/(\lambda\beta+1))$
+
+## Implementation
+
+### Implementation - Define negative likelihood function in R
+
+```{r PoisG.nll, eval=FALSE}
+
+# Define the negative likelihood function for the marginal distribution of Y
+nll.age <- function(theta, data){
+  # Extract counts
+  y <- data$y
+  # Extract agegroups
+  ageGroup <- data$ageGroup
+  # Extract number of agegroups
+  n.ageGroup <- n_distinct(data$ageGroup)
+  
+  # Define parameters
+  lambda <- theta[1:n.ageGroup]
+  beta <- theta[(n.ageGroup+1):(n.ageGroup*2)]
+  
+  # Construct the size and probability for the negative binomial distribution
+  r <- 1/beta
+  p <- 1/(lambda*beta+1)
+  
+  # Initilize the log-likelihood
+  ll <- 0
+  for(i in 1:nrow(data)){
+    ll = ll + dnbinom(x = y[i],
+                      size = r[ageGroup[i]],
+                      prob = p[ageGroup[i]],
+                      log = TRUE) 
+  }
+  
+  # Return the negative log-likelihood
+  -ll
+}
+
+```
+
+## Results
+
+
+```{r PoisG, echo=FALSE}
+
+names(PoisG$par) <- c("ageGroup","$\\lambda$", "$\\beta$")
+
+kable(PoisG$par,
+      digits = 2, 
+      format = "latex",
+      booktabs = TRUE, 
+      escape = FALSE,
+      linesep = "") %>%
+  kable_styling(full_width = F, font_size = 10)
+
+```
+
+## Results
+
+```{r PoisGxSTEC, echo=FALSE, out.width="100%"}
+include_graphics("../figures/PoisGxSTEC.png")
+```
+

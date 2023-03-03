@@ -128,8 +128,22 @@ PoisLN.res %>%
   scale_colour_manual(values = dtuPalette) +
   guides(colour = "none") +
   ggtitle(label = "Shiga- og veratoxin producerende E. coli.")
-ggsave(filename = "VTECxRandomEffects.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+ggsave(filename = "PoisLNxSTEC.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 
+# Load the Poisson-Gamma model
+PoisG <- read_rds(file = "../models/PoissonGamma.rds")
+
+PoisG$results %>%
+  rename(`Random effects` = u) %>%
+  ggplot(mapping = aes(x = Date, y = `Random effects`, colour = ageGroup)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(facets = vars(ageGroup)) +
+  scale_y_continuous(name = expression(paste("Random effect, ", u[t]^a))) +
+  scale_colour_manual(values = dtuPalette) +
+  guides(colour = "none") +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.")
+ggsave(filename = "PoisGxSTEC.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 
 # Load the Farrington-method
 STEC_farrington <- read_rds(file = "../models/STEC_farrington.rds")

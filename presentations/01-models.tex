@@ -78,6 +78,7 @@
 \newcommand{\tabitem}{{\color{dtured}$\bullet$} }
 
 \DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\V}{V}
 \DeclareMathOperator{\G}{G}
 \DeclareMathOperator{\N}{N}
 \DeclareMathOperator{\NB}{NB}
@@ -113,15 +114,15 @@
 \toprule
 Date & ageGroup & y & n\\
 \midrule
-2008-01-01 & <1 year & 2 & 10120\\
-2009-01-01 & <1 year & 1 & 10288\\
-2010-01-01 & <1 year & 1 & 10654\\
-2011-01-01 & <1 year & 0 & 11199\\
+2008-01-01 & <1 year & 2 & 64137\\
+2008-01-01 & 1-4 years & 2 & 259910\\
+2008-01-01 & 5-14 years & 2 & 680529\\
+2008-01-01 & 15-24 years & 1 & 631724\\
 ... & ... & ... & ...\\
-2019-12-01 & 85+ years & 1 & 14153\\
-2020-12-01 & 85+ years & 0 & 14613\\
-2021-12-01 & 85+ years & 2 & 14976\\
-2022-12-01 & 85+ years & 3 & 15203\\
+2022-12-01 & 55-64 years & 2 & 773073\\
+2022-12-01 & 65-74 years & 5 & 621965\\
+2022-12-01 & 75-84 years & 4 & 449423\\
+2022-12-01 & 85+ years & 3 & 132181\\
 \bottomrule
 \end{tabular}
 \endgroup{}
@@ -151,8 +152,8 @@ model}\label{hierachical-poisson-normal-model}}
 \begin{frame}{Fomulation}
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{t}^{a}|u_{t}^{a} &\sim \Pois \big( w_{t}^{a} \lambda_{a} \exp(u_{t}^{a}) \big) \label{eq:pois_ln0} \\ 
-    u_{t}^{a} &\sim \N(0,\sigma^2) \label{eq:pois_ln1}
+    Y_{it}|u_{it} &\sim \Pois \big( w_{it} \lambda_{i} \exp(u_{it}) \big) \label{eq:pois_ln0} \\ 
+    u_{it} &\sim \N(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
 \end{frame}
@@ -243,8 +244,10 @@ model}\label{hierachical-poisson-normal-model}}
 \normalsize
 \end{frame}
 
+\hypertarget{results}{%
+\subsection{Results}\label{results}}
+
 \begin{frame}{Results}
-\protect\hypertarget{results}{}
 \tiny
 
 \begin{table}
@@ -274,11 +277,13 @@ $\log(\sigma_u)$ & 0.45 & 0.02\\
 \normalsize
 \end{frame}
 
+\hypertarget{results-1}{%
+\subsection{Results}\label{results-1}}
+
 \begin{frame}{Results}
-\protect\hypertarget{results-1}{}
 \tiny
 
-\includegraphics[width=1\linewidth]{../figures/VTECxRandomEffects}
+\includegraphics[width=1\linewidth]{../figures/PoisLNxSTEC}
 
 \normalsize
 \end{frame}
@@ -293,8 +298,8 @@ model}\label{hierachical-poisson-gamma-model}}
 \begin{frame}{Formulation}
 \begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
-    Y_{i}|u_{i} &\sim \Pois (\lambda_{i} u_{i}) \label{eq:pois_g0} \\ 
-    u_{i} &\sim \G(1/\beta,\beta) \label{eq:pois_g1}
+    Y_{it}|u_{it} &\sim \Pois (\lambda_{i} u_{it}) \label{eq:pois_g0} \\ 
+    u_{it} &\sim \G(1/\beta,\beta) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
 \end{frame}
@@ -386,6 +391,12 @@ with mean
 \begin{equation}
   \E[u|Y=y]=\frac{y\beta+1}{\lambda\beta+1}
 \end{equation}
+
+and variance
+
+\begin{equation}
+  \V[u|Y=y]=\frac{(y \beta^2+\beta)}{(\lambda \beta  + 1)^2}
+\end{equation}
 \end{frame}
 
 \begin{frame}{Proof}
@@ -404,11 +415,99 @@ The conditional distribution is found using Bayes Theorem
 We identify the \emph{kernel} of the probability density function
 
 \begin{equation}
-  u^{y} \exp \big(- u(\lambda+1)/\phi\big)
+  u^{y+1/\beta-1} \exp (- u(\lambda\beta+1)/\beta)
 \end{equation}
 
 as the kernel of a Gamma distribution,
 \(\G(y+1/\beta,\beta/(\lambda\beta+1))\)
+\end{frame}
+
+\hypertarget{implementation-1}{%
+\subsection{Implementation}\label{implementation-1}}
+
+\begin{frame}[fragile]{Implementation - Define negative likelihood
+function in R}
+\protect\hypertarget{implementation---define-negative-likelihood-function-in-r}{}
+\tiny
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Define the negative likelihood function for the marginal distribution of Y}
+\NormalTok{nll.age }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta, data)\{}
+  \CommentTok{\# Extract counts}
+\NormalTok{  y }\OtherTok{\textless{}{-}}\NormalTok{ data}\SpecialCharTok{$}\NormalTok{y}
+  \CommentTok{\# Extract agegroups}
+\NormalTok{  ageGroup }\OtherTok{\textless{}{-}}\NormalTok{ data}\SpecialCharTok{$}\NormalTok{ageGroup}
+  \CommentTok{\# Extract number of agegroups}
+\NormalTok{  n.ageGroup }\OtherTok{\textless{}{-}} \FunctionTok{n\_distinct}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{ageGroup)}
+  
+  \CommentTok{\# Define parameters}
+\NormalTok{  lambda }\OtherTok{\textless{}{-}}\NormalTok{ theta[}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n.ageGroup]}
+\NormalTok{  beta }\OtherTok{\textless{}{-}}\NormalTok{ theta[(n.ageGroup}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}\SpecialCharTok{:}\NormalTok{(n.ageGroup}\SpecialCharTok{*}\DecValTok{2}\NormalTok{)]}
+  
+  \CommentTok{\# Construct the size and probability for the negative binomial distribution}
+\NormalTok{  r }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{/}\NormalTok{beta}
+\NormalTok{  p }\OtherTok{\textless{}{-}} \DecValTok{1}\SpecialCharTok{/}\NormalTok{(lambda}\SpecialCharTok{*}\NormalTok{beta}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}
+  
+  \CommentTok{\# Initilize the log{-}likelihood}
+\NormalTok{  ll }\OtherTok{\textless{}{-}} \DecValTok{0}
+  \ControlFlowTok{for}\NormalTok{(i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(data))\{}
+\NormalTok{    ll }\OtherTok{=}\NormalTok{ ll }\SpecialCharTok{+} \FunctionTok{dnbinom}\NormalTok{(}\AttributeTok{x =}\NormalTok{ y[i],}
+                      \AttributeTok{size =}\NormalTok{ r[ageGroup[i]],}
+                      \AttributeTok{prob =}\NormalTok{ p[ageGroup[i]],}
+                      \AttributeTok{log =} \ConstantTok{TRUE}\NormalTok{) }
+\NormalTok{  \}}
+  
+  \CommentTok{\# Return the negative log{-}likelihood}
+  \SpecialCharTok{{-}}\NormalTok{ll}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\normalsize
+\end{frame}
+
+\hypertarget{results-2}{%
+\subsection{Results}\label{results-2}}
+
+\begin{frame}{Results}
+\tiny
+
+\begin{table}
+\centering\begingroup\fontsize{10}{12}\selectfont
+
+\begin{tabular}{lrr}
+\toprule
+ageGroup & $\lambda$ & $\beta$\\
+\midrule
+<1 year & 1.24 & 0.33\\
+1-4 years & 4.57 & 0.36\\
+5-14 years & 2.47 & 0.42\\
+15-24 years & 2.57 & 0.48\\
+25-34 years & 2.08 & 0.57\\
+35-44 years & 1.47 & 0.20\\
+45-54 years & 1.88 & 0.39\\
+55-64 years & 1.77 & 0.25\\
+65-74 years & 1.89 & 0.40\\
+75-84 years & 1.45 & 1.08\\
+85+ years & 0.50 & 0.97\\
+\bottomrule
+\end{tabular}
+\endgroup{}
+\end{table}
+
+\normalsize
+\end{frame}
+
+\hypertarget{results-3}{%
+\subsection{Results}\label{results-3}}
+
+\begin{frame}{Results}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/PoisGxSTEC}
+
+\normalsize
 \end{frame}
 
 
