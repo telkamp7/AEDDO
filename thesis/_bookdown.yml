@@ -1,1 +1,1 @@
-rmd_files: ["index.Rmd", "Chapters/01-Introduction.Rmd", "Chapters/02-Litterature.Rmd", "Chapters/03-Dataset.Rmd", "Chapters/04-Methods.Rmd"]
+rmd_files: ["index.Rmd", "Chapters/01-Introduction.Rmd", "Chapters/02-Litterature.Rmd", "Chapters/03-Dataset.Rmd", "Chapters/04-Methods.Rmd", "Backmatter/99-Appendix.Rmd"]

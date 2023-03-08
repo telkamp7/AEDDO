@@ -59,10 +59,7 @@ include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 ```{r prepData, eval=FALSE}
 
 # Import libraries
-library(readr)
-library(dplyr)
-library(tidyr)
-library(surveillance)
+library(readr); library(dplyr); library(tidyr); library(surveillance)
 
 # Import the data
 dat <- read_rds(file = "../../data/processed/dat.rds")
@@ -76,19 +73,13 @@ y <- dat %>%
 # Widen observations into a matrix format
 observed <- y %>%
   select(-n) %>%
-  pivot_wider(
-    names_from = c(ageGroup),
-    names_sep = ".",
-    values_from = y) %>%
+  pivot_wider(names_from = c(ageGroup), names_sep = ".", values_from = y) %>%
   arrange(Date)
 
 # Widen population sizes into a matrix format
 population <- y %>%
   select(-y) %>%
-  pivot_wider(
-    names_from = c(ageGroup),
-    names_sep = ".",
-    values_from = n) %>%
+  pivot_wider(names_from = c(ageGroup), names_sep = ".", values_from = n) %>%
   arrange(Date)
 
 # Convert observations into an 'sts' class
@@ -99,7 +90,6 @@ STEC <- sts(
   frequency = 12,
   population = as.matrix(population[,-1])
   )
-
 
 ```
 
@@ -112,7 +102,7 @@ STEC <- sts(
 
 # Specify the controls for the Farrington method
 con.farrington <- list(
-  range = NULL, b = 5, w = 3,
+  range = NULL, b = 3, w = 2,
   reweight = TRUE, weightsThreshold = 1,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
@@ -142,7 +132,7 @@ include_graphics("../figures/STEC_farrington.png")
 
 # Specify the controls for the Noufaily method
 con.noufaily <- list(
-  range = NULL, b = 5, w = 3,
+  range = NULL, b = 3, w = 2,
   reweight = TRUE, weightsThreshold = 2.58,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
@@ -150,7 +140,7 @@ con.noufaily <- list(
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
   noPeriods = 1, pastWooksNotIncluded = NULL,
-  thersholdMethod = "delta"
+  thersholdMethod = "Noufaily"
 )
 
 # Execute the Noufaily method

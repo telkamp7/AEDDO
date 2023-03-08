@@ -1,0 +1,64 @@
+\printbibliography[heading=bibintoc,title={Bibliography}]
+\cleardoublepage 
+\appendix
+
+\chapter{Proofs}
+
+\section{Hierarchical Poisson Gamma model}
+
+This section is a collection of proofs for the derivation of the compound Poisson Gamma model in \eqref{eq:PoisGam}.
+
+\subsection{Probability function for $Y$}
+
+The probability function for the conditional distribution of $Y$ for given $u$
+
+\begin{equation} \label{eq:pdfPois}
+  f_{Y|u}(y;\lambda, u)=\frac{(\lambda u)^y}{y!} \exp (-\lambda u)
+\end{equation}
+
+and the probability density function for the distribution of $u$ is
+
+\begin{equation} \label{eq:pdfGamma}
+  f_{u}(u;\beta)=\frac{1}{\beta \Gamma(1/\beta)} \bigg(\frac{u}{\beta}\bigg)^{1/\beta-1} \exp (-u/\beta)
+\end{equation}
+
+Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability function for the marginal distribution of $Y$ is determined from
+
+\begin{equation} \label{eq:marMix}
+  \begin{aligned}
+    g_{Y}(y;\lambda,\beta)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\beta) \,du \\
+    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\beta \Gamma(1/\beta)} \bigg(\frac{u}{\beta}\bigg)^{1/\beta-1} \exp (-u/\beta) \,du\\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\beta)\beta^{1/\beta}} \int_{u=0}^\infty u^{y+1/\beta} \exp \big(-u(\lambda \beta+1)/\beta\big) \,du
+  \end{aligned}
+\end{equation}
+
+In \eqref{eq:marMix} it is noted that the integrand is the *kernel* in the probability density function for a Gamma distribution, $\G\big(y+1/\beta,\beta/(\lambda \beta+1)\big)$. As the integral of the density shall equal one, we find by adjusting the norming constant that
+
+\begin{equation}
+  \int_{u=0}^\infty u^{y+1/\beta} \exp \bigg(-u/\Big(\beta/(\lambda \beta+1)\Big)\bigg) \,du = \frac{\beta^{y+1/\beta}\Gamma(y+1/\beta)}{(\lambda \beta + 1)^{y+1/\beta}}
+\end{equation}
+
+and then \eqref{eq:pdfMix} follows.
+
+\subsection{Conditional distribution of $Y$}
+
+The conditional distribution of $Y$ is found using Bayes Theorem
+
+\begin{equation}
+  \begin{aligned}
+    g_{u}(u|Y=y)&=\frac{f_{y,u}(y,u)}{g_Y(y;\lambda, \phi)} \\
+    &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\beta)} \\
+    &=\frac{1}{g_{Y}(y;\lambda,\beta)}\bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\beta \Gamma(1/\beta)} \bigg(\frac{u}{\beta}\bigg)^{1/\beta-1} \exp (-u/\beta)\bigg) \\
+    &\propto u^{y+1/\beta-1} \exp \big(- u(\lambda\beta+1)/\beta\big)
+  \end{aligned}
+\end{equation}
+
+We identify the *kernel* of the probability density function
+
+\begin{equation}
+  u^{y+1/\beta-1} \exp (- u(\lambda\beta+1)/\beta)
+\end{equation}
+
+as the kernel of a Gamma distribution, $\G(y+1/\beta,\beta/(\lambda\beta+1))$.
+
+

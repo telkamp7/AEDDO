@@ -110,40 +110,84 @@ for(l in landsdel){
   ggsave(filename = paste0(l,"xCaseDef.png"), path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 }
 
-# Load the Poisson-lognormal model
-PoisLN <- read_rds(file = "../models/PoissonLognormal.rds")
-# ... and generate report
-rep <- sdreport(PoisLN, getJointPrecision = TRUE)
+# Load the Poisson-normal model
+PoisLN_res <- read_rds(file = "../methods/PoisLN_res.rds")
 
-PoisLN.res <- y %>%
-  mutate(`Random effects` = rep$par.random,
-         `Std. Error` = sqrt(rep$diag.cov.random))
-
-PoisLN.res %>%
-  ggplot(mapping = aes(x = Date, y = `Random effects`, colour = ageGroup)) +
-  geom_point() +
-  geom_line() +
+PoisLN_res %>%
+  mutate(dateOfAlarm = if_else(alarm, Date, NA)) %>%
+  ggplot(mapping = aes(x = Date, colour = ageGroup)) +
+  geom_point(mapping = aes(y = u)) +
+  geom_line(mapping = aes(x = Date,
+                          y = qnorm(p = 0.95, mean = 0, sd = exp(log_sigma))),
+            lty = "dashed", inherit.aes = FALSE) +
+  geom_rug(mapping = aes(x = dateOfAlarm, y = NULL),
+           outside = TRUE, sides = "b", inherit.aes = FALSE) +
+  coord_cartesian(clip = "off") +
   facet_wrap(facets = vars(ageGroup)) +
-  scale_y_continuous(name = expression(paste("Random effect, ", u[t]^a))) +
+  scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
   scale_colour_manual(values = dtuPalette) +
   guides(colour = "none") +
-  ggtitle(label = "Shiga- og veratoxin producerende E. coli.")
+  theme(panel.spacing.y = unit(1, "lines"), 
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_text(vjust = -1.2)) +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Hierarchical Poisson Normal model")
 ggsave(filename = "PoisLNxSTEC.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 
-# Load the Poisson-Gamma model
-PoisG <- read_rds(file = "../models/PoissonGamma.rds")
+### Deprecated
+# PoisLN <- read_rds(file = "../models/PoissonLognormal.rds")
+# # ... and generate report
+# rep <- sdreport(PoisLN, getJointPrecision = TRUE)
+# 
+# PoisLN.res <- y %>%
+#   mutate(`Random effects` = rep$par.random,
+#          `Std. Error` = sqrt(rep$diag.cov.random))
+# 
+# PoisLN.res %>%
+#   ggplot(mapping = aes(x = Date, y = `Random effects`, colour = ageGroup)) +
+#   geom_point() +
+#   geom_line() +
+#   facet_wrap(facets = vars(ageGroup)) +
+#   scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
+#   scale_colour_manual(values = dtuPalette) +
+#   guides(colour = "none") +
+#   ggtitle(label = "Shiga- og veratoxin producerende E. coli.")
 
-PoisG$results %>%
-  rename(`Random effects` = u) %>%
-  ggplot(mapping = aes(x = Date, y = `Random effects`, colour = ageGroup)) +
-  geom_point() +
-  geom_line() +
+# Load the Poisson-Gamma model
+PoisG_res <- read_rds(file = "../methods/PoisG_res.rds")
+
+PoisG_res %>%
+  mutate(dateOfAlarm = if_else(alarm, Date, NA)) %>%
+  ggplot(mapping = aes(x = Date, colour = ageGroup)) +
+  geom_point(mapping = aes(y = u)) +
+  geom_line(mapping = aes(x = Date,
+                          y = qgamma(p = 0.95, shape = 1/beta, scale = beta)),
+            lty = "dashed", inherit.aes = FALSE) +
+  geom_rug(mapping = aes(x = dateOfAlarm, y = NULL),
+           outside = TRUE, sides = "b", inherit.aes = FALSE) +
+  coord_cartesian(clip = "off") +
   facet_wrap(facets = vars(ageGroup)) +
-  scale_y_continuous(name = expression(paste("Random effect, ", u[t]^a))) +
+  scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
   scale_colour_manual(values = dtuPalette) +
   guides(colour = "none") +
-  ggtitle(label = "Shiga- og veratoxin producerende E. coli.")
+  theme(panel.spacing.y = unit(1, "lines"), 
+        axis.ticks.x = element_blank(),
+        axis.text.x = element_text(vjust = -1.2)) +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Compound Poisson Gamma model")
 ggsave(filename = "PoisGxSTEC.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+
+### Deprecated
+# PoisG <- read_rds(file = "../models/PoissonGamma.rds")
+# 
+# PoisG$results %>%
+#   rename(`Random effects` = u) %>%
+#   ggplot(mapping = aes(x = Date, y = `Random effects`, colour = ageGroup)) +
+#   geom_point() +
+#   geom_line() +
+#   facet_wrap(facets = vars(ageGroup)) +
+#   scale_y_continuous(name = expression(paste("Random effect, ", u[t]^a))) +
+#   scale_colour_manual(values = dtuPalette) +
+#   guides(colour = "none") +
+#   ggtitle(label = "Shiga- og veratoxin producerende E. coli.")
 
 # Load the Farrington-method
 STEC_farrington <- read_rds(file = "../models/STEC_farrington.rds")

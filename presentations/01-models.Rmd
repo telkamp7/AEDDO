@@ -40,11 +40,16 @@ rep <- sdreport(PoisLN, getJointPrecision = TRUE)
 # Extract agegroups
 ageGroup <- levels(y$ageGroup)
 
-names(rep$par.fixed) <- c(paste0("$\\log(\\lambda_{", ageGroup, "})$"), "$\\log(\\sigma_u)$")
+res <- tibble(ageGroup = ageGroup,
+       `$\\lambda$` = rep$par.fixed[1:11],
+       `$\\sigma$` = exp(rep$par.fixed[12:22]))
 
-res <- tibble(Parameter = names(rep$par.fixed),
-              Estimate = rep$par.fixed,
-              `Std. Error` = sqrt(diag(rep$cov.fixed)))
+# 
+# names(rep$par.fixed) <- c(paste0("$\\log(\\lambda_{", ageGroup, "})$"), "$\\log(\\sigma_u)$")
+# 
+# res <- tibble(Parameter = names(rep$par.fixed),
+#               Estimate = rep$par.fixed,
+#               `Std. Error` = sqrt(diag(rep$cov.fixed)))
 
 # Load the Poisson-Gamma model
 PoisG <- read_rds(file = "../src/models/PoissonGamma.rds")
@@ -81,7 +86,7 @@ include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 \begin{subequations}
   \begin{alignat}{2}
     Y_{it}|u_{it} &\sim \Pois \big( w_{it} \lambda_{i} \exp(u_{it}) \big) \label{eq:pois_ln0} \\ 
-    u_{it} &\sim \N(0,\sigma^2) \label{eq:pois_ln1}
+    u_{it} &\sim \N(0,\sigma_{i}^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
 
@@ -167,7 +172,7 @@ kable(res,
   kable_styling(full_width = F, font_size = 10)
 ```
 
-## Results
+### Results
 
 ```{r PoisLNxSTEC, echo=FALSE, out.width="100%"}
 include_graphics("../figures/PoisLNxSTEC.png")
@@ -180,7 +185,7 @@ include_graphics("../figures/PoisLNxSTEC.png")
 \begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
     Y_{it}|u_{it} &\sim \Pois (\lambda_{i} u_{it}) \label{eq:pois_g0} \\ 
-    u_{it} &\sim \G(1/\beta,\beta) \label{eq:pois_g1}
+    u_{it} &\sim \G(1/\beta_{i},\beta_{i}) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
 
@@ -335,7 +340,7 @@ kable(PoisG$par,
 
 ```
 
-## Results
+### Results
 
 ```{r PoisGxSTEC, echo=FALSE, out.width="100%"}
 include_graphics("../figures/PoisGxSTEC.png")

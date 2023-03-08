@@ -44,7 +44,7 @@ STEC <- sts(
 #plot(x = STEC, type = observed ~ time | unit)
 
 con.farrington <- list(
-  range = NULL, b = 5, w = 3,
+  range = NULL, b = 3, w = 2,
   reweight = TRUE, weightsThreshold = 1,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
@@ -56,7 +56,7 @@ con.farrington <- list(
 )
 
 con.noufaily <- list(
-  range = NULL, b = 5, w = 3,
+  range = NULL, b = 3, w = 2,
   reweight = TRUE, weightsThreshold = 2.58,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
@@ -64,7 +64,7 @@ con.noufaily <- list(
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
   noPeriods = 1, pastWooksNotIncluded = NULL,
-  thersholdMethod = "delta"
+  thersholdMethod = "Noufaily"
 )
 
 STEC_farrington <- farringtonFlexible(sts = STEC, con.farrington)

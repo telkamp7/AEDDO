@@ -14,14 +14,15 @@ y <- dat %>%
   reframe(y = sum(cases), n = sum(n))
 
 compile(file = "PoissonLognormal.cpp")  # Compile the C++ file
+# dyn.unload(dynlib("PoissonLognormal"))
 dyn.load(dynlib("PoissonLognormal"))    # Dynamically link the C++ code
 
 # Function and derivative
 PoisLN <- MakeADFun(
   data = list(y = y$y, ageGroup = y$ageGroup, w = y$n),
   parameters = list(u = rep(1, length(y$y)),
-                    lambda = rep(1, nlevels(y$ageGroup)),
-                    log_sigma_u = log(1)),
+                    log_lambda = rep(log(1), nlevels(y$ageGroup)),
+                    log_sigma_u = rep(log(1), nlevels(y$ageGroup))),
   random = "u",
   DLL = "PoissonLognormal"
 )
@@ -37,5 +38,5 @@ opt$par
 opt$objective
 
 ## report on result
-sdreport(PoisLN)
-
+tmp <- sdreport(PoisLN)
+tmp$par.random

@@ -1,16 +1,80 @@
 \chapter{Methods}
 
+This chapter present the methods...
 
-## Hierachical Poisson Normal model
 
-### Fomulation
+\section{Hierarchical models}
 
-\begin{subequations}
+In this section the hierarchical model and the generalized mixed effect model that is used to model the count observation $y_{it}$ for the specific age groups, $i=1,\dots,11$, and in the monthly period ranging from 2008 to 2022, $t=1,\dots,180$, is presented. For an introduction to the concept of hierarchical models see @Madsen_2010.
+
+\subsection{Hierachical Poisson Normal model}
+
+Consider a hierarchical model for $Y$ specified by
+
+\begin{subequations} \label{eq:PoisLN}
   \begin{alignat}{2}
-    Y_{t}^{a}|u_{t}^{a} &\sim \mathrm{Pois} \big( w_{t}^{a} \lambda_{a} \exp(u_{t}^{a}) \big) \label{eq:pois_ln0} \\ 
-    u_{t}^{a} &\sim \mathrm{N}(0,\sigma^2) \label{eq:pois_ln1}
+    Y_{it}|u_{it} &\sim \Pois \big( w_{it} \lambda_{i} \exp(u_{it}) \big) \label{eq:pois_ln0} \\ 
+    u_{it} &\sim \N(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
+
+\subsection{Hierarchical Poisson Gamma model}
+
+The count observations $y_{it}$ is assumed to follow a Poisson distribution with age group specific intensities, $\lambda_i$.  Furthermore, a variation between months, $u_{it}$, is represented with a Gamma distribution. 
+
+\subsubsection{Formulation of the Compound Poisson Gamma model}
+
+Consider a hierarchical model for $Y$ specified by
+
+\begin{subequations} \label{eq:PoisGam}
+  \begin{alignat}{2}
+    Y_{it}|u_{it} &\sim \Pois (\lambda_{i} u_{it}) \label{eq:pois_g0} \\ 
+    u_{it} &\sim \G(1/\beta,\beta) \label{eq:pois_g1}
+  \end{alignat}
+\end{subequations}
+
+In the first stage a random value $u_{it}$ is selected according to a reparameterized Gamma distribution with shape, $1/\beta$, and scale, $\beta$. Hence the mean value of the Gamma distribution is $1$. Moreover, a fixed effect parameter, $\lambda_i$, is found for each age group, $i=1,\dots,11$. The $Y$ is generated according to a Poisson distribution with $\lambda_iu_{it}$ as mean value. The the marginal distribution of $Y$ is a negative binomial distribution, $Y\sim\NB\big(1/\beta,1//\lambda\beta+1)\big)$. The probability function for $Y$ is 
+
+\begin{equation} \label{eq:pdfMix}
+  \begin{aligned}
+    P[Y=y]&=g_{Y}(y;\lambda, \beta) \\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\beta)\beta^{1/\beta}}\frac{\beta^{y+1/\beta}\Gamma(y+1/\beta)}{(\lambda \beta + 1)^{y+1/\beta}} \\
+    &=\frac{\Gamma(y+1/\beta)}{\Gamma(1/\beta)y!}\frac{1}{(\lambda\beta+1)^{1/\beta}}\bigg(\frac{\lambda\beta}{\lambda\beta+1}\bigg)^{y} \\
+    &=\begin{pmatrix} y+1/\beta-1 \\ y \end{pmatrix} \frac{1}{(\lambda\beta+1)^{1/\beta}}\bigg(\frac{\lambda\beta}{\lambda\beta+1}\bigg)^{y} \ , \ for \ y = 0, 1, 2, \dots
+  \end{aligned}
+\end{equation}
+
+where we have used the convention
+
+\begin{equation}
+  \begin{pmatrix} z\\y \end{pmatrix} = \frac{\Gamma(z+1)}{\Gamma(z+1-y)y!}
+\end{equation}
+
+for $z$ real and $y$ integer values.
+
+\subsubsection{Inference on individual groups}
+
+Consider the compound Poisson Gamma model in \eqref{eq:PoisGam}, and assume that a value $Y=y$ has been observed. Then the conditional distribution of $u$ for given $Y=y$ is a Gamma distribution
+
+\begin{equation}
+  u|Y=y\sim \G\big(y+1/\beta,\beta/(\lambda \beta+1)\big)
+\end{equation}
+
+with mean
+
+\begin{equation}
+  \E[u|Y=y]=\frac{y\beta+1}{\lambda\beta+1}
+\end{equation}
+
+and variance
+
+\begin{equation}
+  \V[u|Y=y]=\frac{(y \beta^2+\beta)}{(\lambda \beta + 1)^2}
+\end{equation}
+
+\subsubsection{Why do we choose the Gamma distribution to represent the variation between days?}
+
+The Gamma distribution is chosen for three simple reasons. First of all, the support of the Gamma distribution, $0<u_{it}<\infty$ conforms to the mean-value space, $\mathcal{M}$ for the Poisson distribution. Secondly, the two-parameter family of Gamma distributions is a rather flexible class of unimodal distribution, ranging from an exponential distribution to a fairly symmetrical distribution on the positive real line. A third reasons may be observed in the derivation of the marginal distribution of $Y$. The fact that the kernel $u^{\alpha-1}\exp(-u/\beta)$ of the mixing distribution have the same structure as the kernel $u^y\exp(-u)$ of the likelihood function corresponding to the sampling distribution of $Y$. This feature have the consequence that the integral has a closed form representation in terms of known functions.
 
 
 \cleardoublepage
