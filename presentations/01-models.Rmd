@@ -40,16 +40,16 @@ rep <- sdreport(PoisLN, getJointPrecision = TRUE)
 # Extract agegroups
 ageGroup <- levels(y$ageGroup)
 
-res <- tibble(ageGroup = ageGroup,
-       `$\\lambda$` = rep$par.fixed[1:11],
-       `$\\sigma$` = exp(rep$par.fixed[12:22]))
+# res <- tibble(ageGroup = ageGroup,
+#        `$\\lambda$` = rep$par.fixed[1:11],
+#        `$\\sigma$` = exp(rep$par.fixed[12:22]))
 
-# 
-# names(rep$par.fixed) <- c(paste0("$\\log(\\lambda_{", ageGroup, "})$"), "$\\log(\\sigma_u)$")
-# 
-# res <- tibble(Parameter = names(rep$par.fixed),
-#               Estimate = rep$par.fixed,
-#               `Std. Error` = sqrt(diag(rep$cov.fixed)))
+
+names(rep$par.fixed) <- c(paste0("$\\lambda_{", ageGroup, "}$"), "$\\sigma$")
+
+res <- tibble(Parameter = names(rep$par.fixed),
+              Estimate = c(rep$par.fixed[1:11],exp(rep$par.fixed[12])),
+              `Std. Error` = sqrt(diag(rep$cov.fixed)))
 
 # Load the Poisson-Gamma model
 PoisG <- read_rds(file = "../src/models/PoissonGamma.rds")
@@ -63,11 +63,17 @@ PoisG <- read_rds(file = "../src/models/PoissonGamma.rds")
 ```{r VTECTable, echo=FALSE}
 
 options(knitr.kable.NA = "...")
-kable(headTail(y),
+
+
+y.tbl <- headTail(y)
+names(y.tbl) <- c("Date", "ageGroup", "$y_{it}$", "$x_{it}$") 
+
+kable(y.tbl,
       digits = 2, 
       format = "latex",
       booktabs = TRUE, 
-      linesep = "") %>%
+      linesep = "",
+      escape = FALSE) %>%
   kable_styling(full_width = F, font_size = 12)
 
 ```
@@ -81,12 +87,30 @@ include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 
 # Hierachical Poisson-Normal model
 
-## Fomulation
+## Formulation
+
+The count observations are assumed to follow a Poisson distribution with intensities $\lambda_{it}$. Also, we shall assume that the count is proportional to the population size, $x_{it}$, within each age group, $i$, at a given time point, $t$. Hence, in terms of the canonical link for the Poisson distribution the model is
+
+\begin{equation}
+  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})+u_{it}
+\end{equation}
+
+Here $\mathbf{X}_i$ is a vector of ones, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. The random effects $u_{it}$ are assumed to be Gaussian.
+
+\begin{equation}
+  u_{it} = \epsilon_{it}
+\end{equation}
+
+where $\epsilon_{it}\sim\N(0,\sigma^2)$ is a white noise process, and $\sigma$ is a model parameter.
+
+### Fomulation
+
+Henceforth, the model can be formulated as a two-level hierarchical model
 
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois \big( w_{it} \lambda_{i} \exp(u_{it}) \big) \label{eq:pois_ln0} \\ 
-    u_{it} &\sim \N(0,\sigma_{i}^2) \label{eq:pois_ln1}
+    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}) \label{eq:pois_ln0} \\ 
+    u_{it} &\sim \N(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
 
@@ -95,35 +119,38 @@ include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 ### Implementation - Objective function in C++
 ```{Rcpp, eval=FALSE}
 #include <TMB.hpp>				// Links in the TMB libraries
+
 template<class Type>
 Type objective_function<Type>::operator() ()
 {
-  DATA_VECTOR(y);				        // Data vector transmitted from R
-  DATA_VECTOR(w)                // Data vector transmitted from R
-  DATA_FACTOR(ageGroup);        // Data factor transmitted from R
+  DATA_VECTOR(y);				                // Data vector transmitted from R
+  DATA_VECTOR(w)                        // Data vector transmitted from R
+  DATA_FACTOR(ageGroup);                // Data factor transmitted from R
 
-  PARAMETER_VECTOR(u);			    // Random effects
+  PARAMETER_VECTOR(u);			            // Random effects
    
   // Parameters
-  PARAMETER_VECTOR(lambda); 	  // Parameter value transmitted from R
+  PARAMETER_VECTOR(log_lambda);         // Parameter value transmitted from R
   PARAMETER(log_sigma_u);				// Parameter value transmitted from R
   
+  vector<Type> lambda  = exp(log_lambda);
   Type sigma_u = exp(log_sigma_u);
 
   int nobs = y.size();
   Type mean_ran = Type(0);
   
-  int j;
+  int i;
 
-  Type f = 0;               // Declare the "objective function" (neg. log. likelihood)
-  for(int i=0; i < nobs; i++){
-    f -= dnorm(u[i],mean_ran,sigma_u,true);
-    j = ageGroup[i];
-    f -= dpois(y[i],exp(log(lambda[j])-log(w[j]))*exp(u[i]),true);
+  Type f = 0;                           // Declare the "objective function"
+  for(int t=0; t < nobs; t++){
+    i = ageGroup[t];
+    f -= dnorm(u[t],mean_ran,sigma_u,true);
+    f -= dpois(y[t],exp(lambda[i]-log(w[t]))*exp(u[t]),true);
   }
   
   return f;
 }
+
 ```
 
 ### Implementation - Call from R
@@ -141,17 +168,17 @@ dat <- read_rds(file = "../../data/processed/dat.rds")
 y <- dat %>%
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
   group_by(Date, ageGroup) %>%
-  mutate(y = sum(cases)) %>%
-  select(Date, ageGroup, y, n)
+  reframe(y = sum(cases), n = sum(n))
 
 compile(file = "PoissonLognormal.cpp")  # Compile the C++ file
+# dyn.unload(dynlib("PoissonLognormal"))
 dyn.load(dynlib("PoissonLognormal"))    # Dynamically link the C++ code
 
 # Function and derivative
 PoisLN <- MakeADFun(
   data = list(y = y$y, ageGroup = y$ageGroup, w = y$n),
   parameters = list(u = rep(1, length(y$y)),
-                    lambda = rep(1, nlevels(y$ageGroup)),
+                    log_lambda = rep(log(1), nlevels(y$ageGroup)),
                     log_sigma_u = log(1)),
   random = "u",
   DLL = "PoissonLognormal"

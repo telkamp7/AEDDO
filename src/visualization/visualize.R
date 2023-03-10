@@ -8,8 +8,8 @@ library(ggplot2)
 library(TMB)
 
 # Dynamically link the C++ template
-dyn.load(dynlib(name = "../models/PoissonLognormal"))
-
+# dyn.load(dynlib(name = "../models/PoissonLognormal"))
+dyn.load(dynlib(name = "../models/PoissonNormal"))
 # Set global theme options
 theme_set(
   new = theme_bw() +

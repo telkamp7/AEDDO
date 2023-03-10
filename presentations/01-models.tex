@@ -112,7 +112,7 @@
 
 \begin{tabular}{llll}
 \toprule
-Date & ageGroup & y & n\\
+Date & ageGroup & $y_{it}$ & $x_{it}$\\
 \midrule
 2008-01-01 & <1 year & 2 & 64137\\
 2008-01-01 & 1-4 years & 2 & 259910\\
@@ -146,14 +146,41 @@ Date & ageGroup & y & n\\
 \section{Hierachical Poisson-Normal
 model}\label{hierachical-poisson-normal-model}}
 
-\hypertarget{fomulation}{%
-\subsection{Fomulation}\label{fomulation}}
+\hypertarget{formulation}{%
+\subsection{Formulation}\label{formulation}}
+
+\begin{frame}{Formulation}
+The count observations are assumed to follow a Poisson distribution with
+intensities \(\lambda_{it}\). Also, we shall assume that the count is
+proportional to the population size, \(x_{it}\), within each age group,
+\(i\), at a given time point, \(t\). Hence, in terms of the canonical
+link for the Poisson distribution the model is
+
+\begin{equation}
+  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})+u_{it}
+\end{equation}
+
+Here \(\mathbf{X}_i\) is a vector of ones, and \(\mathbf{\beta}_{it}\)
+contains the corresponding fixed effect parameter. The random effects
+\(u_{it}\) are assumed to be Gaussian.
+
+\begin{equation}
+  u_{it} = \epsilon_{it}
+\end{equation}
+
+where \(\epsilon_{it}\sim\N(0,\sigma^2)\) is a white noise process, and
+\(\sigma\) is a model parameter.
+\end{frame}
 
 \begin{frame}{Fomulation}
+\protect\hypertarget{fomulation}{}
+Henceforth, the model can be formulated as a two-level hierarchical
+model
+
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois \big( w_{it} \lambda_{i} \exp(u_{it}) \big) \label{eq:pois_ln0} \\ 
-    u_{it} &\sim \N(0,\sigma_{i}^2) \label{eq:pois_ln1}
+    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}) \label{eq:pois_ln0} \\ 
+    u_{it} &\sim \N(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
 \end{frame}
@@ -168,31 +195,33 @@ model}\label{hierachical-poisson-normal-model}}
 \begin{Shaded}
 \begin{Highlighting}[]
 \PreprocessorTok{\#include }\ImportTok{\textless{}TMB.hpp\textgreater{}}\PreprocessorTok{              }\CommentTok{// Links in the TMB libraries}
+
 \KeywordTok{template}\OperatorTok{\textless{}}\KeywordTok{class}\NormalTok{ Type}\OperatorTok{\textgreater{}}
 \NormalTok{Type objective\_function}\OperatorTok{\textless{}}\NormalTok{Type}\OperatorTok{\textgreater{}::}\KeywordTok{operator}\OperatorTok{()} \OperatorTok{()}
 \OperatorTok{\{}
-\NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{y}\OperatorTok{);}                       \CommentTok{// Data vector transmitted from R}
-\NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{w}\OperatorTok{)}                \CommentTok{// Data vector transmitted from R}
-\NormalTok{  DATA\_FACTOR}\OperatorTok{(}\NormalTok{ageGroup}\OperatorTok{);}        \CommentTok{// Data factor transmitted from R}
+\NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{y}\OperatorTok{);}                               \CommentTok{// Data vector transmitted from R}
+\NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{w}\OperatorTok{)}                        \CommentTok{// Data vector transmitted from R}
+\NormalTok{  DATA\_FACTOR}\OperatorTok{(}\NormalTok{ageGroup}\OperatorTok{);}                \CommentTok{// Data factor transmitted from R}
 
-\NormalTok{  PARAMETER\_VECTOR}\OperatorTok{(}\NormalTok{u}\OperatorTok{);}              \CommentTok{// Random effects}
+\NormalTok{  PARAMETER\_VECTOR}\OperatorTok{(}\NormalTok{u}\OperatorTok{);}                      \CommentTok{// Random effects}
    
   \CommentTok{// Parameters}
-\NormalTok{  PARAMETER\_VECTOR}\OperatorTok{(}\NormalTok{lambda}\OperatorTok{);}       \CommentTok{// Parameter value transmitted from R}
+\NormalTok{  PARAMETER\_VECTOR}\OperatorTok{(}\NormalTok{log\_lambda}\OperatorTok{);}         \CommentTok{// Parameter value transmitted from R}
 \NormalTok{  PARAMETER}\OperatorTok{(}\NormalTok{log\_sigma\_u}\OperatorTok{);}               \CommentTok{// Parameter value transmitted from R}
   
+\NormalTok{  vector}\OperatorTok{\textless{}}\NormalTok{Type}\OperatorTok{\textgreater{}}\NormalTok{ lambda  }\OperatorTok{=}\NormalTok{ exp}\OperatorTok{(}\NormalTok{log\_lambda}\OperatorTok{);}
 \NormalTok{  Type sigma\_u }\OperatorTok{=}\NormalTok{ exp}\OperatorTok{(}\NormalTok{log\_sigma\_u}\OperatorTok{);}
 
   \DataTypeTok{int}\NormalTok{ nobs }\OperatorTok{=}\NormalTok{ y}\OperatorTok{.}\NormalTok{size}\OperatorTok{();}
 \NormalTok{  Type mean\_ran }\OperatorTok{=}\NormalTok{ Type}\OperatorTok{(}\DecValTok{0}\OperatorTok{);}
   
-  \DataTypeTok{int}\NormalTok{ j}\OperatorTok{;}
+  \DataTypeTok{int}\NormalTok{ i}\OperatorTok{;}
 
-\NormalTok{  Type f }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}               \CommentTok{// Declare the "objective function" (neg. log. likelihood)}
-  \ControlFlowTok{for}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ i}\OperatorTok{=}\DecValTok{0}\OperatorTok{;}\NormalTok{ i }\OperatorTok{\textless{}}\NormalTok{ nobs}\OperatorTok{;}\NormalTok{ i}\OperatorTok{++)\{}
-\NormalTok{    f }\OperatorTok{{-}=}\NormalTok{ dnorm}\OperatorTok{(}\NormalTok{u}\OperatorTok{[}\NormalTok{i}\OperatorTok{],}\NormalTok{mean\_ran}\OperatorTok{,}\NormalTok{sigma\_u}\OperatorTok{,}\KeywordTok{true}\OperatorTok{);}
-\NormalTok{    j }\OperatorTok{=}\NormalTok{ ageGroup}\OperatorTok{[}\NormalTok{i}\OperatorTok{];}
-\NormalTok{    f }\OperatorTok{{-}=}\NormalTok{ dpois}\OperatorTok{(}\NormalTok{y}\OperatorTok{[}\NormalTok{i}\OperatorTok{],}\NormalTok{exp}\OperatorTok{(}\NormalTok{log}\OperatorTok{(}\NormalTok{lambda}\OperatorTok{[}\NormalTok{j}\OperatorTok{]){-}}\NormalTok{log}\OperatorTok{(}\NormalTok{w}\OperatorTok{[}\NormalTok{j}\OperatorTok{]))*}\NormalTok{exp}\OperatorTok{(}\NormalTok{u}\OperatorTok{[}\NormalTok{i}\OperatorTok{]),}\KeywordTok{true}\OperatorTok{);}
+\NormalTok{  Type f }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}                           \CommentTok{// Declare the "objective function"}
+  \ControlFlowTok{for}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ t}\OperatorTok{=}\DecValTok{0}\OperatorTok{;}\NormalTok{ t }\OperatorTok{\textless{}}\NormalTok{ nobs}\OperatorTok{;}\NormalTok{ t}\OperatorTok{++)\{}
+\NormalTok{    i }\OperatorTok{=}\NormalTok{ ageGroup}\OperatorTok{[}\NormalTok{t}\OperatorTok{];}
+\NormalTok{    f }\OperatorTok{{-}=}\NormalTok{ dnorm}\OperatorTok{(}\NormalTok{u}\OperatorTok{[}\NormalTok{t}\OperatorTok{],}\NormalTok{mean\_ran}\OperatorTok{,}\NormalTok{sigma\_u}\OperatorTok{,}\KeywordTok{true}\OperatorTok{);}
+\NormalTok{    f }\OperatorTok{{-}=}\NormalTok{ dpois}\OperatorTok{(}\NormalTok{y}\OperatorTok{[}\NormalTok{t}\OperatorTok{],}\NormalTok{exp}\OperatorTok{(}\NormalTok{lambda}\OperatorTok{[}\NormalTok{i}\OperatorTok{]{-}}\NormalTok{log}\OperatorTok{(}\NormalTok{w}\OperatorTok{[}\NormalTok{t}\OperatorTok{]))*}\NormalTok{exp}\OperatorTok{(}\NormalTok{u}\OperatorTok{[}\NormalTok{t}\OperatorTok{]),}\KeywordTok{true}\OperatorTok{);}
   \OperatorTok{\}}
   
   \ControlFlowTok{return}\NormalTok{ f}\OperatorTok{;}
@@ -221,17 +250,17 @@ model}\label{hierachical-poisson-normal-model}}
 \NormalTok{y }\OtherTok{\textless{}{-}}\NormalTok{ dat }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(caseDef }\SpecialCharTok{==} \StringTok{"Shiga{-} og veratoxin producerende E. coli."}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{group\_by}\NormalTok{(Date, ageGroup) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{y =} \FunctionTok{sum}\NormalTok{(cases)) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{select}\NormalTok{(Date, ageGroup, y, n)}
+  \FunctionTok{reframe}\NormalTok{(}\AttributeTok{y =} \FunctionTok{sum}\NormalTok{(cases), }\AttributeTok{n =} \FunctionTok{sum}\NormalTok{(n))}
 
 \FunctionTok{compile}\NormalTok{(}\AttributeTok{file =} \StringTok{"PoissonLognormal.cpp"}\NormalTok{)  }\CommentTok{\# Compile the C++ file}
+\CommentTok{\# dyn.unload(dynlib("PoissonLognormal"))}
 \FunctionTok{dyn.load}\NormalTok{(}\FunctionTok{dynlib}\NormalTok{(}\StringTok{"PoissonLognormal"}\NormalTok{))    }\CommentTok{\# Dynamically link the C++ code}
 
 \CommentTok{\# Function and derivative}
 \NormalTok{PoisLN }\OtherTok{\textless{}{-}} \FunctionTok{MakeADFun}\NormalTok{(}
   \AttributeTok{data =} \FunctionTok{list}\NormalTok{(}\AttributeTok{y =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{ageGroup =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{ageGroup, }\AttributeTok{w =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{n),}
   \AttributeTok{parameters =} \FunctionTok{list}\NormalTok{(}\AttributeTok{u =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{length}\NormalTok{(y}\SpecialCharTok{$}\NormalTok{y)),}
-                    \AttributeTok{lambda =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{nlevels}\NormalTok{(y}\SpecialCharTok{$}\NormalTok{ageGroup)),}
+                    \AttributeTok{log\_lambda =} \FunctionTok{rep}\NormalTok{(}\FunctionTok{log}\NormalTok{(}\DecValTok{1}\NormalTok{), }\FunctionTok{nlevels}\NormalTok{(y}\SpecialCharTok{$}\NormalTok{ageGroup)),}
                     \AttributeTok{log\_sigma\_u =} \FunctionTok{log}\NormalTok{(}\DecValTok{1}\NormalTok{)),}
   \AttributeTok{random =} \StringTok{"u"}\NormalTok{,}
   \AttributeTok{DLL =} \StringTok{"PoissonLognormal"}
@@ -255,19 +284,20 @@ model}\label{hierachical-poisson-normal-model}}
 
 \begin{tabular}{lrr}
 \toprule
-ageGroup & $\lambda$ & $\sigma$\\
+Parameter & Estimate & Std. Error\\
 \midrule
-<1 year & 2.38 & 1.01\\
-1-4 years & 2.61 & 1.01\\
-5-14 years & 2.63 & 1.01\\
-15-24 years & 2.64 & 1.01\\
-25-34 years & 2.62 & 1.01\\
-35-44 years & 2.60 & 1.02\\
-45-54 years & 2.63 & 1.01\\
-55-64 years & 2.62 & 1.01\\
-65-74 years & 2.61 & 1.01\\
-75-84 years & 2.52 & 1.25\\
-85+ years & 1.16 & 8.18\\
+$\lambda_{<1 year}$ & 2.38 & 0.01\\
+$\lambda_{1-4 years}$ & 2.61 & 0.01\\
+$\lambda_{5-14 years}$ & 2.63 & 0.01\\
+$\lambda_{15-24 years}$ & 2.64 & 0.01\\
+$\lambda_{25-34 years}$ & 2.62 & 0.01\\
+$\lambda_{35-44 years}$ & 2.61 & 0.01\\
+$\lambda_{45-54 years}$ & 2.63 & 0.01\\
+$\lambda_{55-64 years}$ & 2.62 & 0.01\\
+$\lambda_{65-74 years}$ & 2.61 & 0.01\\
+$\lambda_{75-84 years}$ & 2.53 & 0.01\\
+$\lambda_{85+ years}$ & 2.35 & 0.01\\
+$\sigma$ & 1.01 & 0.03\\
 \bottomrule
 \end{tabular}
 \endgroup{}
@@ -289,8 +319,8 @@ ageGroup & $\lambda$ & $\sigma$\\
 \section{Hierachical Poisson-Gamma
 model}\label{hierachical-poisson-gamma-model}}
 
-\hypertarget{formulation}{%
-\subsection{Formulation}\label{formulation}}
+\hypertarget{formulation-1}{%
+\subsection{Formulation}\label{formulation-1}}
 
 \begin{frame}{Formulation}
 \begin{subequations} \label{eq:PoisGam}

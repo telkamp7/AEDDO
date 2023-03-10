@@ -16,17 +16,17 @@ y <- dat %>%
   reframe(y = sum(cases), n = sum(n))
 
 # Dynamically link the C++ template
-dyn.load(dynlib(name = "../models/PoissonLognormal"))
+dyn.load(dynlib(name = "../models/PoissonNormal"))
 # Load the Poisson-normal model
-PoisLN <- read_rds(file = "../models/PoissonLognormal.rds")
+PoisLN <- read_rds(file = "../models/PoissonNormal.rds")
 # ... and generate report
 rep <- sdreport(PoisLN, getJointPrecision = TRUE)
 rep$par.fixed[12]
 
 PoisLN_res <- y %>%
   mutate(u = rep$par.random,
-         log_lambda = rep(rep$par.fixed[1:11], times = 180),
-         log_sigma = rep(rep$par.fixed[12:22], times = 180),
+         beta = rep(rep$par.fixed[1:11], times = 180),
+         log_sigma = rep$par.fixed[12],
          p = pnorm(q = u, mean = 0, sd = exp(log_sigma)),
          alarm = p >= 0.95)
 

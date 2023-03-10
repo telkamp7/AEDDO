@@ -22,7 +22,7 @@ PoisLN <- MakeADFun(
   data = list(y = y$y, ageGroup = y$ageGroup, w = y$n),
   parameters = list(u = rep(1, length(y$y)),
                     log_lambda = rep(log(1), nlevels(y$ageGroup)),
-                    log_sigma_u = rep(log(1), nlevels(y$ageGroup))),
+                    log_sigma_u = log(1)),
   random = "u",
   DLL = "PoissonLognormal"
 )
