@@ -15,13 +15,23 @@ y <- dat %>%
   group_by(Date, ageGroup) %>%
   reframe(y = sum(cases), n = sum(n))
 
+# Make months into integers
+y.design <- y %>%
+  mutate(Month = as.integer(format(Date, "%m")))
+
+
 # Dynamically link the C++ template
 dyn.load(dynlib(name = "../models/PoissonNormal"))
 # Load the Poisson-normal model
 PoisLN <- read_rds(file = "../models/PoissonNormal.rds")
 # ... and generate report
 rep <- sdreport(PoisLN, getJointPrecision = TRUE)
-rep$par.fixed[12]
+
+# Extract beta
+beta <- rep$par.fixed[1:11]
+
+# Construct the design matrix
+designMatrix <- model.matrix(y ~ -1 + ageGroup, data = y.design)
 
 PoisLN_res <- y %>%
   mutate(u = rep$par.random,

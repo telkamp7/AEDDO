@@ -21,7 +21,7 @@ library(readr)
 library(TMB)
 
 # Dynamically link the C++ template
-dyn.load(dynlib(name = "../src/models/PoissonLognormal"))
+dyn.load(dynlib(name = "../src/models/PoissonNormal"))
 
 # Load in the processed data
 dat <- read_rds(file = "../data/processed/dat.rds")
@@ -33,7 +33,7 @@ y <- dat %>%
   reframe(y = sum(cases), n = sum(n))
 
 # Load the Poisson-lognormal model
-PoisLN <- read_rds(file = "../src/models/PoissonLognormal.rds")
+PoisLN <- read_rds(file = "../src/models/PoissonNormal.rds")
 # ... and generate report
 rep <- sdreport(PoisLN, getJointPrecision = TRUE)
 
@@ -45,7 +45,7 @@ ageGroup <- levels(y$ageGroup)
 #        `$\\sigma$` = exp(rep$par.fixed[12:22]))
 
 
-names(rep$par.fixed) <- c(paste0("$\\lambda_{", ageGroup, "}$"), "$\\sigma$")
+names(rep$par.fixed) <- c(paste0("$\\beta_{", ageGroup, "}$"), "$\\sigma$")
 
 res <- tibble(Parameter = names(rep$par.fixed),
               Estimate = c(rep$par.fixed[1:11],exp(rep$par.fixed[12])),
@@ -78,13 +78,11 @@ kable(y.tbl,
 
 ```
 
-
 ## VTEC / STEC
 
 ```{r VTECFigure, echo=FALSE, out.width="100%"}
 include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 ```
-
 # Hierachical Poisson-Normal model
 
 ## Formulation
@@ -95,7 +93,7 @@ The count observations are assumed to follow a Poisson distribution with intensi
   \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})+u_{it}
 \end{equation}
 
-Here $\mathbf{X}_i$ is a vector of ones, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. The random effects $u_{it}$ are assumed to be Gaussian.
+Here $\mathbf{X}_i$ is $T\times11$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. The random effects $u_{it}$ are assumed to be Gaussian.
 
 \begin{equation}
   u_{it} = \epsilon_{it}
@@ -124,42 +122,38 @@ template<class Type>
 Type objective_function<Type>::operator() ()
 {
   DATA_VECTOR(y);				                // Data vector transmitted from R
-  DATA_VECTOR(w)                        // Data vector transmitted from R
-  DATA_FACTOR(ageGroup);                // Data factor transmitted from R
-
+  DATA_VECTOR(x);                       // Data vector transmitted from R
+  DATA_MATRIX(X);                       // Design matrix transmitted from R
+  
   PARAMETER_VECTOR(u);			            // Random effects
-   
+  
   // Parameters
-  PARAMETER_VECTOR(log_lambda);         // Parameter value transmitted from R
+  PARAMETER_VECTOR(beta);         // Parameter value transmitted from R
   PARAMETER(log_sigma_u);				// Parameter value transmitted from R
   
-  vector<Type> lambda  = exp(log_lambda);
+  vector<Type> lambda  = exp(X*beta-log(x)+u);
   Type sigma_u = exp(log_sigma_u);
-
+  
   int nobs = y.size();
   Type mean_ran = Type(0);
   
   int i;
-
+  
   Type f = 0;                           // Declare the "objective function"
   for(int t=0; t < nobs; t++){
-    i = ageGroup[t];
     f -= dnorm(u[t],mean_ran,sigma_u,true);
-    f -= dpois(y[t],exp(lambda[i]-log(w[t]))*exp(u[t]),true);
+    f -= dpois(y[t],lambda[t],true);
   }
   
   return f;
 }
-
 ```
 
 ### Implementation - Call from R
 
 ```{r, eval=FALSE}
 # Import libraries
-library(readr)
-library(dplyr)
-library(TMB)
+library(readr); library(dplyr); library(TMB)
 
 # Import the data
 dat <- read_rds(file = "../../data/processed/dat.rds")
@@ -167,22 +161,25 @@ dat <- read_rds(file = "../../data/processed/dat.rds")
 # Only consider some of the data
 y <- dat %>%
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
-  group_by(Date, ageGroup) %>%
-  reframe(y = sum(cases), n = sum(n))
+  group_by(Date, ageGroup) %>% reframe(y = sum(cases), n = sum(n))
 
-compile(file = "PoissonLognormal.cpp")  # Compile the C++ file
-# dyn.unload(dynlib("PoissonLognormal"))
-dyn.load(dynlib("PoissonLognormal"))    # Dynamically link the C++ code
+compile(file = "PoissonNormal.cpp")  # Compile the C++ file
+dyn.load(dynlib("PoissonNormal"))    # Dynamically link the C++ code
+
+# Make months into integers
+y.design <- y %>% mutate(Month = as.integer(format(Date, "%m")))
+
+# Construct the design matrix
+designMatrix <- model.matrix(y ~ -1 + ageGroup, data = y.design)
+
+# Construct initial parameters
+beta <- rep(1, nlevels(y$ageGroup))
 
 # Function and derivative
 PoisLN <- MakeADFun(
-  data = list(y = y$y, ageGroup = y$ageGroup, w = y$n),
-  parameters = list(u = rep(1, length(y$y)),
-                    log_lambda = rep(log(1), nlevels(y$ageGroup)),
-                    log_sigma_u = log(1)),
-  random = "u",
-  DLL = "PoissonLognormal"
-)
+  data = list(y = y$y, x = y$n, X = designMatrix),
+  parameters = list(u = rep(1, length(y$y)), beta = beta, log_sigma_u = log(1)),
+  random = "u", DLL = "PoissonNormal")
 
 opt <- nlminb(start = PoisLN$par, PoisLN$fn, PoisLN$gr, lower = c(0.01, 0.01))
 ```
@@ -208,11 +205,22 @@ include_graphics("../figures/PoisLNxSTEC.png")
 # Hierachical Poisson-Gamma model
 
 ## Formulation
+Likewise, in the compound Poisson-Gamma model the count observations are assumed to follow a Poisson distribution, but this time the intensities, $\lambda_{it}$, the model are defined as
+
+\begin{equation}
+  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})+\log(u_{it})
+\end{equation}
+
+Here $\mathbf{X}_i$ is $T\times11$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. Additionally, the random effects $u_{it}$ are assumed to be Gamma distributed.
+
+### Formulation
+
+Subsequently, the model can be formulated as a two-level hierarchical model
 
 \begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois (\lambda_{i} u_{it}) \label{eq:pois_g0} \\ 
-    u_{it} &\sim \G(1/\beta_{i},\beta_{i}) \label{eq:pois_g1}
+    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}) \label{eq:pois_g0} \\ 
+    u_{it} &\sim \G(1/\phi_{i},\phi_{i}) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
 
@@ -220,10 +228,10 @@ include_graphics("../figures/PoisLNxSTEC.png")
 
 \begin{equation} \label{eq:pdfMix}
   \begin{aligned}
-    P[Y=y]&=g_{Y}(y;\lambda, \beta) \\
-    &=\frac{\lambda^{y}}{y!\Gamma(1/\beta)\beta^{1/\beta}}\frac{\beta^{y+1/\beta}\Gamma(y+1/\beta)}{(\lambda \beta + 1)^{y+1/\beta}} \\
-    &=\frac{\Gamma(y+1/\beta)}{\Gamma(1/\beta)y!}\frac{1}{(\lambda\beta+1)^{1/\beta}}\bigg(\frac{\lambda\beta}{\lambda\beta+1}\bigg)^{y} \\
-    &=\begin{pmatrix} y+1/\beta-1 \\ y \end{pmatrix} \frac{1}{(\lambda\beta+1)^{1/\beta}}\bigg(\frac{\lambda\beta}{\lambda\beta+1}\bigg)^{y} \ , \ for \ y = 0, 1, 2, \dots
+    P[Y=y_i]&=g_{Y}(y;\lambda, \phi) \\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}}\frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}} \\
+    &=\frac{\Gamma(y+1/\phi)}{\Gamma(1/\phi)y!}\frac{1}{(\lambda\phi+1)^{1/\phi}}\bigg(\frac{\lambda\phi}{\lambda\phi+1}\bigg)^{y} \\
+    &=\begin{pmatrix} y+1/\phi-1 \\ y \end{pmatrix} \frac{1}{(\lambda\phi+1)^{1/\phi}}\bigg(\frac{\lambda\phi}{\lambda\phi+1}\bigg)^{y} \ , \ for \ y = 0, 1, 2, \dots
   \end{aligned}
 \end{equation}
 
@@ -233,7 +241,7 @@ where we have used the convention
   \begin{pmatrix} z\\y \end{pmatrix} = \frac{\Gamma(z+1)}{\Gamma(z+1-y)y!}
 \end{equation}
 
-The marginal distribution of $Y$ is a negative binomial distribution, $Y\sim \NB\big(1/\beta,1/(\lambda \beta+1)\big)$
+The marginal distribution of $Y$ is a negative binomial distribution, $Y\sim \NB\big(1/\phi,1/(\lambda \phi+1)\big)$
 
 ### Proof
 
@@ -246,7 +254,7 @@ The probability function for the conditional distribution of $Y$ for given $u$
 and the probability density function for the distribution of $u$ is
 
 \begin{equation} \label{eq:pdfGamma}
-  f_{u}(u;\beta)=\frac{1}{\beta \Gamma(1/\beta)} \bigg(\frac{u}{\beta}\bigg)^{1/\beta-1} \exp (-u/\beta)
+  f_{u}(u;\phi)=\frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)
 \end{equation}
 
 ### Proof
@@ -255,18 +263,18 @@ Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability function for t
 
 \begin{equation} \label{eq:marMix}
   \begin{aligned}
-    g_{Y}(y;\lambda,\beta)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\beta) \,du \\
-    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\beta \Gamma(1/\beta)} \bigg(\frac{u}{\beta}\bigg)^{1/\beta-1} \exp (-u/\beta) \,du\\
-    &=\frac{\lambda^{y}}{y!\Gamma(1/\beta)\beta^{1/\beta}} \int_{u=0}^\infty u^{y+1/\beta} \exp \big(-u(\lambda \beta+1)/\beta\big) \,du
+    g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) \,du \\
+    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi) \,du\\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
   \end{aligned}
 \end{equation}
 
 ### Proof
 
-In \eqref{eq:marMix} it is noted that the integrand is the *kernel* in the probability density function for a Gamma distribution, $\G\big(y+1/\beta,\beta/(\lambda \beta+1)\big)$. As the integral of the density shall equal one, we find by adjusting the norming constant that
+In \eqref{eq:marMix} it is noted that the integrand is the *kernel* in the probability density function for a Gamma distribution, $\G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)$. As the integral of the density shall equal one, we find by adjusting the norming constant that
 
 \begin{equation}
-  \int_{u=0}^\infty u^{y+1/\beta} \exp \bigg(-u/\Big(\beta/(\lambda \beta+1)\Big)\bigg) \,du = \frac{\beta^{y+1/\beta}\Gamma(y+1/\beta)}{(\lambda \beta + 1)^{y+1/\beta}}
+  \int_{u=0}^\infty u^{y+1/\phi} \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}}
 \end{equation}
 
 and then \eqref{eq:pdfMix} follows
@@ -276,19 +284,19 @@ and then \eqref{eq:pdfMix} follows
 Consider the hierarchical Poisson-Gamma model in \eqref{eq:PoisGam}, and assume that a value $Y=y$ has been observed. Then the conditional distribution of $u$ for given $Y=y$ is a Gamma distribution,
 
 \begin{equation}
-  u|Y=y\sim \G\big(y+1/\beta,\beta/(\lambda \beta+1)\big)
+  u|Y=y\sim \G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)
 \end{equation}
 
 with mean
 
 \begin{equation}
-  \E[u|Y=y]=\frac{y\beta+1}{\lambda\beta+1}
+  \E[u|Y=y]=\frac{y\phi+1}{\lambda\phi+1}
 \end{equation}
 
 and variance
 
 \begin{equation}
-  \V[u|Y=y]=\frac{(y \beta^2+\beta)}{(\lambda \beta + 1)^2}
+  \V[u|Y=y]=\frac{(y \phi^2+\phi)}{(\lambda \phi + 1)^2}
 \end{equation}
 
 ### Proof
@@ -298,19 +306,19 @@ The conditional distribution is found using Bayes Theorem
 \begin{equation}
   \begin{aligned}
     g_{u}(u|Y=y)&=\frac{f_{y,u}(y,u)}{g_Y(y;\lambda, \phi)} \\
-    &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\beta)} \\
-    &=\frac{1}{g_{Y}(y;\lambda,\beta)}\bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\beta \Gamma(1/\beta)} \bigg(\frac{u}{\beta}\bigg)^{1/\beta-1} \exp (-u/\beta)\bigg) \\
-    &\propto u^{y+1/\beta-1} \exp \big(- u(\lambda\beta+1)/\beta\big)
+    &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\phi)} \\
+    &=\frac{1}{g_{Y}(y;\lambda,\phi)}\bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)\bigg) \\
+    &\propto u^{y+1/\phi-1} \exp \big(- u(\lambda\phi+1)/\phi\big)
   \end{aligned}
 \end{equation}
 
 We identify the *kernel* of the probability density function
 
 \begin{equation}
-  u^{y+1/\beta-1} \exp (- u(\lambda\beta+1)/\beta)
+  u^{y+1/\phi-1} \exp (- u(\lambda\phi+1)/\phi)
 \end{equation}
 
-as the kernel of a Gamma distribution, $\G(y+1/\beta,\beta/(\lambda\beta+1))$
+as the kernel of a Gamma distribution, $\G(y+1/\phi,\phi/(\lambda\phi+1))$
 
 ## Implementation
 

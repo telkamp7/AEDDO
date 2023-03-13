@@ -139,12 +139,8 @@ Date & ageGroup & $y_{it}$ & $x_{it}$\\
 
 \includegraphics[width=1\linewidth]{../figures/ShigaogveratoxinproducerendeEcolixAgeGroup}
 
-\normalsize
+\normalsize \# Hierachical Poisson-Normal model
 \end{frame}
-
-\hypertarget{hierachical-poisson-normal-model}{%
-\section{Hierachical Poisson-Normal
-model}\label{hierachical-poisson-normal-model}}
 
 \hypertarget{formulation}{%
 \subsection{Formulation}\label{formulation}}
@@ -160,9 +156,9 @@ link for the Poisson distribution the model is
   \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})+u_{it}
 \end{equation}
 
-Here \(\mathbf{X}_i\) is a vector of ones, and \(\mathbf{\beta}_{it}\)
-contains the corresponding fixed effect parameter. The random effects
-\(u_{it}\) are assumed to be Gaussian.
+Here \(\mathbf{X}_i\) is \(T\times11\)-dimensional, and
+\(\mathbf{\beta}_{it}\) contains the corresponding fixed effect
+parameter. The random effects \(u_{it}\) are assumed to be Gaussian.
 
 \begin{equation}
   u_{it} = \epsilon_{it}
@@ -200,28 +196,27 @@ model
 \NormalTok{Type objective\_function}\OperatorTok{\textless{}}\NormalTok{Type}\OperatorTok{\textgreater{}::}\KeywordTok{operator}\OperatorTok{()} \OperatorTok{()}
 \OperatorTok{\{}
 \NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{y}\OperatorTok{);}                               \CommentTok{// Data vector transmitted from R}
-\NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{w}\OperatorTok{)}                        \CommentTok{// Data vector transmitted from R}
-\NormalTok{  DATA\_FACTOR}\OperatorTok{(}\NormalTok{ageGroup}\OperatorTok{);}                \CommentTok{// Data factor transmitted from R}
-
+\NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{x}\OperatorTok{);}                       \CommentTok{// Data vector transmitted from R}
+\NormalTok{  DATA\_MATRIX}\OperatorTok{(}\NormalTok{X}\OperatorTok{);}                       \CommentTok{// Design matrix transmitted from R}
+  
 \NormalTok{  PARAMETER\_VECTOR}\OperatorTok{(}\NormalTok{u}\OperatorTok{);}                      \CommentTok{// Random effects}
-   
+  
   \CommentTok{// Parameters}
-\NormalTok{  PARAMETER\_VECTOR}\OperatorTok{(}\NormalTok{log\_lambda}\OperatorTok{);}         \CommentTok{// Parameter value transmitted from R}
+\NormalTok{  PARAMETER\_VECTOR}\OperatorTok{(}\NormalTok{beta}\OperatorTok{);}         \CommentTok{// Parameter value transmitted from R}
 \NormalTok{  PARAMETER}\OperatorTok{(}\NormalTok{log\_sigma\_u}\OperatorTok{);}               \CommentTok{// Parameter value transmitted from R}
   
-\NormalTok{  vector}\OperatorTok{\textless{}}\NormalTok{Type}\OperatorTok{\textgreater{}}\NormalTok{ lambda  }\OperatorTok{=}\NormalTok{ exp}\OperatorTok{(}\NormalTok{log\_lambda}\OperatorTok{);}
+\NormalTok{  vector}\OperatorTok{\textless{}}\NormalTok{Type}\OperatorTok{\textgreater{}}\NormalTok{ lambda  }\OperatorTok{=}\NormalTok{ exp}\OperatorTok{(}\NormalTok{X}\OperatorTok{*}\NormalTok{beta}\OperatorTok{{-}}\NormalTok{log}\OperatorTok{(}\NormalTok{x}\OperatorTok{)+}\NormalTok{u}\OperatorTok{);}
 \NormalTok{  Type sigma\_u }\OperatorTok{=}\NormalTok{ exp}\OperatorTok{(}\NormalTok{log\_sigma\_u}\OperatorTok{);}
-
+  
   \DataTypeTok{int}\NormalTok{ nobs }\OperatorTok{=}\NormalTok{ y}\OperatorTok{.}\NormalTok{size}\OperatorTok{();}
 \NormalTok{  Type mean\_ran }\OperatorTok{=}\NormalTok{ Type}\OperatorTok{(}\DecValTok{0}\OperatorTok{);}
   
   \DataTypeTok{int}\NormalTok{ i}\OperatorTok{;}
-
+  
 \NormalTok{  Type f }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}                           \CommentTok{// Declare the "objective function"}
   \ControlFlowTok{for}\OperatorTok{(}\DataTypeTok{int}\NormalTok{ t}\OperatorTok{=}\DecValTok{0}\OperatorTok{;}\NormalTok{ t }\OperatorTok{\textless{}}\NormalTok{ nobs}\OperatorTok{;}\NormalTok{ t}\OperatorTok{++)\{}
-\NormalTok{    i }\OperatorTok{=}\NormalTok{ ageGroup}\OperatorTok{[}\NormalTok{t}\OperatorTok{];}
 \NormalTok{    f }\OperatorTok{{-}=}\NormalTok{ dnorm}\OperatorTok{(}\NormalTok{u}\OperatorTok{[}\NormalTok{t}\OperatorTok{],}\NormalTok{mean\_ran}\OperatorTok{,}\NormalTok{sigma\_u}\OperatorTok{,}\KeywordTok{true}\OperatorTok{);}
-\NormalTok{    f }\OperatorTok{{-}=}\NormalTok{ dpois}\OperatorTok{(}\NormalTok{y}\OperatorTok{[}\NormalTok{t}\OperatorTok{],}\NormalTok{exp}\OperatorTok{(}\NormalTok{lambda}\OperatorTok{[}\NormalTok{i}\OperatorTok{]{-}}\NormalTok{log}\OperatorTok{(}\NormalTok{w}\OperatorTok{[}\NormalTok{t}\OperatorTok{]))*}\NormalTok{exp}\OperatorTok{(}\NormalTok{u}\OperatorTok{[}\NormalTok{t}\OperatorTok{]),}\KeywordTok{true}\OperatorTok{);}
+\NormalTok{    f }\OperatorTok{{-}=}\NormalTok{ dpois}\OperatorTok{(}\NormalTok{y}\OperatorTok{[}\NormalTok{t}\OperatorTok{],}\NormalTok{lambda}\OperatorTok{[}\NormalTok{t}\OperatorTok{],}\KeywordTok{true}\OperatorTok{);}
   \OperatorTok{\}}
   
   \ControlFlowTok{return}\NormalTok{ f}\OperatorTok{;}
@@ -239,9 +234,7 @@ model
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\# Import libraries}
-\FunctionTok{library}\NormalTok{(readr)}
-\FunctionTok{library}\NormalTok{(dplyr)}
-\FunctionTok{library}\NormalTok{(TMB)}
+\FunctionTok{library}\NormalTok{(readr); }\FunctionTok{library}\NormalTok{(dplyr); }\FunctionTok{library}\NormalTok{(TMB)}
 
 \CommentTok{\# Import the data}
 \NormalTok{dat }\OtherTok{\textless{}{-}} \FunctionTok{read\_rds}\NormalTok{(}\AttributeTok{file =} \StringTok{"../../data/processed/dat.rds"}\NormalTok{)}
@@ -249,22 +242,25 @@ model
 \CommentTok{\# Only consider some of the data}
 \NormalTok{y }\OtherTok{\textless{}{-}}\NormalTok{ dat }\SpecialCharTok{\%\textgreater{}\%}
   \FunctionTok{filter}\NormalTok{(caseDef }\SpecialCharTok{==} \StringTok{"Shiga{-} og veratoxin producerende E. coli."}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{group\_by}\NormalTok{(Date, ageGroup) }\SpecialCharTok{\%\textgreater{}\%}
-  \FunctionTok{reframe}\NormalTok{(}\AttributeTok{y =} \FunctionTok{sum}\NormalTok{(cases), }\AttributeTok{n =} \FunctionTok{sum}\NormalTok{(n))}
+  \FunctionTok{group\_by}\NormalTok{(Date, ageGroup) }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{reframe}\NormalTok{(}\AttributeTok{y =} \FunctionTok{sum}\NormalTok{(cases), }\AttributeTok{n =} \FunctionTok{sum}\NormalTok{(n))}
 
-\FunctionTok{compile}\NormalTok{(}\AttributeTok{file =} \StringTok{"PoissonLognormal.cpp"}\NormalTok{)  }\CommentTok{\# Compile the C++ file}
-\CommentTok{\# dyn.unload(dynlib("PoissonLognormal"))}
-\FunctionTok{dyn.load}\NormalTok{(}\FunctionTok{dynlib}\NormalTok{(}\StringTok{"PoissonLognormal"}\NormalTok{))    }\CommentTok{\# Dynamically link the C++ code}
+\FunctionTok{compile}\NormalTok{(}\AttributeTok{file =} \StringTok{"PoissonNormal.cpp"}\NormalTok{)  }\CommentTok{\# Compile the C++ file}
+\FunctionTok{dyn.load}\NormalTok{(}\FunctionTok{dynlib}\NormalTok{(}\StringTok{"PoissonNormal"}\NormalTok{))    }\CommentTok{\# Dynamically link the C++ code}
+
+\CommentTok{\# Make months into integers}
+\NormalTok{y.design }\OtherTok{\textless{}{-}}\NormalTok{ y }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{mutate}\NormalTok{(}\AttributeTok{Month =} \FunctionTok{as.integer}\NormalTok{(}\FunctionTok{format}\NormalTok{(Date, }\StringTok{"\%m"}\NormalTok{)))}
+
+\CommentTok{\# Construct the design matrix}
+\NormalTok{designMatrix }\OtherTok{\textless{}{-}} \FunctionTok{model.matrix}\NormalTok{(y }\SpecialCharTok{\textasciitilde{}} \SpecialCharTok{{-}}\DecValTok{1} \SpecialCharTok{+}\NormalTok{ ageGroup, }\AttributeTok{data =}\NormalTok{ y.design)}
+
+\CommentTok{\# Construct initial parameters}
+\NormalTok{beta }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{nlevels}\NormalTok{(y}\SpecialCharTok{$}\NormalTok{ageGroup))}
 
 \CommentTok{\# Function and derivative}
 \NormalTok{PoisLN }\OtherTok{\textless{}{-}} \FunctionTok{MakeADFun}\NormalTok{(}
-  \AttributeTok{data =} \FunctionTok{list}\NormalTok{(}\AttributeTok{y =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{ageGroup =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{ageGroup, }\AttributeTok{w =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{n),}
-  \AttributeTok{parameters =} \FunctionTok{list}\NormalTok{(}\AttributeTok{u =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{length}\NormalTok{(y}\SpecialCharTok{$}\NormalTok{y)),}
-                    \AttributeTok{log\_lambda =} \FunctionTok{rep}\NormalTok{(}\FunctionTok{log}\NormalTok{(}\DecValTok{1}\NormalTok{), }\FunctionTok{nlevels}\NormalTok{(y}\SpecialCharTok{$}\NormalTok{ageGroup)),}
-                    \AttributeTok{log\_sigma\_u =} \FunctionTok{log}\NormalTok{(}\DecValTok{1}\NormalTok{)),}
-  \AttributeTok{random =} \StringTok{"u"}\NormalTok{,}
-  \AttributeTok{DLL =} \StringTok{"PoissonLognormal"}
-\NormalTok{)}
+  \AttributeTok{data =} \FunctionTok{list}\NormalTok{(}\AttributeTok{y =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{y, }\AttributeTok{x =}\NormalTok{ y}\SpecialCharTok{$}\NormalTok{n, }\AttributeTok{X =}\NormalTok{ designMatrix),}
+  \AttributeTok{parameters =} \FunctionTok{list}\NormalTok{(}\AttributeTok{u =} \FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{length}\NormalTok{(y}\SpecialCharTok{$}\NormalTok{y)), }\AttributeTok{beta =}\NormalTok{ beta, }\AttributeTok{log\_sigma\_u =} \FunctionTok{log}\NormalTok{(}\DecValTok{1}\NormalTok{)),}
+  \AttributeTok{random =} \StringTok{"u"}\NormalTok{, }\AttributeTok{DLL =} \StringTok{"PoissonNormal"}\NormalTok{)}
 
 \NormalTok{opt }\OtherTok{\textless{}{-}} \FunctionTok{nlminb}\NormalTok{(}\AttributeTok{start =}\NormalTok{ PoisLN}\SpecialCharTok{$}\NormalTok{par, PoisLN}\SpecialCharTok{$}\NormalTok{fn, PoisLN}\SpecialCharTok{$}\NormalTok{gr, }\AttributeTok{lower =} \FunctionTok{c}\NormalTok{(}\FloatTok{0.01}\NormalTok{, }\FloatTok{0.01}\NormalTok{))}
 \end{Highlighting}
@@ -286,17 +282,17 @@ model
 \toprule
 Parameter & Estimate & Std. Error\\
 \midrule
-$\lambda_{<1 year}$ & 2.38 & 0.01\\
-$\lambda_{1-4 years}$ & 2.61 & 0.01\\
-$\lambda_{5-14 years}$ & 2.63 & 0.01\\
-$\lambda_{15-24 years}$ & 2.64 & 0.01\\
-$\lambda_{25-34 years}$ & 2.62 & 0.01\\
-$\lambda_{35-44 years}$ & 2.61 & 0.01\\
-$\lambda_{45-54 years}$ & 2.63 & 0.01\\
-$\lambda_{55-64 years}$ & 2.62 & 0.01\\
-$\lambda_{65-74 years}$ & 2.61 & 0.01\\
-$\lambda_{75-84 years}$ & 2.53 & 0.01\\
-$\lambda_{85+ years}$ & 2.35 & 0.01\\
+$\beta_{<1 year}$ & 10.83 & 0.11\\
+$\beta_{1-4 years}$ & 13.64 & 0.09\\
+$\beta_{5-14 years}$ & 13.94 & 0.09\\
+$\beta_{15-24 years}$ & 14.04 & 0.09\\
+$\beta_{25-34 years}$ & 13.78 & 0.10\\
+$\beta_{35-44 years}$ & 13.53 & 0.10\\
+$\beta_{45-54 years}$ & 13.84 & 0.10\\
+$\beta_{55-64 years}$ & 13.70 & 0.10\\
+$\beta_{65-74 years}$ & 13.57 & 0.10\\
+$\beta_{75-84 years}$ & 12.61 & 0.11\\
+$\beta_{85+ years}$ & 10.49 & 0.14\\
 $\sigma$ & 1.01 & 0.03\\
 \bottomrule
 \end{tabular}
@@ -323,10 +319,29 @@ model}\label{hierachical-poisson-gamma-model}}
 \subsection{Formulation}\label{formulation-1}}
 
 \begin{frame}{Formulation}
+Likewise, in the compound Poisson-Gamma model the count observations are
+assumed to follow a Poisson distribution, but this time the intensities,
+\(\lambda_{it}\), the model are defined as
+
+\begin{equation}
+  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})+\log(u_{it})
+\end{equation}
+
+Here \(\mathbf{X}_i\) is \(T\times11\)-dimensional, and
+\(\mathbf{\beta}_{it}\) contains the corresponding fixed effect
+parameter. Additionally, the random effects \(u_{it}\) are assumed to be
+Gamma distributed.
+\end{frame}
+
+\begin{frame}{Formulation}
+\protect\hypertarget{formulation-2}{}
+Subsequently, the model can be formulated as a two-level hierarchical
+model
+
 \begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois (\lambda_{i} u_{it}) \label{eq:pois_g0} \\ 
-    u_{it} &\sim \G(1/\beta_{i},\beta_{i}) \label{eq:pois_g1}
+    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}) \label{eq:pois_g0} \\ 
+    u_{it} &\sim \G(1/\phi_{i},\phi_{i}) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
 \end{frame}
@@ -338,10 +353,10 @@ model}\label{hierachical-poisson-gamma-model}}
 \begin{frame}{Probability function for \(Y\)}
 \begin{equation} \label{eq:pdfMix}
   \begin{aligned}
-    P[Y=y]&=g_{Y}(y;\lambda, \beta) \\
-    &=\frac{\lambda^{y}}{y!\Gamma(1/\beta)\beta^{1/\beta}}\frac{\beta^{y+1/\beta}\Gamma(y+1/\beta)}{(\lambda \beta + 1)^{y+1/\beta}} \\
-    &=\frac{\Gamma(y+1/\beta)}{\Gamma(1/\beta)y!}\frac{1}{(\lambda\beta+1)^{1/\beta}}\bigg(\frac{\lambda\beta}{\lambda\beta+1}\bigg)^{y} \\
-    &=\begin{pmatrix} y+1/\beta-1 \\ y \end{pmatrix} \frac{1}{(\lambda\beta+1)^{1/\beta}}\bigg(\frac{\lambda\beta}{\lambda\beta+1}\bigg)^{y} \ , \ for \ y = 0, 1, 2, \dots
+    P[Y=y_i]&=g_{Y}(y;\lambda, \phi) \\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}}\frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}} \\
+    &=\frac{\Gamma(y+1/\phi)}{\Gamma(1/\phi)y!}\frac{1}{(\lambda\phi+1)^{1/\phi}}\bigg(\frac{\lambda\phi}{\lambda\phi+1}\bigg)^{y} \\
+    &=\begin{pmatrix} y+1/\phi-1 \\ y \end{pmatrix} \frac{1}{(\lambda\phi+1)^{1/\phi}}\bigg(\frac{\lambda\phi}{\lambda\phi+1}\bigg)^{y} \ , \ for \ y = 0, 1, 2, \dots
   \end{aligned}
 \end{equation}
 
@@ -352,7 +367,7 @@ where we have used the convention
 \end{equation}
 
 The marginal distribution of \(Y\) is a negative binomial distribution,
-\(Y\sim \NB\big(1/\beta,1/(\lambda \beta+1)\big)\)
+\(Y\sim \NB\big(1/\phi,1/(\lambda \phi+1)\big)\)
 \end{frame}
 
 \begin{frame}{Proof}
@@ -367,7 +382,7 @@ given \(u\)
 and the probability density function for the distribution of \(u\) is
 
 \begin{equation} \label{eq:pdfGamma}
-  f_{u}(u;\beta)=\frac{1}{\beta \Gamma(1/\beta)} \bigg(\frac{u}{\beta}\bigg)^{1/\beta-1} \exp (-u/\beta)
+  f_{u}(u;\phi)=\frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)
 \end{equation}
 \end{frame}
 
@@ -378,9 +393,9 @@ function for the marginal distribution of \(Y\) is determined from
 
 \begin{equation} \label{eq:marMix}
   \begin{aligned}
-    g_{Y}(y;\lambda,\beta)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\beta) \,du \\
-    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\beta \Gamma(1/\beta)} \bigg(\frac{u}{\beta}\bigg)^{1/\beta-1} \exp (-u/\beta) \,du\\
-    &=\frac{\lambda^{y}}{y!\Gamma(1/\beta)\beta^{1/\beta}} \int_{u=0}^\infty u^{y+1/\beta} \exp \big(-u(\lambda \beta+1)/\beta\big) \,du
+    g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) \,du \\
+    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi) \,du\\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
   \end{aligned}
 \end{equation}
 \end{frame}
@@ -389,12 +404,11 @@ function for the marginal distribution of \(Y\) is determined from
 \protect\hypertarget{proof-2}{}
 In \eqref{eq:marMix} it is noted that the integrand is the \emph{kernel}
 in the probability density function for a Gamma distribution,
-\(\G\big(y+1/\beta,\beta/(\lambda \beta+1)\big)\). As the integral of
-the density shall equal one, we find by adjusting the norming constant
-that
+\(\G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)\). As the integral of the
+density shall equal one, we find by adjusting the norming constant that
 
 \begin{equation}
-  \int_{u=0}^\infty u^{y+1/\beta} \exp \bigg(-u/\Big(\beta/(\lambda \beta+1)\Big)\bigg) \,du = \frac{\beta^{y+1/\beta}\Gamma(y+1/\beta)}{(\lambda \beta + 1)^{y+1/\beta}}
+  \int_{u=0}^\infty u^{y+1/\phi} \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}}
 \end{equation}
 
 and then \eqref{eq:pdfMix} follows
@@ -410,19 +424,19 @@ assume that a value \(Y=y\) has been observed. Then the conditional
 distribution of \(u\) for given \(Y=y\) is a Gamma distribution,
 
 \begin{equation}
-  u|Y=y\sim \G\big(y+1/\beta,\beta/(\lambda \beta+1)\big)
+  u|Y=y\sim \G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)
 \end{equation}
 
 with mean
 
 \begin{equation}
-  \E[u|Y=y]=\frac{y\beta+1}{\lambda\beta+1}
+  \E[u|Y=y]=\frac{y\phi+1}{\lambda\phi+1}
 \end{equation}
 
 and variance
 
 \begin{equation}
-  \V[u|Y=y]=\frac{(y \beta^2+\beta)}{(\lambda \beta + 1)^2}
+  \V[u|Y=y]=\frac{(y \phi^2+\phi)}{(\lambda \phi + 1)^2}
 \end{equation}
 \end{frame}
 
@@ -433,20 +447,20 @@ The conditional distribution is found using Bayes Theorem
 \begin{equation}
   \begin{aligned}
     g_{u}(u|Y=y)&=\frac{f_{y,u}(y,u)}{g_Y(y;\lambda, \phi)} \\
-    &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\beta)} \\
-    &=\frac{1}{g_{Y}(y;\lambda,\beta)}\bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\beta \Gamma(1/\beta)} \bigg(\frac{u}{\beta}\bigg)^{1/\beta-1} \exp (-u/\beta)\bigg) \\
-    &\propto u^{y+1/\beta-1} \exp \big(- u(\lambda\beta+1)/\beta\big)
+    &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\phi)} \\
+    &=\frac{1}{g_{Y}(y;\lambda,\phi)}\bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)\bigg) \\
+    &\propto u^{y+1/\phi-1} \exp \big(- u(\lambda\phi+1)/\phi\big)
   \end{aligned}
 \end{equation}
 
 We identify the \emph{kernel} of the probability density function
 
 \begin{equation}
-  u^{y+1/\beta-1} \exp (- u(\lambda\beta+1)/\beta)
+  u^{y+1/\phi-1} \exp (- u(\lambda\phi+1)/\phi)
 \end{equation}
 
 as the kernel of a Gamma distribution,
-\(\G(y+1/\beta,\beta/(\lambda\beta+1))\)
+\(\G(y+1/\phi,\phi/(\lambda\phi+1))\)
 \end{frame}
 
 \hypertarget{implementation-1}{%

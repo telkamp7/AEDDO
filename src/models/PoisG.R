@@ -47,48 +47,51 @@ y.age <- dat %>%
   group_by(Date, ageGroup) %>%
   reframe(y = sum(cases), n = sum(n))
 
-nll.age <- function(theta, data){
+nll.age <- function(theta, data, formula){
   # Extract counts
   y <- data$y
-  # Extract agegroups
+  # Construct the design matrix
+  designMatrix <- model.matrix(object = formula, data = data)
+  # Construct regression parameters
+  beta <- theta[1:ncol(designMatrix)]
+  # # Extract agegroups
   ageGroup <- data$ageGroup
-  # Extract number of agegroups
-  n.ageGroup <- n_distinct(data$ageGroup)
   
   # Define parameters
-  lambda <- theta[1:n.ageGroup]
-  beta <- theta[(n.ageGroup+1):(n.ageGroup*2)]
+  lambda <- exp(designMatrix %*% beta - log(data$n))
+  phi <- theta[-(1:ncol(designMatrix))]
   
   # Construct the size and probability for the negative binomial distribution
-  r <- 1/beta
-  p <- 1/(lambda*beta+1)
+  r <- 1/phi
+  p <- 1/(lambda*phi+1)
   
   # Initilize the log-likelihood
   ll <- 0
   for(i in 1:nrow(data)){
-    ll = ll + dnbinom(x = y[i], size = r[ageGroup[i]], prob = p[ageGroup[i]], log = TRUE) 
+    ll = ll + dnbinom(x = y[i], size = r[ageGroup[i]], prob = p[i], log = TRUE) 
   }
   
   # Return the negative log-likelihood
   -ll
 }
 
+formula <- y ~ -1 + ageGroup
+
 # Optimize the parameters
-opt.age <- nlminb(start = rep(1,22), objective = nll.age, data = y.age, lower = rep(1e-6,22))
+opt.age <- nlminb(start = rep(1,22), objective = nll.age, data = y.age, formula = formula, lower = rep(1e-6,22))
 
 # Extract number of agegroups
 n.ageGroup <- n_distinct(y.age$ageGroup)
 
 # Define parameters
 par.PoisG <- tibble(ageGroup = levels(y.age$ageGroup),
-                    lambda = opt.age$par[1:n.ageGroup],
-                    beta = opt.age$par[(n.ageGroup+1):(n.ageGroup*2)])
-
+                    beta = opt.age$par[1:n.ageGroup],
+                    phi = opt.age$par[(n.ageGroup+1):(n.ageGroup*2)])
 
 # Construct parameters and calculate the expectation for the negative binomial distribution
 par.PoisG %>%
   # Construct the size and probability
-  mutate(r = 1/beta, p = 1/( lambda*beta + 1 )) %>%
+  mutate(r = 1/phi, p = 1/( beta*phi + 1 )) %>%
   # Calculate the expectation
   reframe(r, p, mu = r*(1-p)/p)
 
