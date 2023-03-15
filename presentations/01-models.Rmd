@@ -80,17 +80,24 @@ kable(y.tbl,
 
 ## VTEC / STEC
 
+```{r EpixSTEC, echo=FALSE, out.width="100%"}
+include_graphics("../figures/EpixSTEC.png")
+```
+
+### VTEC / STEC
+
 ```{r VTECFigure, echo=FALSE, out.width="100%"}
 include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 ```
+
 # Hierachical Poisson-Normal model
 
 ## Formulation
 
-The count observations are assumed to follow a Poisson distribution with intensities $\lambda_{it}$. Also, we shall assume that the count is proportional to the population size, $x_{it}$, within each age group, $i$, at a given time point, $t$. Hence, in terms of the canonical link for the Poisson distribution the model is
+The conditional distribution, $Y|u$, of the count observations are assumed to be a Poisson distribution with intensities $\lambda_{it}$. Also, we shall assume that the count is proportional to the population size, $x_{it}$, within each age group, $i$, at a given time point, $t$. Hence, in terms of the canonical link for the Poisson distribution the model for the fixed effect is
 
 \begin{equation}
-  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})+u_{it}
+  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
 \end{equation}
 
 Here $\mathbf{X}_i$ is $T\times11$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. The random effects $u_{it}$ are assumed to be Gaussian.
@@ -107,7 +114,7 @@ Henceforth, the model can be formulated as a two-level hierarchical model
 
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}) \label{eq:pois_ln0} \\ 
+    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}e^{u_{it}}) \label{eq:pois_ln0} \\ 
     u_{it} &\sim \N(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
@@ -205,10 +212,10 @@ include_graphics("../figures/PoisLNxSTEC.png")
 # Hierachical Poisson-Gamma model
 
 ## Formulation
-Likewise, in the compound Poisson-Gamma model the count observations are assumed to follow a Poisson distribution, but this time the intensities, $\lambda_{it}$, the model are defined as
+Likewise, in the compound Poisson-Gamma model the conditional distribution, $Y|u$, of the count observations are assumed to be a Poisson distribution, but this time the intensities, $\lambda_{it}$, are defined as
 
 \begin{equation}
-  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})+\log(u_{it})
+  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
 \end{equation}
 
 Here $\mathbf{X}_i$ is $T\times11$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. Additionally, the random effects $u_{it}$ are assumed to be Gamma distributed.
@@ -219,7 +226,7 @@ Subsequently, the model can be formulated as a two-level hierarchical model
 
 \begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}) \label{eq:pois_g0} \\ 
+    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}u_{it}) \label{eq:pois_g0} \\ 
     u_{it} &\sim \G(1/\phi_{i},\phi_{i}) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
@@ -265,7 +272,7 @@ Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability function for t
   \begin{aligned}
     g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) \,du \\
     &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi) \,du\\
-    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi-1} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
   \end{aligned}
 \end{equation}
 
@@ -274,7 +281,7 @@ Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability function for t
 In \eqref{eq:marMix} it is noted that the integrand is the *kernel* in the probability density function for a Gamma distribution, $\G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)$. As the integral of the density shall equal one, we find by adjusting the norming constant that
 
 \begin{equation}
-  \int_{u=0}^\infty u^{y+1/\phi} \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}}
+  \int_{u=0}^\infty u^{y+1/\phi-1} \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}}
 \end{equation}
 
 and then \eqref{eq:pdfMix} follows
@@ -363,7 +370,7 @@ nll.age <- function(theta, data){
 
 ```{r PoisG, echo=FALSE}
 
-names(PoisG$par) <- c("ageGroup","$\\lambda$", "$\\beta$")
+names(PoisG$par) <- c("ageGroup","$\\beta$", "$\\phi$")
 
 kable(PoisG$par,
       digits = 2, 

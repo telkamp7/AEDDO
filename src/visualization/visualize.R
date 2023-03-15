@@ -36,11 +36,94 @@ dtuPalette <- c("#990000",
 # Load data
 dat <- read_rds(file = "../../data/processed/dat.rds")
 
+# # Only consider some of the data
+# y <- dat %>%
+#   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
+#   group_by(Date, ageGroup) %>%
+#   reframe(y = sum(cases), n = sum(n), month = factor(format(x = Date, "%b")), year = factor(format(x = Date, "%Y")))
+
+
+monthLevels <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
 # Only consider some of the data
 y <- dat %>%
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
-  group_by(Date, ageGroup) %>%
+  mutate(month = factor(format(x = Date, "%b"), levels = monthLevels),
+         year = factor(format(x = Date, "%Y"))) %>%
+  group_by(month, year, ageGroup) %>%
   reframe(y = sum(cases), n = sum(n))
+y$month
+
+# Epidemiological plots
+y %>%
+  filter(year %in% as.character(2012:2022)) %>%
+  group_by(year, month) %>%
+  reframe(y = sum(y), n = sum(n)) %>%
+  ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
+  geom_point() +
+  geom_line() +
+  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_x_discrete(name = "Month") +
+  scale_colour_manual(name = "Year", values = dtuPalette) +
+  guides(colour = guide_legend(nrow = 1)) +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.")
+ggsave(filename = "EpixSTEC.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+
+# Some diseases
+diseases <- c("Gonoré",
+              "Shiga- og veratoxin producerende E. coli.",
+              "Legionella",
+              "Leptospirosis")
+
+dat %>%
+  filter(caseDef == "Gonoré") %>%
+  summarise(age = n_distinct(ageGroup), ld = n_distinct(landsdel))
+
+tmp <- dat %>%
+  filter(caseDef == "Gonoré") %>%
+  group_by(Date) %>%
+  reframe(y = sum(cases), n = sum(n))
+
+dat %>%
+  group_by(caseDef) %>%
+  summarize(nAgeGroup = n_distinct(ageGroup), nLandsdel = n_distinct(landsdel)) %>%
+  print(n = 26)
+
+# Epidemiological plots
+dat %>%
+  filter(Date >= as.Date("2012-01-01") & caseDef %in% diseases) %>%
+  mutate(month = factor(format(x = Date, "%b")), year = factor(format(x = Date, "%Y"))) %>%
+  group_by(year, month, caseDef) %>%
+  reframe(y = sum(cases), n = sum(n)) %>%
+  mutate(caseDef = factor(caseDef, labels = diseases))
+
+
+# Epidemiological plots
+dat %>%
+  filter(Date >= as.Date("2012-01-01") & caseDef %in% diseases) %>%
+  mutate(month = factor(format(x = Date, "%b")), year = factor(format(x = Date, "%Y"))) %>%
+  group_by(year, month, caseDef) %>%
+  reframe(y = sum(cases), n = sum(n)) %>%
+  mutate(caseDef = factor(caseDef, labels = diseases)) %>%
+  ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(facets = vars(caseDef), scales = "free_y") +
+  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_x_discrete(name = "Month") +
+  scale_colour_manual(name = "Year", values = dtuPalette) +
+  guides(colour = guide_legend(nrow = 1))
+
+dat %>%
+  group_by(caseDef) %>%
+  summarize(miny = min(cases), maxy = max(cases), meany = mean(cases), sumy = sum(cases),
+            minn = min(n), maxn = max(n), meann = mean(n)) %>% 
+  arrange(sumy) %>%
+  print(n = 26)
+
+dat %>%
+  filter(n == 236)
+
 
 # Extract case definitions
 caseDef <- unique(dat$caseDef)
@@ -160,7 +243,7 @@ PoisG_res %>%
   ggplot(mapping = aes(x = Date, colour = ageGroup)) +
   geom_point(mapping = aes(y = u)) +
   geom_line(mapping = aes(x = Date,
-                          y = qgamma(p = 0.95, shape = 1/beta, scale = beta)),
+                          y = qgamma(p = 0.95, shape = 1/phi, scale = phi)),
             lty = "dashed", inherit.aes = FALSE) +
   geom_rug(mapping = aes(x = dateOfAlarm, y = NULL),
            outside = TRUE, sides = "b", inherit.aes = FALSE) +

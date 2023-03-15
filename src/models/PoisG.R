@@ -12,8 +12,6 @@ y <- dat %>%
   group_by(Date) %>%
   reframe(y = sum(cases), n = sum(n))
 
-?dnbinom
-
 # Construct the negative log-likelihood function
 nll <- function(theta, x){
   r <- 1/theta[2]
@@ -54,12 +52,13 @@ nll.age <- function(theta, data, formula){
   designMatrix <- model.matrix(object = formula, data = data)
   # Construct regression parameters
   beta <- theta[1:ncol(designMatrix)]
+  #... and model parameters
+  phi <- theta[-(1:ncol(designMatrix))]
   # # Extract agegroups
   ageGroup <- data$ageGroup
   
   # Define parameters
   lambda <- exp(designMatrix %*% beta - log(data$n))
-  phi <- theta[-(1:ncol(designMatrix))]
   
   # Construct the size and probability for the negative binomial distribution
   r <- 1/phi
@@ -78,7 +77,7 @@ nll.age <- function(theta, data, formula){
 formula <- y ~ -1 + ageGroup
 
 # Optimize the parameters
-opt.age <- nlminb(start = rep(1,22), objective = nll.age, data = y.age, formula = formula, lower = rep(1e-6,22))
+opt.age <- nlminb(start = c(rep(14,11),rep(0.5,11)), objective = nll.age, data = y.age, formula = formula, lower = rep(1e-6,22))
 
 # Extract number of agegroups
 n.ageGroup <- n_distinct(y.age$ageGroup)
@@ -89,15 +88,28 @@ par.PoisG <- tibble(ageGroup = levels(y.age$ageGroup),
                     phi = opt.age$par[(n.ageGroup+1):(n.ageGroup*2)])
 
 # Construct parameters and calculate the expectation for the negative binomial distribution
-par.PoisG %>%
-  # Construct the size and probability
-  mutate(r = 1/phi, p = 1/( beta*phi + 1 )) %>%
-  # Calculate the expectation
-  reframe(r, p, mu = r*(1-p)/p)
+# par.PoisG %>%
+#   # Construct the size and probability
+#   mutate(r = 1/phi, p = 1/( beta*phi + 1 )) %>%
+#   # Calculate the expectation
+#   reframe(r, p, mu = r*(1-p)/p)
+
+# library(ggplot2)
+# y.age %>%
+#   mutate(lambda = exp(beta - log(n)), u = ( y*phi+1 ) / ( lambda*phi+1 ) ) %>%
+#   ggplot(mapping = aes(x = Date, y = u)) +
+#   geom_point() +
+#   facet_wrap(facets = vars(ageGroup))
 
 # Make inference on individual random effects
 y.age <- y.age %>%
-  mutate(u = ( y*beta.age[ageGroup]+1 )/( lambda.age[ageGroup] * beta.age[ageGroup] + 1 ))
+  full_join(y = par.PoisG, join_by(ageGroup)) %>%
+  mutate(lambda = exp(beta - log(n)), u = ( y*phi+1 )/( lambda * phi + 1 )) %>%
+  select(Date:n, u)
+
+# y.age %>%
+#   group_by(ageGroup) %>%
+#   summarize(mean(y), mean(u))
 
 # Save the results in a list
 PoisG <- list(par = par.PoisG, fn = nll.age, results = y.age)

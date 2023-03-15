@@ -19,6 +19,17 @@ FOLK1A <- read_csv2("../../data/raw/FOLK1A.csv")
 diseaseData <- read_xlsx(path = "../../data/raw/disease_data_raw.xlsx")
 NUTS <- read_csv2("../../data/raw/NUTS_V1_2007.csv")
 
+diseaseData %>%
+  filter(year == "1995", caseDef == "AIDS") %>%
+  reframe(unique(ageGroup))
+
+diseaseData %>%
+  group_by(caseDef, year) %>%
+  summarize(combi = n_distinct(ageGroup, landsdel), nAge = n_distinct(ageGroup), nLandsdel = n_distinct(landsdel))
+
+unique(diseaseData$ageGroup)
+unique(diseaseData$landsdel)
+
 # Change 'år' to 'years'
 diseaseData <- diseaseData %>%
   mutate(ageGroup = if_else(
@@ -47,12 +58,21 @@ FOLK1AxNutsCor <- inner_join(x = FOLK1A,
 # Calculate FOLK1A per 'landsdel'
 FOLK1AxLandsdel <- FOLK1AxNutsCor %>%
   group_by(ALDER, TID, Landsdel) %>%
-  summarise(n = sum(INDHOLD))
+  reframe(n = sum(INDHOLD))
+
+unique(FOLK1AxLandsdel$ALDER)
+
+# FOLK1AxLandsdel <- FOLK1AxNutsCor %>%
+#   group_by(ALDER, TID, Landsdel) %>%
+#   summarise(n = sum(INDHOLD))
+
+FOLK1AxLandsdel %>% 
+  summarize(combi = n_distinct(ALDER, Landsdel), nAge = n_distinct(ALDER), nLandsdel = n_distinct(Landsdel))
 
 # Calculate FOLK1A per 'Region'
 FOLK1AxRegion <- FOLK1AxNutsCor %>%
   group_by(ALDER, TID, Region) %>%
-  summarise(n = sum(INDHOLD))
+  reframe(n = sum(INDHOLD))
 
 # Finalize the data set
 datTmp <- diseaseData %>%
@@ -69,6 +89,8 @@ datTmp <- diseaseData %>%
 # ... Note: maaned and year is converted to quarters, in order to add 'n', which
 # is the number of individuals from FOLK1A in each 'landsdel' and age group
 # Hereafter, the data is combined in 'datTmp', which contains the final features
+# ... Note: Some combination of 'ageGroup' and 'landsdele' are missing in the 
+# data.
 
 # Extract levels
 # maanedLevels <- unique(datTmp$maaned)

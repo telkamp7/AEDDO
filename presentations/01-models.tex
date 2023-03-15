@@ -137,23 +137,37 @@ Date & ageGroup & $y_{it}$ & $x_{it}$\\
 \begin{frame}{VTEC / STEC}
 \tiny
 
+\includegraphics[width=1\linewidth]{../figures/EpixSTEC}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{VTEC / STEC}
+\protect\hypertarget{vtec-stec-2}{}
+\tiny
+
 \includegraphics[width=1\linewidth]{../figures/ShigaogveratoxinproducerendeEcolixAgeGroup}
 
-\normalsize \# Hierachical Poisson-Normal model
+\normalsize
 \end{frame}
+
+\hypertarget{hierachical-poisson-normal-model}{%
+\section{Hierachical Poisson-Normal
+model}\label{hierachical-poisson-normal-model}}
 
 \hypertarget{formulation}{%
 \subsection{Formulation}\label{formulation}}
 
 \begin{frame}{Formulation}
-The count observations are assumed to follow a Poisson distribution with
-intensities \(\lambda_{it}\). Also, we shall assume that the count is
-proportional to the population size, \(x_{it}\), within each age group,
-\(i\), at a given time point, \(t\). Hence, in terms of the canonical
-link for the Poisson distribution the model is
+The conditional distribution, \(Y|u\), of the count observations are
+assumed to be a Poisson distribution with intensities \(\lambda_{it}\).
+Also, we shall assume that the count is proportional to the population
+size, \(x_{it}\), within each age group, \(i\), at a given time point,
+\(t\). Hence, in terms of the canonical link for the Poisson
+distribution the model for the fixed effect is
 
 \begin{equation}
-  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})+u_{it}
+  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
 \end{equation}
 
 Here \(\mathbf{X}_i\) is \(T\times11\)-dimensional, and
@@ -175,7 +189,7 @@ model
 
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}) \label{eq:pois_ln0} \\ 
+    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}e^{u_{it}}) \label{eq:pois_ln0} \\ 
     u_{it} &\sim \N(0,\sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
@@ -319,12 +333,13 @@ model}\label{hierachical-poisson-gamma-model}}
 \subsection{Formulation}\label{formulation-1}}
 
 \begin{frame}{Formulation}
-Likewise, in the compound Poisson-Gamma model the count observations are
-assumed to follow a Poisson distribution, but this time the intensities,
-\(\lambda_{it}\), the model are defined as
+Likewise, in the compound Poisson-Gamma model the conditional
+distribution, \(Y|u\), of the count observations are assumed to be a
+Poisson distribution, but this time the intensities, \(\lambda_{it}\),
+are defined as
 
 \begin{equation}
-  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})+\log(u_{it})
+  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
 \end{equation}
 
 Here \(\mathbf{X}_i\) is \(T\times11\)-dimensional, and
@@ -340,7 +355,7 @@ model
 
 \begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}) \label{eq:pois_g0} \\ 
+    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}u_{it}) \label{eq:pois_g0} \\ 
     u_{it} &\sim \G(1/\phi_{i},\phi_{i}) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
@@ -395,7 +410,7 @@ function for the marginal distribution of \(Y\) is determined from
   \begin{aligned}
     g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) \,du \\
     &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi) \,du\\
-    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi-1} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
   \end{aligned}
 \end{equation}
 \end{frame}
@@ -408,7 +423,7 @@ in the probability density function for a Gamma distribution,
 density shall equal one, we find by adjusting the norming constant that
 
 \begin{equation}
-  \int_{u=0}^\infty u^{y+1/\phi} \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}}
+  \int_{u=0}^\infty u^{y+1/\phi-1} \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}}
 \end{equation}
 
 and then \eqref{eq:pdfMix} follows
@@ -519,19 +534,19 @@ function in R}
 
 \begin{tabular}{lrr}
 \toprule
-ageGroup & $\lambda$ & $\beta$\\
+ageGroup & $\beta$ & $\phi$\\
 \midrule
-<1 year & 1.24 & 0.33\\
-1-4 years & 4.57 & 0.36\\
-5-14 years & 2.47 & 0.42\\
-15-24 years & 2.57 & 0.48\\
-25-34 years & 2.08 & 0.57\\
-35-44 years & 1.47 & 0.20\\
-45-54 years & 1.88 & 0.39\\
-55-64 years & 1.77 & 0.25\\
-65-74 years & 1.89 & 0.40\\
-75-84 years & 1.45 & 1.08\\
-85+ years & 0.50 & 0.97\\
+<1 year & 11.23 & 0.33\\
+1-4 years & 13.94 & 0.36\\
+5-14 years & 14.30 & 0.41\\
+15-24 years & 14.42 & 0.50\\
+25-34 years & 14.20 & 0.66\\
+35-44 years & 13.90 & 0.16\\
+45-54 years & 14.21 & 0.40\\
+55-64 years & 14.05 & 0.27\\
+65-74 years & 13.95 & 0.51\\
+75-84 years & 13.17 & 1.53\\
+85+ years & 10.99 & 1.13\\
 \bottomrule
 \end{tabular}
 \endgroup{}

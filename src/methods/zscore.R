@@ -49,8 +49,8 @@ PoisG <- read_rds(file = "../models/PoissonGamma.rds")
 PoisG_res <- PoisG %>%
   keep(names(.) %in% c("par", "results")) %>%
   reduce(.f = inner_join, by = "ageGroup") %>%
-  mutate(p = pgamma(q = u, shape = 1/beta, scale = beta), alarm = p >= 0.95) %>%
-  select(Date, beta, ageGroup, y:alarm)
+  mutate(p = pgamma(q = u, shape = 1/phi, scale = phi), alarm = p >= 0.95) %>%
+  select(Date, phi, ageGroup, y:alarm)
 
 write_rds(x = PoisG_res, file = "PoisG_res.rds")
 
