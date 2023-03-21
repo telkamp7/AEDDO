@@ -7,6 +7,9 @@ library(tidyr)
 library(ggplot2)
 library(TMB)
 
+# Set locale
+Sys.setlocale(category = "LC_ALL", locale = "en")
+
 # Dynamically link the C++ template
 # dyn.load(dynlib(name = "../models/PoissonLognormal"))
 dyn.load(dynlib(name = "../models/PoissonNormal"))
@@ -34,7 +37,8 @@ dtuPalette <- c("#990000",
                 "#79238E")
 
 # Load data
-dat <- read_rds(file = "../../data/processed/dat.rds")
+# dat <- read_rds(file = "../../data/processed/dat.rds") # 11-agegroups
+dat <- read_rds(file = "../../data/processed/dat2.rds") # 6 agegroups
 
 # # Only consider some of the data
 # y <- dat %>%

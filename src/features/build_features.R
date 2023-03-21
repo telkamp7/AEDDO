@@ -140,7 +140,21 @@ dat <- datTmp %>%
 # Save the processed data, 'dat'
 write_rds(x = dat, file = "../../data/processed/dat.rds")
 
+dat$ageGroup
 
+dat2 <- dat %>%
+  mutate(ageGroup = fct_recode(ageGroup,
+                               `25-64 years` = "25-34 years",
+                               `25-64 years` = "35-44 years",
+                               `25-64 years` = "45-54 years",
+                               `25-64 years` = "55-64 years",
+                               `65+ years` = "65-74 years",
+                               `65+ years` = "75-84 years",
+                               `65+ years` = "85+ years")) %>%
+  group_by(Date, ageGroup, landsdel, caseDef) %>%
+  reframe(cases = sum(cases), n = sum(n))
+
+write_rds(x = dat2, file = "../../data/processed/dat2.rds")
 
 
 

@@ -55,13 +55,25 @@ for (cdf in diseaseCodes){
   for (ldel in 1:12){
     for (agegrp in 1:12){
       # tt <- read.table(file=paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",age_group,"&landsdelkode=",ldel,"&sygdomskode=",casedef,"&xaxis=Aar&yaxis=Maaned&aar=1994|2023&show=Table&lang=DA"), sep=";", header=TRUE)
-      tt <- read_csv2(file = paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",agegrp,"&landsdelkode=",ldel,"&sygdomskode=",cdf,"&xaxis=Aar&yaxis=Maaned&aar=1994|2023&show=Table&lang=DA"))
+      tt <- read_csv2(file = paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",agegrp,"&landsdelkode=",ldel,"&sygdomskode=",cdf,"&xaxis=Aar&yaxis=Maaned&aar=1994|2022&show=Table&lang=DA"))
       # setDT(tt)
       print(c(ldel, agegrp, dim(tt)))
+      # Check if there have been any registered cases in the group
+      # -- There is a bug in the API where it returns only a single year for a group, if
+      # -- there havent been any cases.
+      if(dim(tt)[2] == 2){
+        tt2 <- expand_grid(month = c("Januar", "Februar", "Marts", "April", "Maj", "Juni",
+                                     "Juli", "August", "September", "Oktober", "November", "December", "Uoplyst"),
+                           year = as.character(1994:2022),
+                           cases = 0,
+                           landsdel = ldel,
+                           ageGroup = agegrp)
+      }else{
       tt2 <- tt %>%
         rename("month" = ...1) %>%
         pivot_longer(cols = -month, names_to = "year", values_to = "cases") %>%
         mutate(landsdel = ldel, ageGroup = agegrp)
+      }
       dat <- bind_rows(dat, tt2)
       
       # tt2 <- melt(tt, id.vars = 1, variable.name = "year")

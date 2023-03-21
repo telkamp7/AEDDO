@@ -24,8 +24,8 @@ library(TMB)
 dyn.load(dynlib(name = "../src/models/PoissonNormal"))
 
 # Load in the processed data
-dat <- read_rds(file = "../data/processed/dat.rds")
-
+# dat <- read_rds(file = "../data/processed/dat.rds") # 11-agegroups
+dat <- read_rds(file = "../data/processed/dat2.rds") # 6-agegroups
 # Only consider some of the data
 y <- dat %>%
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
@@ -48,7 +48,8 @@ ageGroup <- levels(y$ageGroup)
 names(rep$par.fixed) <- c(paste0("$\\beta_{", ageGroup, "}$"), "$\\sigma$")
 
 res <- tibble(Parameter = names(rep$par.fixed),
-              Estimate = c(rep$par.fixed[1:11],exp(rep$par.fixed[12])),
+              Estimate = c(rep$par.fixed[1:nlevels(y$ageGroup)],
+                           exp(rep$par.fixed[nlevels(y$ageGroup)+1])),
               `Std. Error` = sqrt(diag(rep$cov.fixed)))
 
 # Load the Poisson-Gamma model
@@ -78,7 +79,7 @@ kable(y.tbl,
 
 ```
 
-## VTEC / STEC
+### VTEC / STEC
 
 ```{r EpixSTEC, echo=FALSE, out.width="100%"}
 include_graphics("../figures/EpixSTEC.png")
@@ -100,7 +101,7 @@ The conditional distribution, $Y|u$, of the count observations are assumed to be
   \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
 \end{equation}
 
-Here $\mathbf{X}_i$ is $T\times11$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. The random effects $u_{it}$ are assumed to be Gaussian.
+Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. The random effects $u_{it}$ are assumed to be Gaussian.
 
 \begin{equation}
   u_{it} = \epsilon_{it}
@@ -218,7 +219,7 @@ Likewise, in the compound Poisson-Gamma model the conditional distribution, $Y|u
   \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
 \end{equation}
 
-Here $\mathbf{X}_i$ is $T\times11$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. Additionally, the random effects $u_{it}$ are assumed to be Gamma distributed.
+Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. Additionally, the random effects $u_{it}$ are assumed to be Gamma distributed.
 
 ### Formulation
 
@@ -370,9 +371,7 @@ nll.age <- function(theta, data){
 
 ```{r PoisG, echo=FALSE}
 
-names(PoisG$par) <- c("ageGroup","$\\beta$", "$\\phi$")
-
-kable(PoisG$par,
+kable(PoisG$par.tbl,
       digits = 2, 
       format = "latex",
       booktabs = TRUE, 

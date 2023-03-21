@@ -117,12 +117,12 @@ Date & ageGroup & $y_{it}$ & $x_{it}$\\
 2008-01-01 & <1 year & 2 & 64137\\
 2008-01-01 & 1-4 years & 2 & 259910\\
 2008-01-01 & 5-14 years & 2 & 680529\\
-2008-01-01 & 15-24 years & 1 & 631724\\
+2008-01-01 & 15-24 years & 1 & 635838\\
 ... & ... & ... & ...\\
-2022-12-01 & 55-64 years & 2 & 773073\\
-2022-12-01 & 65-74 years & 5 & 621965\\
-2022-12-01 & 75-84 years & 4 & 449423\\
-2022-12-01 & 85+ years & 3 & 132181\\
+2022-12-01 & 5-14 years & 5 & 634139\\
+2022-12-01 & 15-24 years & 1 & 721286\\
+2022-12-01 & 25-64 years & 10 & 3031374\\
+2022-12-01 & 65+ years & 12 & 1204892\\
 \bottomrule
 \end{tabular}
 \endgroup{}
@@ -131,10 +131,8 @@ Date & ageGroup & $y_{it}$ & $x_{it}$\\
 \normalsize
 \end{frame}
 
-\hypertarget{vtec-stec-1}{%
-\subsection{VTEC / STEC}\label{vtec-stec-1}}
-
 \begin{frame}{VTEC / STEC}
+\protect\hypertarget{vtec-stec-1}{}
 \tiny
 
 \includegraphics[width=1\linewidth]{../figures/EpixSTEC}
@@ -298,16 +296,11 @@ Parameter & Estimate & Std. Error\\
 \midrule
 $\beta_{<1 year}$ & 10.83 & 0.11\\
 $\beta_{1-4 years}$ & 13.64 & 0.09\\
-$\beta_{5-14 years}$ & 13.94 & 0.09\\
-$\beta_{15-24 years}$ & 14.04 & 0.09\\
-$\beta_{25-34 years}$ & 13.78 & 0.10\\
-$\beta_{35-44 years}$ & 13.53 & 0.10\\
-$\beta_{45-54 years}$ & 13.84 & 0.10\\
-$\beta_{55-64 years}$ & 13.70 & 0.10\\
-$\beta_{65-74 years}$ & 13.57 & 0.10\\
-$\beta_{75-84 years}$ & 12.61 & 0.11\\
-$\beta_{85+ years}$ & 10.49 & 0.14\\
-$\sigma$ & 1.01 & 0.03\\
+$\beta_{5-14 years}$ & 13.94 & 0.10\\
+$\beta_{15-24 years}$ & 14.05 & 0.09\\
+$\beta_{25-64 years}$ & 16.61 & 0.08\\
+$\beta_{65+ years}$ & 14.83 & 0.09\\
+$\sigma$ & 1.01 & 0.04\\
 \bottomrule
 \end{tabular}
 \endgroup{}
@@ -342,7 +335,7 @@ are defined as
   \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
 \end{equation}
 
-Here \(\mathbf{X}_i\) is \(T\times11\)-dimensional, and
+Here \(\mathbf{X}_i\) is \(T\times6\)-dimensional, and
 \(\mathbf{\beta}_{it}\) contains the corresponding fixed effect
 parameter. Additionally, the random effects \(u_{it}\) are assumed to be
 Gamma distributed.
@@ -534,19 +527,15 @@ function in R}
 
 \begin{tabular}{lrr}
 \toprule
-ageGroup & $\beta$ & $\phi$\\
+Parameter & Estimate & Std. Error\\
 \midrule
-<1 year & 11.23 & 0.33\\
-1-4 years & 13.94 & 0.36\\
-5-14 years & 14.30 & 0.41\\
-15-24 years & 14.42 & 0.50\\
-25-34 years & 14.20 & 0.66\\
-35-44 years & 13.90 & 0.16\\
-45-54 years & 14.21 & 0.40\\
-55-64 years & 14.05 & 0.27\\
-65-74 years & 13.95 & 0.51\\
-75-84 years & 13.17 & 1.53\\
-85+ years & 10.99 & 1.13\\
+$\beta_{<1 year}$ & 11.23 & 0.08\\
+$\beta_{1-4 years}$ & 13.94 & 0.06\\
+$\beta_{5-14 years}$ & 14.30 & 0.07\\
+$\beta_{15-24 years}$ & 14.42 & 0.07\\
+$\beta_{25-64 years}$ & 16.87 & 0.06\\
+$\beta_{65+ years}$ & 15.24 & 0.06\\
+$\phi$ & 0.45 & 0.03\\
 \bottomrule
 \end{tabular}
 \endgroup{}
