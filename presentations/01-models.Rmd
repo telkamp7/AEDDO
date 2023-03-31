@@ -87,6 +87,12 @@ include_graphics("../figures/EpixSTEC.png")
 
 ### VTEC / STEC
 
+```{r STECxEpixAgeGroup, echo=FALSE, out.width="100%"}
+include_graphics("../figures/STECxEpixAgeGroup.png")
+```
+
+### VTEC / STEC
+
 ```{r VTECFigure, echo=FALSE, out.width="100%"}
 include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 ```
@@ -206,8 +212,14 @@ kable(res,
 
 ### Results
 
-```{r PoisLNxSTEC, echo=FALSE, out.width="100%"}
-include_graphics("../figures/PoisLNxSTEC.png")
+```{r windowedSTEDPoisN, echo=FALSE, out.width="100%"}
+include_graphics("../figures/windowedSTEDPoisN.png")
+```
+
+### Results
+
+```{r windowedSTEDPoisNExclude, echo=FALSE, out.width="100%"}
+include_graphics("../figures/windowedSTEDPoisNExclude.png")
 ```
 
 # Hierachical Poisson-Gamma model
@@ -383,7 +395,13 @@ kable(PoisG$par.tbl,
 
 ### Results
 
-```{r PoisGxSTEC, echo=FALSE, out.width="100%"}
-include_graphics("../figures/PoisGxSTEC.png")
+```{r windowedSTECPoisG, echo=FALSE, out.width="100%"}
+include_graphics("../figures/windowedSTECPoisG.png")
+```
+
+### Results
+
+```{r windowedSTECPoisGExclude, echo=FALSE, out.width="100%"}
+include_graphics("../figures/windowedSTECPoisGExclude.png")
 ```
 

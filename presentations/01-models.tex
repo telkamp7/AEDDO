@@ -144,6 +144,15 @@ Date & ageGroup & $y_{it}$ & $x_{it}$\\
 \protect\hypertarget{vtec-stec-2}{}
 \tiny
 
+\includegraphics[width=1\linewidth]{../figures/STECxEpixAgeGroup}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{VTEC / STEC}
+\protect\hypertarget{vtec-stec-3}{}
+\tiny
+
 \includegraphics[width=1\linewidth]{../figures/ShigaogveratoxinproducerendeEcolixAgeGroup}
 
 \normalsize
@@ -168,7 +177,7 @@ distribution the model for the fixed effect is
   \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
 \end{equation}
 
-Here \(\mathbf{X}_i\) is \(T\times11\)-dimensional, and
+Here \(\mathbf{X}_i\) is \(T\times6\)-dimensional, and
 \(\mathbf{\beta}_{it}\) contains the corresponding fixed effect
 parameter. The random effects \(u_{it}\) are assumed to be Gaussian.
 
@@ -313,7 +322,16 @@ $\sigma$ & 1.01 & 0.04\\
 \protect\hypertarget{results-1}{}
 \tiny
 
-\includegraphics[width=1\linewidth]{../figures/PoisLNxSTEC}
+\includegraphics[width=1\linewidth]{../figures/windowedSTEDPoisN}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{Results}
+\protect\hypertarget{results-2}{}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/windowedSTEDPoisNExclude}
 
 \normalsize
 \end{frame}
@@ -516,8 +534,8 @@ function in R}
 \normalsize
 \end{frame}
 
-\hypertarget{results-2}{%
-\subsection{Results}\label{results-2}}
+\hypertarget{results-3}{%
+\subsection{Results}\label{results-3}}
 
 \begin{frame}{Results}
 \tiny
@@ -545,10 +563,19 @@ $\phi$ & 0.45 & 0.03\\
 \end{frame}
 
 \begin{frame}{Results}
-\protect\hypertarget{results-3}{}
+\protect\hypertarget{results-4}{}
 \tiny
 
-\includegraphics[width=1\linewidth]{../figures/PoisGxSTEC}
+\includegraphics[width=1\linewidth]{../figures/windowedSTECPoisG}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{Results}
+\protect\hypertarget{results-5}{}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/windowedSTECPoisGExclude}
 
 \normalsize
 \end{frame}

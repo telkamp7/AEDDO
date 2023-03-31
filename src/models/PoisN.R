@@ -66,7 +66,7 @@ TT <- length(Dates$Date)
 results.window <- tibble()
 
 # Construct initial parameters
-beta <- rep(1, nlevels(y.window$ageGroup))
+beta <- rep(1, nlevels(y.design$ageGroup))
 sigma <- log(1)
 
 for(i in 1:(TT-k)){
@@ -94,13 +94,18 @@ for(i in 1:(TT-k)){
     silent = TRUE
   )
   
-  opt <- nlminb(start = PoisLN$par, PoisLN$fn, PoisLN$gr, lower = rep(1e-9,nlevels(y.window$ageGroup)+1))
+  # Optimize the parameters
+  opt <- nlminb(start = PoisLN$par, PoisLN$fn, PoisLN$gr, lower = rep(1e-6,nlevels(y.window$ageGroup)+1))
   
+  ## Report on the random effects
+  rep <- sdreport(PoisLN)
   
+  # Combine the results in a tibble
   results.window <- bind_rows(results.window,
-                              tibble(iter = i+k-1,
-                                     optimization = list(opt)))
-  
+                              tibble(iter = i,
+                                     par = list(opt$par),
+                                     objective = opt$objective,
+                                     `Random Effects` = list(rep$par.random)))
   
   # Construct parameter guess for next iteration
   beta <- opt$par[1:nlevels(y.window$ageGroup)]
@@ -108,7 +113,7 @@ for(i in 1:(TT-k)){
   
 }
 
-results.window$optimization[[1]]$par
+write_rds(x = results.window, file = "windowedPoissonNormal.rds")
 
 
 

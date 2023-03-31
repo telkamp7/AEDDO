@@ -4,6 +4,9 @@ library(readr)
 library(dplyr)
 library(numDeriv)
 
+# Source the negative log-likelihood functions
+source(file = "nll_PoisG.R")
+
 # Load in the processed data
 # dat <- read_rds(file = "../../data/processed/dat.rds") # 11-agegroups
 dat <- read_rds(file = "../../data/processed/dat2.rds") # 6-agegroups
@@ -13,13 +16,6 @@ y <- dat %>%
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
   group_by(Date) %>%
   reframe(y = sum(cases), n = sum(n))
-
-# Construct the negative log-likelihood function
-nll <- function(theta, x){
-  r <- 1/theta[2]
-  p <- 1/(theta[1]*theta[2]+1)
-  -sum(dnbinom(x = x, size = r, prob = p, log = TRUE))
-}
 
 # Optimize the parameters
 opt <- nlminb(start = c(1,1), objective = nll, x = y$y, lower = c(0,0))
@@ -46,35 +42,6 @@ y.age <- dat %>%
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
   group_by(Date, ageGroup) %>%
   reframe(y = sum(cases), n = sum(n))
-
-nll.age11 <- function(theta, data, formula){
-  # Extract counts
-  y <- data$y
-  # Construct the design matrix
-  designMatrix <- model.matrix(object = formula, data = data)
-  # Construct regression parameters
-  beta <- theta[1:ncol(designMatrix)]
-  #... and model parameters
-  phi <- theta[-(1:ncol(designMatrix))]
-  # # Extract agegroups
-  ageGroup <- data$ageGroup
-  
-  # Define parameters
-  lambda <- exp(designMatrix %*% beta - log(data$n))
-  
-  # Construct the size and probability for the negative binomial distribution
-  r <- 1/phi
-  p <- 1/(lambda*phi+1)
-  
-  # Initilize the log-likelihood
-  ll <- 0
-  for(i in 1:nrow(data)){
-    ll = ll + dnbinom(x = y[i], size = r[ageGroup[i]], prob = p[i], log = TRUE) 
-  }
-  
-  # Return the negative log-likelihood
-  -ll
-}
 
 formula <- y ~ -1 + ageGroup
 
@@ -131,35 +98,6 @@ y.age <- dat %>%
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
   group_by(Date, ageGroup) %>%
   reframe(y = sum(cases), n = sum(n))
-
-nll.age6 <- function(theta, data, formula){
-  # Extract counts
-  y <- data$y
-  # Construct the design matrix
-  designMatrix <- model.matrix(object = formula, data = data)
-  # Construct regression parameters
-  beta <- theta[1:ncol(designMatrix)]
-  #... and model parameters
-  phi <- theta[-(1:ncol(designMatrix))]
-  # # Extract agegroups
-  ageGroup <- data$ageGroup
-  
-  # Define parameters
-  lambda <- exp(designMatrix %*% beta - log(data$n))
-  
-  # Construct the size and probability for the negative binomial distribution
-  r <- 1/phi
-  p <- 1/(lambda*phi+1)
-  
-  # Initilize the log-likelihood
-  ll <- 0
-  for(i in 1:nrow(data)){
-    ll = ll + dnbinom(x = y[i], size = r, prob = p[i], log = TRUE) 
-  }
-  
-  # Return the negative log-likelihood
-  -ll
-}
 
 formula <- y ~ -1 + ageGroup
 
@@ -223,3 +161,80 @@ PoisG <- list(par.tbl = par.tbl.PoisG,
 # Write the results
 write_rds(x = PoisG, file = "PoissonGamma.rds")
 
+
+
+# Windowed estimation
+
+# Make months into integers
+y.design <- y.age %>%
+  mutate(Month = as.integer(format(Date, "%m")))
+
+k <- 36
+
+Dates <- y.design %>%
+  reframe(Date = unique(Date))
+
+TT <- length(Dates$Date)
+
+results.window <- tibble()
+
+# Construct initial parameters
+beta <- rep(14, nlevels(y.design$ageGroup))
+phi <- 0.5
+
+for(i in 1:(TT-k)){
+  
+  monthsInWindow <- Dates[i:(i+k-1),] 
+  
+  y.window <- y.design %>%
+    filter(Date %in% monthsInWindow$Date)
+  
+  formula <- y ~ -1 + ageGroup
+  
+  # Optimize the parameters
+  opt.age.window <- nlminb(start = c(beta, phi),
+                    objective = nll.age6.window,
+                    data = y.window,
+                    formula = formula,
+                    lower = rep(1e-6,nlevels(y.window$ageGroup)+1))
+  
+  # Extract number of agegroups
+  n.ageGroup <- n_distinct(y.window$ageGroup)
+  
+  # Calculate uncertainty directly in R
+  H <- hessian(nll.age6.window, opt.age.window$par, data = y.window, formula = formula)
+  se.theta <- sqrt(diag(solve(H)))
+  
+  # Construct parameter table
+  par.tbl.PoisG <- tibble(Parameter = c(paste0("$\\beta_{", levels(y.window$ageGroup), "}$"), "$\\phi$"),
+                          Estimate = opt.age.window$par,
+                          `Std. Error` = se.theta)
+  
+  # Extract number of agegroups
+  n.ageGroup <- n_distinct(y.window$ageGroup)
+  
+  # Define parameters
+  par.inf.PoisG <- tibble(ageGroup = levels(y.window$ageGroup),
+                          beta = opt.age.window$par[1:n.ageGroup],
+                          phi = opt.age.window$par[-c(1:n.ageGroup)])
+  
+  # Make inference on individual random effects
+  results <- y.window %>%
+    full_join(y = par.inf.PoisG, join_by(ageGroup)) %>%
+    mutate(lambda = exp(beta - log(n)), u = ( y*phi+1 )/( lambda * phi + 1 )) %>%
+    select(Date:n, u)
+  
+  # Combine the results in a tibble
+  results.window <- bind_rows(results.window,
+                              tibble(iter = i,
+                                     par = list(opt.age.window$par),
+                                     objective = opt.age.window$objective,
+                                     `Random Effects` = list(results$u)))
+  
+  # Construct parameter guess for next iteration
+  beta <- opt.age.window$par[1:nlevels(y.window$ageGroup)]
+  phi <- opt.age.window$par[nlevels(y.window$ageGroup)+1]
+  
+}
+
+write_rds(x = results.window, file = "windowedPoissonGamma.rds")
