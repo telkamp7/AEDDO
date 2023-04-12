@@ -1,6 +1,11 @@
 \chapter{Dataset}
 
-Test
+In Denmark the surveillance of infectious diseases is carried out by Statens Serum Institut (SSI), and it is a central part of the national and international disease preparedness. Thanks to The National Board of Health Statutory Order on Physicians' Notification of Infectious Diseases, the quality of the Danish surveillance registers is very high. In the Statutory Order it is stated that a number of diseases\footnote{For a full list of individually notifiable diseases see \href{https://www.ssi.dk/sygdomme-beredskab-og-forskning/anmeldelse-af-sygdomme/lovpligtige-meldesystemer/individ_anmeldelses_sygdomme}{\nolinkurl{https://www.ssi.dk/sygdomme-beredskab-og-forskning/anmeldelse-af-sygdomme/lovpligtige-meldesystemer/individ_anmeldelses_sygdomme}}} are individually notifiable for physicians and general practitioners. The notifications include relevant information on the patient, and are notified on a paper form to the Ministry of Health and to SSI, respectively.
 
+
+
+In Denmark the surveillance of infectious diseases is carried out by Statens Serum Institut (SSI), and it is a central part of the national and international disease preparedness. Thanks to the prior regulatory community framework for the national surveillance in Denmark, the quality of the Danish surveillance registers is very high. The surveillance includes continous registration and analysis of possible problems, e.g. changes in occurence of disease, outbreaks, new microorganisms and resistance patterns of more virulent types of already well-known viruses. A modern surveillance system comprises not only collection and registration of disease data, but also timely and continuous communication of knowledge to authorities responsible for treatment, prevention, and control. The national surveillance system comprises only diseases of serious character, diseases that are particulary infectious, and most of the vaccine-preventable diseases.
+
+\textbf{Include a section with plots and tables of the data.}
 
 \cleardoublepage

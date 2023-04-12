@@ -1,0 +1,16 @@
+\chapter{Results}
+
+\blindtext
+
+\section{Case studies}
+
+
+
+\blindtext
+
+\section{Simulation study}
+
+\blindtext
+
+\cleardoublepage
+
