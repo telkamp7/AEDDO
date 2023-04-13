@@ -1,0 +1,298 @@
+---
+title: "Automated and Early Detection of Disease Outbreaks"
+project: "Automated and Early Detection of Disease Outbreaks"
+author: "Kasper Schou Telkamp"
+institute: "Section for Dynamical Systems"
+date: "2023-02-09"
+---
+
+```{r setup, include=FALSE}
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  paste0("\n \\", "tiny","\n\n", x, "\n\n \\normalsize")
+})
+
+library(dplyr)
+library(kableExtra)
+library(knitr)
+library(psych)
+library(readr)
+library(TMB)
+
+# Dynamically link the C++ template
+dyn.load(dynlib(name = "../src/models/PoissonNormal"))
+
+# Load in the processed data
+# dat <- read_rds(file = "../data/processed/dat.rds") # 11-agegroups
+dat <- read_rds(file = "../data/processed/dat2.rds") # 6-agegroups
+# Only consider some of the data
+y <- dat %>%
+  filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
+  group_by(Date, ageGroup) %>%
+  reframe(y = sum(cases), n = sum(n))
+
+# Load the Poisson-lognormal model
+PoisLN <- read_rds(file = "../src/models/PoissonNormal.rds")
+# ... and generate report
+rep <- sdreport(PoisLN, getJointPrecision = TRUE)
+
+# Extract agegroups
+ageGroup <- levels(y$ageGroup)
+
+# res <- tibble(ageGroup = ageGroup,
+#        `$\\lambda$` = rep$par.fixed[1:11],
+#        `$\\sigma$` = exp(rep$par.fixed[12:22]))
+
+
+names(rep$par.fixed) <- c(paste0("$\\beta_{", ageGroup, "}$"), "$\\sigma$")
+
+res <- tibble(Parameter = names(rep$par.fixed),
+              Estimate = c(rep$par.fixed[1:nlevels(y$ageGroup)],
+                           exp(rep$par.fixed[nlevels(y$ageGroup)+1])),
+              `Std. Error` = sqrt(diag(rep$cov.fixed)))
+
+# Load the Poisson-Gamma model
+PoisG <- read_rds(file = "../src/models/PoissonGamma.rds")
+
+```
+
+# Data exploration
+
+## VTEC / STEC {.unlisted .unnumbered}
+
+```{r VTECTable, echo=FALSE}
+
+options(knitr.kable.NA = "...")
+
+
+y.tbl <- headTail(y)
+names(y.tbl) <- c("Date", "ageGroup", "$y_{it}$", "$x_{it}$") 
+
+kable(y.tbl,
+      digits = 2, 
+      format = "latex",
+      booktabs = TRUE, 
+      linesep = "",
+      escape = FALSE) %>%
+  kable_styling(full_width = F, font_size = 12)
+
+```
+
+### VTEC / STEC
+
+```{r EpixSTEC, echo=FALSE, out.width="100%"}
+include_graphics("../figures/EpixSTEC.png")
+```
+
+### VTEC / STEC
+
+```{r STECxEpixAgeGroup, echo=FALSE, out.width="100%"}
+include_graphics("../figures/STECxEpixAgeGroup.png")
+```
+
+### VTEC / STEC
+
+```{r VTECFigure, echo=FALSE, out.width="100%"}
+include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
+```
+
+
+
+# Hierachical Poisson-Normal model
+
+## Formulation
+
+The conditional distribution, $Y|u$, of the count observations are assumed to be a Poisson distribution with intensities $\lambda_{it}$. Also, we shall assume that the count is proportional to the population size, $x_{it}$, within each age group, $i$, at a given time point, $t$. Hence, in terms of the canonical link for the Poisson distribution the model for the fixed effect is
+
+\begin{equation}
+  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
+\end{equation}
+
+Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. The random effects $u_{it}$ are assumed to be Gaussian.
+
+\begin{equation}
+  u_{it} = \epsilon_{it}
+\end{equation}
+
+where $\epsilon_{it}\sim\N(0,\sigma^2)$ is a white noise process, and $\sigma$ is a model parameter.
+
+### Fomulation
+
+Henceforth, the model can be formulated as a two-level hierarchical model
+
+\begin{subequations}
+  \begin{alignat}{2}
+    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}e^{u_{it}}) \label{eq:pois_ln0} \\ 
+    u_{it} &\sim \N(0,\sigma^2) \label{eq:pois_ln1}
+  \end{alignat}
+\end{subequations}
+
+## Results
+
+```{r PoisLN, echo=FALSE, comment=""}
+kable(res,
+      digits = 2, 
+      format = "latex",
+      booktabs = TRUE, 
+      escape = FALSE,
+      linesep = "") %>%
+  kable_styling(full_width = F, font_size = 10)
+```
+
+### Results
+
+```{r windowedSTEDPoisN, echo=FALSE, out.width="100%"}
+include_graphics("../figures/windowedSTEDPoisN.png")
+```
+
+### Results
+
+```{r windowedSTEDPoisNExclude, echo=FALSE, out.width="100%"}
+include_graphics("../figures/windowedSTEDPoisNExclude.png")
+```
+
+# Hierachical Poisson-Gamma model
+
+## Formulation
+Likewise, in the compound Poisson-Gamma model the conditional distribution, $Y|u$, of the count observations are assumed to be a Poisson distribution, but this time the intensities, $\lambda_{it}$, are defined as
+
+\begin{equation}
+  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
+\end{equation}
+
+Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. Additionally, the random effects $u_{it}$ are assumed to be Gamma distributed.
+
+### Formulation
+
+Subsequently, the model can be formulated as a two-level hierarchical model
+
+\begin{subequations} \label{eq:PoisGam}
+  \begin{alignat}{2}
+    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}u_{it}) \label{eq:pois_g0} \\ 
+    u_{it} &\sim \G(1/\phi_{i},\phi_{i}) \label{eq:pois_g1}
+  \end{alignat}
+\end{subequations}
+
+## Probability function for $Y$
+
+\begin{equation} \label{eq:pdfMix}
+  \begin{aligned}
+    P[Y=y_i]&=g_{Y}(y;\lambda, \phi) \\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}}\frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}} \\
+    &=\frac{\Gamma(y+1/\phi)}{\Gamma(1/\phi)y!}\frac{1}{(\lambda\phi+1)^{1/\phi}}\bigg(\frac{\lambda\phi}{\lambda\phi+1}\bigg)^{y} \\
+    &=\begin{pmatrix} y+1/\phi-1 \\ y \end{pmatrix} \frac{1}{(\lambda\phi+1)^{1/\phi}}\bigg(\frac{\lambda\phi}{\lambda\phi+1}\bigg)^{y} \ , \ for \ y = 0, 1, 2, \dots
+  \end{aligned}
+\end{equation}
+
+where we have used the convention
+
+\begin{equation}
+  \begin{pmatrix} z\\y \end{pmatrix} = \frac{\Gamma(z+1)}{\Gamma(z+1-y)y!}
+\end{equation}
+
+The marginal distribution of $Y$ is a negative binomial distribution, $Y\sim \NB\big(1/\phi,1/(\lambda \phi+1)\big)$
+
+### Proof
+
+The probability function for the conditional distribution of $Y$ for given $u$
+
+\begin{equation} \label{eq:pdfPois}
+  f_{Y|u}(y;\lambda, u)=\frac{(\lambda u)^y}{y!} \exp (-\lambda u)
+\end{equation}
+
+and the probability density function for the distribution of $u$ is
+
+\begin{equation} \label{eq:pdfGamma}
+  f_{u}(u;\phi)=\frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)
+\end{equation}
+
+### Proof
+
+Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability function for the marginal distribution of $Y$ is determined from
+
+\begin{equation} \label{eq:marMix}
+  \begin{aligned}
+    g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) \,du \\
+    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi) \,du\\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi-1} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
+  \end{aligned}
+\end{equation}
+
+### Proof
+
+In \eqref{eq:marMix} it is noted that the integrand is the *kernel* in the probability density function for a Gamma distribution, $\G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)$. As the integral of the density shall equal one, we find by adjusting the norming constant that
+
+\begin{equation}
+  \int_{u=0}^\infty u^{y+1/\phi-1} \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}}
+\end{equation}
+
+and then \eqref{eq:pdfMix} follows
+
+## Inference on individual group means
+
+Consider the hierarchical Poisson-Gamma model in \eqref{eq:PoisGam}, and assume that a value $Y=y$ has been observed. Then the conditional distribution of $u$ for given $Y=y$ is a Gamma distribution,
+
+\begin{equation}
+  u|Y=y\sim \G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)
+\end{equation}
+
+with mean
+
+\begin{equation}
+  \E[u|Y=y]=\frac{y\phi+1}{\lambda\phi+1}
+\end{equation}
+
+and variance
+
+\begin{equation}
+  \V[u|Y=y]=\frac{(y \phi^2+\phi)}{(\lambda \phi + 1)^2}
+\end{equation}
+
+### Proof
+
+The conditional distribution is found using Bayes Theorem
+
+\begin{equation}
+  \begin{aligned}
+    g_{u}(u|Y=y)&=\frac{f_{y,u}(y,u)}{g_Y(y;\lambda, \phi)} \\
+    &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\phi)} \\
+    &=\frac{1}{g_{Y}(y;\lambda,\phi)}\bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)\bigg) \\
+    &\propto u^{y+1/\phi-1} \exp \big(- u(\lambda\phi+1)/\phi\big)
+  \end{aligned}
+\end{equation}
+
+We identify the *kernel* of the probability density function
+
+\begin{equation}
+  u^{y+1/\phi-1} \exp (- u(\lambda\phi+1)/\phi)
+\end{equation}
+
+as the kernel of a Gamma distribution, $\G(y+1/\phi,\phi/(\lambda\phi+1))$
+
+## Results
+
+
+```{r PoisG, echo=FALSE}
+
+kable(PoisG$par.tbl,
+      digits = 2, 
+      format = "latex",
+      booktabs = TRUE, 
+      escape = FALSE,
+      linesep = "") %>%
+  kable_styling(full_width = F, font_size = 10)
+
+```
+
+### Results
+
+```{r windowedSTECPoisG, echo=FALSE, out.width="100%"}
+include_graphics("../figures/windowedSTECPoisG.png")
+```
+
+### Results
+
+```{r windowedSTECPoisGExclude, echo=FALSE, out.width="100%"}
+include_graphics("../figures/windowedSTECPoisGExclude.png")
+```
