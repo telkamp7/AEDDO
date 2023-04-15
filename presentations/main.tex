@@ -2,12 +2,19 @@
 
 % Default packages
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{csquotes}
 \usepackage{pgfplots}
 \pgfplotsset{compat=newest}
 \usepackage{booktabs}
 \usepackage{siunitx}
 \usepackage{amsmath}
+\usepackage[backend=bibtex,style=authoryear]{biblatex}
+\bibliography{bibliography.bib}
+
+% Removes icon in bibliography
+\setbeamertemplate{bibliography item}{}
 
 % Font selection
 % Latin Modern
@@ -27,8 +34,6 @@
 $if(highlighting-macros)$
 $highlighting-macros$
 $endif$
-
-
 
 % Use DTU theme, see below for options
 \usetheme[department=compute]{DTU}

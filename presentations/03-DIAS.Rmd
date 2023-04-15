@@ -59,7 +59,7 @@ PoisG <- read_rds(file = "../src/models/PoissonGamma.rds")
 
 # Data exploration
 
-## VTEC / STEC {.unlisted .unnumbered}
+## Shiga- and verotoxin producing E. coli.
 
 ```{r VTECTable, echo=FALSE}
 
@@ -79,29 +79,42 @@ kable(y.tbl,
 
 ```
 
-### VTEC / STEC
-
+### Shiga- and verotoxin producing E. coli.
 ```{r EpixSTEC, echo=FALSE, out.width="100%"}
 include_graphics("../figures/EpixSTEC.png")
 ```
 
-### VTEC / STEC
+### Shiga- and verotoxin producing E. coli.
 
 ```{r STECxEpixAgeGroup, echo=FALSE, out.width="100%"}
 include_graphics("../figures/STECxEpixAgeGroup.png")
 ```
 
-### VTEC / STEC
+### Shiga- and verotoxin producing E. coli.
 
 ```{r VTECFigure, echo=FALSE, out.width="100%"}
 include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 ```
 
+# State-of-the-art
 
+State-of-the-art methods for aberration detection is presented in \cite{Salmon_2016} and implemented in the R package **surveillance**. The R package includes methods such as the Farrington method introduced by \cite{Farrington_1996} together with the improvements proposed by \cite{Noufaily_2013}.
 
-# Hierachical Poisson-Normal model
+## Farrington
 
-## Formulation
+```{r STEC_Farrington, echo=FALSE, out.width="100%"}
+include_graphics("../figures/STEC_farrington.png")
+```
+
+## Noufaily
+
+```{r STEC_Noufaily, echo=FALSE, out.width="100%"}
+include_graphics("../figures/STEC_noufaily.png")
+```
+
+# Hierarchical models
+
+## Hierachical Poisson-Normal model
 
 The conditional distribution, $Y|u$, of the count observations are assumed to be a Poisson distribution with intensities $\lambda_{it}$. Also, we shall assume that the count is proportional to the population size, $x_{it}$, within each age group, $i$, at a given time point, $t$. Hence, in terms of the canonical link for the Poisson distribution the model for the fixed effect is
 
@@ -117,7 +130,7 @@ Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contain
 
 where $\epsilon_{it}\sim\N(0,\sigma^2)$ is a white noise process, and $\sigma$ is a model parameter.
 
-### Fomulation
+### Formulation
 
 Henceforth, the model can be formulated as a two-level hierarchical model
 
@@ -128,7 +141,12 @@ Henceforth, the model can be formulated as a two-level hierarchical model
   \end{alignat}
 \end{subequations}
 
-## Results
+### Threshold calculation
+
+Here should be something about threshold calculation
+
+
+### Results
 
 ```{r PoisLN, echo=FALSE, comment=""}
 kable(res,
@@ -142,19 +160,12 @@ kable(res,
 
 ### Results
 
-```{r windowedSTEDPoisN, echo=FALSE, out.width="100%"}
-include_graphics("../figures/windowedSTEDPoisN.png")
-```
-
-### Results
-
 ```{r windowedSTEDPoisNExclude, echo=FALSE, out.width="100%"}
 include_graphics("../figures/windowedSTEDPoisNExclude.png")
 ```
 
-# Hierachical Poisson-Gamma model
+## Hierachical Poisson-Gamma model
 
-## Formulation
 Likewise, in the compound Poisson-Gamma model the conditional distribution, $Y|u$, of the count observations are assumed to be a Poisson distribution, but this time the intensities, $\lambda_{it}$, are defined as
 
 \begin{equation}
@@ -174,7 +185,7 @@ Subsequently, the model can be formulated as a two-level hierarchical model
   \end{alignat}
 \end{subequations}
 
-## Probability function for $Y$
+### Probability function for $Y$
 
 \begin{equation} \label{eq:pdfMix}
   \begin{aligned}
@@ -193,43 +204,7 @@ where we have used the convention
 
 The marginal distribution of $Y$ is a negative binomial distribution, $Y\sim \NB\big(1/\phi,1/(\lambda \phi+1)\big)$
 
-### Proof
-
-The probability function for the conditional distribution of $Y$ for given $u$
-
-\begin{equation} \label{eq:pdfPois}
-  f_{Y|u}(y;\lambda, u)=\frac{(\lambda u)^y}{y!} \exp (-\lambda u)
-\end{equation}
-
-and the probability density function for the distribution of $u$ is
-
-\begin{equation} \label{eq:pdfGamma}
-  f_{u}(u;\phi)=\frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)
-\end{equation}
-
-### Proof
-
-Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability function for the marginal distribution of $Y$ is determined from
-
-\begin{equation} \label{eq:marMix}
-  \begin{aligned}
-    g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) \,du \\
-    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi) \,du\\
-    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi-1} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
-  \end{aligned}
-\end{equation}
-
-### Proof
-
-In \eqref{eq:marMix} it is noted that the integrand is the *kernel* in the probability density function for a Gamma distribution, $\G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)$. As the integral of the density shall equal one, we find by adjusting the norming constant that
-
-\begin{equation}
-  \int_{u=0}^\infty u^{y+1/\phi-1} \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}}
-\end{equation}
-
-and then \eqref{eq:pdfMix} follows
-
-## Inference on individual group means
+### Inference on individual group means
 
 Consider the hierarchical Poisson-Gamma model in \eqref{eq:PoisGam}, and assume that a value $Y=y$ has been observed. Then the conditional distribution of $u$ for given $Y=y$ is a Gamma distribution,
 
@@ -249,7 +224,79 @@ and variance
   \V[u|Y=y]=\frac{(y \phi^2+\phi)}{(\lambda \phi + 1)^2}
 \end{equation}
 
-### Proof
+### Threshold calculation
+
+Here should be something about threshold calculation
+
+### Results
+
+```{r PoisG, echo=FALSE}
+
+kable(PoisG$par.tbl,
+      digits = 2, 
+      format = "latex",
+      booktabs = TRUE, 
+      escape = FALSE,
+      linesep = "") %>%
+  kable_styling(full_width = F, font_size = 10)
+
+```
+
+### Results
+
+```{r windowedSTECPoisGExclude, echo=FALSE, out.width="100%"}
+include_graphics("../figures/windowedSTECPoisGExclude.png")
+```
+
+# Comparison of methods
+
+```{r compareMethods, echo=FALSE, out.width="100%"}
+include_graphics("../figures/compareMethods.png")
+```
+
+# References
+
+\printbibliography[heading=none]
+
+# Appendix
+
+### Proof - Probability function for *Y*
+
+The probability function for the conditional distribution of $Y$ for given $u$
+
+\begin{equation} \label{eq:pdfPois}
+  f_{Y|u}(y;\lambda, u)=\frac{(\lambda u)^y}{y!} \exp (-\lambda u)
+\end{equation}
+
+and the probability density function for the distribution of $u$ is
+
+\begin{equation} \label{eq:pdfGamma}
+  f_{u}(u;\phi)=\frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)
+\end{equation}
+
+### Proof - Probability function for *Y*
+
+Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability function for the marginal distribution of $Y$ is determined from
+
+\begin{equation} \label{eq:marMix}
+  \begin{aligned}
+    g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) \,du \\
+    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi) \,du\\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi-1} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
+  \end{aligned}
+\end{equation}
+
+### Proof - Probability function for *Y*
+
+In \eqref{eq:marMix} it is noted that the integrand is the *kernel* in the probability density function for a Gamma distribution, $\G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)$. As the integral of the density shall equal one, we find by adjusting the norming constant that
+
+\begin{equation}
+  \int_{u=0}^\infty u^{y+1/\phi-1} \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}}
+\end{equation}
+
+and then \eqref{eq:pdfMix} follows
+
+### Proof - Conditional distribution of *Y*
 
 The conditional distribution is found using Bayes Theorem
 
@@ -269,30 +316,3 @@ We identify the *kernel* of the probability density function
 \end{equation}
 
 as the kernel of a Gamma distribution, $\G(y+1/\phi,\phi/(\lambda\phi+1))$
-
-## Results
-
-
-```{r PoisG, echo=FALSE}
-
-kable(PoisG$par.tbl,
-      digits = 2, 
-      format = "latex",
-      booktabs = TRUE, 
-      escape = FALSE,
-      linesep = "") %>%
-  kable_styling(full_width = F, font_size = 10)
-
-```
-
-### Results
-
-```{r windowedSTECPoisG, echo=FALSE, out.width="100%"}
-include_graphics("../figures/windowedSTECPoisG.png")
-```
-
-### Results
-
-```{r windowedSTECPoisGExclude, echo=FALSE, out.width="100%"}
-include_graphics("../figures/windowedSTECPoisGExclude.png")
-```

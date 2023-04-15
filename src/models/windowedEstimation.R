@@ -54,11 +54,14 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
     # Compute the dates in window
     datesInWindow <- Dates[i:(i+k-1),]
     #... and the reference date
-    refData <- Dates[(i+k-1),]
+    refDate <- Dates[(i+k),]
     
     # Extract the observations in this window
     yWindow <- data %>%
       filter(Date %in% datesInWindow$Date)
+    #... and the reference data
+    refData <- data %>%
+      filter(Date %in% refDate)
     
     
     # Exclude past observations, if they were deemed an outbreak
@@ -75,22 +78,41 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
     
     if(model == "PoissonNormal"){
       
-      # Make the function
+      # Make the function for the window
       PoisLN <- MakeADFun(
         data = list(y = yWindow$y, x = yWindow$n, X = designMatrix),
         parameters = list(u = rep(1, length(yWindow$y)),
-                          beta = theta[1:nlevels(yWindow$ageGroup)],
-                          log_sigma_u = theta[nlevels(yWindow$ageGroup)+1]),
+                          beta = theta[1:ncol(designMatrix)],
+                          log_sigma_u = theta[-(1:ncol(designMatrix))]),
+        hessian = TRUE,
         random = "u",
         DLL = "PoissonNormal",
         silent = TRUE
       )
       
       # Optimize the function
-      opt <- nlminb(start = PoisLN$par, PoisLN$fn, PoisLN$gr, lower = lower)
-      
+      opt <- do.call(what = "optim", args = PoisLN)
+    
       ## Report on the random effects
       rep <- sdreport(PoisLN)
+      
+      # Make a design matrix for the reference data
+      refDesign <- model.matrix(object = formula, data = refData)
+      
+      # Make the function for the reference data
+      refPoisLN <- MakeADFun(
+        data = list(y = refData$y, x = refData$n, X = refDesign),
+        parameters = list(u = rep(1, length(refData$y)),
+                          beta = theta[1:ncol(refDesign)],
+                          log_sigma_u = theta[-(1:ncol(refDesign))]),
+        random = "u",
+        DLL = "PoissonNormal",
+        silent = TRUE
+      )
+      
+      # Calculate the random effects
+      refRep <- sdreport(obj = refPoisLN, par.fixed = opt$par, hessian.fixed = opt$hessian)
+      
       # Extract the standard deviation on the fixed effect parameter estimates
       se.theta <- sqrt(diag(rep$cov.fixed))
       
@@ -98,12 +120,23 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
       log_sigma <- opt$par[nlevels(yWindow$ageGroup)+1]
       
       # Make inference on random effects and calculate alarms
+      # ran.ef <- tibble(
+      #   window.date = yWindow$Date,
+      #   ageGroup = yWindow$ageGroup,
+      #   n = yWindow$n,
+      #   y = yWindow$y,
+      #   u = rep$par.random,
+      #   p = pnorm(q = u, mean = 0, sd = exp(log_sigma)),
+      #   alarm = p >= 0.95
+      # )
+      
       ran.ef <- tibble(
-        window.date = yWindow$Date,
-        ageGroup = yWindow$ageGroup,
-        n = yWindow$n,
-        y = yWindow$y,
-        u = rep$par.random,
+        ref.date = refDate$Date,
+        ageGroup = refData$ageGroup,
+        n = refData$n,
+        y = refData$y,
+        log_sigma = opt$par[-(1:ncol(designMatrix))],
+        u = refRep$par.random,
         p = pnorm(q = u, mean = 0, sd = exp(log_sigma)),
         alarm = p >= 0.95
       )
@@ -119,12 +152,13 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
       # Combine the results in a tibble
       results <- bind_rows(results,
                            tibble(
-                             ref.date = refData$Date,
+                             ref.date = refDate$Date,
                              par = list(par),
-                             log_sigma = opt$par[nlevels(yWindow$ageGroup)+1],
+                             log_sigma = opt$par[-(1:ncol(designMatrix))],
                              # theta = list(opt$par),
                              # se.theta = list(se.theta),
                              objective = opt$objective,
+                             window.data = list(yWindow),
                              ran.ef = list(ran.ef)
                              )
                            )
@@ -139,7 +173,6 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
                     objective = nll,
                     data = yWindow,
                     designMatrix = designMatrix,
-                    # formula = formula,
                     lower = lower)
       
       # Calculate the hessian
@@ -152,21 +185,35 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
       names(se.theta) <- names(opt$par)
       
       # Reconstruct the parameters
-      beta <- opt$par[1:nlevels(yWindow$ageGroup)]
-      lambda <- c(exp(designMatrix %*% beta - log(yWindow$n)))
-      # lambda <- exp(beta - log(yWindow$n))
-      phi <- opt$par[nlevels(yWindow$ageGroup)+1]
+      # beta <- opt$par[1:ncol(designMatrix)]
+      # lambda <- c(exp(designMatrix %*% beta - log(yWindow$n)))
+      # # lambda <- exp(beta - log(yWindow$n))
+      # phi <- opt$par[-(1:ncol(designMatrix))]
       
-      # Make inference on the random effects
+      # # Make inference on the random effects
+      # ran.ef <- tibble(
+      #   window.date = yWindow$Date,
+      #   ageGroup = yWindow$ageGroup,
+      #   n = yWindow$n,
+      #   y = yWindow$y,
+      #   u = ( yWindow$y*phi+1 ) / ( lambda*phi+1 ),
+      #   p = pgamma(q = u, shape = 1/phi, scale = phi),
+      #   alarm = p >= 0.95
+      #   )
+      
       ran.ef <- tibble(
-        window.date = yWindow$Date,
-        ageGroup = yWindow$ageGroup,
-        n = yWindow$n,
-        y = yWindow$y,
-        u = ( yWindow$y*phi+1 ) / ( lambda*phi+1 ),
+        ref.date = refDate$Date,
+        ageGroup = refData$ageGroup,
+        n = refData$n,
+        y = refData$y,
+        refDesign = model.matrix(object = formula, data = refData),
+        beta = opt$par[1:ncol(refDesign)],
+        phi = opt$par[-(1:ncol(refDesign))],
+        lambda = c(exp(refDesign %*% beta - log(n))),
+        u = ( y*phi+1 ) / (lambda * phi + 1),
         p = pgamma(q = u, shape = 1/phi, scale = phi),
         alarm = p >= 0.95
-        )
+      )
       
       # u <- ( yWindow$y*phi+1 ) / ( lambda*phi+1 )
       
@@ -180,24 +227,25 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
       # Collect the results
       results <- bind_rows(results,
                            tibble(
-                             ref.date = refData$Date,
+                             ref.date = refDate$Date,
                              par = list(par),
-                             phi = opt$par[nlevels(yWindow$ageGroup)+1],
+                             phi = opt$par[-(1:ncol(designMatrix))],
                              # theta = list(opt$par),
                              # se.theta = list(se.theta),
                              objective = opt$objective,
+                             window.data = list(yWindow),
                              ran.ef = list(ran.ef)
                              )
                            )
       
       # Use current estimate as guess for the next iteration
-      theta <- c(beta,phi)
+      theta <- opt$par
     }
     
     if(excludePastOutbreaks == TRUE & sum(ran.ef$alarm) > 0){
       pastOutbreaks <- ran.ef %>%
         filter(alarm == TRUE) %>%
-        select(Date = window.date, ageGroup, y, n) %>%
+        select(Date = ref.date, ageGroup, y, n) %>%
         bind_rows(pastOutbreaks)
     }
     
@@ -207,16 +255,16 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
   
 }
 
-# theta <- rep(1,7)
+theta <- rep(1,7)
 # 
-# PoissonGamma <- windowedEstimation(data = y,
-#                           k = 36,
-#                           nll = nll.age6.window,
-#                           theta = theta,
-#                           formula = y ~ -1 + ageGroup,
-#                           lower = rep(1e-6,7),
-#                           model = "PoissonGamma",
-#                           excludePastOutbreaks = TRUE)
+PoissonGamma <- windowedEstimation(data = y,
+                          k = 36,
+                          nll = nll.model,
+                          theta = theta,
+                          formula = y ~ -1 + ageGroup,
+                          lower = rep(1e-6,7),
+                          model = "PoissonGamma",
+                          excludePastOutbreaks = TRUE)
 # 
 # PoissonNormal <- windowedEstimation(data = y,
 #                                     k = 36,
@@ -239,7 +287,7 @@ STEC_res <- dat_nest %>%
       windowedEstimation(
       data = df,
       k = 36,
-      nll = nll.age6.window,
+      nll = nll.model,
       theta = rep(1,7),
       formula = y~ -1 + ageGroup,
       lower = rep(1e-6,7),
@@ -251,7 +299,7 @@ STEC_res <- dat_nest %>%
       windowedEstimation(
       data = df,
       k = 36,
-      nll = nll.age6.window,
+      nll = nll.model,
       theta = rep(1,7),
       formula = y~ -1 + ageGroup,
       lower = rep(1e-6,7),
@@ -263,7 +311,7 @@ STEC_res <- dat_nest %>%
       windowedEstimation(
         data = df,
         k = 36,
-        nll = nll.age6.window,
+        nll = nll.model,
         theta = rep(1,7),
         formula = y~ -1 + ageGroup,
         lower = c(rep(1e-6,6),-4),
@@ -275,7 +323,7 @@ STEC_res <- dat_nest %>%
       windowedEstimation(
         data = df,
         k = 36,
-        nll = nll.age6.window,
+        nll = nll.model,
         theta = rep(1,7),
         formula = y~ -1 + ageGroup,
         lower = c(rep(1e-6,6),-4),

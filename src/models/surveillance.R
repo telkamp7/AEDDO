@@ -6,7 +6,7 @@ library(tidyr)
 library(surveillance)
 
 # Import the data
-dat <- read_rds(file = "../../data/processed/dat.rds")
+dat <- read_rds(file = "../../data/processed/dat2.rds")
 
 # Only consider some of the data
 y <- dat %>%

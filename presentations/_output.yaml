@@ -3,3 +3,4 @@ beamer_presentation:
         template: main.tex
         keep_tex: true
         slide_level: 3
+bibliography: bibliography.bib       

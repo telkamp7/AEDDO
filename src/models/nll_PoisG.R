@@ -68,6 +68,22 @@ nll.age6 <- function(theta, data, formula){
   -ll
 }
 
+nll.model <- function(theta, data, designMatrix){
+  # Extract counts
+  y <- data$y
+  # Construct regression parameters
+  beta <- theta[1:ncol(designMatrix)]
+  #... and model parameters
+  phi <- theta[-(1:ncol(designMatrix))]
+  # Define parameters
+  lambda <- exp(designMatrix %*% beta - log(data$n))
+  # Construct the size and probability for the negative binomial distribution
+  r <- 1/phi
+  p <- 1/(lambda*phi+1)
+  # Return the negative log-likelihood
+  -sum( dnbinom(x = y, size = r, prob = p, log = TRUE) )
+}
+
 nll.age6.window <- function(theta, data, designMatrix){
   # Extract counts
   y <- data$y

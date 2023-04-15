@@ -163,7 +163,8 @@ for(c in caseDef){
     group_by(Date, ageGroup) %>%
     reframe(cases = sum(cases), n = sum(n)) %>%
     ggplot(mapping = aes(x = Date, y = cases/n * 1e5, colour = ageGroup)) +
-    geom_point() +
+    geom_line(size = 0.4) +
+    geom_point(size = 2) +
     facet_wrap(facets = vars(ageGroup), scales = "free_y") +
     scale_y_continuous(name = "Number of cases per 100.000") +
     scale_colour_manual(values = dtuPalette) +
@@ -313,20 +314,36 @@ STEC_farrington_tbl <- observed %>%
   full_join(y = population, join_by(Date, ageGroup)) %>%
   mutate(dateOfAlarm = if_else(alarm, Date, NA))
 
-STEC_farrington_tbl %>%
+
+tmp <- dat %>% 
+  filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>% 
+  group_by(Date, ageGroup) %>%
+  reframe(cases = sum(cases), n = sum(n)) %>%
+  left_join(STEC_farrington_tbl)
+
+
+
+dat %>% 
+  filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>% 
+  group_by(Date, ageGroup) %>%
+  reframe(cases = sum(cases), n = sum(n)) %>%
+  left_join(STEC_farrington_tbl) %>%
+  mutate(alarm = if_else(is.na(alarm), FALSE, alarm)) %>%
   ggplot(mapping = aes(x = Date, colour = ageGroup)) +
-  geom_point(mapping = aes(y = y/n*1e5)) +
-  geom_line(mapping = aes(y = threshold/n*1e5), lty = "dotted", size = 0.5) +
-  geom_rug(mapping = aes(x = dateOfAlarm, y = NULL), outside = TRUE, sides = "b", inherit.aes = FALSE) +
-  coord_cartesian(clip = "off") +
+  geom_line(mapping = aes(y = cases/n*1e5), size = 0.4) +
+  geom_point(mapping = aes(y = cases/n*1e5, shape = alarm), size = 2) +
+  geom_line(mapping = aes(x = Date, y = threshold/n*1e5), lty = "dashed", size = 0.4, inherit.aes = FALSE) +
   facet_wrap(facets = vars(ageGroup), scales = "free_y") +
   scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_x_date(name = "Time [Months]") +
   scale_colour_manual(values = dtuPalette) +
-  guides(colour = "none") +
+  scale_shape_manual(values = c(19,1)) +
+  guides(colour = "none", shape = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
-        axis.ticks.x = element_blank(),
+        # axis.ticks.x = element_blank(),
         axis.text.x = element_text(vjust = -1.2)) +
-  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Farrington method")
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Farrington method") +
+  annotate(geom = "rect", xmin = as.Date("2008-01-01")-10, xmax = as.Date("2011-03-01"), ymin = -Inf, ymax = Inf, alpha = 0.2)
 ggsave(filename = "STEC_farrington.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 
 # Load the Farrington-method
@@ -366,20 +383,29 @@ STEC_noufaily_tbl <- observed %>%
   full_join(y = population, join_by(Date, ageGroup)) %>%
   mutate(dateOfAlarm = if_else(alarm, Date, NA))
 
-STEC_noufaily_tbl %>%
+dat %>% 
+  filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>% 
+  group_by(Date, ageGroup) %>%
+  reframe(cases = sum(cases), n = sum(n)) %>%
+  left_join(STEC_noufaily_tbl) %>%
+  mutate(alarm = if_else(is.na(alarm), FALSE, alarm)) %>%
   ggplot(mapping = aes(x = Date, colour = ageGroup)) +
-  geom_point(mapping = aes(y = y/n*1e5)) +
-  geom_line(mapping = aes(y = threshold/n*1e5), lty = "dotted", size = 0.5) +
-  geom_rug(mapping = aes(x = dateOfAlarm, y = NULL), outside = TRUE, sides = "b", inherit.aes = FALSE) +
-  coord_cartesian(clip = "off") +
+  geom_line(mapping = aes(y = cases/n*1e5), size = 0.4) +
+  geom_point(mapping = aes(y = cases/n*1e5, shape = alarm), size = 2) +
+  geom_line(mapping = aes(x = Date, y = threshold/n*1e5), lty = "dashed", size = 0.4, inherit.aes = FALSE) +
+  # geom_rug(mapping = aes(x = dateOfAlarm, y = NULL), outside = TRUE, sides = "b", inherit.aes = FALSE) +
+  # coord_cartesian(clip = "off") +
   facet_wrap(facets = vars(ageGroup), scales = "free_y") +
   scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_x_date(name = "Time [Months]") +
   scale_colour_manual(values = dtuPalette) +
-  guides(colour = "none") +
+  scale_shape_manual(values = c(19,1)) +
+  guides(colour = "none", shape = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
-        axis.ticks.x = element_blank(),
+        # axis.ticks.x = element_blank(),
         axis.text.x = element_text(vjust = -1.2)) +
-  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Noufaily method")
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Noufaily method") +
+  annotate(geom = "rect", xmin = as.Date("2008-01-01")-10, xmax = as.Date("2011-03-01"), ymin = -Inf, ymax = Inf, alpha = 0.2)
 ggsave(filename = "STEC_noufaily.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 
 
@@ -410,25 +436,25 @@ STEC_res %>%
   select(PoissonGamma) %>%
   unnest(PoissonGamma) %>% 
   ungroup() %>%
+  select(ran.ef) %>%
   unnest(ran.ef) %>%
-  select(ref.date, window.date, u,  phi, ageGroup, alarm) %>%
-  mutate(dateOfAlarm = if_else(alarm, window.date, NA)) %>%
-  filter(ref.date == window.date) %>%
-  ggplot(mapping = aes(x = window.date, y = u, colour = ageGroup)) +
-  geom_line() +
-  geom_point() +
-  geom_line(mapping = aes(x = window.date,
+  select(ref.date, ageGroup, u, phi, alarm) %>%
+  mutate(dateOfAlarm = if_else(alarm, ref.date, NA)) %>%
+  ggplot(mapping = aes(x = ref.date, y = u, colour = ageGroup)) +
+  geom_line(mapping = aes(y = u), linewidth = 0.4) +
+  geom_point(mapping = aes(y = u, shape = alarm), size = 2) +
+  geom_line(mapping = aes(x = ref.date,
                           y = qgamma(p = 0.95, shape = 1/phi, scale = phi)),
             lty = "dashed", inherit.aes = FALSE) +
   geom_rug(mapping = aes(x = dateOfAlarm, y = NULL),
            outside = TRUE, sides = "b", inherit.aes = FALSE) +
-  coord_cartesian(clip = "off") +
   facet_wrap(facets = vars(ageGroup)) +
   scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
+  scale_x_date(name = "Time [Months]") +
   scale_colour_manual(values = dtuPalette) +
-  guides(colour = "none") +
+  scale_shape_manual(values = c(19,1)) +
+  guides(colour = "none", shape = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
-        axis.ticks.x = element_blank(),
         axis.text.x = element_text(vjust = -1.2)) +
   ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Compound Poisson Gamma model")
 ggsave(filename = "windowedSTECPoisG.png",
@@ -443,25 +469,25 @@ STEC_res %>%
   select(PoissonGamma_excludePastOutbreaks) %>%
   unnest(PoissonGamma_excludePastOutbreaks) %>% 
   ungroup() %>%
+  select(ran.ef) %>%
   unnest(ran.ef) %>%
-  select(ref.date, window.date, u,  phi, ageGroup, alarm) %>%
-  mutate(dateOfAlarm = if_else(alarm, window.date, NA)) %>%
-  filter(ref.date == window.date) %>%
-  ggplot(mapping = aes(x = window.date, y = u, colour = ageGroup)) +
-  geom_line() +
-  geom_point() +
-  geom_line(mapping = aes(x = window.date,
+  select(ref.date, ageGroup, u, phi, alarm) %>%
+  mutate(dateOfAlarm = if_else(alarm, ref.date, NA)) %>%
+  ggplot(mapping = aes(x = ref.date, y = u, colour = ageGroup)) +
+  geom_line(mapping = aes(y = u), linewidth = 0.4) +
+  geom_point(mapping = aes(y = u, shape = alarm), size = 2) +
+  geom_line(mapping = aes(x = ref.date,
                           y = qgamma(p = 0.95, shape = 1/phi, scale = phi)),
             lty = "dashed", inherit.aes = FALSE) +
   geom_rug(mapping = aes(x = dateOfAlarm, y = NULL),
            outside = TRUE, sides = "b", inherit.aes = FALSE) +
-  coord_cartesian(clip = "off") +
   facet_wrap(facets = vars(ageGroup)) +
   scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
+  scale_x_date(name = "Time [Months]") +
   scale_colour_manual(values = dtuPalette) +
-  guides(colour = "none") +
+  scale_shape_manual(values = c(19,1)) +
+  guides(colour = "none", shape = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
-        axis.ticks.x = element_blank(),
         axis.text.x = element_text(vjust = -1.2)) +
   ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Compound Poisson Gamma model")
 ggsave(filename = "windowedSTECPoisGExclude.png",
@@ -476,25 +502,25 @@ STEC_res %>%
   select(PoissonNormal) %>%
   unnest(PoissonNormal) %>% 
   ungroup() %>%
+  select(ran.ef) %>%
   unnest(ran.ef) %>%
-  select(ref.date, window.date, u,  log_sigma, ageGroup, alarm) %>%
-  mutate(dateOfAlarm = if_else(alarm, window.date, NA)) %>%
-  filter(ref.date == window.date) %>%
-  ggplot(mapping = aes(x = window.date, y = u, colour = ageGroup)) +
-  geom_line() +
-  geom_point() +
-  geom_line(mapping = aes(x = window.date,
+  select(ref.date, ageGroup, u, log_sigma, alarm) %>%
+  mutate(dateOfAlarm = if_else(alarm, ref.date, NA)) %>%
+  ggplot(mapping = aes(x = ref.date, y = u, colour = ageGroup)) +
+  geom_line(mapping = aes(y = u), linewidth = 0.4) +
+  geom_point(mapping = aes(y = u, shape = alarm), size = 2) +
+  geom_line(mapping = aes(x = ref.date,
                           y = qnorm(p = 0.95, mean = 0, sd = exp(log_sigma))),
             lty = "dashed", inherit.aes = FALSE) +
   geom_rug(mapping = aes(x = dateOfAlarm, y = NULL),
            outside = TRUE, sides = "b", inherit.aes = FALSE) +
-  coord_cartesian(clip = "off") +
   facet_wrap(facets = vars(ageGroup)) +
   scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
+  scale_x_date(name = "Time [Months]") +
   scale_colour_manual(values = dtuPalette) +
-  guides(colour = "none") +
+  scale_shape_manual(values = c(19,1)) +
+  guides(colour = "none",shape = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
-        axis.ticks.x = element_blank(),
         axis.text.x = element_text(vjust = -1.2)) +
   ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Hierarchical Poisson Normal model")
 ggsave(filename = "windowedSTEDPoisN.png",
@@ -509,25 +535,25 @@ STEC_res %>%
   select(PoissonNormal_excludePastOutbreaks) %>%
   unnest(PoissonNormal_excludePastOutbreaks) %>% 
   ungroup() %>%
+  select(ran.ef) %>%
   unnest(ran.ef) %>%
-  select(ref.date, window.date, u,  log_sigma, ageGroup, alarm) %>%
-  mutate(dateOfAlarm = if_else(alarm, window.date, NA)) %>%
-  filter(ref.date == window.date) %>%
-  ggplot(mapping = aes(x = window.date, y = u, colour = ageGroup)) +
-  geom_line() +
-  geom_point() +
-  geom_line(mapping = aes(x = window.date,
+  select(ref.date, ageGroup, u, log_sigma, alarm) %>%
+  mutate(dateOfAlarm = if_else(alarm, ref.date, NA)) %>%
+  ggplot(mapping = aes(x = ref.date, y = u, colour = ageGroup)) +
+  geom_line(mapping = aes(y = u), linewidth = 0.4) +
+  geom_point(mapping = aes(y = u, shape = alarm), size = 2) +
+  geom_line(mapping = aes(x = ref.date,
                           y = qnorm(p = 0.95, mean = 0, sd = exp(log_sigma))),
             lty = "dashed", inherit.aes = FALSE) +
   geom_rug(mapping = aes(x = dateOfAlarm, y = NULL),
            outside = TRUE, sides = "b", inherit.aes = FALSE) +
-  coord_cartesian(clip = "off") +
   facet_wrap(facets = vars(ageGroup)) +
   scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
+  scale_x_date(name = "Time [Months]") + 
   scale_colour_manual(values = dtuPalette) +
-  guides(colour = "none") +
+  scale_shape_manual(values = c(19,1)) +
+  guides(colour = "none",shape = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
-        axis.ticks.x = element_blank(),
         axis.text.x = element_text(vjust = -1.2)) +
   ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Hierarchical Poisson Normal model")
 ggsave(filename = "windowedSTEDPoisNExclude.png",
@@ -589,4 +615,70 @@ height = 8,
 units = "in",
 dpi = "print")
   
+
+
+STEC_farrington_comp <- STEC_farrington_tbl %>%
+  select(Date, ageGroup, alarm) %>%
+  mutate(method = "Farrington")
+STEC_noufaily_comp <- STEC_noufaily_tbl %>%
+  select(Date, ageGroup, alarm)%>%
+  mutate(method = "Noufaily")
+STEC_PoisN_comp <- STEC_res %>%
+  select(PoissonNormal_excludePastOutbreaks) %>%
+  unnest(PoissonNormal_excludePastOutbreaks) %>% 
+  ungroup() %>%
+  select(ran.ef) %>%
+  unnest(ran.ef) %>%
+  select(Date = ref.date, ageGroup, alarm) %>%
+  mutate(method = "Poisson Normal")
+STEC_PoisG_comp <- STEC_res %>%
+  select(PoissonGamma_excludePastOutbreaks) %>%
+  unnest(PoissonGamma_excludePastOutbreaks) %>% 
+  ungroup() %>%
+  select(ran.ef) %>%
+  unnest(ran.ef) %>%
+  select(Date = ref.date, ageGroup, alarm) %>%
+  mutate(method = "Poisson Gamma")
+
+compare <- bind_rows(
+  STEC_PoisG_comp,
+  STEC_PoisN_comp,
+  STEC_noufaily_comp, 
+  STEC_farrington_comp) %>%
+  mutate(method = factor(method,
+                         levels = c("Farrington",
+                                    "Noufaily",
+                                    "Poisson Normal",
+                                    "Poisson Gamma")))
+
+comp_dat <- dat %>% 
+  filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>% 
+  group_by(Date, ageGroup) %>%
+  reframe(cases = sum(cases), n = sum(n)) 
+
+compare %>%
+  left_join(y = comp_dat, by = c("Date", "ageGroup"))
+
+compare %>% 
+  mutate(alarmDate = if_else(alarm, Date, as.Date(NA_character_))) %>%
+  ggplot(mapping = aes(x = method, y = alarmDate, colour = "one")) +
+  geom_point(shape = 17) +
+  coord_flip() +
+  facet_wrap(facets = vars(ageGroup)) +
+  scale_color_manual(values = "#E83F48") +
+  scale_x_discrete(limits = rev(levels(compare$method))) +
+  scale_y_date(name = "Time [Months]") + 
+  guides(colour = "none") +
+  theme(axis.title.y = element_blank()) +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Compare methods")
+ggsave(filename = "compareMethods.png",
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+
+
 

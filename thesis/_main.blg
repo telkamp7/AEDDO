@@ -1,17 +1,17 @@
 [0] Config.pm:307> INFO - This is Biber 2.19
 [0] Config.pm:310> INFO - Logfile is '_main.blg'
-[134] biber-MSWIN64:340> INFO - === 
-[177] Biber.pm:419> INFO - Reading '_main.bcf'
-[319] Biber.pm:979> INFO - Found 8 citekeys in bib section 0
-[336] Biber.pm:4419> INFO - Processing section 0
-[350] Biber.pm:4610> INFO - Looking for bibtex file 'bibliography.bib' for section 0
-[430] bibtex.pm:1713> INFO - LaTeX decoding ...
-[499] bibtex.pm:1519> INFO - Found BibTeX data source 'bibliography.bib'
-[620] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
-[620] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
-[620] Biber.pm:4239> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
-[620] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
-[634] bbl.pm:660> INFO - Writing '_main.bbl' with encoding 'UTF-8'
-[646] bbl.pm:763> INFO - Output to _main.bbl
-[646] Biber.pm:131> WARN - legacy month field 'mar' in entry 'Noufaily_2013' is not an integer - this will probably not sort properly.
-[646] Biber.pm:133> INFO - WARNINGS: 1
+[245] biber-MSWIN64:340> INFO - === 
+[328] Biber.pm:419> INFO - Reading '_main.bcf'
+[475] Biber.pm:979> INFO - Found 8 citekeys in bib section 0
+[497] Biber.pm:4419> INFO - Processing section 0
+[527] Biber.pm:4610> INFO - Looking for bibtex file 'bibliography.bib' for section 0
+[601] bibtex.pm:1713> INFO - LaTeX decoding ...
+[688] bibtex.pm:1519> INFO - Found BibTeX data source 'bibliography.bib'
+[884] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'variable = shifted' with 'variable = non-ignorable'
+[884] UCollate.pm:68> INFO - Overriding locale 'en-US' defaults 'normalization = NFD' with 'normalization = prenormalized'
+[884] Biber.pm:4239> INFO - Sorting list 'none/global//global/global' of type 'entry' with template 'none' and locale 'en-US'
+[884] Biber.pm:4245> INFO - No sort tailoring available for locale 'en-US'
+[925] bbl.pm:660> INFO - Writing '_main.bbl' with encoding 'UTF-8'
+[936] bbl.pm:763> INFO - Output to _main.bbl
+[936] Biber.pm:131> WARN - legacy month field 'mar' in entry 'Noufaily_2013' is not an integer - this will probably not sort properly.
+[936] Biber.pm:133> INFO - WARNINGS: 1

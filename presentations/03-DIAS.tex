@@ -2,12 +2,19 @@
 
 % Default packages
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
+\usepackage{csquotes}
 \usepackage{pgfplots}
 \pgfplotsset{compat=newest}
 \usepackage{booktabs}
 \usepackage{siunitx}
 \usepackage{amsmath}
+\usepackage[backend=bibtex,style=authoryear]{biblatex}
+\bibliography{bibliography.bib}
+
+% Removes icon in bibliography
+\setbeamertemplate{bibliography item}{}
 
 % Font selection
 % Latin Modern
@@ -24,8 +31,6 @@
 \usepackage{charter} % serif
 
 %Avoid shaded in RMarkdown
-
-
 
 % Use DTU theme, see below for options
 \usetheme[department=compute]{DTU}
@@ -62,10 +67,11 @@ Early Detection of Disease Outbreaks}
 \hypertarget{data-exploration}{%
 \section{Data exploration}\label{data-exploration}}
 
-\hypertarget{vtec-stec}{%
-\subsection*{VTEC / STEC}\label{vtec-stec}}
+\hypertarget{shiga--and-verotoxin-producing-e.-coli.}{%
+\subsection{Shiga- and verotoxin producing E.
+coli.}\label{shiga--and-verotoxin-producing-e.-coli.}}
 
-\begin{frame}{VTEC / STEC}
+\begin{frame}{Shiga- and verotoxin producing E. coli.}
 \tiny
 
 \begin{table}
@@ -92,8 +98,8 @@ Date & ageGroup & $y_{it}$ & $x_{it}$\\
 \normalsize
 \end{frame}
 
-\begin{frame}{VTEC / STEC}
-\protect\hypertarget{vtec-stec-1}{}
+\begin{frame}{Shiga- and verotoxin producing E. coli.}
+\protect\hypertarget{shiga--and-verotoxin-producing-e.-coli.-1}{}
 \tiny
 
 \includegraphics[width=1\linewidth]{../figures/EpixSTEC}
@@ -101,8 +107,8 @@ Date & ageGroup & $y_{it}$ & $x_{it}$\\
 \normalsize
 \end{frame}
 
-\begin{frame}{VTEC / STEC}
-\protect\hypertarget{vtec-stec-2}{}
+\begin{frame}{Shiga- and verotoxin producing E. coli.}
+\protect\hypertarget{shiga--and-verotoxin-producing-e.-coli.-2}{}
 \tiny
 
 \includegraphics[width=1\linewidth]{../figures/STECxEpixAgeGroup}
@@ -110,8 +116,8 @@ Date & ageGroup & $y_{it}$ & $x_{it}$\\
 \normalsize
 \end{frame}
 
-\begin{frame}{VTEC / STEC}
-\protect\hypertarget{vtec-stec-3}{}
+\begin{frame}{Shiga- and verotoxin producing E. coli.}
+\protect\hypertarget{shiga--and-verotoxin-producing-e.-coli.-3}{}
 \tiny
 
 \includegraphics[width=1\linewidth]{../figures/ShigaogveratoxinproducerendeEcolixAgeGroup}
@@ -119,14 +125,47 @@ Date & ageGroup & $y_{it}$ & $x_{it}$\\
 \normalsize
 \end{frame}
 
+\hypertarget{state-of-the-art}{%
+\section{State-of-the-art}\label{state-of-the-art}}
+
+\begin{frame}{State-of-the-art}
+State-of-the-art methods for aberration detection is presented in
+\cite{Salmon_2016} and implemented in the R package
+\textbf{surveillance}. The R package includes methods such as the
+Farrington method introduced by \cite{Farrington_1996} together with the
+improvements proposed by \cite{Noufaily_2013}.
+\end{frame}
+
+\hypertarget{farrington}{%
+\subsection{Farrington}\label{farrington}}
+
+\begin{frame}{Farrington}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/STEC_farrington}
+
+\normalsize
+\end{frame}
+
+\hypertarget{noufaily}{%
+\subsection{Noufaily}\label{noufaily}}
+
+\begin{frame}{Noufaily}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/STEC_noufaily}
+
+\normalsize
+\end{frame}
+
+\hypertarget{hierarchical-models}{%
+\section{Hierarchical models}\label{hierarchical-models}}
+
 \hypertarget{hierachical-poisson-normal-model}{%
-\section{Hierachical Poisson-Normal
+\subsection{Hierachical Poisson-Normal
 model}\label{hierachical-poisson-normal-model}}
 
-\hypertarget{formulation}{%
-\subsection{Formulation}\label{formulation}}
-
-\begin{frame}{Formulation}
+\begin{frame}{Hierachical Poisson-Normal model}
 The conditional distribution, \(Y|u\), of the count observations are
 assumed to be a Poisson distribution with intensities \(\lambda_{it}\).
 Also, we shall assume that the count is proportional to the population
@@ -150,8 +189,8 @@ where \(\epsilon_{it}\sim\N(0,\sigma^2)\) is a white noise process, and
 \(\sigma\) is a model parameter.
 \end{frame}
 
-\begin{frame}{Fomulation}
-\protect\hypertarget{fomulation}{}
+\begin{frame}{Formulation}
+\protect\hypertarget{formulation}{}
 Henceforth, the model can be formulated as a two-level hierarchical
 model
 
@@ -163,10 +202,13 @@ model
 \end{subequations}
 \end{frame}
 
-\hypertarget{results}{%
-\subsection{Results}\label{results}}
+\begin{frame}{Threshold calculation}
+\protect\hypertarget{threshold-calculation}{}
+Here should be something about threshold calculation
+\end{frame}
 
 \begin{frame}{Results}
+\protect\hypertarget{results}{}
 \tiny
 
 \begin{table}
@@ -195,28 +237,16 @@ $\sigma$ & 1.01 & 0.04\\
 \protect\hypertarget{results-1}{}
 \tiny
 
-\includegraphics[width=1\linewidth]{../figures/windowedSTEDPoisN}
-
-\normalsize
-\end{frame}
-
-\begin{frame}{Results}
-\protect\hypertarget{results-2}{}
-\tiny
-
 \includegraphics[width=1\linewidth]{../figures/windowedSTEDPoisNExclude}
 
 \normalsize
 \end{frame}
 
 \hypertarget{hierachical-poisson-gamma-model}{%
-\section{Hierachical Poisson-Gamma
+\subsection{Hierachical Poisson-Gamma
 model}\label{hierachical-poisson-gamma-model}}
 
-\hypertarget{formulation-1}{%
-\subsection{Formulation}\label{formulation-1}}
-
-\begin{frame}{Formulation}
+\begin{frame}{Hierachical Poisson-Gamma model}
 Likewise, in the compound Poisson-Gamma model the conditional
 distribution, \(Y|u\), of the count observations are assumed to be a
 Poisson distribution, but this time the intensities, \(\lambda_{it}\),
@@ -233,7 +263,7 @@ Gamma distributed.
 \end{frame}
 
 \begin{frame}{Formulation}
-\protect\hypertarget{formulation-2}{}
+\protect\hypertarget{formulation-1}{}
 Subsequently, the model can be formulated as a two-level hierarchical
 model
 
@@ -245,11 +275,8 @@ model
 \end{subequations}
 \end{frame}
 
-\hypertarget{probability-function-for-y}{%
-\subsection{\texorpdfstring{Probability function for
-\(Y\)}{Probability function for Y}}\label{probability-function-for-y}}
-
 \begin{frame}{Probability function for \(Y\)}
+\protect\hypertarget{probability-function-for-y}{}
 \begin{equation} \label{eq:pdfMix}
   \begin{aligned}
     P[Y=y_i]&=g_{Y}(y;\lambda, \phi) \\
@@ -269,55 +296,8 @@ The marginal distribution of \(Y\) is a negative binomial distribution,
 \(Y\sim \NB\big(1/\phi,1/(\lambda \phi+1)\big)\)
 \end{frame}
 
-\begin{frame}{Proof}
-\protect\hypertarget{proof}{}
-The probability function for the conditional distribution of \(Y\) for
-given \(u\)
-
-\begin{equation} \label{eq:pdfPois}
-  f_{Y|u}(y;\lambda, u)=\frac{(\lambda u)^y}{y!} \exp (-\lambda u)
-\end{equation}
-
-and the probability density function for the distribution of \(u\) is
-
-\begin{equation} \label{eq:pdfGamma}
-  f_{u}(u;\phi)=\frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)
-\end{equation}
-\end{frame}
-
-\begin{frame}{Proof}
-\protect\hypertarget{proof-1}{}
-Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability
-function for the marginal distribution of \(Y\) is determined from
-
-\begin{equation} \label{eq:marMix}
-  \begin{aligned}
-    g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) \,du \\
-    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi) \,du\\
-    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi-1} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
-  \end{aligned}
-\end{equation}
-\end{frame}
-
-\begin{frame}{Proof}
-\protect\hypertarget{proof-2}{}
-In \eqref{eq:marMix} it is noted that the integrand is the \emph{kernel}
-in the probability density function for a Gamma distribution,
-\(\G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)\). As the integral of the
-density shall equal one, we find by adjusting the norming constant that
-
-\begin{equation}
-  \int_{u=0}^\infty u^{y+1/\phi-1} \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}}
-\end{equation}
-
-and then \eqref{eq:pdfMix} follows
-\end{frame}
-
-\hypertarget{inference-on-individual-group-means}{%
-\subsection{Inference on individual group
-means}\label{inference-on-individual-group-means}}
-
 \begin{frame}{Inference on individual group means}
+\protect\hypertarget{inference-on-individual-group-means}{}
 Consider the hierarchical Poisson-Gamma model in \eqref{eq:PoisGam}, and
 assume that a value \(Y=y\) has been observed. Then the conditional
 distribution of \(u\) for given \(Y=y\) is a Gamma distribution,
@@ -339,33 +319,13 @@ and variance
 \end{equation}
 \end{frame}
 
-\begin{frame}{Proof}
-\protect\hypertarget{proof-3}{}
-The conditional distribution is found using Bayes Theorem
-
-\begin{equation}
-  \begin{aligned}
-    g_{u}(u|Y=y)&=\frac{f_{y,u}(y,u)}{g_Y(y;\lambda, \phi)} \\
-    &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\phi)} \\
-    &=\frac{1}{g_{Y}(y;\lambda,\phi)}\bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)\bigg) \\
-    &\propto u^{y+1/\phi-1} \exp \big(- u(\lambda\phi+1)/\phi\big)
-  \end{aligned}
-\end{equation}
-
-We identify the \emph{kernel} of the probability density function
-
-\begin{equation}
-  u^{y+1/\phi-1} \exp (- u(\lambda\phi+1)/\phi)
-\end{equation}
-
-as the kernel of a Gamma distribution,
-\(\G(y+1/\phi,\phi/(\lambda\phi+1))\)
+\begin{frame}{Threshold calculation}
+\protect\hypertarget{threshold-calculation-1}{}
+Here should be something about threshold calculation
 \end{frame}
 
-\hypertarget{results-3}{%
-\subsection{Results}\label{results-3}}
-
 \begin{frame}{Results}
+\protect\hypertarget{results-2}{}
 \tiny
 
 \begin{table}
@@ -391,21 +351,100 @@ $\phi$ & 0.45 & 0.03\\
 \end{frame}
 
 \begin{frame}{Results}
-\protect\hypertarget{results-4}{}
-\tiny
-
-\includegraphics[width=1\linewidth]{../figures/windowedSTECPoisG}
-
-\normalsize
-\end{frame}
-
-\begin{frame}{Results}
-\protect\hypertarget{results-5}{}
+\protect\hypertarget{results-3}{}
 \tiny
 
 \includegraphics[width=1\linewidth]{../figures/windowedSTECPoisGExclude}
 
 \normalsize
+\end{frame}
+
+\hypertarget{comparison-of-methods}{%
+\section{Comparison of methods}\label{comparison-of-methods}}
+
+\begin{frame}{Comparison of methods}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/compareMethods}
+
+\normalsize
+\end{frame}
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\begin{frame}{References}
+\printbibliography[heading=none]
+\end{frame}
+
+\hypertarget{appendix}{%
+\section{Appendix}\label{appendix}}
+
+\begin{frame}{Proof - Probability function for \emph{Y}}
+\protect\hypertarget{proof---probability-function-for-y}{}
+The probability function for the conditional distribution of \(Y\) for
+given \(u\)
+
+\begin{equation} \label{eq:pdfPois}
+  f_{Y|u}(y;\lambda, u)=\frac{(\lambda u)^y}{y!} \exp (-\lambda u)
+\end{equation}
+
+and the probability density function for the distribution of \(u\) is
+
+\begin{equation} \label{eq:pdfGamma}
+  f_{u}(u;\phi)=\frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)
+\end{equation}
+\end{frame}
+
+\begin{frame}{Proof - Probability function for \emph{Y}}
+\protect\hypertarget{proof---probability-function-for-y-1}{}
+Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability
+function for the marginal distribution of \(Y\) is determined from
+
+\begin{equation} \label{eq:marMix}
+  \begin{aligned}
+    g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) \,du \\
+    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi) \,du\\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi-1} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
+  \end{aligned}
+\end{equation}
+\end{frame}
+
+\begin{frame}{Proof - Probability function for \emph{Y}}
+\protect\hypertarget{proof---probability-function-for-y-2}{}
+In \eqref{eq:marMix} it is noted that the integrand is the \emph{kernel}
+in the probability density function for a Gamma distribution,
+\(\G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)\). As the integral of the
+density shall equal one, we find by adjusting the norming constant that
+
+\begin{equation}
+  \int_{u=0}^\infty u^{y+1/\phi-1} \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}}
+\end{equation}
+
+and then \eqref{eq:pdfMix} follows
+\end{frame}
+
+\begin{frame}{Proof - Conditional distribution of \emph{Y}}
+\protect\hypertarget{proof---conditional-distribution-of-y}{}
+The conditional distribution is found using Bayes Theorem
+
+\begin{equation}
+  \begin{aligned}
+    g_{u}(u|Y=y)&=\frac{f_{y,u}(y,u)}{g_Y(y;\lambda, \phi)} \\
+    &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\phi)} \\
+    &=\frac{1}{g_{Y}(y;\lambda,\phi)}\bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)\bigg) \\
+    &\propto u^{y+1/\phi-1} \exp \big(- u(\lambda\phi+1)/\phi\big)
+  \end{aligned}
+\end{equation}
+
+We identify the \emph{kernel} of the probability density function
+
+\begin{equation}
+  u^{y+1/\phi-1} \exp (- u(\lambda\phi+1)/\phi)
+\end{equation}
+
+as the kernel of a Gamma distribution,
+\(\G(y+1/\phi,\phi/(\lambda\phi+1))\)
 \end{frame}
 
 
