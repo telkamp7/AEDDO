@@ -15,6 +15,7 @@ dat <- read_rds(file = "../../data/processed/dat2.rds") # 6 agegroups
 dat_nest <- dat %>%
   group_by(caseDef, Date, ageGroup) %>%
   reframe(y = sum(cases), n = sum(n)) %>%
+  mutate(monthInYear = as.integer(format(Date, "%m"))) %>%
   group_by(caseDef) %>%
   nest()
 
@@ -23,15 +24,24 @@ y <- dat %>%
   group_by(Date, ageGroup) %>%
   reframe(y = sum(cases), n = sum(n))
 
+y.season <- y %>%
+  mutate(monthInYear = as.integer(format(Date, "%m")))
+
 windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, excludePastOutbreaks = FALSE){
+  
+  # Construct the full design matrix
+  # designMatrix <- model.matrix(object = formula, data = data)
+  
+  # Extract the fixed effect parameter names
+  # parNames <- colnames(designMatrix)
   
   if(model == "PoissonNormal"){
     library(TMB)
     dyn.load(dynlib("PoissonNormal")) 
-    names(theta) <- c(rep("beta", nlevels(data$ageGroup)), "log_sigma_u")
+    # names(theta) <- c(rep("beta", nlevels(data$ageGroup)), "log_sigma_u")
   }else if(model == "PoissonGamma"){
     library(numDeriv)
-    names(theta) <- c(rep("beta", nlevels(data$ageGroup)), "phi")
+    # names(theta) <- c(rep("beta", nlevels(data$ageGroup)), "phi")
   }else{
     warning("Incorrect specification of 'model'. Should be either 'PoissonNormal' or 'PoissonGamma'", call. = FALSE)
   }
@@ -63,12 +73,12 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
     refData <- data %>%
       filter(Date %in% refDate)
     
-    
     # Exclude past observations, if they were deemed an outbreak
     # Turned on by 'excludePastOutbreaks = TRUE'
     if(excludePastOutbreaks == TRUE){
       if(nrow(pastOutbreaks) > 0){
         yWindow <- yWindow %>%
+          # select(Date, ageGroup, y, n) %>%
           setdiff(pastOutbreaks)
       }
     }
@@ -92,7 +102,7 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
       
       # Optimize the function
       opt <- do.call(what = "optim", args = PoisLN)
-    
+      
       ## Report on the random effects
       rep <- sdreport(PoisLN)
       
@@ -117,7 +127,7 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
       se.theta <- sqrt(diag(rep$cov.fixed))
       
       # Extract the standard deviation from the Gaussian model
-      log_sigma <- opt$par[nlevels(yWindow$ageGroup)+1]
+      log_sigma <- opt$par[ncol(designMatrix)+1]
       
       # Make inference on random effects and calculate alarms
       # ran.ef <- tibble(
@@ -130,11 +140,15 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
       #   alarm = p >= 0.95
       # )
       
+      # Include lambda at some point
+      # c(exp(refDesign %*% opt$par[1:ncol(refDesign)] - log(refData$n)))
+      
       ran.ef <- tibble(
         ref.date = refDate$Date,
         ageGroup = refData$ageGroup,
         n = refData$n,
         y = refData$y,
+        monthInYear = refData$monthInYear,
         log_sigma = opt$par[-(1:ncol(designMatrix))],
         u = refRep$par.random,
         p = pnorm(q = u, mean = 0, sd = exp(log_sigma)),
@@ -142,9 +156,7 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
       )
       
       par <- tibble(
-        Parameter = c(paste0("$\\beta_{", unique(yWindow$ageGroup), "}$"),
-                      "$\\log(\\sigma)$"),
-        ageGroup = c(unique(yWindow$ageGroup),"All"),
+        Parameter = c(colnames(designMatrix),"log_sigma"),
         theta = opt$par,
         se.theta = se.theta
         )
@@ -159,7 +171,9 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
                              # se.theta = list(se.theta),
                              objective = opt$objective,
                              window.data = list(yWindow),
-                             ran.ef = list(ran.ef)
+                             ran.ef = list(ran.ef), 
+                             convergence = opt$convergence,
+                             message = opt$message
                              )
                            )
       
@@ -182,7 +196,7 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
                    designMatrix = designMatrix)
       # ... and the standard deviation on the fixed effect parameter estimates
       se.theta <- sqrt(diag(solve(H)))
-      names(se.theta) <- names(opt$par)
+      # names(se.theta) <- names(opt$par)
       
       # Reconstruct the parameters
       # beta <- opt$par[1:ncol(designMatrix)]
@@ -201,15 +215,18 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
       #   alarm = p >= 0.95
       #   )
       
+      refDesign <- model.matrix(object = formula, data = refData)
+      
       ran.ef <- tibble(
         ref.date = refDate$Date,
         ageGroup = refData$ageGroup,
         n = refData$n,
         y = refData$y,
-        refDesign = model.matrix(object = formula, data = refData),
-        beta = opt$par[1:ncol(refDesign)],
+        monthInYear = refData$monthInYear,
+        # refDesign = model.matrix(object = formula, data = refData),
+        # beta = ,
         phi = opt$par[-(1:ncol(refDesign))],
-        lambda = c(exp(refDesign %*% beta - log(n))),
+        lambda = c(exp(refDesign %*% opt$par[1:ncol(refDesign)] - log(n))),
         u = ( y*phi+1 ) / (lambda * phi + 1),
         p = pgamma(q = u, shape = 1/phi, scale = phi),
         alarm = p >= 0.95
@@ -218,8 +235,7 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
       # u <- ( yWindow$y*phi+1 ) / ( lambda*phi+1 )
       
       par <- tibble(
-        Parameter = c(paste0("$\\beta_{", unique(yWindow$ageGroup), "}$"), "$\\phi$"),
-        ageGroup = c(unique(yWindow$ageGroup),"All"),
+        Parameter = c(colnames(designMatrix),"phi"),
         theta = opt$par,
         se.theta = se.theta
       )
@@ -234,7 +250,9 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
                              # se.theta = list(se.theta),
                              objective = opt$objective,
                              window.data = list(yWindow),
-                             ran.ef = list(ran.ef)
+                             ran.ef = list(ran.ef),
+                             convergence = opt$convergence,
+                             message = opt$message
                              )
                            )
       
@@ -245,7 +263,7 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
     if(excludePastOutbreaks == TRUE & sum(ran.ef$alarm) > 0){
       pastOutbreaks <- ran.ef %>%
         filter(alarm == TRUE) %>%
-        select(Date = ref.date, ageGroup, y, n) %>%
+        select(Date = ref.date, ageGroup, y, n, monthInYear) %>%
         bind_rows(pastOutbreaks)
     }
     
@@ -255,14 +273,17 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
   
 }
 
-theta <- rep(1,7)
 # 
-PoissonGamma <- windowedEstimation(data = y,
+formula <- y ~ -1 + ageGroup + sin(2*pi/12*monthInYear) + cos(2*pi/12*monthInYear)
+season.model <- model.matrix(object = formula, data = y.season)
+
+theta <- rep(1,ncol(season.model)+1)
+PoissonGamma <- windowedEstimation(data = y.season,
                           k = 36,
                           nll = nll.model,
                           theta = theta,
-                          formula = y ~ -1 + ageGroup,
-                          lower = rep(1e-6,7),
+                          formula = formula,
+                          lower = rep(1e-6,ncol(season.model)+1),
                           model = "PoissonGamma",
                           excludePastOutbreaks = TRUE)
 # 
@@ -295,14 +316,14 @@ STEC_res <- dat_nest %>%
       excludePastOutbreaks = TRUE)
     }
     ),
-    PoissonGamma = map(data, function(df){
+    PoissonGamma_seasonal = map(data, function(df){
       windowedEstimation(
       data = df,
       k = 36,
       nll = nll.model,
-      theta = rep(1,7),
-      formula = y~ -1 + ageGroup,
-      lower = rep(1e-6,7),
+      theta = rep(1,9),
+      formula = y ~ -1 + ageGroup + sin(2*pi/12*monthInYear) + cos(2*pi/12*monthInYear),
+      lower = c(rep(1e-6,6),rep(-Inf,2),1e-6),
       model = "PoissonGamma",
       excludePastOutbreaks = FALSE)
     }
@@ -319,14 +340,14 @@ STEC_res <- dat_nest %>%
         excludePastOutbreaks = TRUE)
       }
       ),
-    PoissonNormal = map(data, function(df) {
+    PoissonNormal_seasonal = map(data, function(df) {
       windowedEstimation(
         data = df,
         k = 36,
         nll = nll.model,
-        theta = rep(1,7),
-        formula = y~ -1 + ageGroup,
-        lower = c(rep(1e-6,6),-4),
+        theta = rep(1,9),
+        formula = y ~ -1 + ageGroup + sin(2*pi/12*monthInYear) + cos(2*pi/12*monthInYear),
+        lower = c(rep(1e-6,6),rep(-Inf,2),-4),
         model = "PoissonNormal",
         excludePastOutbreaks = FALSE)
     }

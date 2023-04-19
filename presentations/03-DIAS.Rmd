@@ -114,25 +114,35 @@ include_graphics("../figures/STEC_noufaily.png")
 
 # Hierarchical models
 
+In the following two novel methods, based on theory presented in \cite{Madsen_2010}, for aberration detection is presented. Namely, a hierachical Poisson-Normal model and a hierachical Poisson-Gamma model.\
+\
+It is useful to formulate the model as a hierarchical model containing a \textit{first stage model}
+
+\begin{equation}
+  f_{Y|u}(y;u,\beta)
+\end{equation}
+
+which is a model for the data given the random effects, and a \textit{second stage model}
+
+\begin{equation}
+  f_U(u, \Psi)
+\end{equation}
+
+which is a model for the random effects. The total set of parameters is $\theta=(\beta, \Psi)$.
+
+### Objective
+
+\begin{itemize}
+  \item The objective is to asses the unobserved random effects, $u_{it}$, and determine the critical value, $C_\alpha$, with significance level $\alpha$.
+  \item If $u_{it}>C_\alpha$, the observation is characterized as an outbreak.
+\end{itemize}
+\
+\
+\textbf{NOTE:} For this presentation a default of $\alpha=0.05$ is used.
+
 ## Hierachical Poisson-Normal model
 
-The conditional distribution, $Y|u$, of the count observations are assumed to be a Poisson distribution with intensities $\lambda_{it}$. Also, we shall assume that the count is proportional to the population size, $x_{it}$, within each age group, $i$, at a given time point, $t$. Hence, in terms of the canonical link for the Poisson distribution the model for the fixed effect is
-
-\begin{equation}
-  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
-\end{equation}
-
-Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. The random effects $u_{it}$ are assumed to be Gaussian.
-
-\begin{equation}
-  u_{it} = \epsilon_{it}
-\end{equation}
-
-where $\epsilon_{it}\sim\N(0,\sigma^2)$ is a white noise process, and $\sigma$ is a model parameter.
-
-### Formulation
-
-Henceforth, the model can be formulated as a two-level hierarchical model
+The model can be formulated as a two-level hierarchical model
 
 \begin{subequations}
   \begin{alignat}{2}
@@ -141,24 +151,50 @@ Henceforth, the model can be formulated as a two-level hierarchical model
   \end{alignat}
 \end{subequations}
 
-### Threshold calculation
+### Hierachical Poisson-Normal model
 
-Here should be something about threshold calculation
+\begin{itemize}
+  \item $Y|u$ are assumed to be a Poisson distribution with intensities $\lambda_{it}$.
+  \item An offset is included to account for the population size, $x_{it}$.
+  \item Hence, the model for the fixed effect is
+\end{itemize}
 
+\begin{equation}
+  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
+\end{equation}
+
+\begin{itemize}
+  \item Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter.
+  \item The random effects $u_{it}$ are assumed to be Gaussian.
+\end{itemize}
+
+\begin{equation}
+  u_{it} = \epsilon_{it}
+\end{equation}
+
+where $\epsilon_{it}\sim\N(0,\sigma^2)$ is a white noise process, and $\sigma$ is a model parameter.
 
 ### Results
 
-```{r PoisLN, echo=FALSE, comment=""}
-kable(res,
-      digits = 2, 
-      format = "latex",
-      booktabs = TRUE, 
-      escape = FALSE,
-      linesep = "") %>%
-  kable_styling(full_width = F, font_size = 10)
+```{r thetaSTECPoisNExclude, echo=FALSE, out.width="100%"}
+include_graphics("../figures/thetaSTECPoisNExclude.png")
 ```
 
 ### Results
+
+```{r phiSTECPoisNExclude, echo=FALSE, out.width="100%"}
+include_graphics("../figures/phiSTECPoisNExclude.png")
+```
+
+### Threshold calculation
+
+The critical value, $C_\alpha$, is computed from the $1-\alpha$-quantile of the Normal distribution with the maximum-likelihood estimate for the variance, $\hat\sigma$.
+
+\begin{equation}
+  C_\alpha=\N(0,\hat\sigma^2)_{1-\alpha}
+\end{equation}
+
+### Results - Out-of-sample random effects
 
 ```{r windowedSTEDPoisNExclude, echo=FALSE, out.width="100%"}
 include_graphics("../figures/windowedSTEDPoisNExclude.png")
@@ -166,22 +202,28 @@ include_graphics("../figures/windowedSTEDPoisNExclude.png")
 
 ## Hierachical Poisson-Gamma model
 
-Likewise, in the compound Poisson-Gamma model the conditional distribution, $Y|u$, of the count observations are assumed to be a Poisson distribution, but this time the intensities, $\lambda_{it}$, are defined as
+\begin{itemize}
+  \item $Y|u$ are assumed to follow a Poisson distribution. 
+  \item The intensities, $\lambda_{it}$, are defined as
+\end{itemize}
 
 \begin{equation}
   \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
 \end{equation}
 
-Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter. Additionally, the random effects $u_{it}$ are assumed to be Gamma distributed.
+\begin{itemize}
+  \item Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter.
+  \item The random effects $u_{it}$ are assumed to follow a reparametrized Gamma distribution with mean 1.
+\end{itemize}
 
-### Formulation
+### Hierachical Poisson-Gamma model
 
 Subsequently, the model can be formulated as a two-level hierarchical model
 
 \begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
     Y_{it}|u_{it} &\sim \Pois (\lambda_{it}u_{it}) \label{eq:pois_g0} \\ 
-    u_{it} &\sim \G(1/\phi_{i},\phi_{i}) \label{eq:pois_g1}
+    u_{it} &\sim \G(1/\phi,\phi) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
 
@@ -224,25 +266,29 @@ and variance
   \V[u|Y=y]=\frac{(y \phi^2+\phi)}{(\lambda \phi + 1)^2}
 \end{equation}
 
-### Threshold calculation
-
-Here should be something about threshold calculation
-
 ### Results
 
-```{r PoisG, echo=FALSE}
-
-kable(PoisG$par.tbl,
-      digits = 2, 
-      format = "latex",
-      booktabs = TRUE, 
-      escape = FALSE,
-      linesep = "") %>%
-  kable_styling(full_width = F, font_size = 10)
-
+```{r thetaSTECPoisGExclude, echo=FALSE, out.width="100%"}
+include_graphics("../figures/thetaSTECPoisGExclude.png")
 ```
 
 ### Results
+
+```{r phiSTECPoisGExclude, echo=FALSE, out.width="100%"}
+include_graphics("../figures/phiSTECPoisGExclude.png")
+```
+
+
+### Threshold calculation
+
+The critical value, $C_\alpha$, is computed from the $1-\alpha$-quantile of the reparametrized Gamma distribution with the maximum-likelihood estimate for the variance, $\hat\phi$.
+
+\begin{equation}
+  C_\alpha=\G(1/\hat\phi,\hat\phi)_{1-\alpha}
+\end{equation}
+
+
+### Results - Out-of-sample random effects
 
 ```{r windowedSTECPoisGExclude, echo=FALSE, out.width="100%"}
 include_graphics("../figures/windowedSTECPoisGExclude.png")
@@ -251,7 +297,7 @@ include_graphics("../figures/windowedSTECPoisGExclude.png")
 # Comparison of methods
 
 ```{r compareMethods, echo=FALSE, out.width="100%"}
-include_graphics("../figures/compareMethods.png")
+include_graphics("../figures/compareMethodsDeluxe.png")
 ```
 
 # References

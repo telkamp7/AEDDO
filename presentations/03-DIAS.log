@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.4.12)  15 APR 2023 14:42
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.4.12)  18 APR 2023 14:36
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -535,14 +535,7 @@ Package: fontenc 2021/04/29 v2.0v Standard LaTeX package
 LaTeX Font Info:    Trying to load font information for T1+lmss on input line 112.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/inputenc.sty
-Package: inputenc 2021/02/14 v1.3d Input encoding file
-\inpenc@prehook=\toks45
-\inpenc@posthook=\toks46
-
-Package inputenc Warning: inputenc package ignored with utf8 based engines.
-
-) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/babel.sty
+)) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/babel.sty
 Package: babel 2023/03/28 3.87 The Babel package
 \babel@savecnt=\count333
 \U@D=\dimen294
@@ -574,7 +567,7 @@ Package: csquotes 2022-09-14 v5.2n context-sensitive quotations (JAW)
 \csq@qlevel=\count338
 \csq@maxlvl=\count339
 \csq@tshold=\count340
-\csq@ltx@everypar=\toks47
+\csq@ltx@everypar=\toks45
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/csquotes/csquotes.def
 File: csquotes.def 2022-09-14 v5.2n csquotes generic definitions (JAW)
 )
@@ -601,8 +594,8 @@ Package: pgfcomp-version-1-18 2023-01-15 v3.1.10 (3.1.10)
 Package: pgffor 2023-01-15 v3.1.10 (3.1.10)
 \pgffor@iter=\dimen297
 \pgffor@skip=\dimen298
-\pgffor@stack=\toks48
-\pgffor@toks=\toks49
+\pgffor@stack=\toks46
+\pgffor@toks=\toks47
 )) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
 Package: tikz 2023-01-15 v3.1.10 (3.1.10)
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgf/libraries/pgflibraryplothandlers.code.tex
@@ -636,22 +629,22 @@ File: pgfmodulematrix.code.tex 2023-01-15 v3.1.10 (3.1.10)
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarytopaths.code.tex
 File: tikzlibrarytopaths.code.tex 2023-01-15 v3.1.10 (3.1.10)
 ))) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/pgfplots.code.tex (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/pgfplotscore.code.tex
-\t@pgfplots@toka=\toks50
-\t@pgfplots@tokb=\toks51
-\t@pgfplots@tokc=\toks52
+\t@pgfplots@toka=\toks48
+\t@pgfplots@tokb=\toks49
+\t@pgfplots@tokc=\toks50
 \pgfplots@tmpa=\dimen308
 \c@pgfplots@coordindex=\count350
 \c@pgfplots@scanlineindex=\count351
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/sys/pgfplotssysgeneric.code.tex)) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/libs/pgfplotslibrary.code.tex) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_loader.code.tex (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgf/libraries/pgflibraryfpu.code.tex)
 Package pgfplots: loading complementary utilities for your pgf version...
-\t@pgf@toka=\toks53
-\t@pgf@tokb=\toks54
-\t@pgf@tokc=\toks55
+\t@pgf@toka=\toks51
+\t@pgf@tokb=\toks52
+\t@pgf@tokc=\toks53
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/oldpgfcompatib/pgfplotsoldpgfsupp_pgfutil-common-lists.tex)) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/util/pgfplotsutil.code.tex (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsliststructure.code.tex) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsliststructureext.code.tex) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsarray.code.tex
 \c@pgfplotsarray@tmp=\count352
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsmatrix.code.tex) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/numtable/pgfplotstableshared.code.tex
 \c@pgfplotstable@counta=\count353
-\t@pgfplotstable@a=\toks56
+\t@pgfplotstable@a=\toks54
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/liststructure/pgfplotsdeque.code.tex) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/util/pgfplotsbinary.code.tex (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/util/pgfplotsbinary.data.code.tex)) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/util/pgfplotsutil.verb.code.tex) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/libs/pgflibrarypgfplots.surfshading.code.tex
 \c@pgfplotslibrarysurf@no=\count354
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/sys/pgflibrarypgfplots.surfshading.pgfsys-xetex.def (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pgfplots/sys/pgflibrarypgfplots.surfshading.pgfsys-dvipdfmx.def
@@ -731,7 +724,7 @@ Package: array 2022/09/04 v2.5g Tabular extension package (FMi)
 \col@sep=\dimen340
 \ar@mcellbox=\box91
 \extrarowheight=\dimen341
-\NC@list=\toks57
+\NC@list=\toks55
 \extratabsurround=\skip65
 \backup@length=\skip66
 \ar@cellbox=\box92
@@ -1022,8 +1015,8 @@ Package: fmtcount 2020/01/30 v3.07
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/xkeyval/xkeyval.sty
 Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/xkeyval/xkeyval.tex (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/xkeyval/xkvutils.tex
-\XKV@toks=\toks58
-\XKV@tempa@toks=\toks59
+\XKV@toks=\toks56
+\XKV@tempa@toks=\toks57
 )
 \XKV@depth=\count505
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
@@ -1071,8 +1064,8 @@ Package datetime Info: No datetime.cfg file found, using default settings on inp
 \dayofyear=\count529
 \dayofweek=\count530
 LaTeX Info: Redefining \today on input line 736.
-\dt@a=\toks60
-\dt@b=\toks61
+\dt@a=\toks58
+\dt@b=\toks59
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
 \calc@Acount=\count531
@@ -1102,30 +1095,30 @@ Package csquotes Info: Redefining alias 'default' -> 'english'.
 (./03-DIAS.aux)
 \openout1 = `03-DIAS.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 55.
-LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 55.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 54.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 54.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2022/07/10 v2.5l Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 54.
+LaTeX Font Info:    ... okay on input line 54.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1160,7 +1153,7 @@ LaTeX Font Info:    ... okay on input line 55.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 55.
+Package hyperref Info: Link coloring OFF on input line 54.
 (./03-DIAS.out) (./03-DIAS.out)
 \@outlinefile=\write6
 \openout6 = `03-DIAS.out'.
@@ -1198,13 +1191,13 @@ Package biblatex Info: Data encoding 'utf8' specified.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file '03-DIAS.bbl' found.
 (./03-DIAS.bbl)
-Package biblatex Info: Reference section=0 on input line 55.
-Package biblatex Info: Reference segment=0 on input line 55.
+Package biblatex Info: Reference section=0 on input line 54.
+Package biblatex Info: Reference segment=0 on input line 54.
 (./03-DIAS.nav)
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <12> not available
-(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 60.
+(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 59.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 File: tex_dtu_compute_a_uk.pdf Graphic file (type pdf)
@@ -1250,14 +1243,14 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <6> on input line 3.
 )
 LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <10> not available
-(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 65.
+(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 64.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [2
 
 ]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 99.
+(Font)              <12> on input line 98.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [3
@@ -1285,7 +1278,7 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 
 ]
 LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <10.95> not available
-(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 137.
+(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 136.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [7
@@ -1305,8 +1298,10 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 [9
 
 ]
+LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 185.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 190.
+(Font)              <10.95> on input line 185.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [10
@@ -1327,13 +1322,15 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 [13
 
 ]
-File: ../figures/windowedSTEDPoisNExclude.png Graphic file (type bmp)
-<../figures/windowedSTEDPoisNExclude.png>
+File: ../figures/thetaSTECPoisNExclude.png Graphic file (type bmp)
+<../figures/thetaSTECPoisNExclude.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [14
 
 ]
+File: ../figures/phiSTECPoisNExclude.png Graphic file (type bmp)
+<../figures/phiSTECPoisNExclude.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [15
@@ -1344,6 +1341,8 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 [16
 
 ]
+File: ../figures/windowedSTEDPoisNExclude.png Graphic file (type bmp)
+<../figures/windowedSTEDPoisNExclude.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [17
@@ -1364,62 +1363,84 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 [20
 
 ]
-File: ../figures/windowedSTECPoisGExclude.png Graphic file (type bmp)
-<../figures/windowedSTECPoisGExclude.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [21
 
 ]
-File: ../figures/compareMethods.png Graphic file (type bmp)
-<../figures/compareMethods.png>
+File: ../figures/thetaSTECPoisGExclude.png Graphic file (type bmp)
+<../figures/thetaSTECPoisGExclude.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [22
 
 ]
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 378.
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 378.
+File: ../figures/phiSTECPoisGExclude.png Graphic file (type bmp)
+<../figures/phiSTECPoisGExclude.png>
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+[23
+
+]
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+[24
+
+]
+File: ../figures/windowedSTECPoisGExclude.png Graphic file (type bmp)
+<../figures/windowedSTECPoisGExclude.png>
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+[25
+
+]
+File: ../figures/compareMethodsDeluxe.png Graphic file (type bmp)
+<../figures/compareMethodsDeluxe.png>
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+[26
+
+]
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 409.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 
 LaTeX Font Warning: Font shape `T1/lmss/m/sc' in size <10.95> not available
-(Font)              Font shape `T1/lmr/m/sc' tried instead on input line 378.
+(Font)              Font shape `T1/lmr/m/sc' tried instead on input line 409.
 
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 378.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 409.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 Missing character: There is no – ("2013) in font ec-lmss10!
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[23
+[27
 
 ]
 LaTeX Font Info:    Font shape `T1/lmss/b/it' in size <12> not available
-(Font)              Font shape `T1/lmss/bx/it' tried instead on input line 397.
+(Font)              Font shape `T1/lmss/bx/it' tried instead on input line 428.
 LaTeX Font Info:    Font shape `T1/lmss/bx/it' in size <12> not available
-(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 397.
+(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 428.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[24
+[28
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[25
+[29
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[26
+[30
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[27
+[31
 
 ]
 \tf@nav=\write7
@@ -1433,18 +1454,18 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 
 (./03-DIAS.aux)
 Package rerunfilecheck Info: File `03-DIAS.out' has not changed.
-(rerunfilecheck)             Checksum: 89A26E8E00A5233999556F5BBAAA9BAA;1636.
+(rerunfilecheck)             Checksum: 951136EFA9FC519FBE82B10699C1665C;1636.
 Package logreq Info: Writing requests to '03-DIAS.run.xml'.
 \openout1 = `03-DIAS.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 47930 strings out of 478674
- 1138789 string characters out of 5846652
- 1920895 words of memory out of 5000000
- 67216 multiletter control sequences out of 15000+600000
+ 48009 strings out of 478674
+ 1141847 string characters out of 5846652
+ 1920335 words of memory out of 5000000
+ 67294 multiletter control sequences out of 15000+600000
  595224 words of font info for 91 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  99i,21n,104p,2136b,5001s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on 03-DIAS.pdf (27 pages).
+Output written on 03-DIAS.pdf (31 pages).

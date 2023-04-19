@@ -167,6 +167,7 @@ for(c in caseDef){
     geom_point(size = 2) +
     facet_wrap(facets = vars(ageGroup), scales = "free_y") +
     scale_y_continuous(name = "Number of cases per 100.000") +
+    scale_x_date(name = "Time [Months]") +
     scale_colour_manual(values = dtuPalette) +
     guides(colour = "none") +
     ggtitle(label = c)
@@ -198,28 +199,29 @@ for(l in landsdel){
   ggsave(filename = paste0(l,"xCaseDef.png"), path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 }
 
-# Load the Poisson-normal model
-PoisLN_res <- read_rds(file = "../methods/PoisLN_res.rds")
-
-PoisLN_res %>%
-  mutate(dateOfAlarm = if_else(alarm, Date, NA)) %>%
-  ggplot(mapping = aes(x = Date, colour = ageGroup)) +
-  geom_point(mapping = aes(y = u)) +
-  geom_line(mapping = aes(x = Date,
-                          y = qnorm(p = 0.95, mean = 0, sd = exp(log_sigma))),
-            lty = "dashed", inherit.aes = FALSE) +
-  geom_rug(mapping = aes(x = dateOfAlarm, y = NULL),
-           outside = TRUE, sides = "b", inherit.aes = FALSE) +
-  coord_cartesian(clip = "off") +
-  facet_wrap(facets = vars(ageGroup)) +
-  scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
-  scale_colour_manual(values = dtuPalette) +
-  guides(colour = "none") +
-  theme(panel.spacing.y = unit(1, "lines"), 
-        axis.ticks.x = element_blank(),
-        axis.text.x = element_text(vjust = -1.2)) +
-  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Hierarchical Poisson Normal model")
-ggsave(filename = "PoisLNxSTEC.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+### Deprecated
+# # Load the Poisson-normal model
+# PoisLN_res <- read_rds(file = "../methods/PoisLN_res.rds")
+# 
+# PoisLN_res %>%
+#   mutate(dateOfAlarm = if_else(alarm, Date, NA)) %>%
+#   ggplot(mapping = aes(x = Date, colour = ageGroup)) +
+#   geom_point(mapping = aes(y = u)) +
+#   geom_line(mapping = aes(x = Date,
+#                           y = qnorm(p = 0.95, mean = 0, sd = exp(log_sigma))),
+#             lty = "dashed", inherit.aes = FALSE) +
+#   geom_rug(mapping = aes(x = dateOfAlarm, y = NULL),
+#            outside = TRUE, sides = "b", inherit.aes = FALSE) +
+#   coord_cartesian(clip = "off") +
+#   facet_wrap(facets = vars(ageGroup)) +
+#   scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
+#   scale_colour_manual(values = dtuPalette) +
+#   guides(colour = "none") +
+#   theme(panel.spacing.y = unit(1, "lines"), 
+#         axis.ticks.x = element_blank(),
+#         axis.text.x = element_text(vjust = -1.2)) +
+#   ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Hierarchical Poisson Normal model")
+# ggsave(filename = "PoisLNxSTEC.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 
 ### Deprecated
 # PoisLN <- read_rds(file = "../models/PoissonLognormal.rds")
@@ -240,28 +242,29 @@ ggsave(filename = "PoisLNxSTEC.png", path = "../../figures/", device = png, widt
 #   guides(colour = "none") +
 #   ggtitle(label = "Shiga- og veratoxin producerende E. coli.")
 
-# Load the Poisson-Gamma model
-PoisG_res <- read_rds(file = "../methods/PoisG_res.rds")
-
-PoisG_res %>%
-  mutate(dateOfAlarm = if_else(alarm, Date, NA)) %>%
-  ggplot(mapping = aes(x = Date, colour = ageGroup)) +
-  geom_point(mapping = aes(y = u)) +
-  geom_line(mapping = aes(x = Date,
-                          y = qgamma(p = 0.95, shape = 1/phi, scale = phi)),
-            lty = "dashed", inherit.aes = FALSE) +
-  geom_rug(mapping = aes(x = dateOfAlarm, y = NULL),
-           outside = TRUE, sides = "b", inherit.aes = FALSE) +
-  coord_cartesian(clip = "off") +
-  facet_wrap(facets = vars(ageGroup)) +
-  scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
-  scale_colour_manual(values = dtuPalette) +
-  guides(colour = "none") +
-  theme(panel.spacing.y = unit(1, "lines"), 
-        axis.ticks.x = element_blank(),
-        axis.text.x = element_text(vjust = -1.2)) +
-  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Compound Poisson Gamma model")
-ggsave(filename = "PoisGxSTEC.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+### Deprecated
+# # Load the Poisson-Gamma model
+# PoisG_res <- read_rds(file = "../methods/PoisG_res.rds")
+# 
+# PoisG_res %>%
+#   mutate(dateOfAlarm = if_else(alarm, Date, NA)) %>%
+#   ggplot(mapping = aes(x = Date, colour = ageGroup)) +
+#   geom_point(mapping = aes(y = u)) +
+#   geom_line(mapping = aes(x = Date,
+#                           y = qgamma(p = 0.95, shape = 1/phi, scale = phi)),
+#             lty = "dashed", inherit.aes = FALSE) +
+#   geom_rug(mapping = aes(x = dateOfAlarm, y = NULL),
+#            outside = TRUE, sides = "b", inherit.aes = FALSE) +
+#   coord_cartesian(clip = "off") +
+#   facet_wrap(facets = vars(ageGroup)) +
+#   scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
+#   scale_colour_manual(values = dtuPalette) +
+#   guides(colour = "none") +
+#   theme(panel.spacing.y = unit(1, "lines"), 
+#         axis.ticks.x = element_blank(),
+#         axis.text.x = element_text(vjust = -1.2)) +
+#   ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Compound Poisson Gamma model")
+# ggsave(filename = "PoisGxSTEC.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 
 ### Deprecated
 # PoisG <- read_rds(file = "../models/PoissonGamma.rds")
@@ -321,8 +324,6 @@ tmp <- dat %>%
   reframe(cases = sum(cases), n = sum(n)) %>%
   left_join(STEC_farrington_tbl)
 
-
-
 dat %>% 
   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>% 
   group_by(Date, ageGroup) %>%
@@ -337,7 +338,7 @@ dat %>%
   scale_y_continuous(name = "Number of cases per 100.000") +
   scale_x_date(name = "Time [Months]") +
   scale_colour_manual(values = dtuPalette) +
-  scale_shape_manual(values = c(19,1)) +
+  scale_shape_manual(values = c(1,19)) +
   guides(colour = "none", shape = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
         # axis.ticks.x = element_blank(),
@@ -399,7 +400,7 @@ dat %>%
   scale_y_continuous(name = "Number of cases per 100.000") +
   scale_x_date(name = "Time [Months]") +
   scale_colour_manual(values = dtuPalette) +
-  scale_shape_manual(values = c(19,1)) +
+  scale_shape_manual(values = c(1,19)) +
   guides(colour = "none", shape = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
         # axis.ticks.x = element_blank(),
@@ -415,14 +416,256 @@ ggsave(filename = "STEC_noufaily.png", path = "../../figures/", device = png, wi
 STEC_res <- read_rds(file = "../models/STEC_res.rds")
 
 STEC_res %>%
-  select(PoissonGamma) %>%
-  unnest(PoissonGamma) %>% 
+  select(PoissonNormal_excludePastOutbreaks) %>%
+  unnest(PoissonNormal_excludePastOutbreaks) %>%
   ungroup() %>%
   select(ref.date, par) %>%
   unnest(par) %>%
+  mutate(Parameter = factor(Parameter)) %>%
+  filter(Parameter == "log_sigma") %>%
+  ggplot(mapping = aes(x = ref.date, y = exp(theta))) +
+  geom_line(linewidth = 1) +
+  geom_ribbon(mapping = aes(x= ref.date, ymin = exp(theta - 2*se.theta), ymax = exp(theta + 2*se.theta)), inherit.aes = FALSE, alpha = 0.2) +
+  ylab(label = expression(sigma)) +
+  xlab(label = "Time [Months]") +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Hierachical Poisson Normal model")
+ggsave(filename = "phiSTECPoisNExclude.png",
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+STEC_res %>%
+  select(PoissonNormal_seasonal) %>%
+  unnest(PoissonNormal_seasonal) %>%
+  ungroup() %>%
+  select(ref.date, par) %>%
+  unnest(par) %>%
+  mutate(Parameter = factor(Parameter)) %>%
+  filter(Parameter == "log_sigma") %>%
+  ggplot(mapping = aes(x = ref.date, y = exp(theta))) +
+  geom_line(linewidth = 1) +
+  geom_ribbon(mapping = aes(x= ref.date, ymin = exp(theta - 2*se.theta), ymax = exp(theta + 2*se.theta)), inherit.aes = FALSE, alpha = 0.2) +
+  ylab(label = expression(sigma)) +
+  xlab(label = "Time [Months]") +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Hierachical Poisson Normal model")
+ggsave(filename = "phiSTECPoisNSeasonal.png",
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+custom_labeller <- as_labeller(
+  c(`ageGroup<1 year`="beta[1~year]", `ageGroup1-4 years`="beta[1-4~years]",
+    `ageGroup5-14 years`="beta[5-14~years]",`ageGroup15-24 years`="beta[15-24~years]",
+    `ageGroup25-64 years`="beta[25-64~years]", `ageGroup65+ years`="beta[65+~years]"),
+  default = label_parsed
+  )
+
+STEC_res %>%
+  select(PoissonNormal_excludePastOutbreaks) %>%
+  unnest(PoissonNormal_excludePastOutbreaks) %>%
+  ungroup() %>%
+  select(ref.date, par) %>%
+  unnest(par) %>%
+  mutate(Parameter = factor(Parameter)) %>%
+  filter(Parameter != "log_sigma") %>%
+  ggplot(mapping = aes(x = ref.date, y = theta, colour = Parameter)) +
+  geom_line(linewidth = 1) +
+  geom_ribbon(mapping = aes(x= ref.date, ymin = theta - 2*se.theta, ymax = theta + 2*se.theta), inherit.aes = FALSE, alpha = 0.2) +
+  facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
+  scale_colour_manual(values = dtuPalette) +
+  xlab(label = "Time [Months]") +
+  ylab(label = "") +
+  guides(colour = "none") +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Hierachical Poisson Normal model")
+ggsave(filename = "thetaSTECPoisNExclude.png",
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+custom_labeller_seasonal <- as_labeller(
+  c(`ageGroup<1 year`="beta[1~year]", `ageGroup1-4 years`="beta[1-4~years]",
+    `ageGroup5-14 years`="beta[5-14~years]",`ageGroup15-24 years`="beta[15-24~years]",
+    `ageGroup25-64 years`="beta[25-64~years]", `ageGroup65+ years`="beta[65+~years]",
+    `sin(2 * pi/12 * monthInYear)`="beta[sin]", `cos(2 * pi/12 * monthInYear)`="beta[cos]"),
+  default = label_parsed
+  )
+  
+STEC_res %>%
+    select(PoissonNormal_seasonal) %>%
+    unnest(PoissonNormal_seasonal) %>%
+    ungroup() %>%
+    select(ref.date, par) %>%
+    unnest(par) %>%
+    mutate(Parameter = factor(Parameter)) %>%
+    filter(grepl(x = Parameter, patter = "ageGroup")) %>%
+    ggplot(mapping = aes(x = ref.date, y = theta, colour = Parameter)) +
+    geom_line(linewidth = 1) +
+    geom_ribbon(mapping = aes(x= ref.date, ymin = theta - 2*se.theta, ymax = theta + 2*se.theta), inherit.aes = FALSE, alpha = 0.2) +
+    facet_wrap(facets = vars(Parameter), labeller = custom_labeller_seasonal) +
+    scale_colour_manual(values = dtuPalette) +
+    xlab(label = "Time [Months]") +
+    ylab(label = "") +
+    guides(colour = "none") +
+    ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Hierachical Poisson Normal model")
+ggsave(filename = "thetaSTECPoisNSeasonal.png",
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+STEC_res %>%
+  select(PoissonNormal_seasonal) %>%
+  unnest(PoissonNormal_seasonal) %>%
+  ungroup() %>%
+  select(ref.date, par) %>%
+  unnest(par) %>%
+  mutate(Parameter = factor(Parameter)) %>%
+  filter(grepl(x = Parameter, patter = "cos|sin")) %>%
+  ggplot(mapping = aes(x = ref.date, y = theta, colour = Parameter)) +
+  geom_line(linewidth = 1) +
+  geom_ribbon(mapping = aes(x= ref.date, ymin = theta - 2*se.theta, ymax = theta + 2*se.theta), inherit.aes = FALSE, alpha = 0.2) +
+  facet_wrap(facets = vars(Parameter), labeller = custom_labeller_seasonal) +
+  scale_colour_manual(values = dtuPalette) +
+  xlab(label = "Time [Months]") +
+  ylab(label = "") +
+  guides(colour = "none") +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Hierachical Poisson Normal model")
+ggsave(filename = "thetaSTECPoisNSeasonalCosSin.png",
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+
+STEC_res %>%
+  select(PoissonGamma_excludePastOutbreaks) %>%
+  unnest(PoissonGamma_excludePastOutbreaks) %>%
+  ungroup() %>%
+  select(ref.date, par) %>%
+  unnest(par) %>%
+  filter(Parameter == "phi") %>%
   ggplot(mapping = aes(x = ref.date, y = theta)) +
-  geom_line() +
-  facet_wrap(facets = vars(Parameter), scales = "free_y")
+  geom_line(linewidth = 1) +
+  geom_ribbon(mapping = aes(x= ref.date, ymin = theta - 2*se.theta, ymax = theta + 2*se.theta), inherit.aes = FALSE, alpha = 0.2) +
+  ylab(label = expression(phi)) +
+  xlab(label = "Time [Months]") +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Compound Poisson Gamma model")
+ggsave(filename = "phiSTECPoisGExclude.png",
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+STEC_res %>%
+  select(PoissonGamma_seasonal) %>%
+  unnest(PoissonGamma_seasonal) %>%
+  ungroup() %>%
+  select(ref.date, par) %>%
+  unnest(par) %>%
+  filter(Parameter == "phi") %>%
+  ggplot(mapping = aes(x = ref.date, y = theta)) +
+  geom_line(linewidth = 1) +
+  geom_ribbon(mapping = aes(x= ref.date, ymin = theta - 2*se.theta, ymax = theta + 2*se.theta), inherit.aes = FALSE, alpha = 0.2) +
+  ylab(label = expression(phi)) +
+  xlab(label = "Time [Months]") +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Compound Poisson Gamma model")
+ggsave(filename = "phiSTECPoisGSeasonal.png",
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+STEC_res %>%
+  select(PoissonGamma_excludePastOutbreaks) %>%
+  unnest(PoissonGamma_excludePastOutbreaks) %>%
+  ungroup() %>%
+  select(ref.date, par) %>%
+  unnest(par) %>%
+  mutate(Parameter = factor(Parameter)) %>%
+  filter(Parameter != "phi") %>%
+  ggplot(mapping = aes(x = ref.date, y = theta, colour = Parameter)) +
+  geom_line(linewidth = 1) +
+  geom_ribbon(mapping = aes(x= ref.date, ymin = theta - 2*se.theta, ymax = theta + 2*se.theta), inherit.aes = FALSE, alpha = 0.2) +
+  facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
+  scale_colour_manual(values = dtuPalette) +
+  xlab(label = "Time [Months]") +
+  ylab(label = "") +
+  guides(colour = "none") +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Compound Poisson Gamma model")
+ggsave(filename = "thetaSTECPoisGExclude.png",
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+STEC_res %>%
+  select(PoissonGamma_seasonal) %>%
+  unnest(PoissonGamma_seasonal) %>%
+  ungroup() %>%
+  select(ref.date, par) %>%
+  unnest(par) %>%
+  mutate(Parameter = factor(Parameter)) %>%
+  filter(grepl(x = Parameter, pattern = "ageGroup")) %>%
+  ggplot(mapping = aes(x = ref.date, y = theta, colour = Parameter)) +
+  geom_line(linewidth = 1) +
+  geom_ribbon(mapping = aes(x= ref.date, ymin = theta - 2*se.theta, ymax = theta + 2*se.theta), inherit.aes = FALSE, alpha = 0.2) +
+  facet_wrap(facets = vars(Parameter), labeller = custom_labeller_seasonal) +
+  scale_colour_manual(values = dtuPalette) +
+  xlab(label = "Time [Months]") +
+  ylab(label = "") +
+  guides(colour = "none") +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Compound Poisson Gamma model")
+ggsave(filename = "thetaSTECPoisGSeasonal.png",
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+STEC_res %>%
+  select(PoissonGamma_seasonal) %>%
+  unnest(PoissonGamma_seasonal) %>%
+  ungroup() %>%
+  select(ref.date, par) %>%
+  unnest(par) %>%
+  mutate(Parameter = factor(Parameter)) %>%
+  filter(grepl(x = Parameter, pattern = "cos|sin")) %>%
+  ggplot(mapping = aes(x = ref.date, y = theta, colour = Parameter)) +
+  geom_line(linewidth = 1) +
+  geom_ribbon(mapping = aes(x= ref.date, ymin = theta - 2*se.theta, ymax = theta + 2*se.theta), inherit.aes = FALSE, alpha = 0.2) +
+  facet_wrap(facets = vars(Parameter), labeller = custom_labeller_seasonal) +
+  scale_colour_manual(values = dtuPalette) +
+  xlab(label = "Time [Months]") +
+  ylab(label = "") +
+  guides(colour = "none") +
+  ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Compound Poisson Gamma model")
+ggsave(filename = "thetaSTECPoisGSeasonalCosSin.png",
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
 
 tmp <- STEC_res %>%
   select(PoissonGamma) %>%
@@ -452,7 +695,7 @@ STEC_res %>%
   scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
   scale_x_date(name = "Time [Months]") +
   scale_colour_manual(values = dtuPalette) +
-  scale_shape_manual(values = c(19,1)) +
+  scale_shape_manual(values = c(1,19)) +
   guides(colour = "none", shape = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
         axis.text.x = element_text(vjust = -1.2)) +
@@ -485,7 +728,7 @@ STEC_res %>%
   scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
   scale_x_date(name = "Time [Months]") +
   scale_colour_manual(values = dtuPalette) +
-  scale_shape_manual(values = c(19,1)) +
+  scale_shape_manual(values = c(1,19)) +
   guides(colour = "none", shape = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
         axis.text.x = element_text(vjust = -1.2)) +
@@ -518,7 +761,7 @@ STEC_res %>%
   scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
   scale_x_date(name = "Time [Months]") +
   scale_colour_manual(values = dtuPalette) +
-  scale_shape_manual(values = c(19,1)) +
+  scale_shape_manual(values = c(1,19)) +
   guides(colour = "none",shape = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
         axis.text.x = element_text(vjust = -1.2)) +
@@ -551,7 +794,7 @@ STEC_res %>%
   scale_y_continuous(name = expression(paste("Random effect, ", u[it]))) +
   scale_x_date(name = "Time [Months]") + 
   scale_colour_manual(values = dtuPalette) +
-  scale_shape_manual(values = c(19,1)) +
+  scale_shape_manual(values = c(1,19)) +
   guides(colour = "none",shape = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
         axis.text.x = element_text(vjust = -1.2)) +
@@ -564,31 +807,31 @@ ggsave(filename = "windowedSTEDPoisNExclude.png",
        units = "in",
        dpi = "print")
 
-STEC_res %>%
-  select(PoissonNormal_excludePastOutbreaks) %>%
-  unnest(PoissonNormal_excludePastOutbreaks) %>% 
-  ungroup() %>%
-  unnest(par) %>%
-  select(ref.date, Parameter, ageGroup, theta, se.theta) %>%
-  filter(ageGroup != "All") %>%
-  ggplot(mapping = aes(x = ref.date, y = theta, colour = ageGroup)) +
-  geom_line() +
-  facet_wrap(facets = vars(Parameter)) +
-  scale_colour_manual(values = dtuPalette) +
-  guides(colour = "none")
+# STEC_res %>%
+#   select(PoissonNormal_excludePastOutbreaks) %>%
+#   unnest(PoissonNormal_excludePastOutbreaks) %>% 
+#   ungroup() %>%
+#   unnest(par) %>%
+#   select(ref.date, Parameter, theta, se.theta) %>%
+#   filter(Parameter != "log_sigma") %>%
+#   ggplot(mapping = aes(x = ref.date, y = theta, colour = Parameter)) +
+#   geom_line() +
+#   facet_wrap(facets = vars(Parameter)) +
+#   scale_colour_manual(values = dtuPalette) +
+#   guides(colour = "none")
 
-STEC_res %>%
-  select(PoissonNormal_excludePastOutbreaks) %>%
-  unnest(PoissonNormal_excludePastOutbreaks) %>% 
-  ungroup() %>%
-  unnest(par) %>%
-  select(ref.date, Parameter, ageGroup, theta, se.theta) %>%
-  filter(ageGroup == "All") %>%
-  ggplot(mapping = aes(x = ref.date, y = exp(theta), colour = ageGroup)) +
-  geom_ribbon(mapping = aes(x = ref.date, ymin = exp(theta - 2 * se.theta), ymax = exp(theta + 2 * se.theta)), alpha = 0.4, fill = "grey70", inherit.aes = FALSE) +
-  geom_line() +
-  scale_colour_manual(values = dtuPalette) +
-  guides(colour = "none")
+# STEC_res %>%
+#   select(PoissonNormal_excludePastOutbreaks) %>%
+#   unnest(PoissonNormal_excludePastOutbreaks) %>% 
+#   ungroup() %>%
+#   unnest(par) %>%
+#   select(ref.date, Parameter, ageGroup, theta, se.theta) %>%
+#   filter(ageGroup == "All") %>%
+#   ggplot(mapping = aes(x = ref.date, y = exp(theta), colour = ageGroup)) +
+#   geom_ribbon(mapping = aes(x = ref.date, ymin = exp(theta - 2 * se.theta), ymax = exp(theta + 2 * se.theta)), alpha = 0.4, fill = "grey70", inherit.aes = FALSE) +
+#   geom_line() +
+#   scale_colour_manual(values = dtuPalette) +
+#   guides(colour = "none")
   
 
 
@@ -604,6 +847,7 @@ dat %>%
   geom_line() +
   facet_wrap(facets = vars(ageGroup), scales = "free_y") +
   scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_x_discrete(name = "Month") +
   scale_colour_manual(values = dtuPalette) +
   guides(colour = guide_legend(nrow = 1)) +
   ggtitle(label = "Shiga- og veratoxin producerende E. coli.")
@@ -656,8 +900,6 @@ comp_dat <- dat %>%
   group_by(Date, ageGroup) %>%
   reframe(cases = sum(cases), n = sum(n)) 
 
-compare %>%
-  left_join(y = comp_dat, by = c("Date", "ageGroup"))
 
 compare %>% 
   mutate(alarmDate = if_else(alarm, Date, as.Date(NA_character_))) %>%
@@ -666,12 +908,151 @@ compare %>%
   coord_flip() +
   facet_wrap(facets = vars(ageGroup)) +
   scale_color_manual(values = "#E83F48") +
-  scale_x_discrete(limits = rev(levels(compare$method))) +
+  scale_x_discrete(limits = rev(levels(compare$method)), position = "top") +
   scale_y_date(name = "Time [Months]") + 
   guides(colour = "none") +
   theme(axis.title.y = element_blank()) +
   ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Compare methods")
 ggsave(filename = "compareMethods.png",
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+library(cowplot)
+
+scaleX <- scale_x_date(
+  name = "Time [Months]",
+  limits = as.Date(c("2010-11-01", "2023-02-01")),
+  expand = expansion(add = c(0)))
+
+alarm1 <- compare %>% 
+  mutate(alarmDate = if_else(alarm, Date, as.Date(NA_character_))) %>%
+  filter(ageGroup %in% c("<1 year", "1-4 years", "5-14 years")) %>%
+  ggplot(mapping = aes(x = alarmDate, y = method, colour = method)) +
+  geom_point(shape = 17) +
+  facet_wrap(facets = vars(ageGroup)) +
+  scale_color_manual(name = "Alarms:", values = dtuPalette[c(7,9:11)]) +
+  scale_y_discrete(limits = rev(levels(compare$method))) +
+  scaleX + 
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.spacing.x = unit(2.67, "lines"))
+
+alarm2 <- compare %>% 
+  mutate(alarmDate = if_else(alarm, Date, as.Date(NA_character_))) %>%
+  filter(ageGroup %in% c("15-24 years", "25-64 years", "65+ years")) %>%
+  ggplot(mapping = aes(x = alarmDate, y = method, colour = method)) +
+  geom_point(shape = 17) +
+  facet_wrap(facets = vars(ageGroup)) +
+  scale_color_manual(values = dtuPalette[c(7,9:11)]) +
+  scale_y_discrete(limits = rev(levels(compare$method))) +
+  scaleX +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank(),
+        panel.spacing.x = unit(2.67, "lines"))
+
+# alarm1 <- compare %>% 
+#   mutate(alarmDate = if_else(alarm, Date, as.Date(NA_character_))) %>%
+#   filter(ageGroup %in% c("<1 year", "1-4 years", "5-14 years")) %>%
+#   ggplot(mapping = aes(x = method, y = alarmDate, colour = method)) +
+#   geom_point(shape = 17) +
+#   coord_flip() +
+#   facet_wrap(facets = vars(ageGroup)) +
+#   scale_color_manual(name = "Alarms", values = dtuPalette[7:10]) +
+#   scale_x_discrete(limits = rev(levels(compare$method)), position = "top") +
+#   scale_y_date(name = "Time [Months]") + 
+#   theme(axis.title.y = element_blank(),
+#         axis.text.y = element_blank(),
+#         axis.ticks.y = element_blank())
+# alarm2 <- compare %>% 
+#   mutate(alarmDate = if_else(alarm, Date, as.Date(NA_character_))) %>%
+#   filter(ageGroup %in% c("15-24 years", "25-64 years", "65+ years")) %>%
+#   ggplot(mapping = aes(x = method, y = alarmDate, colour = method)) +
+#   geom_point(shape = 17) +
+#   coord_flip() +
+#   facet_wrap(facets = vars(ageGroup)) +
+#   scale_color_manual(values = dtuPalette[7:10]) +
+#   scale_x_discrete(limits = rev(levels(compare$method)), position = "top") +
+#   scale_y_date(name = "Time [Months]") + 
+#   theme(axis.title.y = element_blank(),
+#         axis.text.y = element_blank(),
+#         axis.ticks.y = element_blank())
+
+library(scales)
+
+cases1 <- compare %>%
+  left_join(comp_dat, by = c("Date", "ageGroup")) %>%
+  filter(ageGroup %in% c("<1 year", "1-4 years", "5-14 years")) %>%
+  ggplot(mapping = aes(x = Date, y = cases/n*1e5, colour = ageGroup, shape = alarm, group = ageGroup)) +
+  geom_line(size = 0.4) +
+  geom_point(size = 2) +
+  facet_wrap(facets = vars(ageGroup), scales = "free_y") +
+  scale_y_continuous(name = "Number of cases per 100.000", labels = label_number(accuracy = 0.01)) +
+  scaleX +
+  scale_colour_manual(values = dtuPalette[1:3]) +
+  scale_shape_manual(values = c(1,19)) +
+  guides(colour = "none", shape = "none") +
+  # theme(axis.title.y = element_blank(),
+  #       axis.text.y = element_blank(),
+  #       axis.ticks.y = element_blank(),
+  #       panel.spacing.x = unit(2, "lines"))
+  theme(axis.title.y = element_text(size = 12),
+        panel.spacing.x = unit(.8, "lines"))
+cases2 <- compare %>%
+  left_join(comp_dat, by = c("Date", "ageGroup")) %>%
+  filter(ageGroup %in% c("15-24 years", "25-64 years", "65+ years")) %>%
+  ggplot(mapping = aes(x = Date, y = cases/n*1e5, colour = ageGroup, shape = alarm, group = ageGroup)) +
+  geom_line(size = 0.4) +
+  geom_point(size = 2) +
+  facet_wrap(facets = vars(ageGroup), scales = "free_y") +
+  scale_y_continuous(name = "Number of cases per 100.000", labels = label_number(accuracy = 0.01)) +
+  scaleX +
+  scale_colour_manual(values = dtuPalette[4:6]) +
+  scale_shape_manual(values = c(1,19)) +
+  guides(colour = "none", shape = "none") +
+  # theme(axis.title.y = element_blank(),
+  #       axis.text.y = element_blank(),
+  #       axis.ticks.y = element_blank(),
+  #       panel.spacing.x = unit(2, "lines"))
+  theme(axis.title.y = element_text(size = 12),
+        panel.spacing.x = unit(.8, "lines"))
+
+legend <- get_legend(alarm1)
+
+aligned_plots <- align_plots(
+  cases1 + theme(axis.text.x = element_blank(),
+                 axis.ticks.x = element_blank(),
+                 axis.title.x = element_blank()),
+  alarm1 + theme(axis.text.x = element_blank(),
+                 axis.ticks.x = element_blank(),
+                 axis.title.x = element_blank(),
+                 strip.text = element_blank(),
+                 legend.position = "none"),
+  cases2 + theme(axis.text.x = element_blank(),
+                 axis.ticks.x = element_blank(),
+                 axis.title.x = element_blank()),
+  alarm2 + theme(strip.text = element_blank(),
+                 legend.position = "none"),
+  align = "hv",
+  axis = "tblr")
+
+
+
+plot_grid(legend,
+          aligned_plots[[1]], 
+          NULL,
+          aligned_plots[[2]], 
+          NULL,
+          aligned_plots[[3]], 
+          NULL,
+          aligned_plots[[4]], 
+          ncol = 1,rel_heights = c(0.05,0.32,-.045,0.155,-.02,0.32,-.045,0.155))
+ggsave(filename = "compareMethodsDeluxe.png",
        path = "../../figures/",
        device = png,
        width = 16,

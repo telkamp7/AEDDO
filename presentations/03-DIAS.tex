@@ -2,7 +2,6 @@
 
 % Default packages
 \usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{csquotes}
 \usepackage{pgfplots}
@@ -161,38 +160,49 @@ improvements proposed by \cite{Noufaily_2013}.
 \hypertarget{hierarchical-models}{%
 \section{Hierarchical models}\label{hierarchical-models}}
 
+\begin{frame}{Hierarchical models}
+In the following two novel methods, based on theory presented in
+\cite{Madsen_2010}, for aberration detection is presented. Namely, a
+hierachical Poisson-Normal model and a hierachical Poisson-Gamma
+model.\\
+\strut \\
+It is useful to formulate the model as a hierarchical model containing a
+\textit{first stage model}
+
+\begin{equation}
+  f_{Y|u}(y;u,\beta)
+\end{equation}
+
+which is a model for the data given the random effects, and a
+\textit{second stage model}
+
+\begin{equation}
+  f_U(u, \Psi)
+\end{equation}
+
+which is a model for the random effects. The total set of parameters is
+\(\theta=(\beta, \Psi)\).
+\end{frame}
+
+\begin{frame}{Objective}
+\protect\hypertarget{objective}{}
+\begin{itemize}
+  \item The objective is to asses the unobserved random effects, $u_{it}$, and determine the critical value, $C_\alpha$, with significance level $\alpha$.
+  \item If $u_{it}>C_\alpha$, the observation is characterized as an outbreak.
+\end{itemize}
+
+\hfill\break
+\hfill\break
+\textbf{NOTE:} For this presentation a default of \(\alpha=0.05\) is
+used.
+\end{frame}
+
 \hypertarget{hierachical-poisson-normal-model}{%
 \subsection{Hierachical Poisson-Normal
 model}\label{hierachical-poisson-normal-model}}
 
 \begin{frame}{Hierachical Poisson-Normal model}
-The conditional distribution, \(Y|u\), of the count observations are
-assumed to be a Poisson distribution with intensities \(\lambda_{it}\).
-Also, we shall assume that the count is proportional to the population
-size, \(x_{it}\), within each age group, \(i\), at a given time point,
-\(t\). Hence, in terms of the canonical link for the Poisson
-distribution the model for the fixed effect is
-
-\begin{equation}
-  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
-\end{equation}
-
-Here \(\mathbf{X}_i\) is \(T\times6\)-dimensional, and
-\(\mathbf{\beta}_{it}\) contains the corresponding fixed effect
-parameter. The random effects \(u_{it}\) are assumed to be Gaussian.
-
-\begin{equation}
-  u_{it} = \epsilon_{it}
-\end{equation}
-
-where \(\epsilon_{it}\sim\N(0,\sigma^2)\) is a white noise process, and
-\(\sigma\) is a model parameter.
-\end{frame}
-
-\begin{frame}{Formulation}
-\protect\hypertarget{formulation}{}
-Henceforth, the model can be formulated as a two-level hierarchical
-model
+The model can be formulated as a two-level hierarchical model
 
 \begin{subequations}
   \begin{alignat}{2}
@@ -202,39 +212,62 @@ model
 \end{subequations}
 \end{frame}
 
-\begin{frame}{Threshold calculation}
-\protect\hypertarget{threshold-calculation}{}
-Here should be something about threshold calculation
+\begin{frame}{Hierachical Poisson-Normal model}
+\protect\hypertarget{hierachical-poisson-normal-model-1}{}
+\begin{itemize}
+  \item $Y|u$ are assumed to be a Poisson distribution with intensities $\lambda_{it}$.
+  \item An offset is included to account for the population size, $x_{it}$.
+  \item Hence, the model for the fixed effect is
+\end{itemize}
+
+\begin{equation}
+  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
+\end{equation}
+
+\begin{itemize}
+  \item Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter.
+  \item The random effects $u_{it}$ are assumed to be Gaussian.
+\end{itemize}
+
+\begin{equation}
+  u_{it} = \epsilon_{it}
+\end{equation}
+
+where \(\epsilon_{it}\sim\N(0,\sigma^2)\) is a white noise process, and
+\(\sigma\) is a model parameter.
 \end{frame}
 
 \begin{frame}{Results}
 \protect\hypertarget{results}{}
 \tiny
 
-\begin{table}
-\centering\begingroup\fontsize{10}{12}\selectfont
-
-\begin{tabular}{lrr}
-\toprule
-Parameter & Estimate & Std. Error\\
-\midrule
-$\beta_{<1 year}$ & 10.83 & 0.11\\
-$\beta_{1-4 years}$ & 13.64 & 0.09\\
-$\beta_{5-14 years}$ & 13.94 & 0.10\\
-$\beta_{15-24 years}$ & 14.05 & 0.09\\
-$\beta_{25-64 years}$ & 16.61 & 0.08\\
-$\beta_{65+ years}$ & 14.83 & 0.09\\
-$\sigma$ & 1.01 & 0.04\\
-\bottomrule
-\end{tabular}
-\endgroup{}
-\end{table}
+\includegraphics[width=1\linewidth]{../figures/thetaSTECPoisNExclude}
 
 \normalsize
 \end{frame}
 
 \begin{frame}{Results}
 \protect\hypertarget{results-1}{}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/phiSTECPoisNExclude}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{Threshold calculation}
+\protect\hypertarget{threshold-calculation}{}
+The critical value, \(C_\alpha\), is computed from the
+\(1-\alpha\)-quantile of the Normal distribution with the
+maximum-likelihood estimate for the variance, \(\hat\sigma\).
+
+\begin{equation}
+  C_\alpha=\N(0,\hat\sigma^2)_{1-\alpha}
+\end{equation}
+\end{frame}
+
+\begin{frame}{Results - Out-of-sample random effects}
+\protect\hypertarget{results---out-of-sample-random-effects}{}
 \tiny
 
 \includegraphics[width=1\linewidth]{../figures/windowedSTEDPoisNExclude}
@@ -247,30 +280,30 @@ $\sigma$ & 1.01 & 0.04\\
 model}\label{hierachical-poisson-gamma-model}}
 
 \begin{frame}{Hierachical Poisson-Gamma model}
-Likewise, in the compound Poisson-Gamma model the conditional
-distribution, \(Y|u\), of the count observations are assumed to be a
-Poisson distribution, but this time the intensities, \(\lambda_{it}\),
-are defined as
+\begin{itemize}
+  \item $Y|u$ are assumed to follow a Poisson distribution. 
+  \item The intensities, $\lambda_{it}$, are defined as
+\end{itemize}
 
 \begin{equation}
   \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
 \end{equation}
 
-Here \(\mathbf{X}_i\) is \(T\times6\)-dimensional, and
-\(\mathbf{\beta}_{it}\) contains the corresponding fixed effect
-parameter. Additionally, the random effects \(u_{it}\) are assumed to be
-Gamma distributed.
+\begin{itemize}
+  \item Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter.
+  \item The random effects $u_{it}$ are assumed to follow a reparametrized Gamma distribution with mean 1.
+\end{itemize}
 \end{frame}
 
-\begin{frame}{Formulation}
-\protect\hypertarget{formulation-1}{}
+\begin{frame}{Hierachical Poisson-Gamma model}
+\protect\hypertarget{hierachical-poisson-gamma-model-1}{}
 Subsequently, the model can be formulated as a two-level hierarchical
 model
 
 \begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
     Y_{it}|u_{it} &\sim \Pois (\lambda_{it}u_{it}) \label{eq:pois_g0} \\ 
-    u_{it} &\sim \G(1/\phi_{i},\phi_{i}) \label{eq:pois_g1}
+    u_{it} &\sim \G(1/\phi,\phi) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
 \end{frame}
@@ -319,39 +352,37 @@ and variance
 \end{equation}
 \end{frame}
 
-\begin{frame}{Threshold calculation}
-\protect\hypertarget{threshold-calculation-1}{}
-Here should be something about threshold calculation
-\end{frame}
-
 \begin{frame}{Results}
 \protect\hypertarget{results-2}{}
 \tiny
 
-\begin{table}
-\centering\begingroup\fontsize{10}{12}\selectfont
-
-\begin{tabular}{lrr}
-\toprule
-Parameter & Estimate & Std. Error\\
-\midrule
-$\beta_{<1 year}$ & 11.23 & 0.08\\
-$\beta_{1-4 years}$ & 13.94 & 0.06\\
-$\beta_{5-14 years}$ & 14.30 & 0.07\\
-$\beta_{15-24 years}$ & 14.42 & 0.07\\
-$\beta_{25-64 years}$ & 16.87 & 0.06\\
-$\beta_{65+ years}$ & 15.24 & 0.06\\
-$\phi$ & 0.45 & 0.03\\
-\bottomrule
-\end{tabular}
-\endgroup{}
-\end{table}
+\includegraphics[width=1\linewidth]{../figures/thetaSTECPoisGExclude}
 
 \normalsize
 \end{frame}
 
 \begin{frame}{Results}
 \protect\hypertarget{results-3}{}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/phiSTECPoisGExclude}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{Threshold calculation}
+\protect\hypertarget{threshold-calculation-1}{}
+The critical value, \(C_\alpha\), is computed from the
+\(1-\alpha\)-quantile of the reparametrized Gamma distribution with the
+maximum-likelihood estimate for the variance, \(\hat\phi\).
+
+\begin{equation}
+  C_\alpha=\G(1/\hat\phi,\hat\phi)_{1-\alpha}
+\end{equation}
+\end{frame}
+
+\begin{frame}{Results - Out-of-sample random effects}
+\protect\hypertarget{results---out-of-sample-random-effects-1}{}
 \tiny
 
 \includegraphics[width=1\linewidth]{../figures/windowedSTECPoisGExclude}
@@ -365,7 +396,7 @@ $\phi$ & 0.45 & 0.03\\
 \begin{frame}{Comparison of methods}
 \tiny
 
-\includegraphics[width=1\linewidth]{../figures/compareMethods}
+\includegraphics[width=1\linewidth]{../figures/compareMethodsDeluxe}
 
 \normalsize
 \end{frame}
