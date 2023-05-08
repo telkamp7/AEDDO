@@ -1,0 +1,79 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Default packages
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage[backend=bibtex,style=authoryear]{biblatex}
+\bibliography{bibliography.bib}
+
+% Removes icon in bibliography
+\setbeamertemplate{bibliography item}{}
+
+% Font selection
+% Latin Modern
+\usepackage{lmodern}
+% Verdana font type
+%\usepackage{verdana}
+% Helvetica
+%\usepackage{helvet}
+% Times (text and math)
+%\usepackage{newtx, newtxmath}
+% Nice font combination
+%\usepackage{mathptmx} % math
+%\usepackage{sourcesanspro} % sans-serif
+\usepackage{charter} % serif
+
+%Avoid shaded in RMarkdown
+
+% Use DTU theme, see below for options
+\usetheme[department=compute]{DTU}
+
+\title[Automated and Early Detection of Disease Outbreaks]{Automated and
+Early Detection of Disease Outbreaks}
+\author{Kasper Schou Telkamp}
+\institute{Section for Dynamical Systems}
+\date{2023-02-09}
+	
+\newcommand{\tabitem}{{\color{dtured}$\bullet$} }
+
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\V}{V}
+\DeclareMathOperator{\G}{G}
+\DeclareMathOperator{\N}{N}
+\DeclareMathOperator{\NB}{NB}
+\DeclareMathOperator{\Pois}{Pois}
+\DeclareMathOperator{\Geom}{Geom}
+
+
+\begin{document}
+
+
+\frame{
+	\maketitle
+}
+
+\frame{
+	\frametitle{Outline}
+	\tableofcontents
+}
+
+\hypertarget{seasonality-model}{%
+\section{Seasonality model}\label{seasonality-model}}
+
+\hypertarget{model-formula}{%
+\subsection{Model formula}\label{model-formula}}
+
+\begin{frame}{Model formula}
+\begin{equation}
+  \log(\lambda_i) = ageGroup_i + \sin\Big(\frac{2\pi}{12 \cdot monthInYear}\Big) + \cos\Big(\frac{2\pi}{12\cdot monthInYear}\Big)
+\end{equation}
+\end{frame}
+
+
+\end{document}

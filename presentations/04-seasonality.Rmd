@@ -1,0 +1,24 @@
+---
+title: "Automated and Early Detection of Disease Outbreaks"
+project: "Automated and Early Detection of Disease Outbreaks"
+author: "Kasper Schou Telkamp"
+institute: "Section for Dynamical Systems"
+date: "2023-02-09"
+---
+
+```{r setup, include=FALSE}
+def.chunk.hook  <- knitr::knit_hooks$get("chunk")
+knitr::knit_hooks$set(chunk = function(x, options) {
+  x <- def.chunk.hook(x, options)
+  paste0("\n \\", "tiny","\n\n", x, "\n\n \\normalsize")
+})
+
+```
+
+# Seasonality model
+
+## Model formula
+
+\begin{equation}
+  \log(\lambda_i) = ageGroup_i + \sin\Big(\frac{2\pi}{12 \cdot monthInYear}\Big) + \cos\Big(\frac{2\pi}{12\cdot monthInYear}\Big)
+\end{equation}

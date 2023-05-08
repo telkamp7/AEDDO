@@ -57,9 +57,9 @@ PoisG <- read_rds(file = "../src/models/PoissonGamma.rds")
 
 ```
 
-# Data exploration
+# Shiga- and verotoxin producing E. coli.
 
-## Shiga- and verotoxin producing E. coli.
+## Data exploration
 
 ```{r VTECTable, echo=FALSE}
 
@@ -79,24 +79,24 @@ kable(y.tbl,
 
 ```
 
-### Shiga- and verotoxin producing E. coli.
+### Data exploration
 ```{r EpixSTEC, echo=FALSE, out.width="100%"}
 include_graphics("../figures/EpixSTEC.png")
 ```
 
-### Shiga- and verotoxin producing E. coli.
+### Data exploration
 
 ```{r STECxEpixAgeGroup, echo=FALSE, out.width="100%"}
 include_graphics("../figures/STECxEpixAgeGroup.png")
 ```
 
-### Shiga- and verotoxin producing E. coli.
+### Data exploration
 
 ```{r VTECFigure, echo=FALSE, out.width="100%"}
 include_graphics("../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png")
 ```
 
-# State-of-the-art
+# State-of-the-art methods
 
 State-of-the-art methods for aberration detection is presented in \cite{Salmon_2016} and implemented in the R package **surveillance**. The R package includes methods such as the Farrington method introduced by \cite{Farrington_1996} together with the improvements proposed by \cite{Noufaily_2013}.
 
@@ -112,28 +112,30 @@ include_graphics("../figures/STEC_farrington.png")
 include_graphics("../figures/STEC_noufaily.png")
 ```
 
-# Hierarchical models
+# Novel methods based on general mixed effect models
 
-In the following two novel methods, based on theory presented in \cite{Madsen_2010}, for aberration detection is presented. Namely, a hierachical Poisson-Normal model and a hierachical Poisson-Gamma model.\
-\
+In the following two novel methods, based on theory presented in \cite{Madsen_2010}, for aberration detection is presented. Namely, a hierachical Poisson-Normal model and a hierachical Poisson-Gamma model.
+
+### Hierachical models
+
 It is useful to formulate the model as a hierarchical model containing a \textit{first stage model}
 
 \begin{equation}
-  f_{Y|u}(y;u,\beta)
+  f_{Y|u}(\boldsymbol{y};\boldsymbol{u},\boldsymbol{\beta})
 \end{equation}
 
 which is a model for the data given the random effects, and a \textit{second stage model}
 
 \begin{equation}
-  f_U(u, \Psi)
+  f_U(\boldsymbol{u}, \boldsymbol{\Psi})
 \end{equation}
 
-which is a model for the random effects. The total set of parameters is $\theta=(\beta, \Psi)$.
+which is a model for the random effects. The total set of parameters is $\boldsymbol{\theta}=(\boldsymbol{\beta}, \boldsymbol{\Psi})$.
 
 ### Objective
 
 \begin{itemize}
-  \item The objective is to asses the unobserved random effects, $u_{it}$, and determine the critical value, $C_\alpha$, with significance level $\alpha$.
+  \item The objective is to assess the unobserved random effects, $\boldsymbol{u}$, and determine the critical value, $C_\alpha$, with significance level $\alpha$.
   \item If $u_{it}>C_\alpha$, the observation is characterized as an outbreak.
 \end{itemize}
 \
@@ -146,33 +148,37 @@ The model can be formulated as a two-level hierarchical model
 
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}e^{u_{it}}) \label{eq:pois_ln0} \\ 
-    u_{it} &\sim \N(0,\sigma^2) \label{eq:pois_ln1}
+    \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda} e^{\boldsymbol{u}}) \label{eq:pois_ln0} \\
+    \boldsymbol{u} &\sim \N (\boldsymbol{0}, \sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
 
 ### Hierachical Poisson-Normal model
 
 \begin{itemize}
-  \item $Y|u$ are assumed to be a Poisson distribution with intensities $\lambda_{it}$.
+  \item $\boldsymbol{Y|u}$ are assumed to be a Poisson distribution with intensities $\boldsymbol{\lambda}$.
   \item An offset is included to account for the population size, $x_{it}$.
   \item Hence, the model for the fixed effect is
 \end{itemize}
 
 \begin{equation}
-  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
+  \log(\lambda_{i})=\boldsymbol{X}_i^T\boldsymbol{\beta}+\log(x_{it})
 \end{equation}
 
 \begin{itemize}
-  \item Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter.
-  \item The random effects $u_{it}$ are assumed to be Gaussian.
+  \item Here $\boldsymbol{X}_i$ is a $p$-dimensional vector of covariates, and $\boldsymbol{\beta}$ contains the corresponding fixed effect parameters.
+  \item The random effects $\boldsymbol{u}$ are assumed to be Gaussian.
 \end{itemize}
 
 \begin{equation}
   u_{it} = \epsilon_{it}
 \end{equation}
 
-where $\epsilon_{it}\sim\N(0,\sigma^2)$ is a white noise process, and $\sigma$ is a model parameter.
+\begin{itemize}
+  \item Here $\epsilon_{it}\sim\N(\boldsymbol{0},\sigma^2)$ is a white noise process, and $\sigma$ is a model parameter.
+  \item The model parameters are estimated in a rolling window of length \textit{k}.
+\end{itemize}
+
 
 ### Results
 
@@ -191,7 +197,7 @@ include_graphics("../figures/phiSTECPoisNExclude.png")
 The critical value, $C_\alpha$, is computed from the $1-\alpha$-quantile of the Normal distribution with the maximum-likelihood estimate for the variance, $\hat\sigma$.
 
 \begin{equation}
-  C_\alpha=\N(0,\hat\sigma^2)_{1-\alpha}
+  C_\alpha=\N(\boldsymbol{0},\hat\sigma^2)_{1-\alpha}
 \end{equation}
 
 ### Results - Out-of-sample random effects
@@ -203,17 +209,18 @@ include_graphics("../figures/windowedSTEDPoisNExclude.png")
 ## Hierachical Poisson-Gamma model
 
 \begin{itemize}
-  \item $Y|u$ are assumed to follow a Poisson distribution. 
-  \item The intensities, $\lambda_{it}$, are defined as
+  \item $\boldsymbol{Y|u}$ are assumed to follow a Poisson distribution. 
+  \item The intensities, $\lambda_{i}$, are defined as
 \end{itemize}
 
 \begin{equation}
-  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
+  \log(\lambda_{i})=\boldsymbol{X}_{i}^{T}\boldsymbol{\beta}+\log(x_{it})
 \end{equation}
 
 \begin{itemize}
-  \item Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter.
-  \item The random effects $u_{it}$ are assumed to follow a reparametrized Gamma distribution with mean 1.
+  \item Here $\boldsymbol{X}_{i}$ is a $p$-dimensional vector of covariates, and $\boldsymbol{\beta}$ contains the corresponding fixed effect parameter.
+  \item The random effects $\boldsymbol{u}$ are assumed to follow a reparametrized Gamma distribution with mean $\boldsymbol{1}$.
+  \item The model parameters are estimated in a rolling window of length \textit{k}.
 \end{itemize}
 
 ### Hierachical Poisson-Gamma model
@@ -222,8 +229,8 @@ Subsequently, the model can be formulated as a two-level hierarchical model
 
 \begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}u_{it}) \label{eq:pois_g0} \\ 
-    u_{it} &\sim \G(1/\phi,\phi) \label{eq:pois_g1}
+    \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda} \boldsymbol{u}) \label{eq:pois_g0} \\ 
+    \boldsymbol{u} &\sim \G(\boldsymbol{1}/\phi,\phi) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
 
@@ -284,7 +291,7 @@ include_graphics("../figures/phiSTECPoisGExclude.png")
 The critical value, $C_\alpha$, is computed from the $1-\alpha$-quantile of the reparametrized Gamma distribution with the maximum-likelihood estimate for the variance, $\hat\phi$.
 
 \begin{equation}
-  C_\alpha=\G(1/\hat\phi,\hat\phi)_{1-\alpha}
+  C_\alpha=\G(\boldsymbol{1}/\hat\phi,\hat\phi)_{1-\alpha}
 \end{equation}
 
 

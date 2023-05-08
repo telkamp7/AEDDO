@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.5.1)  2 MAY 2023 10:25
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.5.1)  4 MAY 2023 11:26
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**03-DIAS.tex
-(./03-DIAS.tex
+**04-seasonality.tex
+(./04-seasonality.tex
 LaTeX2e <2022-11-01> patch level 1
 L3 programming layer <2023-04-20> (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/beamer/beamer.cls
 Document Class: beamer 2023/02/20 v3.69 A class for typesetting presentations
@@ -1090,8 +1090,8 @@ Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
-(./03-DIAS.aux)
-\openout1 = `03-DIAS.aux'.
+(./04-seasonality.aux)
+\openout1 = `04-seasonality.aux'.
 
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 54.
 LaTeX Font Info:    ... okay on input line 54.
@@ -1152,9 +1152,9 @@ LaTeX Font Info:    ... okay on input line 54.
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 Package hyperref Info: Link coloring OFF on input line 54.
-(./03-DIAS.out) (./03-DIAS.out)
+(./04-seasonality.out) (./04-seasonality.out)
 \@outlinefile=\write6
-\openout6 = `03-DIAS.out'.
+\openout6 = `04-seasonality.out'.
 
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/translator/translator-basic-dictionary-English.dict
 Dictionary: translator-basic-dictionary, Language: English 
@@ -1184,14 +1184,14 @@ Package biblatex Info: XeTeX detected.
 (biblatex)             Assuming input encoding 'utf8'.
 Package biblatex Info: Data encoding 'utf8' specified.
 (biblatex)             No need to reencode data.
-\openout5 = `03-DIAS-blx.bib'.
+\openout5 = `04-seasonality-blx.bib'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file '03-DIAS.bbl' found.
-(./03-DIAS.bbl)
+Package biblatex Info: ... file '04-seasonality.bbl' found.
+(./04-seasonality.bbl)
 Package biblatex Info: Reference section=0 on input line 54.
 Package biblatex Info: Reference segment=0 on input line 54.
-(./03-DIAS.nav)
+(./04-seasonality.nav)
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <12> not available
@@ -1204,7 +1204,7 @@ File: tex_dtu_frise.pdf Graphic file (type pdf)
 <use tex_dtu_frise.pdf>
 [1
 
-] (./03-DIAS.toc
+] (./04-seasonality.toc
 LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 2.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
@@ -1248,229 +1248,35 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 
 ]
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 98.
+(Font)              <10.95> on input line 76.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [3
 
 ]
-File: ../figures/EpixSTEC.png Graphic file (type bmp)
-<../figures/EpixSTEC.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[4
-
-]
-File: ../figures/STECxEpixAgeGroup.png Graphic file (type bmp)
-<../figures/STECxEpixAgeGroup.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[5
-
-]
-File: ../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png Graphic file (type bmp)
-<../figures/ShigaogveratoxinproducerendeEcolixAgeGroup.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[6
-
-]
-LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <10.95> not available
-(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 136.
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[7
-
-]
-File: ../figures/STEC_farrington.png Graphic file (type bmp)
-<../figures/STEC_farrington.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[8
-
-]
-File: ../figures/STEC_noufaily.png Graphic file (type bmp)
-<../figures/STEC_noufaily.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[9
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[10
-
-]
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 188.
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 188.
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[11
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[12
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[13
-
-]
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 243.
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[14
-
-]
-File: ../figures/thetaSTECPoisNExclude.png Graphic file (type bmp)
-<../figures/thetaSTECPoisNExclude.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[15
-
-]
-File: ../figures/phiSTECPoisNExclude.png Graphic file (type bmp)
-<../figures/phiSTECPoisNExclude.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[16
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[17
-
-]
-File: ../figures/windowedSTEDPoisNExclude.png Graphic file (type bmp)
-<../figures/windowedSTEDPoisNExclude.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[18
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[19
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[20
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[21
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[22
-
-]
-File: ../figures/thetaSTECPoisGExclude.png Graphic file (type bmp)
-<../figures/thetaSTECPoisGExclude.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[23
-
-]
-File: ../figures/phiSTECPoisGExclude.png Graphic file (type bmp)
-<../figures/phiSTECPoisGExclude.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[24
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[25
-
-]
-File: ../figures/windowedSTECPoisGExclude.png Graphic file (type bmp)
-<../figures/windowedSTECPoisGExclude.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[26
-
-]
-File: ../figures/compareMethodsDeluxe.png Graphic file (type bmp)
-<../figures/compareMethodsDeluxe.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[27
-
-]
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 415.
-(c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
-File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-
-LaTeX Font Warning: Font shape `T1/lmss/m/sc' in size <10.95> not available
-(Font)              Font shape `T1/lmr/m/sc' tried instead on input line 415.
-
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 415.
-(c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-Missing character: There is no – ("2013) in font ec-lmss10!
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[28
-
-]
-LaTeX Font Info:    Font shape `T1/lmss/b/it' in size <12> not available
-(Font)              Font shape `T1/lmss/bx/it' tried instead on input line 434.
-LaTeX Font Info:    Font shape `T1/lmss/bx/it' in size <12> not available
-(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 434.
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[29
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[30
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[31
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[32
-
-]
 \tf@nav=\write7
-\openout7 = `03-DIAS.nav'.
+\openout7 = `04-seasonality.nav'.
 
 \tf@toc=\write8
-\openout8 = `03-DIAS.toc'.
+\openout8 = `04-seasonality.toc'.
 
 \tf@snm=\write9
-\openout9 = `03-DIAS.snm'.
+\openout9 = `04-seasonality.snm'.
 
-(./03-DIAS.aux)
-Package rerunfilecheck Info: File `03-DIAS.out' has not changed.
-(rerunfilecheck)             Checksum: 0E95F90CDB66B9F45CBC668BFEB5225E;1852.
-Package logreq Info: Writing requests to '03-DIAS.run.xml'.
-\openout1 = `03-DIAS.run.xml'.
+(./04-seasonality.aux)
+Package rerunfilecheck Info: File `04-seasonality.out' has not changed.
+(rerunfilecheck)             Checksum: 200182365708C89E87DB9754AEDE6050;256.
+Package logreq Info: Writing requests to '04-seasonality.run.xml'.
+\openout1 = `04-seasonality.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 48023 strings out of 478659
- 1141553 string characters out of 5846593
- 1921916 words of memory out of 5000000
- 67327 multiletter control sequences out of 15000+600000
- 599025 words of font info for 103 fonts, out of 8000000 for 9000
+ 47291 strings out of 478659
+ 1123136 string characters out of 5846593
+ 1911504 words of memory out of 5000000
+ 66635 multiletter control sequences out of 15000+600000
+ 559123 words of font info for 74 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 99i,21n,104p,2136b,5001s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 99i,21n,104p,2143b,3967s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on 03-DIAS.pdf (32 pages).
+Output written on 04-seasonality.pdf (3 pages).

@@ -63,14 +63,14 @@ Early Detection of Disease Outbreaks}
 	\tableofcontents
 }
 
-\hypertarget{data-exploration}{%
-\section{Data exploration}\label{data-exploration}}
-
 \hypertarget{shiga--and-verotoxin-producing-e.-coli.}{%
-\subsection{Shiga- and verotoxin producing E.
+\section{Shiga- and verotoxin producing E.
 coli.}\label{shiga--and-verotoxin-producing-e.-coli.}}
 
-\begin{frame}{Shiga- and verotoxin producing E. coli.}
+\hypertarget{data-exploration}{%
+\subsection{Data exploration}\label{data-exploration}}
+
+\begin{frame}{Data exploration}
 \tiny
 
 \begin{table}
@@ -97,8 +97,8 @@ Date & ageGroup & $y_{it}$ & $x_{it}$\\
 \normalsize
 \end{frame}
 
-\begin{frame}{Shiga- and verotoxin producing E. coli.}
-\protect\hypertarget{shiga--and-verotoxin-producing-e.-coli.-1}{}
+\begin{frame}{Data exploration}
+\protect\hypertarget{data-exploration-1}{}
 \tiny
 
 \includegraphics[width=1\linewidth]{../figures/EpixSTEC}
@@ -106,8 +106,8 @@ Date & ageGroup & $y_{it}$ & $x_{it}$\\
 \normalsize
 \end{frame}
 
-\begin{frame}{Shiga- and verotoxin producing E. coli.}
-\protect\hypertarget{shiga--and-verotoxin-producing-e.-coli.-2}{}
+\begin{frame}{Data exploration}
+\protect\hypertarget{data-exploration-2}{}
 \tiny
 
 \includegraphics[width=1\linewidth]{../figures/STECxEpixAgeGroup}
@@ -115,8 +115,8 @@ Date & ageGroup & $y_{it}$ & $x_{it}$\\
 \normalsize
 \end{frame}
 
-\begin{frame}{Shiga- and verotoxin producing E. coli.}
-\protect\hypertarget{shiga--and-verotoxin-producing-e.-coli.-3}{}
+\begin{frame}{Data exploration}
+\protect\hypertarget{data-exploration-3}{}
 \tiny
 
 \includegraphics[width=1\linewidth]{../figures/ShigaogveratoxinproducerendeEcolixAgeGroup}
@@ -124,10 +124,10 @@ Date & ageGroup & $y_{it}$ & $x_{it}$\\
 \normalsize
 \end{frame}
 
-\hypertarget{state-of-the-art}{%
-\section{State-of-the-art}\label{state-of-the-art}}
+\hypertarget{state-of-the-art-methods}{%
+\section{State-of-the-art methods}\label{state-of-the-art-methods}}
 
-\begin{frame}{State-of-the-art}
+\begin{frame}{State-of-the-art methods}
 State-of-the-art methods for aberration detection is presented in
 \cite{Salmon_2016} and implemented in the R package
 \textbf{surveillance}. The R package includes methods such as the
@@ -157,37 +157,40 @@ improvements proposed by \cite{Noufaily_2013}.
 \normalsize
 \end{frame}
 
-\hypertarget{hierarchical-models}{%
-\section{Hierarchical models}\label{hierarchical-models}}
+\hypertarget{novel-methods-based-on-general-mixed-effect-models}{%
+\section{Novel methods based on general mixed effect
+models}\label{novel-methods-based-on-general-mixed-effect-models}}
 
-\begin{frame}{Hierarchical models}
+\begin{frame}{Novel methods based on general mixed effect models}
 In the following two novel methods, based on theory presented in
 \cite{Madsen_2010}, for aberration detection is presented. Namely, a
-hierachical Poisson-Normal model and a hierachical Poisson-Gamma
-model.\\
-\strut \\
+hierachical Poisson-Normal model and a hierachical Poisson-Gamma model.
+\end{frame}
+
+\begin{frame}{Hierachical models}
+\protect\hypertarget{hierachical-models}{}
 It is useful to formulate the model as a hierarchical model containing a
 \textit{first stage model}
 
 \begin{equation}
-  f_{Y|u}(y;u,\beta)
+  f_{Y|u}(\boldsymbol{y};\boldsymbol{u},\boldsymbol{\beta})
 \end{equation}
 
 which is a model for the data given the random effects, and a
 \textit{second stage model}
 
 \begin{equation}
-  f_U(u, \Psi)
+  f_U(\boldsymbol{u}, \boldsymbol{\Psi})
 \end{equation}
 
 which is a model for the random effects. The total set of parameters is
-\(\theta=(\beta, \Psi)\).
+\(\boldsymbol{\theta}=(\boldsymbol{\beta}, \boldsymbol{\Psi})\).
 \end{frame}
 
 \begin{frame}{Objective}
 \protect\hypertarget{objective}{}
 \begin{itemize}
-  \item The objective is to asses the unobserved random effects, $u_{it}$, and determine the critical value, $C_\alpha$, with significance level $\alpha$.
+  \item The objective is to assess the unobserved random effects, $\boldsymbol{u}$, and determine the critical value, $C_\alpha$, with significance level $\alpha$.
   \item If $u_{it}>C_\alpha$, the observation is characterized as an outbreak.
 \end{itemize}
 
@@ -206,8 +209,8 @@ The model can be formulated as a two-level hierarchical model
 
 \begin{subequations}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}e^{u_{it}}) \label{eq:pois_ln0} \\ 
-    u_{it} &\sim \N(0,\sigma^2) \label{eq:pois_ln1}
+    \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda} e^{\boldsymbol{u}}) \label{eq:pois_ln0} \\
+    \boldsymbol{u} &\sim \N (\boldsymbol{0}, \sigma^2) \label{eq:pois_ln1}
   \end{alignat}
 \end{subequations}
 \end{frame}
@@ -215,26 +218,28 @@ The model can be formulated as a two-level hierarchical model
 \begin{frame}{Hierachical Poisson-Normal model}
 \protect\hypertarget{hierachical-poisson-normal-model-1}{}
 \begin{itemize}
-  \item $Y|u$ are assumed to be a Poisson distribution with intensities $\lambda_{it}$.
+  \item $\boldsymbol{Y|u}$ are assumed to be a Poisson distribution with intensities $\boldsymbol{\lambda}$.
   \item An offset is included to account for the population size, $x_{it}$.
   \item Hence, the model for the fixed effect is
 \end{itemize}
 
 \begin{equation}
-  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
+  \log(\lambda_{i})=\boldsymbol{X}_i^T\boldsymbol{\beta}+\log(x_{it})
 \end{equation}
 
 \begin{itemize}
-  \item Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter.
-  \item The random effects $u_{it}$ are assumed to be Gaussian.
+  \item Here $\boldsymbol{X}_i$ is a $p$-dimensional vector of covariates, and $\boldsymbol{\beta}$ contains the corresponding fixed effect parameters.
+  \item The random effects $\boldsymbol{u}$ are assumed to be Gaussian.
 \end{itemize}
 
 \begin{equation}
   u_{it} = \epsilon_{it}
 \end{equation}
 
-where \(\epsilon_{it}\sim\N(0,\sigma^2)\) is a white noise process, and
-\(\sigma\) is a model parameter.
+\begin{itemize}
+  \item Here $\epsilon_{it}\sim\N(\boldsymbol{0},\sigma^2)$ is a white noise process, and $\sigma$ is a model parameter.
+  \item The model parameters are estimated in a rolling window of length \textit{k}.
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Results}
@@ -262,7 +267,7 @@ The critical value, \(C_\alpha\), is computed from the
 maximum-likelihood estimate for the variance, \(\hat\sigma\).
 
 \begin{equation}
-  C_\alpha=\N(0,\hat\sigma^2)_{1-\alpha}
+  C_\alpha=\N(\boldsymbol{0},\hat\sigma^2)_{1-\alpha}
 \end{equation}
 \end{frame}
 
@@ -281,17 +286,18 @@ model}\label{hierachical-poisson-gamma-model}}
 
 \begin{frame}{Hierachical Poisson-Gamma model}
 \begin{itemize}
-  \item $Y|u$ are assumed to follow a Poisson distribution. 
-  \item The intensities, $\lambda_{it}$, are defined as
+  \item $\boldsymbol{Y|u}$ are assumed to follow a Poisson distribution. 
+  \item The intensities, $\lambda_{i}$, are defined as
 \end{itemize}
 
 \begin{equation}
-  \log(\lambda_{it})=\mathbf{X}_i^T\mathbf{\beta}_{it}+\log(x_{it})
+  \log(\lambda_{i})=\boldsymbol{X}_{i}^{T}\boldsymbol{\beta}+\log(x_{it})
 \end{equation}
 
 \begin{itemize}
-  \item Here $\mathbf{X}_i$ is $T\times6$-dimensional, and $\mathbf{\beta}_{it}$ contains the corresponding fixed effect parameter.
-  \item The random effects $u_{it}$ are assumed to follow a reparametrized Gamma distribution with mean 1.
+  \item Here $\boldsymbol{X}_{i}$ is a $p$-dimensional vector of covariates, and $\boldsymbol{\beta}$ contains the corresponding fixed effect parameter.
+  \item The random effects $\boldsymbol{u}$ are assumed to follow a reparametrized Gamma distribution with mean $\boldsymbol{1}$.
+  \item The model parameters are estimated in a rolling window of length \textit{k}.
 \end{itemize}
 \end{frame}
 
@@ -302,8 +308,8 @@ model
 
 \begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois (\lambda_{it}u_{it}) \label{eq:pois_g0} \\ 
-    u_{it} &\sim \G(1/\phi,\phi) \label{eq:pois_g1}
+    \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda} \boldsymbol{u}) \label{eq:pois_g0} \\ 
+    \boldsymbol{u} &\sim \G(\boldsymbol{1}/\phi,\phi) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
 \end{frame}
@@ -377,7 +383,7 @@ The critical value, \(C_\alpha\), is computed from the
 maximum-likelihood estimate for the variance, \(\hat\phi\).
 
 \begin{equation}
-  C_\alpha=\G(1/\hat\phi,\hat\phi)_{1-\alpha}
+  C_\alpha=\G(\boldsymbol{1}/\hat\phi,\hat\phi)_{1-\alpha}
 \end{equation}
 \end{frame}
 
