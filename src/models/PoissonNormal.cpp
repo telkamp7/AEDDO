@@ -19,8 +19,6 @@ Type objective_function<Type>::operator() ()
   int nobs = y.size();
   Type mean_ran = Type(0);
   
-  int i;
-  
   Type f = 0;                           // Declare the "objective function"
   for(int t=0; t < nobs; t++){
     f -= dnorm(u[t],mean_ran,sigma_u,true);

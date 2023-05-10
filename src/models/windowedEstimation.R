@@ -8,8 +8,7 @@ library(purrr)
 # Source the negative log-likelihood functions
 source(file = "nll_PoisG.R")
 
-# Import the data
-dat <- read_rds(file = "../../data/processed/dat2.rds") # 6 agegroups
+
 
 # Windowed estimation
 dat_nest <- dat %>%
@@ -100,6 +99,7 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
         silent = TRUE
       )
       
+      # Pak argumenter ud og brug optim
       # Optimize the function
       opt <- do.call(what = "optim", args = PoisLN)
       
@@ -178,7 +178,7 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
                            )
       
       # Construct parameter guess for next iteration
-      theta <- opt$par
+      theta <- opt$par * 0.7
       
     }else if(model == "PoissonGamma"){
       
@@ -188,7 +188,6 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
                     data = yWindow,
                     designMatrix = designMatrix,
                     lower = lower)
-      
       # Calculate the hessian
       H <- hessian(func = nll,
                    x = opt$par,
@@ -225,7 +224,7 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
         monthInYear = refData$monthInYear,
         # refDesign = model.matrix(object = formula, data = refData),
         # beta = ,
-        phi = opt$par[-(1:ncol(refDesign))],
+        phi = exp(opt$par[-(1:ncol(refDesign))]),
         lambda = c(exp(refDesign %*% opt$par[1:ncol(refDesign)] - log(n))),
         u = ( y*phi+1 ) / (lambda * phi + 1),
         p = pgamma(q = u, shape = 1/phi, scale = phi),
@@ -257,7 +256,7 @@ windowedEstimation <- function(data, k = 36, nll, theta, formula, lower, model, 
                            )
       
       # Use current estimate as guess for the next iteration
-      theta <- opt$par
+      theta <- opt$par * 0.7
     }
     
     if(excludePastOutbreaks == TRUE & sum(ran.ef$alarm) > 0){
@@ -283,18 +282,24 @@ PoissonGamma <- windowedEstimation(data = y.season,
                           nll = nll.model,
                           theta = theta,
                           formula = formula,
-                          lower = rep(1e-6,ncol(season.model)+1),
+                          lower = c(rep(1e-6,6),rep(-Inf,2),-8),
                           model = "PoissonGamma",
                           excludePastOutbreaks = TRUE)
+
+tmp <- PoissonGamma %>%
+  select(ref.date, par, message) %>%
+  unnest(par)
+
+
 # 
-# PoissonNormal <- windowedEstimation(data = y,
-#                                     k = 36,
-#                                     nll = nll.age6.window,
-#                                     theta = theta,
-#                                     formula = y ~ -1 + ageGroup,
-#                                     lower = c(rep(1e-6,6),-4),
-#                                     model = "PoissonNormal",
-#                                     excludePastOutbreaks = TRUE)
+PoissonNormal <- windowedEstimation(data = y.season,
+                                    k = 36,
+                                    nll = nll.model,
+                                    theta = theta,
+                                    formula = formula,
+                                    lower = c(rep(1e-6,6),rep(-Inf,2),-4),
+                                    model = "PoissonNormal",
+                                    excludePastOutbreaks = TRUE)
 # 
 # tmp <- dat_nest %>% 
 #   filter(caseDef %in% c("Legionella","Shiga- og veratoxin producerende E. coli."))
@@ -325,7 +330,7 @@ STEC_res <- dat_nest %>%
       formula = y ~ -1 + ageGroup + sin(2*pi/12*monthInYear) + cos(2*pi/12*monthInYear),
       lower = c(rep(1e-6,6),rep(-Inf,2),1e-6),
       model = "PoissonGamma",
-      excludePastOutbreaks = FALSE)
+      excludePastOutbreaks = TRUE)
     }
     ),
     PoissonNormal_excludePastOutbreaks = map(data, function(df) {
@@ -349,7 +354,7 @@ STEC_res <- dat_nest %>%
         formula = y ~ -1 + ageGroup + sin(2*pi/12*monthInYear) + cos(2*pi/12*monthInYear),
         lower = c(rep(1e-6,6),rep(-Inf,2),-4),
         model = "PoissonNormal",
-        excludePastOutbreaks = FALSE)
+        excludePastOutbreaks = TRUE)
     }
     )
     )

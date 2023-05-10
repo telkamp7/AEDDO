@@ -437,6 +437,25 @@ ggsave(filename = "phiSTECPoisNExclude.png",
        units = "in",
        dpi = "print")
 
+
+# PoissonGamma %>%
+#   select(ref.date, par) %>%
+#   unnest(par) %>%
+#   mutate(Parameter = factor(Parameter)) %>%
+#   filter(Parameter == "phi") %>%
+#   ggplot(mapping = aes(x = ref.date, y = exp(theta))) +
+#   geom_line(linewidth = 1) +
+#   geom_ribbon(mapping = aes(x= ref.date, ymin = exp(theta) / exp(2*se.theta), ymax = exp(theta) * exp(2*se.theta)), inherit.aes = FALSE, alpha = 0.2) +
+#   ylab(label = expression(sigma)) +
+#   xlab(label = "Time [Months]") +
+#   ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Hierachical Poisson Normal model")
+# 
+# PoissonNormal %>%select(ref.date, par) %>%
+#   unnest(par) %>%
+#   mutate(Parameter = factor(Parameter)) %>%
+#   filter(Parameter == "log_sigma") %>%
+#   print(n = 144)
+
 STEC_res %>%
   select(PoissonNormal_seasonal) %>%
   unnest(PoissonNormal_seasonal) %>%
@@ -447,7 +466,7 @@ STEC_res %>%
   filter(Parameter == "log_sigma") %>%
   ggplot(mapping = aes(x = ref.date, y = exp(theta))) +
   geom_line(linewidth = 1) +
-  geom_ribbon(mapping = aes(x= ref.date, ymin = exp(theta - 2*se.theta), ymax = exp(theta + 2*se.theta)), inherit.aes = FALSE, alpha = 0.2) +
+  geom_ribbon(mapping = aes(x= ref.date, ymin = exp(theta) / exp(2*se.theta), ymax = exp(theta) * exp(2*se.theta)), inherit.aes = FALSE, alpha = 0.2) +
   ylab(label = expression(sigma)) +
   xlab(label = "Time [Months]") +
   ggtitle(label = "Shiga- og veratoxin producerende E. coli.", subtitle = "Hierachical Poisson Normal model")

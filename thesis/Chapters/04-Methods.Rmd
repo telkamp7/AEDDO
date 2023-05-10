@@ -1,31 +1,112 @@
 \chapter{Methods}
 
-\section{Hierarchical models}
+In this chapter the outbreak detection algorithm together with theory related to generalized mixed effects models and hierarchical generalized linear models is presented. These models are used in this master thesis to model the count observations $\boldsymbol{y}$, but more importantly they are used to assess the unobserved random variables or random effects $\boldsymbol{u}$, which are used directly in the detection algorithm to characterize an outbreak. In general it is impossible to obtain closed form solutions for generalized mixed effects models and hence an outline of the Laplace approximation is included in this chapter. Moreover, the implementation of aforementioned models in R is presented. The presentation of this chapter is mostly inspired by @Madsen_2010.
 
-In this section the hierarchical model and the generalized mixed effect model that is used to model the count observation $y_{it}$ for the specific age groups, $i=1,\dots,11$, and in the monthly period ranging from 2008 to 2022, $t=1,\dots,180$, is presented. For an introduction to the concept of hierarchical models see @Madsen_2010.
+\section{General mixed effects models}
 
-\subsection{Hierachical Poisson Normal model}
+In this section selected theory related to generalized mixed effects models is presented along with a novel method for the prospective detection of disease outbreaks. The novel method utilize a hierarchical Poisson Normal model to model the count observations $\boldsymbol{y}$ and to assess the unobserved random effects $\boldsymbol{u}$. These random effects are in turn used directly in the detection algorithm to characterize an outbreak. Moreover, an implementation in R of the aforementioned model is presented.
 
-The conditional distribution of the count observations, $Y|u$, are assuned to be a Poisson distribution with intensities $\lambda_{it}$. Also, we shall assume that the count is proportional to the population size, $x_{it}$, within each age group, $i$, at a given time point, $t$. Hence, in terms of the canonical link for the Poisson distribution the model for the fixed effect is
+The general mixed effects model can be represented by its likelihood function
 
-\begin{equation}
-  \log(\lambda_{it}) =\mathbf{X}_i^T \beta_{it} + \log(x_{it})
+\begin{equation}\label{eq:glmm}
+  L_{M}(\boldsymbol{\theta; y})=\int_{\mathbb{R}^{q}} L(\boldsymbol{\theta;u,y}) d\boldsymbol{u}
 \end{equation}
 
-Here $\mathbf{X}_i$ is $T\times6\mathrm{-dimensional}$, and $\beta_{it}$ contains the corresponding fixed effect parameters. The random effects $u_it$ are assumed to be Gaussian
+where $\boldsymbol{y}$ is the observed random variable, $\boldsymbol{\theta}$ is the model parameters to be estimated and $\boldsymbol{U}$ is the $q$ unobserved random variables. The likelihood function $L$ is the joint likelihood of both the observed and the unobserved random variables. The likelihood function for estimating $\boldsymbol{\theta}$ is the marginal likelihood $L_{M}$ obtained by integrating out the unobserved random variables. In general it is difficult to solve the integral in \eqref{eq:glmm} if the number of unobserved random variables is more than a few and hence numerical methods must be used.
+
+\subsection{Hierarchical models}\label{hierarchicalModels}
+
+It is useful to formulate the model as a hierarchical model containing a \textit{first stage model}
+
+\begin{equation}
+  f_{Y|u}(\boldsymbol{y;u,\beta})
+\end{equation}
+
+which is a model for the observed random variables given the unobserved random variables, and a \textit{second stage model}
+
+\begin{equation}
+  f_{U}(\boldsymbol{u; \Psi})
+\end{equation}
+
+which is a model for the unobserved random variables. Here $\boldsymbol{\beta}$ represent the fixed effects parameters and $\boldsymbol{\Psi}$ is a model parameter. The total set of parameters is $\boldsymbol{\theta}=(\beta, \Psi)$. Hence the joint likelihood is given as
+
+\begin{equation}
+  L(\boldsymbol{\beta, \Psi; u, y})=f_{Y|u}(\boldsymbol{y;u,\beta}) f_{U}(\boldsymbol{u; \Psi})
+\end{equation}
+
+To obtain the likelihood for the model parameters $(\boldsymbol{\beta, \Psi})$ the unobserved random variables are integrated out. The likelihood function for estimating $(\boldsymbol{\beta, \Psi})$ is as in \eqref{eq:glmm} the marginal likelihood
+
+\begin{equation}
+  L_{M}(\boldsymbol{\beta, \Psi; y})=\int_{\mathbb{R}^{q}} L(\boldsymbol{\beta, \Psi;u,y}) d\boldsymbol{u}
+\end{equation}
+
+where $q$ is the number of unobserved random variables, and $\boldsymbol{\beta}$ and $\boldsymbol{\Psi}$ are the parameters to be estimated.
+
+\subsection{Laplace Approximation}
+
+The Laplace approximation will be outlined in the following. A thorough description of the Laplace approximation in nonlinear mixed effects models is found in @Wolfinger_1997.
+
+For a given set of model parameters $\boldsymbol{\theta}$ the joint log-likelihood $\ell(\boldsymbol{\theta, u, y})=\log\big(L(\boldsymbol{\theta, u, y})\big)$ is approximated using a second order Taylor approximation around the optimum $\boldsymbol{\tilde{u}}=\boldsymbol{\hat{u}_\theta}$ of the log-likelihood function w.r.t. the unobserved random variables $\boldsymbol{u}$, i.e.,
+
+\begin{equation}\label{eq:laplaceApprox}
+  \ell(\boldsymbol{\theta, u, y})\sim\ell(\boldsymbol{\theta, \tilde{u}, y}) - \frac{1}{2}(\boldsymbol{u-\tilde{u}})^T \boldsymbol{H}(\boldsymbol{\tilde{u}})(\boldsymbol{u-\tilde{u}})
+\end{equation}
+
+where the first-order term of the Taylor expansion disappears since the expansion is done around the optimum $\boldsymbol{\tilde {u}}$ and $\boldsymbol{H}(\boldsymbol{\tilde{u}})=-\ell''(\boldsymbol{\theta, u, y})|_{\boldsymbol{u=\tilde{u}}}$ is the negative Hessian of the joint log-likelihood evaluated at $\boldsymbol{\tilde{u}}$ which will simply be referred to as "the Hessian". 
+
+It is readily seen that the joint log-likelihood for the hierarchical model specified in Section \ref{hierarchicalModels} is
+
+\begin{equation}
+  \ell(\boldsymbol{\theta, u, y}) = \ell(\boldsymbol{\beta, \Psi, u, y}) = \log f_{Y|u}(\boldsymbol{y;u,\beta})+\log f_U(\boldsymbol{u;\Psi})
+\end{equation}
+
+which implies that the Laplace approximation becomes
+
+\begin{equation}
+  \ell_{M,LA}(\boldsymbol{\theta, y})=\log f_{Y|u}(\boldsymbol{y; \tilde{u},\beta})+\log f_U(\boldsymbol{\tilde{u}, \Psi})-\frac{1}{2}\log\Bigg|\frac{\boldsymbol{H}(\boldsymbol{\tilde{u}})}{2\pi}\Bigg|
+\end{equation}
+
+\subsection{Formulation of the hierarchical Poisson Normal model}
+
+The conditional distribution of the count observations, $f_{Y|u}(\boldsymbol{y;u,\beta})$, is assumed to be a Poisson distribution with intensities $\boldsymbol{\lambda}$. Also, it is assumed that the count is proportional to the population size $\boldsymbol{x}$. Hence, in terms of the canonical link for the Poisson distribution the model for the fixed effects is
+
+\begin{equation}
+  \log(\lambda_i)=\boldsymbol{X}_i^T\boldsymbol{\beta}+\log(x_{it})
+\end{equation}
+
+Here $\boldsymbol{X}_i$ and $\boldsymbol{\beta}$ are $p$-dimensional vectors of covariates and fixed effect parameters respectively where $p$ denotes the number of fixed effects parameters. Moreover, the distribution of the random effects, $f_U(\boldsymbol{u, \sigma})$, are assumed to follow a Gaussian distribution
 
 \begin{equation}
   u_{it}=\epsilon_{it}
 \end{equation}
 
-where $\epsilon_{it}\sim\N(0,\sigma^2)$ and are independent and identically distributed, and $sigma$ is a model parameter. Henceforth, the model can be formulated as a two-level hierarchical model
+where $\epsilon_{it}\sim\N(\boldsymbol{0},\sigma^2)$ is a white noise process, and $\sigma$ is a model parameter. Henceforth, the total set of parameters are $\boldsymbol{\theta}=(\boldsymbol{\beta},\sigma)$ and the model can be formulated as a two-level hierarchical model
 
 \begin{subequations} \label{eq:PoisN}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois \big( \lambda_{it} \exp(u_{it}) \big) \label{eq:pois_n0} \\ 
-    u_{it} &\sim \N(0,\sigma^2) \label{eq:pois_n1}
+    \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) \label{eq:pois_n0} \\ 
+    \boldsymbol{u} &\sim \N(\boldsymbol{0},\sigma^2) \label{eq:pois_n1}
   \end{alignat}
 \end{subequations}
+
+The joint likelihood for the count observations $\boldsymbol y$ and the random effects $\boldsymbol u$ becomes
+
+\begin{equation}\label{eq:jnllPoisN}
+  L(\boldsymbol{\beta}, \sigma;\boldsymbol{u,y})=
+\end{equation}
+
+
+\subsection{Implementation in R using \textbf{TMB}}
+
+The hierarchical Poisson Normal model specified in \eqref{eq:PoisN} is implemented in R using the open source R package \textbf{TMB} (Template Model builder) by @Kristensen_2016. The joint likelihood specified in \eqref{eq:jnllPoisN} is defined as a C++ template function. The package evaluates and maximizes the Laplace approximation of the marginal likelihood where the random effects are automatically integrated out. This approximation and its derivaties are obtained using automatic differentiation of the joint likelihood.
+
+
+
+\subsection{Novel outbreak detection algorithm}
+
+
+
+\section{Hierarchical generalized linear models}
 
 
 
@@ -86,7 +167,7 @@ with mean
 \end{equation}
 
 and variance
-
+                                                            
 \begin{equation}
   \V[u|Y=y]=\frac{(y \phi^2+\phi)}{(\lambda \phi + 1)^2}
 \end{equation}

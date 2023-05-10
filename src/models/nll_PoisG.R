@@ -74,7 +74,7 @@ nll.model <- function(theta, data, designMatrix){
   # Construct regression parameters
   beta <- theta[1:ncol(designMatrix)]
   #... and model parameters
-  phi <- theta[-(1:ncol(designMatrix))]
+  phi <- exp(theta[-(1:ncol(designMatrix))])
   # Define parameters
   lambda <- exp(designMatrix %*% beta - log(data$n))
   # Construct the size and probability for the negative binomial distribution
