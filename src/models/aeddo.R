@@ -126,7 +126,7 @@ aeddo <- function(
       opt <- do.call(what = "optim", args = PoisN)
       
       ## Report on the random effects
-      rep <- TMB::sdreport(PoisN)
+      sdRep <- TMB::sdreport(PoisN)
       
       # Make a design matrix for the reference data
       refDesign <- model.matrix(object = formula, data = refData)
@@ -145,9 +145,7 @@ aeddo <- function(
       # Calculate the random effects
       refRep <- TMB::sdreport(obj = refPoisLN, par.fixed = opt$par, hessian.fixed = opt$hessian)
       
-      # Extract the standard deviation on the fixed effect parameter estimates
-      se.theta <- sqrt(diag(rep$cov.fixed))
-      
+      # Calculate the random effects and related information
       ran.ef <- dplyr::tibble(
         ref.date = refDate,
         ageGroup = refData$ageGroup,
@@ -155,15 +153,17 @@ aeddo <- function(
         y = refData$y,
         monthInYear = refData$monthInYear,
         log_sigma = opt$par[-(1:ncol(designMatrix))],
+        lambda = c(exp(refDesign %*% opt$par[1:ncol(refDesign)] - log(n))),
         u = refRep$par.random,
         p = pnorm(q = u, mean = 0, sd = exp(log_sigma)),
         alarm = p >= 0.95
       )
       
+      # Construct nice parameter table
       par <- dplyr::tibble(
         Parameter = c(colnames(designMatrix),"log_sigma"),
         theta = opt$par,
-        se.theta = se.theta
+        se.theta = sqrt(diag(rep$cov.fixed))
       )
       
       # Combine the results in a tibble
@@ -172,13 +172,15 @@ aeddo <- function(
         dplyr::tibble(
           ref.date = refDate,
           par = list(par),
-          log_sigma = opt$par[-(1:ncol(designMatrix))],
-          objective = opt$objective,
-          window.data = list(yWindow),
-          ran.ef = list(ran.ef), 
+          value = opt$value,
+          counts = list(opt$counts),
           convergence = opt$convergence,
-          message = opt$message
-          )
+          message = opt$message,
+          hessian = list(opt$hessian),
+          sd.rep = list(sdRep),
+          ran.ef = list(ran.ef),
+          window.data = list(yWindow)
+        )
       )
       
       # Construct parameter guess for next iteration
@@ -186,6 +188,7 @@ aeddo <- function(
       
     }else if(model == "PoissonGamma"){
       
+      # Construct objective function with derivatives based on a compiled C++ template
       PoisG <- TMB::MakeADFun(
         data = list(y = yWindow$y, x = yWindow$n, X = designMatrix),
         parameters = list(beta = theta[1:ncol(designMatrix)],
@@ -196,6 +199,7 @@ aeddo <- function(
         silent = TRUE
         )
       
+      # Include lower bound for if 'method' is 'L-BFGS-B'
       if(method == "L-BFGS-B"){
         PoisG$lower <- lower
       }
@@ -204,27 +208,12 @@ aeddo <- function(
       opt <- do.call(what = "optim", args = PoisG)
       
       ## Report on the random effects
-      rep <- TMB::sdreport(PoisG)
+      sdRep <- TMB::sdreport(PoisG)
       
       # Make a design matrix for the reference data
       refDesign <- model.matrix(object = formula, data = refData)
       
-      # Make the function for the reference data
-      refPoisG <- TMB::MakeADFun(
-        data = list(y = refData$y, x = refData$n, X = refDesign),
-        parameters = list(u = rep(1, length(refData$y)),
-                          beta = theta[1:ncol(refDesign)],
-                          log_phi_u = theta[-(1:ncol(refDesign))]),
-        DLL = model,
-        silent = TRUE
-      )
-      
-      # Calculate the random effects
-      refRep <- TMB::sdreport(obj = refPoisG, par.fixed = opt$par, hessian.fixed = opt$hessian)
-      
-      # Extract the standard deviation on the fixed effect parameter estimates
-      se.theta <- sqrt(diag(rep$cov.fixed))
-      
+      # Calculate the random effects and related information
       ran.ef <- dplyr::tibble(
         ref.date = refDate,
         ageGroup = refData$ageGroup,
@@ -238,10 +227,11 @@ aeddo <- function(
         alarm = p >= 0.95
       )
       
+      # Construct nice parameter table
       par <- dplyr::tibble(
         Parameter = c(colnames(designMatrix),"log_phi"),
         theta = opt$par,
-        se.theta = se.theta
+        se.theta = sqrt(diag(sdRep$cov.fixed))
       )
       
       # Combine the results in a tibble
@@ -250,12 +240,14 @@ aeddo <- function(
         dplyr::tibble(
           ref.date = refDate,
           par = list(par),
-          log_phi = opt$par[-(1:ncol(designMatrix))],
-          objective = opt$objective,
-          window.data = list(yWindow),
-          ran.ef = list(ran.ef), 
+          value = opt$value,
+          counts = list(opt$counts),
           convergence = opt$convergence,
-          message = opt$message
+          message = opt$message,
+          hessian = list(opt$hessian),
+          sd.rep = list(sdRep),
+          ran.ef = list(ran.ef),
+          window.data = list(yWindow)
         )
       )
       

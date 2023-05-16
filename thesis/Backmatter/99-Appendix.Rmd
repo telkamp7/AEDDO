@@ -17,6 +17,8 @@ This chapter serves as a reference, specifying notation, properties, and moments
     Gamma \newline $\G(\alpha,\beta)$ & $\mathbb{R_{+}}$ \newline $\alpha \in \mathbb{R}_{+}, \beta \in \mathbb{R}_{+}$ & $\frac{1}{\Gamma(\alpha)\beta}\Big(\frac{y}{\beta}\Big)^{\alpha-1}\exp(-y/\beta)$ & $\alpha\beta$ & $\alpha\beta^2$ \\
     \midrule
     Neg. Bin. \newline $\NB(r,p)$ & $0, 1, 2,\dots$ \newline $r\in\mathbb{R}_+, p \in]0,1]$ & $\begin{pmatrix} r+y-1 \\ y \end{pmatrix} p^r(1-p)^y$ & $\frac{r(1+p)}{p}$ & $\frac{r(1-p)}{p^2}$ \\
+    \midrule
+    Normal \newline $\N(\mu, \sigma^2)$ & $\mathbb{R}$ \newline $\mu\in\mathbb{R}, \sigma^2\in\mathbb{R}_+$ & $\frac{1}{\sigma\sqrt{2\pi}}\exp\Big(-\frac{(y-\mu)^2}{2\sigma^2}\Big)$ & $\mu$ & $\sigma^2$ \\
     \bottomrule
   \end{tabular}}
   \caption{Density, support, mean value, and variance for a number of distributions used in this master thesis.}
@@ -36,43 +38,17 @@ This chapter serves as a reference, specifying notation, properties, and moments
 
 \blindtext
 
+\section{The Normal distribution model}
+
+\blindtext
+
 \chapter{Proofs}
 
 \section{Hierarchical Poisson Gamma model}
 
 This section is a collection of proofs for the derivation of the compound Poisson Gamma model in \eqref{eq:PoisGam}.
 
-\subsection{Probability function for $Y$} \label{probabilityFunctionY}
 
-The probability function for the conditional distribution of $Y$ for given $u$
-
-\begin{equation} \label{eq:pdfPois}
-  f_{Y|u}(y;\lambda, u)=\frac{(\lambda u)^y}{y!} \exp (-\lambda u)
-\end{equation}
-
-and the probability density function for the distribution of $u$ is
-
-\begin{equation} \label{eq:pdfGamma}
-  f_{u}(u;\phi)=\frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)
-\end{equation}
-
-Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability function for the marginal distribution of $Y$ is determined from
-
-\begin{equation} \label{eq:marMix}
-  \begin{aligned}
-    g_{Y}(y;\lambda,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\lambda, u) f_{u}(u;\phi) \,du \\
-    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi) \,du\\
-    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi-1} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
-  \end{aligned}
-\end{equation}
-
-In \eqref{eq:marMix} it is noted that the integrand is the *kernel* in the probability density function for a Gamma distribution, $\G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)$. As the integral of the density shall equal one, we find by adjusting the norming constant that
-
-\begin{equation}
-  \int_{u=0}^\infty u^{y+1/\phi-1} \exp \bigg(-u/\Big(\phi/(\lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}}
-\end{equation}
-
-and then \eqref{eq:pdfMix} follows
 
 \subsection{Conditional distribution of $Y$}
 

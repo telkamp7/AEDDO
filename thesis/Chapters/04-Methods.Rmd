@@ -2,11 +2,13 @@
 
 In this chapter the outbreak detection algorithm together with theory related to generalized mixed effects models and hierarchical generalized linear models is presented. These models are used in this master thesis to model the count observations $\boldsymbol{y}$, but more importantly they are used to assess the unobserved random variables or random effects $\boldsymbol{u}$, which are used directly in the detection algorithm to characterize an outbreak. In general it is impossible to obtain closed form solutions for generalized mixed effects models and hence an outline of the Laplace approximation is included in this chapter. Moreover, the implementation of aforementioned models in R is presented. The presentation of this chapter is mostly inspired by @Madsen_2010.
 
+\section{Novel outbreak detection algorithm}
+
+The novel method for the prospective detection of disease outbreaks utilize a generalized mixed effects model or a hierarchical generalized linear model to model the count observations $\boldsymbol y$ and to assess the unobserved random effects $\boldsymbol u$. These random effects are used directly in the detection algorithm to characterize an outbreak. 
+
 \section{General mixed effects models}
 
-In this section selected theory related to generalized mixed effects models is presented along with a novel method for the prospective detection of disease outbreaks. The novel method utilize a hierarchical Poisson Normal model to model the count observations $\boldsymbol{y}$ and to assess the unobserved random effects $\boldsymbol{u}$. These random effects are in turn used directly in the detection algorithm to characterize an outbreak. Moreover, an implementation in R of the aforementioned model is presented.
-
-The general mixed effects model can be represented by its likelihood function
+In this section selected theory related to generalized mixed effects models is presented. The general mixed effects model can be represented by its likelihood function
 
 \begin{equation}\label{eq:glmm}
   L_{M}(\boldsymbol{\theta; y})=\int_{\mathbb{R}^{q}} L(\boldsymbol{\theta;u,y}) d\boldsymbol{u}
@@ -49,10 +51,10 @@ The Laplace approximation will be outlined in the following. A thorough descript
 For a given set of model parameters $\boldsymbol{\theta}$ the joint log-likelihood $\ell(\boldsymbol{\theta, u, y})=\log\big(L(\boldsymbol{\theta, u, y})\big)$ is approximated using a second order Taylor approximation around the optimum $\boldsymbol{\tilde{u}}=\boldsymbol{\hat{u}_\theta}$ of the log-likelihood function w.r.t. the unobserved random variables $\boldsymbol{u}$, i.e.,
 
 \begin{equation}\label{eq:laplaceApprox}
-  \ell(\boldsymbol{\theta, u, y})\sim\ell(\boldsymbol{\theta, \tilde{u}, y}) - \frac{1}{2}(\boldsymbol{u-\tilde{u}})^T \boldsymbol{H}(\boldsymbol{\tilde{u}})(\boldsymbol{u-\tilde{u}})
+  \ell(\boldsymbol{\theta, u, y})\approx\ell(\boldsymbol{\theta, \tilde{u}, y}) - \frac{1}{2}(\boldsymbol{u-\tilde{u}})^T \boldsymbol{H}(\boldsymbol{\tilde{u}})(\boldsymbol{u-\tilde{u}})
 \end{equation}
 
-where the first-order term of the Taylor expansion disappears since the expansion is done around the optimum $\boldsymbol{\tilde {u}}$ and $\boldsymbol{H}(\boldsymbol{\tilde{u}})=-\ell''(\boldsymbol{\theta, u, y})|_{\boldsymbol{u=\tilde{u}}}$ is the negative Hessian of the joint log-likelihood evaluated at $\boldsymbol{\tilde{u}}$ which will simply be referred to as "the Hessian". 
+where the first-order term of the Taylor expansion disappears since the expansion is done around the optimum $\boldsymbol{\tilde {u}}$ and $\boldsymbol{H}(\boldsymbol{\tilde{u}})=-\ell_{uu}''(\boldsymbol{\theta, u, y})|_{\boldsymbol{u=\tilde{u}}}$ is the negative Hessian of the joint log-likelihood evaluated at $\boldsymbol{\tilde{u}}$. 
 
 It is readily seen that the joint log-likelihood for the hierarchical model specified in Section \ref{hierarchicalModels} is
 
@@ -68,19 +70,27 @@ which implies that the Laplace approximation becomes
 
 \subsection{Formulation of the hierarchical Poisson Normal model}
 
-The conditional distribution of the count observations, $f_{Y|u}(\boldsymbol{y;u,\beta})$, is assumed to be a Poisson distribution with intensities $\boldsymbol{\lambda}$. Also, it is assumed that the count is proportional to the population size $\boldsymbol{x}$. Hence, in terms of the canonical link for the Poisson distribution the model for the fixed effects is
+In order to simplify the notation, the probability density functions are presented for a specific observation and hence the subscripts indicating the group and time are omitted. The conditional distribution of the count observations is assumed to be a Poisson distribution with intensities $\boldsymbol \lambda$
 
 \begin{equation}
-  \log(\lambda_i)=\boldsymbol{X}_i^T\boldsymbol{\beta}+\log(x_{it})
+  f_{Y|u}(y; u, \boldsymbol{\beta})=\frac{\lambda\exp(u)^{y}}{y!}\exp\big(-\lambda\exp(u)\big)
 \end{equation}
 
-Here $\boldsymbol{X}_i$ and $\boldsymbol{\beta}$ are $p$-dimensional vectors of covariates and fixed effect parameters respectively where $p$ denotes the number of fixed effects parameters. Moreover, the distribution of the random effects, $f_U(\boldsymbol{u, \sigma})$, are assumed to follow a Gaussian distribution
+Also, it is assumed that the count is proportional to the population size $\boldsymbol{x}$. Hence, in terms of the canonical link for the Poisson distribution the model for the fixed effects is
 
 \begin{equation}
-  u_{it}=\epsilon_{it}
+  \log(\lambda_{it})=\boldsymbol{X}_{t}^T\boldsymbol{\beta}+\log(x_{it}), \quad i=1,\dots,k, \quad t=1,\dots,n
 \end{equation}
 
-where $\epsilon_{it}\sim\N(\boldsymbol{0},\sigma^2)$ is a white noise process, and $\sigma$ is a model parameter. Henceforth, the total set of parameters are $\boldsymbol{\theta}=(\boldsymbol{\beta},\sigma)$ and the model can be formulated as a two-level hierarchical model
+Here $\boldsymbol X_t$ and $\boldsymbol \beta$ are $p$-dimensional vectors of covariates and fixed effects parameters respectively, where $p$ denotes the number of fixed effects parameters, $k$ denotes the number of groups, and $n$ denotes the length of the period. Moreover, the probability density function for the distribution of the random effects is assumed to follow a Gaussian distribution, $\boldsymbol u\sim\N(\boldsymbol 0,\sigma^2)$, i.e.
+
+\begin{equation}
+  f_U(u;\sigma)=\frac{1}{\sigma\sqrt{2\pi}}\exp\Bigg(-\frac{u^2}{2\sigma^2}\Bigg)
+\end{equation}
+
+where $\sigma$ is a model parameter. 
+
+Henceforth, the total set of parameters are $\boldsymbol{\theta}=(\boldsymbol{\beta},\sigma)$ and the model can be formulated as a two-level hierarchical model
 
 \begin{subequations} \label{eq:PoisN}
   \begin{alignat}{2}
@@ -92,51 +102,113 @@ where $\epsilon_{it}\sim\N(\boldsymbol{0},\sigma^2)$ is a white noise process, a
 The joint likelihood for the count observations $\boldsymbol y$ and the random effects $\boldsymbol u$ becomes
 
 \begin{equation}\label{eq:jnllPoisN}
-  L(\boldsymbol{\beta}, \sigma;\boldsymbol{u,y})=
+  L(\boldsymbol{\beta}, \sigma;u_{it},y_{it})=\prod_{t=1}^{n}\prod_{i=1}^{k} \frac{(\lambda_{it}\exp(u_{it}))^{y_{it}}}{y_{it}!}\exp\big(-\lambda_{it}\exp(u_{it})\big) \prod_{t=1}^{n}\prod_{i=1}^{k} \frac{1}{\sigma\sqrt{2\pi}}\exp\Bigg(-\frac{u_{it}^2}{2\sigma^2}\Bigg)
 \end{equation}
-
-
-\subsection{Implementation in R using \textbf{TMB}}
-
-The hierarchical Poisson Normal model specified in \eqref{eq:PoisN} is implemented in R using the open source R package \textbf{TMB} (Template Model builder) by @Kristensen_2016. The joint likelihood specified in \eqref{eq:jnllPoisN} is defined as a C++ template function. The package evaluates and maximizes the Laplace approximation of the marginal likelihood where the random effects are automatically integrated out. This approximation and its derivaties are obtained using automatic differentiation of the joint likelihood.
-
-
-
-\subsection{Novel outbreak detection algorithm}
-
-
 
 \section{Hierarchical generalized linear models}
 
+In this section selected theory related to hierarchical generalized linear models is presented. The model class was initially formulated by @Lee_1996 as a natural generalization of the generalized linear models to also incorporate random effects. A starting point in hierarchical modelling is an assumption that the distribution of random effects may be modeled by an exponential dispersion family. This family of models were first introduced by @Fisher_1922, and has proven to play an important role in mathematical statistics because of their simple inferential properties. The exponential dispersion family considers a family of distributions, which can be written on the form
 
-
-\subsection{Hierarchical Poisson Gamma model}
-
-Likewise, in the compound Poisson-Gamma model the conditional distribution, $Y|u$, of the count observations are assumed to be a Poisson distribution, but this time the intensities, $\lambda_{it}$, are defined as
-
-\begin{equation}
-  \log(\lambda_{it}=\mathbf{X}_i^T \beta_{it}+\log(x_{it}))
+\begin{equation}\label{eq:expDispFam}
+  f_Y(y;\theta)=c(y,\lambda)\exp\big(\lambda \{\theta y-\kappa(\theta) \}\big)
 \end{equation}
 
-Here $\mathbf{X}_i$ is $T\times6\mathrm{-dimensional}$, and $\beta_{it}$ contains the corresponding fixed effect parameters. Additionally, the random effects $u_it$ are assumed to be Gamma distributed. Subsequently, the model can be formulated as a two-level hierarchical model
+Here the parameter $\lambda>0$ is called the \textit{precision parameter}, which in some cases represents a known shape parameter as for the Gamma distribution. In other cases the precision parameter represents an over-dispersion that is not related to the mean. These distributions combine with the so-called \textit{standard conjugate distributions} in a simple way, and lead to marginal distributions that may be expressed in a closed form suited for likelihood calculations. 
+
+\subsection{Standard conjugate distribution}
+
+Now the general notion of a \textit{standard conjugate distribution} for an exponential dispersion family is introduced.
+
+Consider an exponential dispersion family $\ED(\mu, \V(\mu)/\lambda)$ with density \eqref{eq:expDispFam} for $\theta\in\Omega$. Let $\mathcal{M}=\tau(\Omega)$ denote the mean value space for this family. Let $m\in\mathcal{M}$ and consider
+
+\begin{equation}\label{eq:densityTheta}
+  g_{\theta}(\theta;m, \gamma)=\frac{1}{C(m,\gamma)}\exp\Big(\frac{\theta m-\kappa(\theta)}{\gamma}\Big)
+\end{equation}
+
+with
+
+\begin{equation}
+  C(m,\gamma)=\int_\Omega \exp\Big(\frac{\theta m-\kappa(\theta)}{\gamma}\Big)d\theta
+\end{equation}
+
+for $\gamma\in\mathbb{R}_+$ for which the integral converges. Then \eqref{eq:densityTheta} defines the density function of a probability distribution for $\theta$. This distribution is called the \textit{standard conjugate distribution} for $\theta$ corresponding to \eqref{eq:expDispFam}. 
+
+\subsection{Definition of the hierarchical generalized linear model}
+
+Consider a set of observations $\boldsymbol Y=(Y_1,Y_2,\dots,Y_k)^T$ such that for a given value of a parameter $\theta$ the distribution of $Y_i$ is given by an exponential dispersion model with density \eqref{eq:expDispFam} and with canonical parameter space $\Omega$ (for $\theta$), mean value $\mu=\kappa'(\theta)$, mean value space $\mathcal{M}$ (for $\mu$) and canonical link $\theta=g(\mu)$.
+
+Let the \textit{conjugate distribution} of $\theta$ be given by \eqref{eq:densityTheta}, and the corresponding conjugate distribution of $\mu$, (e.g., $f_Y(y)$ Poisson distribution; $g_\mu(\mu)$ Gamma distribution; link $g(\mu)=\log(\mu)$).
+
+The variables in a hierarchical generalized linear model are
+
+\begin{enumerate}[i)]
+  \item the observed responses $y_1, y_2, \dots, y_k \quad (\in\mathcal{M})$
+  \item the unobserved random effects $u_1,u_2,\dots,u_q \quad (\in\mathcal{M})$
+  \item and the corresponding unobserved canonical variables $v_i=g(u_i) \quad (\in \Omega)$
+\end{enumerate}
+
+The \textit{linear predictor} is of the form
+
+\begin{equation}
+  \boldsymbol \theta = g(\boldsymbol \mu|\boldsymbol v)=\boldsymbol{X\beta}+\boldsymbol{Zv}
+\end{equation}
+
+The distribution of $\boldsymbol V\in\Omega$ is a conjugated distribution to the canonical parameter $\theta$. The derived distribution of $\boldsymbol U\in\mathcal{M}$ is the corresponding conjugated distribution to the mean value parameter $\mu$ such that $\E[U]=\psi$. When the conditional distribution of $Y|\mu$ is a Poisson distribution, and the distribution of $V$ is constructed in such a way that the distribution of $U=\log(V)$ is a Gamma distribution with mean value $\E[U]=\psi=1$, then it follows that the distribution of $Y$ is a negative binomial distribution with parameters determined by $\boldsymbol{X\beta}$ and $\boldsymbol{Zv}$.
+
+
+\subsection{Formulation of the hierarchical Poisson Gamma model}
+
+In the compound Poisson Gamma model the conditional distribution of the count observations are assumed to be a Poisson distribution with intensities $\boldsymbol \lambda$
+
+\begin{equation}\label{eq:pdfPois}
+  f_{Y|u}(y;u,\boldsymbol{\beta})=\frac{(\lambda u)^{y}}{y!}\exp(-\lambda u)
+\end{equation}
+
+The model for the fixed effects is specified as
+
+\begin{equation}
+  \log(\lambda_{it})=\boldsymbol{X}_t^T\boldsymbol{\beta}+\log(x_{it}), \quad i=1,\dots,k, \quad t=1,\dots,n
+\end{equation}
+
+Here $\boldsymbol X_t$ and $\boldsymbol \beta$ are $p$-dimensional vectors of covariates and fixed effects parameters respectively, where $p$ denotes the number of fixed effects parameters, $k$ denotes the number of groups, and $n$ denotes the length of the period. Additionally, the probability density function for the random effects $\boldsymbol u$ are assumed to follow a reparametrized Gamma distribution with mean $\boldsymbol 1$, $\boldsymbol u \sim \G(\boldsymbol 1/\phi,\phi)$ that is
+
+\begin{equation} \label{eq:pdfGamma}
+  f_{u}(u;\phi)=\frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)
+\end{equation}
+
+Subsequently, the model can be formulated as a two-level hierarchical model
 
 \begin{subequations} \label{eq:PoisGam}
   \begin{alignat}{2}
-    Y_{it}|u_{it} &\sim \Pois (\lambda_{i} u_{it}) \label{eq:pois_g0} \\ 
-    u_{it} &\sim \G(1/\phi,\phi) \label{eq:pois_g1}
+    \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \label{eq:pois_g0} \\ 
+    \boldsymbol{u} &\sim \G(\boldsymbol 1/\phi,\phi) \label{eq:pois_g1}
   \end{alignat}
 \end{subequations}
 
+Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability function for the marginal distribution of $\boldsymbol Y$ is determined from
 
+\begin{equation} \label{eq:marMix}
+  \begin{aligned}
+    g_{Y}(y;\boldsymbol \beta,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;\boldsymbol, u, \beta) f_{u}(u;\phi) \,du \\
+    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u /\phi) \,du\\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi-1} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
+  \end{aligned}
+\end{equation}
 
-In the first stage a random value $u_{it}$ is selected according to a reparameterized Gamma distribution with shape, $1/\phi$, and scale, $\phi$. Hence the mean value of the Gamma distribution is $1$. Moreover, a fixed effect parameter, $\lambda_{it}$, is found for each age group, $i=1,\dots,11$. The $Y$ is generated according to a Poisson distribution with $\lambda_iu_{it}$ as mean value. The the marginal distribution of $Y$ is a negative binomial distribution, $Y\sim\NB\big(1/\phi,1//\lambda\phi+1)\big)$. The probability function for $Y$ is 
+In \eqref{eq:marMix} it is noted that the integrand is the *kernel* in the probability density function for a Gamma distribution, $\G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)$. As the integral of the density shall equal one, we find by adjusting the norming constant that
+
+\begin{equation}
+  \int_{u=0}^\infty  u^{ y+ 1/\phi-1} \exp \bigg(- u/\Big(\phi/( \lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{ y+ 1/\phi}\Gamma( y+\boldsymbol 1/\phi)}{( \lambda \phi + 1)^{y+1/\phi}}
+\end{equation}
+
+Therefore, it can be shown that the marginal distribution of $Y$ is a negative binomial distribution, $Y\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)$. The probability function for $Y$ is 
 
 \begin{equation} \label{eq:pdfMix}
   \begin{aligned}
-    P[Y=y_i]&=g_{Y}(y;\lambda, \phi) \\
+    P[Y=y]&=g_{Y}(y;\boldsymbol \beta, \phi) \\
     &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}}\frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}} \\
     &=\frac{\Gamma(y+1/\phi)}{\Gamma(1/\phi)y!}\frac{1}{(\lambda\phi+1)^{1/\phi}}\bigg(\frac{\lambda\phi}{\lambda\phi+1}\bigg)^{y} \\
-    &=\begin{pmatrix} y+1/\phi-1 \\ y \end{pmatrix} \frac{1}{(\lambda\phi+1)^{1/\phi}}\bigg(\frac{\lambda\phi}{\lambda\phi+1}\bigg)^{y} \ , \ for \ y = 0, 1, 2, \dots
+    &=\begin{pmatrix} y+1/\phi-1 \\ y \end{pmatrix} \frac{1}{(\lambda\phi+1)^{1/\phi}}\bigg(\frac{\lambda\phi}{\lambda\phi+1}\bigg)^{y} \ , \quad \mathrm{for} \ y = 0, 1, 2, \dots
   \end{aligned}
 \end{equation}
 
@@ -146,37 +218,41 @@ where we have used the convention
   \begin{pmatrix} z\\y \end{pmatrix} = \frac{\Gamma(z+1)}{\Gamma(z+1-y)y!}
 \end{equation}
 
-for $z$ real and $y$ integer values. The marginal distribution of $Y$ is a negative binomial distribution, $Y\sim \NB\big(1/\phi,1/(\lambda \phi+1)\big)$. See proof in \ref{probabilityFunctionY}.
+for $z$ real and $y$ integer values. Consequently, the likelihood function for estimating $(\boldsymbol \beta,\phi)$ is
 
-
+\begin{equation}
+  L(\boldsymbol \beta, \phi; y_{it})=\prod_{t=1}^{n}\prod_{i=1}^{k} \begin{pmatrix} y_{it}+1/\phi-1 \\ y_{it} \end{pmatrix} \frac{1}{(\lambda_{it}\phi+1)^{1/\phi}}\bigg(\frac{\lambda_{it}\phi}{\lambda_{it}\phi+1}\bigg)^{y_{it}}
+\end{equation}
 
 \subsubsection{Inference on individual groups}
 
-Consider the compound Poisson Gamma model in \eqref{eq:PoisGam}, and assume that a value $Y=y$ has been observed. Then the conditional distribution of $u$ for given $Y=y$ is a Gamma distribution
-
-Consider the hierarchical Poisson-Gamma model in \eqref{eq:PoisGam}, and assume that a value $Y=y$ has been observed. Then the conditional distribution of $u$ for given $Y=y$ is a Gamma distribution,
+In order to simplify the notation, the subscript indicating the group and time are omitted. Consider the compound Poisson Gamma model in \eqref{eq:PoisGam}, and assume that a value $Y=y$ has been observed. Then the conditional distribution of $u$ for given $Y=y$ is a Gamma distribution. 
 
 \begin{equation}
-  u|Y=y\sim \G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)
+  u| Y=y\sim \G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)
 \end{equation}
 
 with mean
 
 \begin{equation}
-  \E[u|Y=y]=\frac{y\phi+1}{\lambda\phi+1}
+  \E[u|Y=y]=\frac{y\phi+1}{\lambda \phi+1}
 \end{equation}
 
 and variance
                                                             
 \begin{equation}
-  \V[u|Y=y]=\frac{(y \phi^2+\phi)}{(\lambda \phi + 1)^2}
+  \V[u|Y=y]=\frac{( \phi^2+\phi)}{(\lambda \phi + 1)^2}
 \end{equation}
 
 \subsubsection{Why do we choose the Gamma distribution to represent the variation between days?}
 
-The Gamma distribution is chosen for three simple reasons. First of all, the support of the Gamma distribution, $0<u_{it}<\infty$ conforms to the mean-value space, $\mathcal{M}$ for the Poisson distribution. Secondly, the two-parameter family of Gamma distributions is a rather flexible class of unimodal distribution, ranging from an exponential distribution to a fairly symmetrical distribution on the positive real line. A third reason may be observed in the derivation of the marginal distribution of $Y$. The fact that the kernel $u^{\alpha-1}\exp(-u/\beta)$ of the mixing distribution have the same structure as the kernel $u^y\exp(-u)$ of the likelihood function corresponding to the sampling distribution of $Y$. This feature have the consequence that the integral has a closed form representation in terms of known functions.
+The Gamma distribution is chosen for three simple reasons. First of all, the support of the Gamma distribution, $0<u<\infty$ conforms to the mean-value space, $\mathcal{M}$ for the Poisson distribution. Secondly, the two-parameter family of Gamma distributions is a rather flexible class of unimodal distribution, ranging from an exponential distribution to a fairly symmetrical distribution on the positive real line. A third reason may be observed in the derivation of the marginal distribution of $Y$. The fact that the kernel $u^{\alpha-1}\exp(-u/\beta)$ of the mixing distribution have the same structure as the kernel $u^y\exp(-u)$ of the likelihood function corresponding to the sampling distribution of $Y$. This feature have the consequence that the integral has a closed form representation in terms of known functions.
 
-\subsection{Parameter estimation}
+\section{Implementation in R using \textbf{TMB}}
+
+The models specified in \eqref{eq:PoisN} and \eqref{eq:PoisGam} is implemented in R using the open source R package \textbf{TMB} (Template Model Builder) by @Kristensen_2016. The package implements maximum likelihood estimation and uncertainty calculations for $\boldsymbol{\theta}$ and $\boldsymbol u$ in an efficient manner. It does so by maximizing an objective function provided by the user in the form of a C++ template. Hereafter, the maximization of the likelihood, or a Laplace approximation for the marginal likelihood, is performed using conventional R optimization routines. 
+
+Moreover, \textbf{TMB} uses Automatic Differentiation (AD) [@Griewank_2008] to evaluate first, second, and possibly third order derivatives. For an introduction to the concept of AD, it is recommended to read sections 2.1 and 2.2 of @Fournier_2012.
 
 
 \cleardoublepage
