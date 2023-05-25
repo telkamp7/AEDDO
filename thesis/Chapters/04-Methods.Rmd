@@ -1,6 +1,10 @@
 \chapter{Methods}
 
-In this chapter the outbreak detection algorithm together with theory related to generalized mixed effects models and hierarchical generalized linear models is presented. These models are used in this master thesis to model the count observations $\boldsymbol{y}$, but more importantly they are used to assess the unobserved random variables or random effects $\boldsymbol{u}$, which are used directly in the detection algorithm to characterize an outbreak. In general it is impossible to obtain closed form solutions for generalized mixed effects models and hence an outline of the Laplace approximation is included in this chapter. Moreover, the implementation of aforementioned models in R is presented. The presentation of this chapter is mostly inspired by @Madsen_2010.
+In this chapter the novel outbreak detection algorithm together with theory related to generalized mixed effects models and hierarchical generalized linear models is presented. These models are used in this master thesis to model the count observations $\boldsymbol{y}$, but more importantly they are used to assess the unobserved random variables or random effects $\boldsymbol{u}$, which are used directly in the detection algorithm to characterize an outbreak. In general it is impossible to obtain closed form solutions for generalized mixed effects models and hence an outline of the Laplace approximation is included in this chapter. Moreover, the implementation of aforementioned models in R is presented. The presentation of this chapter is mostly inspired by @Madsen_2010.
+
+\section{State-of-the-art outbreak detection algorithm}
+
+\blindtext
 
 \section{Novel outbreak detection algorithm}
 
@@ -218,7 +222,13 @@ where we have used the convention
   \begin{pmatrix} z\\y \end{pmatrix} = \frac{\Gamma(z+1)}{\Gamma(z+1-y)y!}
 \end{equation}
 
-for $z$ real and $y$ integer values. Consequently, the likelihood function for estimating $(\boldsymbol \beta,\phi)$ is
+for $z$ real and $y$ integer values. Consequently, the mean and variance of $Y$ are given by
+
+\begin{equation}
+  \E[Y] = \lambda \qquad \V[Y] = \lambda (\lambda \phi + 1)
+\end{equation}
+
+The likelihood function for estimating $(\boldsymbol \beta,\phi)$ is
 
 \begin{equation}
   L(\boldsymbol \beta, \phi; y_{it})=\prod_{t=1}^{n}\prod_{i=1}^{k} \begin{pmatrix} y_{it}+1/\phi-1 \\ y_{it} \end{pmatrix} \frac{1}{(\lambda_{it}\phi+1)^{1/\phi}}\bigg(\frac{\lambda_{it}\phi}{\lambda_{it}\phi+1}\bigg)^{y_{it}}
@@ -232,27 +242,35 @@ In order to simplify the notation, the subscript indicating the group and time a
   u| Y=y\sim \G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)
 \end{equation}
 
-with mean
+The mean of the conditional distribution is given by:
 
 \begin{equation}
   \E[u|Y=y]=\frac{y\phi+1}{\lambda \phi+1}
 \end{equation}
 
-and variance
-                                                            
+And the variance of the conditional distribution is:                                            
 \begin{equation}
   \V[u|Y=y]=\frac{( \phi^2+\phi)}{(\lambda \phi + 1)^2}
 \end{equation}
 
+These formulas provide the mean and variance of the conditional distribution of $u$ given the observed value $Y=y$.
+
 \subsubsection{Why do we choose the Gamma distribution to represent the variation between days?}
 
-The Gamma distribution is chosen for three simple reasons. First of all, the support of the Gamma distribution, $0<u<\infty$ conforms to the mean-value space, $\mathcal{M}$ for the Poisson distribution. Secondly, the two-parameter family of Gamma distributions is a rather flexible class of unimodal distribution, ranging from an exponential distribution to a fairly symmetrical distribution on the positive real line. A third reason may be observed in the derivation of the marginal distribution of $Y$. The fact that the kernel $u^{\alpha-1}\exp(-u/\beta)$ of the mixing distribution have the same structure as the kernel $u^y\exp(-u)$ of the likelihood function corresponding to the sampling distribution of $Y$. This feature have the consequence that the integral has a closed form representation in terms of known functions.
+The choice of the Gamma distribution for modeling the random effects has been motivated by several reasons. Firstly, the support of the Gamma distribution, which ranges from 0 to infinity, aligns with the mean-value space, denoted as $\mathcal{M}$, for the Poisson distribution. This ensures that the random effects are constrained within a meaningful range for the underlying Poisson process.
+
+Secondly, the two-parameter family of Gamma distributions offers considerable flexibility, encompassing a wide range of shapes and distributions that can span from exponential-like distributions to fairly symmetrical distributions on the positive real line. This flexibility allows the model to capture various patterns and characteristics observed in the data.
+
+Additionally, the choice of the Gamma distribution has benefits in terms of the derivation of the marginal distribution of the response variable $Y$. The kernel $u^{\alpha-1}\exp(-u/\beta)$ of the Gamma distribution used for modeling the random effects exhibits a similar structure to the kernel $u^y\exp(-u)$ of the likelihood function corresponding to the sampling distribution of $Y$. This similarity facilitates the analytical computation of the integral involved in deriving the marginal distribution, as it can be expressed in terms of known functions.
+
+Overall, the Gamma distribution is selected due to its alignment with the mean-value space of the Poisson distribution, its flexibility in capturing diverse distributions, and its analytical convenience in computing the marginal distribution of the response variable.
 
 \section{Implementation in R using \textbf{TMB}}
 
-The models specified in \eqref{eq:PoisN} and \eqref{eq:PoisGam} is implemented in R using the open source R package \textbf{TMB} (Template Model Builder) by @Kristensen_2016. The package implements maximum likelihood estimation and uncertainty calculations for $\boldsymbol{\theta}$ and $\boldsymbol u$ in an efficient manner. It does so by maximizing an objective function provided by the user in the form of a C++ template. Hereafter, the maximization of the likelihood, or a Laplace approximation for the marginal likelihood, is performed using conventional R optimization routines. 
+The models described in equations \eqref{eq:PoisN} and \eqref{eq:PoisGam} have been implemented in R using the open-source R package called \textbf{TMB} (Template Model Builder) developed by @Kristensen_2016. This package facilitates maximum likelihood estimation and uncertainty calculations for the parameters $\boldsymbol{\theta}$ and random effects $\boldsymbol{u}$ in an efficient manner. \textbf{TMB} achieves this by maximizing a user-provided objective function in the form of a C++ template. The likelihood maximization or a Laplace approximation for the marginal likelihood is then performed using conventional R optimization routines.
 
-Moreover, \textbf{TMB} uses Automatic Differentiation (AD) [@Griewank_2008] to evaluate first, second, and possibly third order derivatives. For an introduction to the concept of AD, it is recommended to read sections 2.1 and 2.2 of @Fournier_2012.
+Furthermore, \textbf{TMB} utilizes Automatic Differentiation (AD) techniques [@Griewank_2008] to evaluate first, second, and potentially third-order derivatives. For a comprehensive introduction to the concept of AD, it is recommended to read sections 2.1 and 2.2 of @Fournier_2012. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models.
+
 
 
 \cleardoublepage

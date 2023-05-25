@@ -1,10 +1,48 @@
 \chapter{Dataset}
 
-In Denmark the surveillance of infectious diseases is carried out by Statens Serum Institut (SSI). The surveillance is a central part of the national and international disease preparedness. Thanks to The National Board of Health Statutory Order on Physicians' Notification of Infectious Diseases, the quality of the Danish surveillance registers is very high. In the Statutory Order it is stated that a number of diseases\footnote{For a full list of individually notifiable diseases see \href{https://www.ssi.dk/sygdomme-beredskab-og-forskning/anmeldelse-af-sygdomme/lovpligtige-meldesystemer/individ_anmeldelses_sygdomme}{\nolinkurl{https://www.ssi.dk/sygdomme-beredskab-og-forskning/anmeldelse-af-sygdomme/lovpligtige-meldesystemer/individ_anmeldelses_sygdomme}}} are individually notifiable for physicians and general practitioners. The notifications include relevant information on the patient, and are notified on a paper form to the Ministry of Health and to SSI, respectively. A modern surveillance system comprises not only collection and registration of disease data, but also timely and continuous communication of knowledge to authorities responsible for treatment, prevention, and control. The national surveillance system comprises only diseases of serious character, diseases that are particularly infectious, and most of the vaccine-preventable diseases.
+In Denmark, the surveillance of infectious diseases is conducted by Statens Serum Institut (SSI). This surveillance system plays a pivotal role in national and international disease preparedness. It encompasses more than just the collection and registration of disease data; it also involves the prompt and ongoing dissemination of knowledge to the relevant authorities responsible for treatment, prevention, and control. This comprehensive approach ensures efficient communication and facilitates appropriate measures to address infectious diseases. The quality of the Danish surveillance registers is maintained at a high standard, thanks to The National Board of Health Statutory Order on Physicians' Notification of Infectious Diseases. This order specifies that several diseases\footnote{For a full list of diseases see \href{https://www.ssi.dk/sygdomme-beredskab-og-forskning/anmeldelse-af-sygdomme/lovpligtige-meldesystemer/individ_anmeldelses_sygdomme}{\nolinkurl{https://www.ssi.dk/sygdomme-beredskab-og-forskning/anmeldelse-af-sygdomme/lovpligtige-meldesystemer/individ_anmeldelses_sygdomme}}} are individually notifiable by physicians and general practitioners. Notifications consist of essential patient information and are submitted in paper form to both the Ministry of Health and to SSI. This rigorous notification process ensures accurate and comprehensive data collection for disease surveillance purposes in Denmark. 
 
-For the purpose of this master thesis, only a subset of the individually notifiable diseases are considered. ...(\textbf{WRITE SOMETHING ABOUT WHAT CHARACTERISES THE CHOSEN SUBSET I.E. SEASONALITY, INCIDENCE, ETC.})... and the subset includes: Shiga toxin producing Escherichia coli (STEC), \textbf{X, X, X (CHOOSE 4)}.
+In addition to the individually notifiable diseases, SSI has implemented a laboratory notification system for numerous microorganisms. Clinical-microbiological laboratories are obligated to report the identification of specific microorganisms, along with relevant patient information. The national surveillance system focuses on diseases of a severe nature, those that are highly contagious, and the majority of vaccine-preventable diseases. This comprehensive approach allows for effective monitoring and control of infectious diseases in Denmark.
+
+\section{Case studies}
+
+For the scope of this master's thesis, only a specific subset of diseases from the mandatory notification system will be considered. This subset consists of \textit{Listeriosis}, \textit{Shigellosis}, Shiga toxin (verotoxin)-producing \textit{Escherichia coli} (STEC), and \textit{Salmonellosis}.These diseases have been chosen for analysis and investigation based on various factors, such as seasonality, incidence, and severity. Additionally, these diseases have been associated with documented outbreaks observed by SSI (\href{https://www.ssi.dk/sygdomme-beredskab-og-forskning/sygdomsudbrud/arkiv}{https://www.ssi.dk/sygdomme-beredskab-og-forskning/sygdomsudbrud/arkiv}) in the past decade, which adds to their relevance for the study.
+
+(ref:EpiPlot) Epidemic curve showing the incidence per 100,000 in Denmark, 2012-2022, for the subset of diseases considered in this master thesis. \textbf{(a)} Listeriosis, \textbf{(b)} Shigellosis, \textbf{(c)} STEC, and \textbf{(d)} Salmonellosis.
+
+```{r EpiPlot, echo=FALSE, out.width="100%", fig.cap="(ref:EpiPlot)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/EpiPlot.png")
+```
+
+All the diseases within the selected subset pose a significant risk of infection and can vary in terms of severity for affected individuals. Therefore, early identification of disease outbreaks is of utmost importance in order to promptly implement necessary interventions. Timely detection allows for swift and targeted actions to control the spread of these diseases and mitigate their impact on public health.
+
+\subsection{\textit{Listeriosis}}
+
+\textit{Listeriosis} is a foodborne illness that is caused by consuming food contaminated with \textit{Listeria monocytogenes}. This disease primarily affects pregnant women, unborn or newborn babies, the elderly, and individuals with weakened immune systems. \textit{Listeriosis} is associated with high mortality [@Goulet_2012] and manifests in three ways: sepsis, meningitis, and mother-to-child transmission. Pregnancy-associated \textit{Listeriosis} can can have severe consequences for the fetus or newborn, including miscarriage, stillbirth, neonatal sepsis, and meningitis [@Awofisayo_2015]. \textit{Listeriosis} is uncommon among individuals in other demographic groups. The bacteria is ubiquitous in the environment, found in moist environments, soil, water, decaying vegetation, and animals. Furthermore, it can survive and even grow under refrigeration and other food preservation measures.
 
 
-\textbf{Include a section with plots and tables of the data.}
+(ref:LISTLongPlot) Placeholder caption
+```{r LISTLongPlot, echo=FALSE, out.width="100%", fig.cap="(ref:LISTLongPlot)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/LIST_long_plot.png")
+```
+
+\subsection{\textit{Shiggellosis}}
+
+\textit{Shiggellosis} is a diarrheal illness that is caused by a group of bacteria called \textit{Shigella}. The bacteria are highly contagious and can be transmitted through direct person-to-person contact, consumption of contaminated food, or ingestion of water contaminated with human feces. \textit{Shigella} infections are most commonly observed in children under the age of 5, individuals traveling to regions with poor sanitation and unsafe water and food practices, as well as gay, bisexual, and other men who have sex with men. In Denmark, another significant cause of \textit{Shigellosis} outbreaks is the importation of contaminated vegetables. This was evident in several incidents, including a 2007 outbreak where 215 individuals fell ill after consuming imported contaminated baby corn, a smaller outbreak in 2009 linked to sugar snap peas from Kenya, and a 2020 outbreak associated with fresh mint as the source of infection\footnote{See \href{https://www.ssi.dk/-/media/arkiv/dk/aktuelt/nyhedsbreve/epi-nyt/2007/2007-pdf/epi-nyt---2007---uge-35.pdf}{EPI-NYT 35/07}, \href{https://www.ssi.dk/-/media/arkiv/dk/aktuelt/nyhedsbreve/epi-nyt/2009/2009-pdf/epi-nyt---2009---uge-36.pdf}{EPI-NYT 36/09}, and  \href{https://www.ssi.dk/aktuelt/nyhedsbreve/epi-nyt/2020/uge-41---2020}{EPI-NYT 41/20} respectively}.
+
+\subsection{Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
+
+STEC primarily spreads through contaminated food. Less common sources of infection include contaminated drinking and bathing water, as well as direct or indirect contact with infected animals. Cattle and other ruminants are primary reservoirs for STEC serotypes that are frequently associated with human disease [@Menge_2020]. Therefore, in Denmark, the source of infection is often products derived from beef, non-heat-treated dairy products, or other foods such as ready-to-eat vegetables, leafy greens, vegetable sprouts, and berries contaminated with feces from cows. \textit{Hemolytic uremic syndrome} is a severe complication that, in some cases, particularly in children, can develop following an infection with STEC.
+
+(ref:STECLongPlot) Placeholder caption
+```{r STECLongPlot, echo=FALSE, out.width="100%", fig.cap="(ref:STECLongPlot)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/STEC_long_plot.png")
+```
+
+\subsection{\textit{Salmonellosis}}
+
+\textit{Salmonellosis} is a bacterial disease that primarily affects the intestinal tracts of humans. The \textit{Salmonella} bacteria are commonly found in the intestines of animals and humans and are excreted in feces. Human infection typically occurs through the consumption of contaminated food or water. Salmonella infections are often associated with the consumption of raw or undercooked meat, poultry, eggs or egg products, as well as unpasteurized milk. It is worth noting that an increasing proportion of infections in Denmark are now observed in connection with international travel, particularly since \textit{Salmonella} has been eliminated from commercial chicken flocks in Denmark, making Danish eggs and poultry meat free from the bacteria. However, imported meat products can still pose a risk of contamination.
+
+
 
 \cleardoublepage

@@ -19,16 +19,13 @@ FOLK1A <- read_csv2("../../data/raw/FOLK1A.csv")
 diseaseData <- read_xlsx(path = "../../data/raw/disease_data_raw.xlsx")
 NUTS <- read_csv2("../../data/raw/NUTS_V1_2007.csv")
 
-diseaseData %>%
-  filter(year == "1995", caseDef == "AIDS") %>%
-  reframe(unique(ageGroup))
 
-diseaseData %>%
-  group_by(caseDef, year) %>%
-  summarize(combi = n_distinct(ageGroup, landsdel), nAge = n_distinct(ageGroup), nLandsdel = n_distinct(landsdel))
+# tmp <- diseaseData %>%
+#   group_by(caseDef, year) %>%
+#   summarize(combi = n_distinct(ageGroup, landsdel), nAge = n_distinct(ageGroup), nLandsdel = n_distinct(landsdel))
 
-unique(diseaseData$ageGroup)
-unique(diseaseData$landsdel)
+# unique(diseaseData$ageGroup)
+# unique(diseaseData$landsdel)
 
 # Change 'år' to 'years'
 diseaseData <- diseaseData %>%
@@ -54,25 +51,30 @@ NutsCor <- NUTS %>%
 FOLK1AxNutsCor <- inner_join(x = FOLK1A,
                              y = NutsCor,
                              by = c("OMRÅDE" = "Kommune"))
-
-# Calculate FOLK1A per 'landsdel'
+# 
+# # Calculate FOLK1A per 'landsdel'
 FOLK1AxLandsdel <- FOLK1AxNutsCor %>%
   group_by(ALDER, TID, Landsdel) %>%
   reframe(n = sum(INDHOLD))
 
-unique(FOLK1AxLandsdel$ALDER)
+FOLK1AxAgegroup <- FOLK1AxLandsdel %>%
+  group_by(ALDER, TID) %>%
+  reframe(n = sum(n))
+
+# 
+# unique(FOLK1AxLandsdel$ALDER)
 
 # FOLK1AxLandsdel <- FOLK1AxNutsCor %>%
 #   group_by(ALDER, TID, Landsdel) %>%
 #   summarise(n = sum(INDHOLD))
-
-FOLK1AxLandsdel %>% 
-  summarize(combi = n_distinct(ALDER, Landsdel), nAge = n_distinct(ALDER), nLandsdel = n_distinct(Landsdel))
-
-# Calculate FOLK1A per 'Region'
-FOLK1AxRegion <- FOLK1AxNutsCor %>%
-  group_by(ALDER, TID, Region) %>%
-  reframe(n = sum(INDHOLD))
+# 
+# FOLK1AxLandsdel %>% 
+#   summarize(combi = n_distinct(ALDER, Landsdel), nAge = n_distinct(ALDER), nLandsdel = n_distinct(Landsdel))
+# 
+# # Calculate FOLK1A per 'Region'
+# FOLK1AxRegion <- FOLK1AxNutsCor %>%
+#   group_by(ALDER, TID, Region) %>%
+#   reframe(n = sum(INDHOLD))
 
 # Finalize the data set
 datTmp <- diseaseData %>%
@@ -82,8 +84,7 @@ datTmp <- diseaseData %>%
     ) %>%
   mutate(QUARTER = quarter(Date)) %>%
   mutate(TID = paste0(year,"Q",QUARTER)) %>%
-  inner_join(y = FOLK1AxLandsdel, by = c("ageGroup" = "ALDER",
-                                         "landsdel" = "Landsdel",
+  inner_join(y = FOLK1AxAgegroup, by = c("ageGroup" = "ALDER",
                                          "TID" = "TID")) %>%
   select(Date, ageGroup, landsdel, caseDef, cases, n)
 # ... Note: maaned and year is converted to quarters, in order to add 'n', which
@@ -96,41 +97,44 @@ datTmp <- diseaseData %>%
 # maanedLevels <- unique(datTmp$maaned)
 # yearLevels <- unique(datTmp$year)
 ageGroupLevels <- unique(datTmp$ageGroup)
-landsdelLevels <- unique(datTmp$landsdel)
 caseDefLevels <- unique(datTmp$caseDef)
-caseDefLabels <- c(
-  "AIDS",
-  "Botulisme",
-  "Gonoré",
-  "Hepatitis A",
-  "Hepatitis B",
-  "Hepatitis C",
-  "Hæmophilus influenza meningitis",
-  "HIV infektion",
-  "Legionella",
-  "Leptospirosis",
-  "Mæslinger",
-  "Andre meningitis",
-  "Meningokoksygdom",
-  "MPOX",
-  "Fåresyge",
-  "Neuroborreliose",
-  "Ornitose",
-  "Kighoste",
-  "Pneumokok meningitis",
-  "Røde hunde",
-  "Shigella",
-  "Syfilis",
-  "Stivkrampe",
-  "Tubercolosis",
-  "Tyfus / paratyfus",
-  "Shiga- og veratoxin producerende E. coli."
-)
+# caseDefLabels <- c(
+#   "AIDS",
+#   "Botulisme",
+#   "Gonoré",
+#   "Hepatitis A",
+#   "Hepatitis B",
+#   "Hepatitis C",
+#   "Hæmophilus influenza meningitis",
+#   "HIV infektion",
+#   "Legionella",
+#   "Leptospirosis",
+#   "Mæslinger",
+#   "Andre meningitis",
+#   "Meningokoksygdom",
+#   "MPOX",
+#   "Fåresyge",
+#   "Neuroborreliose",
+#   "Ornitose",
+#   "Kighoste",
+#   "Pneumokok meningitis",
+#   "Røde hunde",
+#   "Shigella",
+#   "Syfilis",
+#   "Stivkrampe",
+#   "Tubercolosis",
+#   "Tyfus / paratyfus",
+#   "Shiga- og veratoxin producerende E. coli."
+# )
+
+caseDefLabels <- c("STEC",
+                   "SHIG",
+                   "LIST",
+                   "SALM")
 
 # Finalize 'dat'
 dat <- datTmp %>%
   mutate(ageGroup = factor(x = ageGroup, levels = ageGroupLevels),
-         landsdel = factor(x = landsdel, level = landsdelLevels),
          caseDef = factor(x = caseDef, level = caseDefLevels, labels = caseDefLabels),
          cases = as.integer(cases),
          n = as.integer(n)) %>%
@@ -151,10 +155,10 @@ dat2 <- dat %>%
                                `65+ years` = "65-74 years",
                                `65+ years` = "75-84 years",
                                `65+ years` = "85+ years")) %>%
-  group_by(Date, ageGroup, landsdel, caseDef) %>%
+  group_by(Date, ageGroup, caseDef) %>%
   reframe(cases = sum(cases), n = sum(n))
 
-write_rds(x = dat2, file = "../../data/processed/dat2.rds")
+write_rds(x = dat2, file = "../../data/processed/dat4.rds")
 
 
 

@@ -2,5 +2,7 @@
 
 \blindtext
 
+All the methods are open-source and can be found at \href{https://github.com/telkamp7/AEDDO}{https://github.com/telkamp7/AEDDO}
+
 \cleardoublepage
 

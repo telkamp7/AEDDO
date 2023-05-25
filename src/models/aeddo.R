@@ -3,18 +3,13 @@ aeddo <- function(
     formula,
     theta,
     method = "BFGS",
-    lower = NULL,
+    lower = -Inf,
+    upper = Inf,
     model = NA_character_,
     cpp = NULL,
     k = 36,
     excludePastOutbreaks = TRUE
     ){
-  
-  if(method == "L-BFGS-B" & is.null(lower)){
-    stop("Incorrect specification. ",
-         "A lower limit must be specified, ",
-         "when the 'method' is 'L-BFGS-B")
-  }
   
   if(is.null(cpp) & is.na(model)){
     stop("Incorrect specification. ",
@@ -120,6 +115,7 @@ aeddo <- function(
       
       if(method == "L-BFGS-B"){
         PoisN$lower <- lower
+        PoisN$upper <- upper
       }
     
       # Optimize the function
@@ -163,7 +159,7 @@ aeddo <- function(
       par <- dplyr::tibble(
         Parameter = c(colnames(designMatrix),"log_sigma"),
         theta = opt$par,
-        se.theta = sqrt(diag(rep$cov.fixed))
+        se.theta = sqrt(diag(sdRep$cov.fixed))
       )
       
       # Combine the results in a tibble
@@ -202,6 +198,7 @@ aeddo <- function(
       # Include lower bound for if 'method' is 'L-BFGS-B'
       if(method == "L-BFGS-B"){
         PoisG$lower <- lower
+        PoisG$upper <- upper
       }
       
       # Optimize the function

@@ -5,7 +5,9 @@ library(dplyr)
 library(stringr)
 library(tidyr)
 library(ggplot2)
+library(cowplot)
 library(TMB)
+library(scales)
 
 # Set locale
 Sys.setlocale(category = "LC_ALL", locale = "en")
@@ -38,40 +40,120 @@ dtuPalette <- c("#990000",
 
 # Load data
 # dat <- read_rds(file = "../../data/processed/dat.rds") # 11-agegroups
-dat <- read_rds(file = "../../data/processed/dat2.rds") # 6 agegroups
-
-# # Only consider some of the data
-# y <- dat %>%
-#   filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
-#   group_by(Date, ageGroup) %>%
-#   reframe(y = sum(cases), n = sum(n), month = factor(format(x = Date, "%b")), year = factor(format(x = Date, "%Y")))
-
+dat <- read_rds(file = "../../data/processed/dat4.rds") # 6 agegroups
 
 monthLevels <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
-# Only consider some of the data
-y <- dat %>%
-  filter(caseDef == "Shiga- og veratoxin producerende E. coli.") %>%
+finalDat <- dat %>%
+  group_by(Date, caseDef) %>%
+  reframe(y = sum(cases), n = sum(n)) %>%
   mutate(month = factor(format(x = Date, "%b"), levels = monthLevels),
-         year = factor(format(x = Date, "%Y"))) %>%
-  group_by(month, year, ageGroup) %>%
-  reframe(y = sum(cases), n = sum(n))
-y$month
+         year = factor(format(x = Date, "%Y")))
+
+LIST_long_plot <- finalDat %>%
+  filter(caseDef == "LIST") %>%
+  ggplot(mapping = aes(x = Date, y = y/n*1e5, fill = "All")) +
+  geom_col() +
+  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_x_date(name = "Date") +
+  scale_fill_manual(values = dtuPalette) +
+  guides(fill = "none")
+LIST_long_plot
+ggsave(filename = "LIST_long_plot.png", plot = LIST_long_plot, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+
+
+STEC_long_plot <- dat %>%
+  filter(caseDef == "STEC") %>%
+  ggplot(mapping = aes(x = Date, y = cases/n*1e5, fill = ageGroup, group = ageGroup)) +
+  geom_col() +
+  facet_wrap(facets = vars(ageGroup)) +
+  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_x_date(name = "Date") +
+  scale_fill_manual(values = dtuPalette) +
+  guides(fill = "none")
+STEC_long_plot
+ggsave(filename = "STEC_long_plot.png", plot = STEC_long_plot, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+
+
+SHIG_long_plot <- dat %>%
+  filter(caseDef == "SHIG") %>%
+  ggplot(mapping = aes(x = Date, y = cases/n*1e5, fill = ageGroup, group = ageGroup)) +
+  geom_col() +
+  facet_wrap(facets = vars(ageGroup)) +
+  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_x_date(name = "Date") +
+  scale_fill_manual(values = dtuPalette) +
+  guides(fill = "none")
+SHIG_long_plot
+ggsave(filename = "SHIG_long_plot.png", plot = SHIG_long_plot, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+
 
 # Epidemiological plots
-y %>%
-  filter(year %in% as.character(2012:2022)) %>%
-  group_by(year, month) %>%
-  reframe(y = sum(y), n = sum(n)) %>%
+stecEpiPlot <- finalDat %>%
+  filter(caseDef == "STEC" & year %in% as.character(2012:2022)) %>%
   ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
-  geom_point() +
-  geom_line() +
-  scale_y_continuous(name = "Number of cases per 100.000") +
+  geom_point(size = 2) +
+  geom_line(linewidth = 1) +
+  scale_y_continuous(name = "Number of cases per 100.000", labels = label_number(accuracy = 0.1)) +
+  scale_x_discrete(name = "Month") +
+  scale_colour_manual(name = "Year", values = dtuPalette) +
+  guides(colour = guide_legend(override.aes = list(size = 3, linewidth = 2), nrow = 1)) +
+  theme(plot.margin = unit(c(1,0.5,0.5,0.5), "cm"),
+        axis.title = element_text(size = 15),
+        legend.text = element_text(size = 15),
+        legend.title = element_text(size = 17))
+yearLegend <- get_legend(stecEpiPlot)
+
+shigellaEpiPlot <- finalDat %>%
+  filter(caseDef == "SHIG" & year %in% as.character(2012:2022)) %>%
+  ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
+  geom_point(size = 2) +
+  geom_line(linewidth = 1) +
+  scale_y_continuous(name = "Number of cases per 100.000", labels = label_number(accuracy = 0.1)) +
   scale_x_discrete(name = "Month") +
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(nrow = 1)) +
-  ggtitle(label = "Shiga- og veratoxin producerende E. coli.")
-ggsave(filename = "EpixSTEC.png", path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+  theme(plot.margin = unit(c(1,0.5,0.5,0.5), "cm"),
+        axis.title = element_text(size = 15))
+
+
+listEpiPlot <- finalDat %>%
+  filter(caseDef == "LIST" & year %in% as.character(2012:2022)) %>%
+  ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
+  geom_point(size = 2) +
+  geom_line(linewidth = 1) +
+  scale_y_continuous(name = "Number of cases per 100.000", labels = label_number(accuracy = 0.1)) +
+  scale_x_discrete(name = "Month") +
+  scale_colour_manual(name = "Year", values = dtuPalette) +
+  guides(colour = guide_legend(nrow = 1)) +
+  theme(plot.margin = unit(c(1,0.5,0.5,0.5), "cm"),
+        axis.title = element_text(size = 15))
+
+salmEpiPlot <- finalDat %>%
+  filter(caseDef == "SALM" & year %in% as.character(2012:2022)) %>%
+  ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
+  geom_point(size = 2) +
+  geom_line(linewidth = 1) +
+  scale_y_continuous(name = "Number of cases per 100.000", labels = label_number(accuracy = 0.1)) +
+  scale_x_discrete(name = "Month") +
+  scale_colour_manual(name = "Year", values = dtuPalette) +
+  guides(colour = guide_legend(nrow = 1)) +
+  theme(plot.margin = unit(c(1,0.5,0.5,0.5), "cm"),
+          axis.title = element_text(size = 15))
+
+
+
+diseasePlots <- plot_grid(listEpiPlot + guides(colour = "none"),
+                          shigellaEpiPlot + guides(colour = "none"),
+                          stecEpiPlot + guides(colour = "none"),
+                          salmEpiPlot + guides(colour = "none"),
+                          labels = c("(a)", "(b)", "(c)", "(d)"),
+                          label_size = 18,
+                          align = "hv")
+
+finalEpiPlot <- plot_grid(yearLegend, diseasePlots, ncol = 1, rel_heights = c(0.05,0.9))
+finalEpiPlot
+ggsave(filename = "EpiPlot.png", plot = finalEpiPlot, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 
 # Some diseases
 diseases <- c("Gonoré",

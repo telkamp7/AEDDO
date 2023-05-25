@@ -16,14 +16,12 @@ Type objective_function<Type>::operator() ()
   vector<Type> lambda  = exp(X*beta-log(x)+u);
   Type sigma_u = exp(log_sigma_u);
   
-  int nobs = y.size();
   Type mean_ran = Type(0);
   
   Type f = 0;                           // Declare the "objective function"
-  for(int t=0; t < nobs; t++){
-    f -= dnorm(u[t],mean_ran,sigma_u,true);
-    f -= dpois(y[t],lambda[t],true);
-  }
+  f -= sum(dnorm(u,mean_ran,sigma_u,true));
+  f -= sum(dpois(y,lambda,true));
   
   return f;
 }
+

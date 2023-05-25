@@ -1,16 +1,37 @@
 \chapter{Results}
 
-\blindtext
+In this chapter...
 
 \section{Case studies}
 
+In this section, the results of applying the novel outbreak detection algorithm to the subset of diseases will be presented. The performance of the algorithm in detecting outbreaks in the selected diseases will be thoroughly discussed and analyzed. Additionally, a comparative analysis will be conducted, evaluating the performance of the novel outbreak detection algorithm against the current state-of-the-art methods, namely the Farrington method [@Farrington_1996] and the improved Noufaily method [@Noufaily_2013.]. This comparative analysis will provide valuable insights into the strengths and limitations of the novel algorithm, as well as its potential contributions to the field of outbreak detection.
 
+\subsection{\textit{Listeriosis}}
+
+Consider the models given in \eqref{eq:PoisN} and \eqref{eq:PoisGam}
+
+
+\subsection{\textit{Shiggellosis}}
+
+\blindtext
+
+\subsection{Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
+
+
+\blindtext
+
+\subsection{\textit{Salmonellosis}}
 
 \blindtext
 
 \section{Simulation study}
 
 \blindtext
+
+\section{Performance comparison of novel methods}
+
+\blindtext
+
 
 \cleardoublepage
 
