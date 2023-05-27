@@ -54,7 +54,7 @@ LIST_long_plot <- finalDat %>%
   filter(caseDef == "LIST") %>%
   ggplot(mapping = aes(x = Date, y = y/n*1e5, fill = "All")) +
   geom_col() +
-  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_y_continuous(name = "Incidence per 100.000") +
   scale_x_date(name = "Date") +
   scale_fill_manual(values = dtuPalette) +
   guides(fill = "none")
@@ -67,7 +67,7 @@ STEC_long_plot <- dat %>%
   ggplot(mapping = aes(x = Date, y = cases/n*1e5, fill = ageGroup, group = ageGroup)) +
   geom_col() +
   facet_wrap(facets = vars(ageGroup)) +
-  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_y_continuous(name = "Incidence per 100.000") +
   scale_x_date(name = "Date") +
   scale_fill_manual(values = dtuPalette) +
   guides(fill = "none")
@@ -80,7 +80,7 @@ SHIG_long_plot <- dat %>%
   ggplot(mapping = aes(x = Date, y = cases/n*1e5, fill = ageGroup, group = ageGroup)) +
   geom_col() +
   facet_wrap(facets = vars(ageGroup)) +
-  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_y_continuous(name = "Incidence per 100.000") +
   scale_x_date(name = "Date") +
   scale_fill_manual(values = dtuPalette) +
   guides(fill = "none")
@@ -94,7 +94,7 @@ stecEpiPlot <- finalDat %>%
   ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
   geom_point(size = 2) +
   geom_line(linewidth = 1) +
-  scale_y_continuous(name = "Number of cases per 100.000", labels = label_number(accuracy = 0.1)) +
+  scale_y_continuous(name = "Incidence per 100.000", labels = label_number(accuracy = 0.1)) +
   scale_x_discrete(name = "Month") +
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(override.aes = list(size = 3, linewidth = 2), nrow = 1)) +
@@ -109,7 +109,7 @@ shigellaEpiPlot <- finalDat %>%
   ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
   geom_point(size = 2) +
   geom_line(linewidth = 1) +
-  scale_y_continuous(name = "Number of cases per 100.000", labels = label_number(accuracy = 0.1)) +
+  scale_y_continuous(name = "Incidence per 100.000", labels = label_number(accuracy = 0.1)) +
   scale_x_discrete(name = "Month") +
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(nrow = 1)) +
@@ -122,7 +122,7 @@ listEpiPlot <- finalDat %>%
   ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
   geom_point(size = 2) +
   geom_line(linewidth = 1) +
-  scale_y_continuous(name = "Number of cases per 100.000", labels = label_number(accuracy = 0.1)) +
+  scale_y_continuous(name = "Incidence per 100.000", labels = label_number(accuracy = 0.1)) +
   scale_x_discrete(name = "Month") +
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(nrow = 1)) +
@@ -134,7 +134,7 @@ salmEpiPlot <- finalDat %>%
   ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
   geom_point(size = 2) +
   geom_line(linewidth = 1) +
-  scale_y_continuous(name = "Number of cases per 100.000", labels = label_number(accuracy = 0.1)) +
+  scale_y_continuous(name = "Incidence per 100.000", labels = label_number(accuracy = 0.1)) +
   scale_x_discrete(name = "Month") +
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(nrow = 1)) +
@@ -195,7 +195,7 @@ dat %>%
   geom_point() +
   geom_line() +
   facet_wrap(facets = vars(caseDef), scales = "free_y") +
-  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_y_continuous(name = "Incidence per 100.000") +
   scale_x_discrete(name = "Month") +
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(nrow = 1))
@@ -225,7 +225,7 @@ for(c in caseDef){
     ggplot(mapping = aes(x = Date, y = cases/n * 1e5, colour = ageGroup)) +
     geom_point() +
     facet_wrap(facets = vars(landsdel)) +
-    scale_y_continuous(name = "Number of cases per 100.000") +
+    scale_y_continuous(name = "Incidence per 100.000") +
     scale_colour_manual(name = "Age group", values = dtuPalette) +
     guides(colour = guide_legend(nrow = 1)) +
     ggtitle(label = c)
@@ -248,7 +248,7 @@ for(c in caseDef){
     geom_line(size = 0.4) +
     geom_point(size = 2) +
     facet_wrap(facets = vars(ageGroup), scales = "free_y") +
-    scale_y_continuous(name = "Number of cases per 100.000") +
+    scale_y_continuous(name = "Incidence per 100.000") +
     scale_x_date(name = "Time [Months]") +
     scale_colour_manual(values = dtuPalette) +
     guides(colour = "none") +
@@ -274,7 +274,7 @@ for(l in landsdel){
     ggplot(mapping = aes(x = Date, y = cases/n * 1e5, colour = ageGroup)) +
     geom_point() +
     facet_wrap(facets = vars(caseDef)) +
-    scale_y_continuous(name = "Number of cases per 100.000") +
+    scale_y_continuous(name = "Incidence per 100.000") +
     scale_colour_manual(name = "Age group", values = dtuPalette) +
     guides(colour = guide_legend(nrow = 1)) +
     ggtitle(label = l)
@@ -417,7 +417,7 @@ dat %>%
   geom_point(mapping = aes(y = cases/n*1e5, shape = alarm), size = 2) +
   geom_line(mapping = aes(x = Date, y = threshold/n*1e5), lty = "dashed", size = 0.4, inherit.aes = FALSE) +
   facet_wrap(facets = vars(ageGroup), scales = "free_y") +
-  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_y_continuous(name = "Incidence per 100.000") +
   scale_x_date(name = "Time [Months]") +
   scale_colour_manual(values = dtuPalette) +
   scale_shape_manual(values = c(1,19)) +
@@ -479,7 +479,7 @@ dat %>%
   # geom_rug(mapping = aes(x = dateOfAlarm, y = NULL), outside = TRUE, sides = "b", inherit.aes = FALSE) +
   # coord_cartesian(clip = "off") +
   facet_wrap(facets = vars(ageGroup), scales = "free_y") +
-  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_y_continuous(name = "Incidence per 100.000") +
   scale_x_date(name = "Time [Months]") +
   scale_colour_manual(values = dtuPalette) +
   scale_shape_manual(values = c(1,19)) +
@@ -947,7 +947,7 @@ dat %>%
   geom_point() +
   geom_line() +
   facet_wrap(facets = vars(ageGroup), scales = "free_y") +
-  scale_y_continuous(name = "Number of cases per 100.000") +
+  scale_y_continuous(name = "Incidence per 100.000") +
   scale_x_discrete(name = "Month") +
   scale_colour_manual(values = dtuPalette) +
   guides(colour = guide_legend(nrow = 1)) +
@@ -1093,7 +1093,7 @@ cases1 <- compare %>%
   geom_line(size = 0.4) +
   geom_point(size = 2) +
   facet_wrap(facets = vars(ageGroup), scales = "free_y") +
-  scale_y_continuous(name = "Number of cases per 100.000", labels = label_number(accuracy = 0.01)) +
+  scale_y_continuous(name = "Incidence per 100.000", labels = label_number(accuracy = 0.01)) +
   scaleX +
   scale_colour_manual(values = dtuPalette[1:3]) +
   scale_shape_manual(values = c(1,19)) +
@@ -1111,7 +1111,7 @@ cases2 <- compare %>%
   geom_line(size = 0.4) +
   geom_point(size = 2) +
   facet_wrap(facets = vars(ageGroup), scales = "free_y") +
-  scale_y_continuous(name = "Number of cases per 100.000", labels = label_number(accuracy = 0.01)) +
+  scale_y_continuous(name = "Incidence per 100.000", labels = label_number(accuracy = 0.01)) +
   scaleX +
   scale_colour_manual(values = dtuPalette[4:6]) +
   scale_shape_manual(values = c(1,19)) +

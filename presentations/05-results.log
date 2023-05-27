@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.5.23)  25 MAY 2023 12:05
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.5.23)  26 MAY 2023 09:49
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -968,7 +968,57 @@ Package biblatex Info: ... and expl3
 Package: xparse 2023-02-02 L3 Experimental document command parser
 )
 Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
-)) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/lmodern.sty
+)) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
+Invalid UTF-8 byte or sequence at line 284 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 299 replaced by U+FFFD.
+Invalid UTF-8 byte or sequence at line 550 replaced by U+FFFD.
+Package: algorithm2e 2017/07/18 v5.2 algorithms environments
+\c@AlgoLine=\count505
+\algocf@hangindent=\skip89
+(c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
+Package: ifoddpage 2022/10/18 v1.2 Conditionals for odd/even page detection
+\c@checkoddpage=\count506
+) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/xspace.sty
+Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
+) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/relsize/relsize.sty
+Package: relsize 2013/03/29 ver 4.1
+)
+\skiptotal=\skip90
+\skiplinenumber=\skip91
+\skiprule=\skip92
+\skiphlne=\skip93
+\skiptext=\skip94
+\skiplength=\skip95
+\algomargin=\skip96
+\skipalgocfslide=\skip97
+\algowidth=\dimen342
+\inoutsize=\dimen343
+\inoutindent=\dimen344
+\interspacetitleruled=\dimen345
+\interspacealgoruled=\dimen346
+\interspacetitleboxruled=\dimen347
+\algocf@ruledwidth=\skip98
+\algocf@inoutbox=\box94
+\algocf@inputbox=\box95
+\AlCapSkip=\skip99
+\AlCapHSkip=\skip100
+\algoskipindent=\skip101
+\algocf@nlbox=\box96
+\algocf@hangingbox=\box97
+\algocf@untilbox=\box98
+\algocf@skipuntil=\skip102
+\algocf@capbox=\box99
+\algocf@lcaptionbox=\skip103
+\algoheightruledefault=\skip104
+\algoheightrule=\skip105
+\algotitleheightruledefault=\skip106
+\algotitleheightrule=\skip107
+\c@algocfline=\count507
+\c@algocfproc=\count508
+\c@algocf=\count509
+\algocf@algoframe=\box100
+\algocf@algobox=\box101
+) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/lmodern.sty
 Package: lmodern 2015/05/01 v1.6.1 Latin Modern Fonts
 LaTeX Font Info:    Overwriting symbol font `operators' in version `normal'
 (Font)                  OT1/cmr/m/n --> OT1/lmr/m/n on input line 22.
@@ -1006,19 +1056,19 @@ LaTeX Font Info:    Overwriting math alphabet `\mathtt' in version `bold'
 Package: charter 2020/03/25 PSNFSS-v9.3 (P.Dyballa) 
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
 Package: fancyvrb 2023/01/19 4.5a verbatim text (tvz,hv)
-\FV@CodeLineNo=\count505
+\FV@CodeLineNo=\count510
 \FV@InFile=\read5
-\FV@TabBox=\box94
-\c@FancyVerbLine=\count506
-\FV@StepNumber=\count507
+\FV@TabBox=\box102
+\c@FancyVerbLine=\count511
+\FV@StepNumber=\count512
 \FV@OutFile=\write6
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/framed/framed.sty
 Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
-\OuterFrameSep=\skip89
-\fb@frw=\dimen342
-\fb@frh=\dimen343
-\FrameRule=\dimen344
-\FrameSep=\dimen345
+\OuterFrameSep=\skip108
+\fb@frw=\dimen348
+\fb@frh=\dimen349
+\FrameRule=\dimen350
+\FrameSep=\dimen351
 ) (./beamerthemeDTU.sty (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/datetime/datetime.sty
 Package: datetime 2015/03/20 v2.60 Date Time Package
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fmtcount/fmtcount.sty
@@ -1031,7 +1081,7 @@ Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
 \XKV@toks=\toks56
 \XKV@tempa@toks=\toks57
 )
-\XKV@depth=\count508
+\XKV@depth=\count513
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 )) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fmtcount/fcprefix.sty
 Invalid UTF-8 byte or sequence at line 10 replaced by U+FFFD.
@@ -1041,65 +1091,65 @@ Package: fcprefix 2012/09/28
 Invalid UTF-8 byte or sequence at line 10 replaced by U+FFFD.
 Invalid UTF-8 byte or sequence at line 22 replaced by U+FFFD.
 Package: fcnumparser 2017/06/15
-\fc@digit@counter=\count509
+\fc@digit@counter=\count514
 ))
-\c@padzeroesN=\count510
-\fc@tmpcatcode=\count511
+\c@padzeroesN=\count515
+\fc@tmpcatcode=\count516
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fmtcount/fc-english.def
 Invalid UTF-8 byte or sequence at line 10 replaced by U+FFFD.
 Invalid UTF-8 byte or sequence at line 22 replaced by U+FFFD.
 File: fc-english.def 2016/01/12
 )
-\@DT@modctr=\count512
-\@ordinalctr=\count513
-\@orgargctr=\count514
-\@strctr=\count515
-\@tmpstrctr=\count516
-\@DT@loopN=\count517
-\@DT@X=\count518
+\@DT@modctr=\count517
+\@ordinalctr=\count518
+\@orgargctr=\count519
+\@strctr=\count520
+\@tmpstrctr=\count521
+\@DT@loopN=\count522
+\@DT@X=\count523
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/datetime/datetime-defaults.sty
 Package: datetime-defaults 2013/09/10
 )
-\@day=\count519
-\@month=\count520
-\@year=\count521
-\c@HOUR=\count522
-\c@HOURXII=\count523
-\c@MINUTE=\count524
-\c@TOHOUR=\count525
-\c@TOMINUTE=\count526
-\c@SECOND=\count527
-\currenthour=\count528
-\currentminute=\count529
-\currentsecond=\count530
+\@day=\count524
+\@month=\count525
+\@year=\count526
+\c@HOUR=\count527
+\c@HOURXII=\count528
+\c@MINUTE=\count529
+\c@TOHOUR=\count530
+\c@TOMINUTE=\count531
+\c@SECOND=\count532
+\currenthour=\count533
+\currentminute=\count534
+\currentsecond=\count535
 Package datetime Info: No datetime.cfg file found, using default settings on input line 308.
-\@dtctr=\count531
-\dayofyear=\count532
-\dayofweek=\count533
+\@dtctr=\count536
+\dayofyear=\count537
+\dayofweek=\count538
 LaTeX Info: Redefining \today on input line 736.
 \dt@a=\toks58
 \dt@b=\toks59
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count534
-\calc@Bcount=\count535
-\calc@Adimen=\dimen346
-\calc@Bdimen=\dimen347
-\calc@Askip=\skip90
-\calc@Bskip=\skip91
+\calc@Acount=\count539
+\calc@Bcount=\count540
+\calc@Adimen=\dimen352
+\calc@Bdimen=\dimen353
+\calc@Askip=\skip109
+\calc@Bskip=\skip110
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count536
-\calc@Cskip=\skip92
+\calc@Ccount=\count541
+\calc@Cskip=\skip111
 )
 Class  Info: The file departments.tex with department logo file naming has been loaded. on input line 21.
 (./departments.tex) (./beamerfontthemeDTU.sty (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/beamer/beamerfontthemeprofessionalfonts.sty)) (./beamerouterthemeDTU.sty) (./beamerinnerthemeDTU.sty) (./beamercolorthemeDTU.sty
 Package dtubeamer Info: Successfully loaded the DTU colours. on input line 22.
 (./dtucolours.tex))
-\widthframenumber=\skip93
-\widthdepartment=\skip94
-\widthtitle=\skip95
-\widthdate=\skip96
+\widthframenumber=\skip112
+\widthdepartment=\skip113
+\widthtitle=\skip114
+\widthdate=\skip115
 )
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
@@ -1108,30 +1158,30 @@ Package csquotes Info: Redefining alias 'default' -> 'english'.
 (./05-results.aux)
 \openout1 = `05-results.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 94.
-LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 94.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 95.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 95.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2022/07/10 v2.5l Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 94.
-LaTeX Font Info:    ... okay on input line 94.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 95.
+LaTeX Font Info:    ... okay on input line 95.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1166,7 +1216,7 @@ LaTeX Font Info:    ... okay on input line 94.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 94.
+Package hyperref Info: Link coloring OFF on input line 95.
 (./05-results.out) (./05-results.out)
 \@outlinefile=\write7
 \openout7 = `05-results.out'.
@@ -1204,15 +1254,15 @@ Package biblatex Info: Data encoding 'utf8' specified.
 Package biblatex Info: Trying to load bibliographic data...
 Package biblatex Info: ... file '05-results.bbl' found.
 (./05-results.bbl)
-Package biblatex Info: Reference section=0 on input line 94.
-Package biblatex Info: Reference segment=0 on input line 94.
+Package biblatex Info: Reference section=0 on input line 95.
+Package biblatex Info: Reference segment=0 on input line 95.
 (./05-results.nav)
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <12> not available
-(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 99.
+(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 100.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 File: tex_dtu_compute_a_uk.pdf Graphic file (type pdf)
@@ -1261,7 +1311,7 @@ LaTeX Font Info:    External font `lmex10' loaded for size
 (Font)              <6> on input line 3.
 )
 LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <10> not available
-(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 104.
+(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 105.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [2
@@ -1272,7 +1322,7 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 File: ../figures/EpiPlot.png Graphic file (type bmp)
 <../figures/EpiPlot.png>
 
-Overfull \vbox (11.68123pt too high) detected at line 117
+Overfull \vbox (11.68123pt too high) detected at line 118
  []
 
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1291,8 +1341,12 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
+LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <10.95> not available
+(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 144.
+LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 144.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 137.
+(Font)              <10.95> on input line 144.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [5
@@ -1307,11 +1361,6 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-
-Overfull \hbox (20.4052pt too wide) detected at line 155
-[][]\OT1/lmr/m/n/10.95 (\OML/lmm/m/it/10.95 ^^U[]\OT1/lmr/m/n/10.95 ) = \OML/lmm/m/it/10.95 ageGroup[]^^L[] \OT1/lmr/m/n/10.95 + [] [][][]\OML/lmm/m/it/10.95 ^^L[] \OT1/lmr/m/n/10.95 + [] [][][]\OML/lmm/m/it/10.95 ^^L[] \OT1/lmr/m/n/10.95 + [](\OML/lmm/m/it/10.95 x[]\OT1/lmr/m/n/10.95 )
- []
-
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [7
@@ -1319,9 +1368,21 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
+
+Overfull \hbox (22.07721pt too wide) detected at line 171
+[][]\OT1/lmr/m/n/10.95 (\OML/lmm/m/it/10.95 ^^U[]\OT1/lmr/m/n/10.95 ) = \OML/lmm/m/it/10.95 ^^L\OT1/lmr/m/n/10.95 (\OML/lmm/m/it/10.95 ageGroup[]\OT1/lmr/m/n/10.95 )\OML/lmm/m/it/10.95 ^^L[] \OT1/lmr/m/n/10.95 + [] [][][]\OML/lmm/m/it/10.95 ^^L[] \OT1/lmr/m/n/10.95 + [] [][][]\OML/lmm/m/it/10.95 ^^L[] \OT1/lmr/m/n/10.95 + [](\OML/lmm/m/it/10.95 n[]\OT1/lmr/m/n/10.95 )
+ []
+
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [8
+
+]
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+[9
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1337,7 +1398,7 @@ File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 ))
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[9
+[10
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1346,7 +1407,7 @@ File: ../figures/AICxSTEC_PoisN.png Graphic file (type bmp)
 <../figures/AICxSTEC_PoisN.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[10
+[11
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1355,7 +1416,7 @@ File: ../figures/ageGroupParxSTEC_PoisN.png Graphic file (type bmp)
 <../figures/ageGroupParxSTEC_PoisN.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[11
+[12
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1364,7 +1425,7 @@ File: ../figures/SeasonalityParxSTEC_PoisN.png Graphic file (type bmp)
 <../figures/SeasonalityParxSTEC_PoisN.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[12
+[13
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1373,7 +1434,7 @@ File: ../figures/log_sigmaxSTEC_PoisN.png Graphic file (type bmp)
 <../figures/log_sigmaxSTEC_PoisN.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[13
+[14
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1382,14 +1443,14 @@ File: ../figures/OutbreakDetectionxSTEC_PoisN.png Graphic file (type bmp)
 <../figures/OutbreakDetectionxSTEC_PoisN.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[14
+[15
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[15
+[16
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1401,7 +1462,7 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 (./05-results.vrb)
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[16
+[17
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1410,7 +1471,7 @@ File: ../figures/AICxSTEC_PoisG.png Graphic file (type bmp)
 <../figures/AICxSTEC_PoisG.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[17
+[18
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1419,7 +1480,7 @@ File: ../figures/ageGroupParxSTEC_PoisG.png Graphic file (type bmp)
 <../figures/ageGroupParxSTEC_PoisG.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[18
+[19
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1428,7 +1489,7 @@ File: ../figures/SeasonalityParxSTEC_PoisG.png Graphic file (type bmp)
 <../figures/SeasonalityParxSTEC_PoisG.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[19
+[20
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1437,7 +1498,7 @@ File: ../figures/log_phixSTEC_PoisG.png Graphic file (type bmp)
 <../figures/log_phixSTEC_PoisG.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[20
+[21
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1446,7 +1507,7 @@ File: ../figures/OutbreakDetectionxSTEC_PoisG.png Graphic file (type bmp)
 <../figures/OutbreakDetectionxSTEC_PoisG.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[21
+[22
 
 ]
 \tf@nav=\write8
@@ -1460,18 +1521,18 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 
 (./05-results.aux)
 Package rerunfilecheck Info: File `05-results.out' has not changed.
-(rerunfilecheck)             Checksum: 1ABC51DD32FD56C390E884EEF8389B00;1474.
+(rerunfilecheck)             Checksum: FC5A4EEDA2FED8B3D5B87260D7BE9031;1698.
 Package logreq Info: Writing requests to '05-results.run.xml'.
 \openout1 = `05-results.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 48384 strings out of 478758
- 1147885 string characters out of 5848582
- 1931413 words of memory out of 5000000
- 67586 multiletter control sequences out of 15000+600000
- 570883 words of font info for 86 fonts, out of 8000000 for 9000
+ 49391 strings out of 478758
+ 1165580 string characters out of 5848582
+ 1956733 words of memory out of 5000000
+ 68579 multiletter control sequences out of 15000+600000
+ 576456 words of font info for 88 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  99i,21n,104p,2163b,3967s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on 05-results.pdf (21 pages).
+Output written on 05-results.pdf (22 pages).

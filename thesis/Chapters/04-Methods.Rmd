@@ -1,12 +1,73 @@
 \chapter{Methods}
 
-In this chapter the novel outbreak detection algorithm together with theory related to generalized mixed effects models and hierarchical generalized linear models is presented. These models are used in this master thesis to model the count observations $\boldsymbol{y}$, but more importantly they are used to assess the unobserved random variables or random effects $\boldsymbol{u}$, which are used directly in the detection algorithm to characterize an outbreak. In general it is impossible to obtain closed form solutions for generalized mixed effects models and hence an outline of the Laplace approximation is included in this chapter. Moreover, the implementation of aforementioned models in R is presented. The presentation of this chapter is mostly inspired by @Madsen_2010.
+In this chapter, the current state-of-the-art methods for disease outbreak detection will be outlined. Furthermore, the novel outbreak detection algorithm will be introduced, along with the theory related to generalized mixed effects models and hierarchical generalized linear models. These models are utilized in this master's thesis to analyze the count observations denoted as $\boldsymbol{y}$, but more importantly they play a crucial role in assessing the unobserved random variables or random effects represented by $\boldsymbol{u}$, which are directly employed in the detection algorithm for characterizing outbreaks.
+
+Due to the complexity of generalized mixed effects models, obtaining closed-form solutions is generally not feasible. Therefore, an overview of the Laplace approximation technique will be provided in this chapter, which allows for approximating the likelihood function in these models. Additionally, the implementation of these models in the R programming language will be presented. The presentation of this chapter is mostly inspired by @Madsen_2010.
 
 \section{State-of-the-art outbreak detection algorithm}
 
-\blindtext
+In this section, the Farrington method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will be outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this master's thesis. The presentation of these methods are strongly inspired by @Salmon_2016.
+
+Both methods follow the same steps in the algorithm. The first step involves fitting an over-dispersed Poisson generalized linear model (GLM) with a log link to the reference data $y_{t_{0}}\subseteq\{y_t;t\leq t_0\}$. In this model, the baseline count $y_t$ corresponding to the baseline time point $t$ is assumed to have an expected value $\mu_t$ and a variance $\phi\mu_t$, where $\phi\geq1$ is ensured to account for over-dispersion. The systematic component of the model includes only a linear time trend in the frequency of reports. Therefore, the systematic component can be expressed as
+
+\begin{equation}
+  \log(\mu_t)=\alpha+\beta t
+\end{equation}
+
+The original method incorporated seasonal effects by considering counts from comparable periods in past years for threshold calculation. This approach is similar to the one used by @Stroup_1989. The baseline weeks, which are used as reference, are determined by two integers: $b$ represents the number of years back, and $w$ represents the window half-width. For a given current week $x$ of year $y$, only data from weeks $x-w$ to $x+w$ of years $y-b$ to $y-1$ are considered, resulting in a total of $n=b(2w+1)$ baseline weeks. The default values are $b=5$ and $w=3$, resulting in a total of $n=35$ baseline values. 
+
+However, @Noufaily_2013 demonstrated that the algorithm performs better when utilizing more historical data without disregarding seasonality. To achieve this, the author introduced a 10-level factor with a 7-week reference period and nine additional 5-week periods in each year. As a result, the systematic component of the model is modified as follows
+
+\begin{equation}
+\log(\mu_t) = \alpha + \beta t + \delta_{j(t)}
+\end{equation}
+
+In this equation, $j(t)$ represents the seasonal factor level corresponding to time point $t$. The reference week $t_0$ is always associated with the reference seasonal level, denoted by $j(t_0) = 0$ and $\delta_0 = 0$.
+
+The idea of incorporating more data while preserving seasonality has been further expanded in the implementation of the method in the \textbf{surveillance} package by @Salmon_2016. The package allows the user to choose an arbitrary number of periods in each year. Consequently, the systematic component is adjusted as follows
+
+\begin{equation}
+\log(\mu_t) = \alpha + \beta t + \delta_{c(t)}
+\end{equation}
+
+In this equation, $c(t)$ represents the coefficients of a zero-order spline with $\mathrm{noPeriods}+1$ knots. It can be conveniently represented as a $\mathrm{noPeriods}$-level factor that captures seasonality. The function $c(t)$ indicates which season or period of the year $t$ belongs to.
+
+Furthermore, @Noufaily_2013 demonstrated that it is beneficial to exclude the last 26 weeks before $t_0$ from the baseline calculation. This exclusion helps prevent a reduction in sensitivity when an outbreak has recently started before $t_0$.
+
+In the second step, the algorithm predicts the expected number of counts $\mu_{t_0}$ for the current time point $t_0$ using the fitted generalized linear model. Both methods differ in their assumptions for calculating the upper bound $U_{t_0}$.
+
+The original method assumes that a transformation of the prediction error, denoted as $g(y_{t_0}-\hat{\mu}_{t_0})$, follows a normal distribution. For example, when using the identity transformation $g(x)=x$, the assumption becomes
+
+\begin{equation}
+y_{t_0} - \hat{\mu}_{t_0} \sim \N(0, \V(y{t_0}-\hat{\mu}_{t_0}))
+\end{equation}
+
+The upper bound of the prediction interval is then calculated based on this distribution. The variance of the prediction error is given by
+
+\begin{equation}
+\V(y_{t_0}-\hat{\mu}_{t_0}) = \V(\hat{y}_{t_0}) + \V(\hat{\mu}_{t_0}) = \phi\mu_{t_0}
+\end{equation}
+
+Here, $\V(\hat{y}_{t_0})$ represents the variance of an observation, and $V(\hat{\mu}_{t_0})$ represents the variance of the estimate. The threshold, defined as the upper bound of a one-sided $(1-\alpha)\cdot100\%$ prediction interval, is calculated as
+
+\begin{equation}
+U_{t_0} = \hat{\mu}_{0} + z_{1-\alpha}\hat{V}(y_{t_0}-\hat{\mu}_{t_0})
+\end{equation}
+
+However, this method's weakness lies in the assumption of normality itself. Therefore, an alternative assumption was presented in @Noufaily_2013. This approach assumes that $y_{t_0}$ follows a negative binomial distribution, denoted as $\text{NB}(\mu_{t_0}, \nu)$, where $\mu_{t_0}$ represents the mean and $\nu = \frac{\mu_{t_0}}{\phi-1}$ represents the over-dispersion parameter. In this parameterization, the expected value of $y_t$ remains $\mu_t$, and the variance of $y_t$ is $\phi\mu_t$, with $\phi > 1$. If $\phi \leq 1$, a Poisson distribution is assumed for the observed count. The threshold is defined as a quantile of the negative binomial distribution using the plug-in estimates $\hat{\mu}_{t_0}$ and $\hat{\phi}$.
+
+In the final step, the observed count $y_{t_0}$ is compared to the upper bound $U_{t_0}$, and an alarm is raised if $y_{t_0} > U_{t_0}$. The fitting of the GLM in both methods involves three important steps.
+
+First, the algorithm optionally performs a power transformation to correct for skewness and stabilize the variance of the data.
+
+Next, the significance of the time trend is checked. The time trend is included in the model only if it is statistically significant at a chosen significance level, there are more than three years of reference data, and there is no over-extrapolation due to the time trend.
+
+Finally, past outbreaks are reweighted based on their Anscombe residuals. If the Anscombe residual of a count exceeds a certain weight threshold, it is reweighted in a second fitting of the GLM. In the original method by @Farrington_1996, a reweighting threshold of 1 was used. However, @Noufaily_2013 suggests using a value of 2.56 for the weight threshold to make the reweighting procedure less drastic, as it also reduces the variance of the observations.
 
 \section{Novel outbreak detection algorithm}
+
+
+
 
 The novel method for the prospective detection of disease outbreaks utilize a generalized mixed effects model or a hierarchical generalized linear model to model the count observations $\boldsymbol y$ and to assess the unobserved random effects $\boldsymbol u$. These random effects are used directly in the detection algorithm to characterize an outbreak. 
 

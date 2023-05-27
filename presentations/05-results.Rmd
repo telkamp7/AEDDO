@@ -28,6 +28,20 @@ knitr::include_graphics("../figures/EpiPlot.png")
 knitr::include_graphics("../figures/STEC_long_plot.png")
 ```
 
+# Novel outbreak detection algorithm
+
+\begin{algorithm}[H]
+\caption{Novel outbreak detection algorithm}
+  \KwData{This text}
+  \KwResult{Hello}
+  $k \gets 36$
+  \For{$i=1$ \KwTo $T-k$}{
+    
+    Do something
+  }
+\end{algorithm}
+
+
 # Model formulas
 
 \begin{equation}
