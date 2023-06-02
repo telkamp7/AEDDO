@@ -26,48 +26,56 @@ This chapter serves as a reference, specifying notation, properties, and moments
 \end{table}
 
 
-\section{The Poisson distribution model}
+\chapter{C++ templates for the negative joint log-likelihood}\label{cpp}
 
-\blindtext
+This chapter presents the user templates for the hierarchical Poisson Normal model in \eqref{eq:PoisN} and the hierarachical Poisson Gamma model in \eqref{eq:PoisGam}.
 
-\section{The Gamma distribution model}
+The user template for the hierarchical Poisson Normal model specified in \eqref{eq:PoisN} is
 
-\blindtext
+```{Rcpp, eval=FALSE}
+#include <TMB.hpp>
+template<class Type>
+Type objective_function<Type>::operator() ()
+{
+  // R input data
+  DATA_VECTOR(y);                               // Count data
+  DATA_VECTOR(x);                               // Population size
+  DATA_MATRIX(X);                               // Design matrix
+  PARAMETER_VECTOR(u);                          // Random effects
+  // Parameters
+  PARAMETER_VECTOR(beta);                       // Fixed effects parameters
+  PARAMETER(log_sigma_u);                       // Model parameter
+  vector<Type> lambda  = exp(X*beta-log(x)+u);  // Construct 'lambda'
+  Type sigma_u = exp(log_sigma_u);              // And the model parameters
+  Type mean_ran = Type(0);
+  // Objective function
+  Type f = 0;                                   // Declare the objective
+  f -= sum(dnorm(u,mean_ran,sigma_u,true));     // Calculate the objective
+  f -= sum(dpois(y,lambda,true));               // Calculate the objective
+  return f;
+}
+```
 
-\section{The Negative Binomial distribution model}
+The user template for the hierarchical Poisson Gamma model specified in \eqref{eq:PoisGam} is
 
-\blindtext
-
-\section{The Normal distribution model}
-
-\blindtext
-
-\chapter{Proofs}
-
-\section{Hierarchical Poisson Gamma model}
-
-This section is a collection of proofs for the derivation of the compound Poisson Gamma model in \eqref{eq:PoisGam}.
-
-
-
-\subsection{Conditional distribution of $Y$}
-
-The conditional distribution is found using Bayes Theorem
-
-\begin{equation}
-  \begin{aligned}
-    g_{u}(u|Y=y)&=\frac{f_{y,u}(y,u)}{g_Y(y;\lambda, \phi)} \\
-    &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\phi)} \\
-    &=\frac{1}{g_{Y}(y;\lambda,\phi)}\bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)\bigg) \\
-    &\propto u^{y+1/\phi-1} \exp \big(- u(\lambda\phi+1)/\phi\big)
-  \end{aligned}
-\end{equation}
-
-We identify the *kernel* of the probability density function
-
-\begin{equation}
-  u^{y+1/\phi-1} \exp (- u(\lambda\phi+1)/\phi)
-\end{equation}
-
-as the kernel of a Gamma distribution, $\G(y+1/\phi,\phi/(\lambda\phi+1))$
-
+```{Rcpp, eval=FALSE}
+#include <TMB.hpp>
+template<class Type>
+Type objective_function<Type>::operator() ()
+{
+  // Data
+  DATA_VECTOR(y);                             // Count data
+  DATA_VECTOR(x);                             // Population size
+  DATA_MATRIX(X);                             // Design matrix
+  // Parameters
+  PARAMETER_VECTOR(beta);                     // Fixed effects parameters
+  PARAMETER(log_phi_u);                       // Model parameter
+  vector<Type> lambda  = exp(X*beta-log(x));  // Construct 'lambda'
+  Type phi_u = exp(log_phi_u);                // And the model parameters
+  Type r = 1/phi_u;                           // Construct the size
+  vector<Type> p = 1/(lambda*phi_u+1);        // And the prob. parameter
+  // Objective function
+  Type f = -sum(dnbinom(y, r, p,true));       // Calculate the objective
+  return f;
+}
+```

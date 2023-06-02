@@ -8,10 +8,10 @@ Due to the complexity of generalized mixed effects models, obtaining closed-form
 
 In this section, the Farrington method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will be outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this master's thesis. The presentation of these methods are strongly inspired by @Salmon_2016.
 
-Both methods follow the same steps in the algorithm. The first step involves fitting an over-dispersed Poisson generalized linear model (GLM) with a log link to the reference data $y_{t_{0}}\subseteq\{y_t;t\leq t_0\}$. In this model, the baseline count $y_t$ corresponding to the baseline time point $t$ is assumed to have an expected value $\mu_t$ and a variance $\phi\mu_t$, where $\phi\geq1$ is ensured to account for over-dispersion. The systematic component of the model includes only a linear time trend in the frequency of reports. Therefore, the systematic component can be expressed as
+Both methods follow the same steps in the algorithm. The first step involves fitting an over-dispersed Poisson generalized linear model (GLM) with a log link to the reference data $y_{t_{0}}\subseteq\{y_t;t\leq t_0\}$. In this model, the baseline count $y_t$ corresponding to the baseline time point $t$ is assumed to have an expected value $\lambda_t$ and a variance $\phi\lambda_t$, where $\phi\geq1$ is ensured to account for over-dispersion. The systematic component of the model includes only a linear time trend in the frequency of reports. Therefore, the systematic component can be expressed as
 
 \begin{equation}
-  \log(\mu_t)=\alpha+\beta t
+  \log(\lambda_t)=\alpha+\beta t
 \end{equation}
 
 The original method incorporated seasonal effects by considering counts from comparable periods in past years for threshold calculation. This approach is similar to the one used by @Stroup_1989. The baseline weeks, which are used as reference, are determined by two integers: $b$ represents the number of years back, and $w$ represents the window half-width. For a given current week $x$ of year $y$, only data from weeks $x-w$ to $x+w$ of years $y-b$ to $y-1$ are considered, resulting in a total of $n=b(2w+1)$ baseline weeks. The default values are $b=5$ and $w=3$, resulting in a total of $n=35$ baseline values. 
@@ -19,7 +19,7 @@ The original method incorporated seasonal effects by considering counts from com
 However, @Noufaily_2013 demonstrated that the algorithm performs better when utilizing more historical data without disregarding seasonality. To achieve this, the author introduced a 10-level factor with a 7-week reference period and nine additional 5-week periods in each year. As a result, the systematic component of the model is modified as follows
 
 \begin{equation}
-\log(\mu_t) = \alpha + \beta t + \delta_{j(t)}
+\log(\lambda_t) = \alpha + \beta t + \delta_{j(t)}
 \end{equation}
 
 In this equation, $j(t)$ represents the seasonal factor level corresponding to time point $t$. The reference week $t_0$ is always associated with the reference seasonal level, denoted by $j(t_0) = 0$ and $\delta_0 = 0$.
@@ -27,34 +27,34 @@ In this equation, $j(t)$ represents the seasonal factor level corresponding to t
 The idea of incorporating more data while preserving seasonality has been further expanded in the implementation of the method in the \textbf{surveillance} package by @Salmon_2016. The package allows the user to choose an arbitrary number of periods in each year. Consequently, the systematic component is adjusted as follows
 
 \begin{equation}
-\log(\mu_t) = \alpha + \beta t + \delta_{c(t)}
+\log(\lambda_t) = \alpha + \beta t + \delta_{c(t)}
 \end{equation}
 
 In this equation, $c(t)$ represents the coefficients of a zero-order spline with $\mathrm{noPeriods}+1$ knots. It can be conveniently represented as a $\mathrm{noPeriods}$-level factor that captures seasonality. The function $c(t)$ indicates which season or period of the year $t$ belongs to.
 
 Furthermore, @Noufaily_2013 demonstrated that it is beneficial to exclude the last 26 weeks before $t_0$ from the baseline calculation. This exclusion helps prevent a reduction in sensitivity when an outbreak has recently started before $t_0$.
 
-In the second step, the algorithm predicts the expected number of counts $\mu_{t_0}$ for the current time point $t_0$ using the fitted generalized linear model. Both methods differ in their assumptions for calculating the upper bound $U_{t_0}$.
+In the second step, the algorithm predicts the expected number of counts $\lambda_{t_0}$ for the current time point $t_0$ using the fitted generalized linear model. Both methods differ in their assumptions for calculating the upper bound $U_{t_0}$.
 
-The original method assumes that a transformation of the prediction error, denoted as $g(y_{t_0}-\hat{\mu}_{t_0})$, follows a normal distribution. For example, when using the identity transformation $g(x)=x$, the assumption becomes
+The original method assumes that a transformation of the prediction error, denoted as $g(y_{t_0}-\hat{\lambda}_{t_0})$, follows a normal distribution. For example, when using the identity transformation $g(x)=x$, the assumption becomes
 
 \begin{equation}
-y_{t_0} - \hat{\mu}_{t_0} \sim \N(0, \V(y{t_0}-\hat{\mu}_{t_0}))
+y_{t_0} - \hat{\lambda}_{t_0} \sim \N(0, \V(y{t_0}-\hat{\lambda}_{t_0}))
 \end{equation}
 
 The upper bound of the prediction interval is then calculated based on this distribution. The variance of the prediction error is given by
 
 \begin{equation}
-\V(y_{t_0}-\hat{\mu}_{t_0}) = \V(\hat{y}_{t_0}) + \V(\hat{\mu}_{t_0}) = \phi\mu_{t_0}
+\V(y_{t_0}-\hat{\lambda}_{t_0}) = \V(\hat{y}_{t_0}) + \V(\hat{\lambda}_{t_0}) = \phi\lambda_{t_0}
 \end{equation}
 
-Here, $\V(\hat{y}_{t_0})$ represents the variance of an observation, and $V(\hat{\mu}_{t_0})$ represents the variance of the estimate. The threshold, defined as the upper bound of a one-sided $(1-\alpha)\cdot100\%$ prediction interval, is calculated as
+Here, $\V(\hat{y}_{t_0})$ represents the variance of an observation, and $V(\hat{\lambda}_{t_0})$ represents the variance of the estimate. The threshold, defined as the upper bound of a one-sided $(1-\alpha)\cdot100\%$ prediction interval, is calculated as
 
 \begin{equation}
-U_{t_0} = \hat{\mu}_{0} + z_{1-\alpha}\hat{V}(y_{t_0}-\hat{\mu}_{t_0})
+U_{t_0} = \hat{\lambda}_{0} + z_{1-\alpha}\hat{V}(y_{t_0}-\hat{\lambda}_{t_0})
 \end{equation}
 
-However, this method's weakness lies in the assumption of normality itself. Therefore, an alternative assumption was presented in @Noufaily_2013. This approach assumes that $y_{t_0}$ follows a negative binomial distribution, denoted as $\text{NB}(\mu_{t_0}, \nu)$, where $\mu_{t_0}$ represents the mean and $\nu = \frac{\mu_{t_0}}{\phi-1}$ represents the over-dispersion parameter. In this parameterization, the expected value of $y_t$ remains $\mu_t$, and the variance of $y_t$ is $\phi\mu_t$, with $\phi > 1$. If $\phi \leq 1$, a Poisson distribution is assumed for the observed count. The threshold is defined as a quantile of the negative binomial distribution using the plug-in estimates $\hat{\mu}_{t_0}$ and $\hat{\phi}$.
+However, this method's weakness lies in the assumption of normality itself. Therefore, an alternative assumption was presented in @Noufaily_2013. This approach assumes that $y_{t_0}$ follows a negative binomial distribution, denoted as $\text{NB}(\lambda_{t_0}, \nu)$, where $\lambda_{t_0}$ represents the mean and $\nu = \frac{\lambda_{t_0}}{\phi-1}$ represents the over-dispersion parameter. In this parameterization, the expected value of $y_t$ remains $\lambda_t$, and the variance of $y_t$ is $\phi\lambda_t$, with $\phi > 1$. If $\phi \leq 1$, a Poisson distribution is assumed for the observed count. The threshold is defined as a quantile of the negative binomial distribution using the plug-in estimates $\hat{\lambda}_{t_0}$ and $\hat{\phi}$.
 
 In the final step, the observed count $y_{t_0}$ is compared to the upper bound $U_{t_0}$, and an alarm is raised if $y_{t_0} > U_{t_0}$. The fitting of the GLM in both methods involves three important steps.
 
@@ -66,12 +66,21 @@ Finally, past outbreaks are reweighted based on their Anscombe residuals. If the
 
 \section{Novel outbreak detection algorithm}
 
+In this section, the novel algorithm for the prospective detection of disease outbreaks proposed in this master's thesis is outlined. The algorithm utilizes a generalized mixed effects model or a hierarchical generalized linear model to model the count observations $\boldsymbol y$ and assess the unobserved random effects $\boldsymbol u$. These random effects are used directly in the detection algorithm to characterize an outbreak. The theoretical foundations of these models will be further discussed in Section \ref{GLMM} and Section \ref{HLMM}.
 
+The first step involves fitting either a hierarchical Poisson Normal model or a hierarchical Poisson Gamma model with a log link to the reference data $y_{t_0}\subseteq \{y_t;t\leq t_0\}$. Here, it is possible for the user to include an arbitrary number of covariates by supplying a model formula. In order to account for structural changes in the time series, e.g. an improved and more sensitive diagnostic method or a new screening strategy at hospitals, a rolling window with width $k$ is used to estimate the model parameters. Also, it is assumed that the count is proportional to the population size $\boldsymbol n$. Hence, in terms of the canonical link the model for the fixed effects is
 
+\begin{equation}
+  \log(\lambda_{it})=x_{it}\beta+\log(n_{it}), \quad i=1,\dots,m, \quad t=T,\dots,0
+\end{equation}
 
-The novel method for the prospective detection of disease outbreaks utilize a generalized mixed effects model or a hierarchical generalized linear model to model the count observations $\boldsymbol y$ and to assess the unobserved random effects $\boldsymbol u$. These random effects are used directly in the detection algorithm to characterize an outbreak. 
+Here $x_{it}$ and $\beta$ are $p$-dimensional vectors of covariates and fixed effects parameters respectively, where $p$ denotes the number of covariates or fixed effects parameters, $m$ denotes the number of groups, and $T$ denotes the length of the period, i.e. $T=t_0-k$.
 
-\section{General mixed effects models}
+In the second step, the algorithm infers the one-step ahead random effect $\boldsymbol u_{t_1}$ using the fitted model. The threshold for detecting outbreaks is defined as a quantile of the distribution of the random effects in the second stage model. This can be either a Gaussian distribution using the plug-in estimate $\hat{\sigma}$ or a Gamma distribution using the plug-in estimate $\hat{\phi}$.
+
+In the final step, the inferred random effect $u_{t_1}$ is compared to the upper bound $U_{t_0}$, and an alarm is raised if $u_{t_1}>U_{t_0}$. If an outbreak is detected, the related observation is omitted from the parameter estimation in the future. Thus, resulting in a smaller sample size for the rolling window until that specific observation is thrown away.
+
+\section{General mixed effects models}\label{GLMM}
 
 In this section selected theory related to generalized mixed effects models is presented. The general mixed effects model can be represented by its likelihood function
 
@@ -103,7 +112,7 @@ which is a model for the unobserved random variables. Here $\boldsymbol{\beta}$ 
 
 To obtain the likelihood for the model parameters $(\boldsymbol{\beta, \Psi})$ the unobserved random variables are integrated out. The likelihood function for estimating $(\boldsymbol{\beta, \Psi})$ is as in \eqref{eq:glmm} the marginal likelihood
 
-\begin{equation}
+\begin{equation}\label{eq:glmm2}
   L_{M}(\boldsymbol{\beta, \Psi; y})=\int_{\mathbb{R}^{q}} L(\boldsymbol{\beta, \Psi;u,y}) d\boldsymbol{u}
 \end{equation}
 
@@ -144,10 +153,10 @@ In order to simplify the notation, the probability density functions are present
 Also, it is assumed that the count is proportional to the population size $\boldsymbol{x}$. Hence, in terms of the canonical link for the Poisson distribution the model for the fixed effects is
 
 \begin{equation}
-  \log(\lambda_{it})=\boldsymbol{X}_{t}^T\boldsymbol{\beta}+\log(x_{it}), \quad i=1,\dots,k, \quad t=1,\dots,n
+  \log(\lambda_{it})=\boldsymbol{X}_{t}^T\boldsymbol{\beta}+\log(x_{it}), \quad i=1,\dots,m, \quad t=1,\dots,T
 \end{equation}
 
-Here $\boldsymbol X_t$ and $\boldsymbol \beta$ are $p$-dimensional vectors of covariates and fixed effects parameters respectively, where $p$ denotes the number of fixed effects parameters, $k$ denotes the number of groups, and $n$ denotes the length of the period. Moreover, the probability density function for the distribution of the random effects is assumed to follow a Gaussian distribution, $\boldsymbol u\sim\N(\boldsymbol 0,\sigma^2)$, i.e.
+The probability density function for the distribution of the random effects is assumed to follow a Gaussian distribution, $\boldsymbol u\sim\N(\boldsymbol 0,sigma^2)$, i.e.
 
 \begin{equation}
   f_U(u;\sigma)=\frac{1}{\sigma\sqrt{2\pi}}\exp\Bigg(-\frac{u^2}{2\sigma^2}\Bigg)
@@ -160,17 +169,17 @@ Henceforth, the total set of parameters are $\boldsymbol{\theta}=(\boldsymbol{\b
 \begin{subequations} \label{eq:PoisN}
   \begin{alignat}{2}
     \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) \label{eq:pois_n0} \\ 
-    \boldsymbol{u} &\sim \N(\boldsymbol{0},\sigma^2) \label{eq:pois_n1}
+    \boldsymbol{u} &\sim \N(\boldsymbol{0},I\sigma^2) \label{eq:pois_n1}
   \end{alignat}
 \end{subequations}
 
 The joint likelihood for the count observations $\boldsymbol y$ and the random effects $\boldsymbol u$ becomes
 
 \begin{equation}\label{eq:jnllPoisN}
-  L(\boldsymbol{\beta}, \sigma;u_{it},y_{it})=\prod_{t=1}^{n}\prod_{i=1}^{k} \frac{(\lambda_{it}\exp(u_{it}))^{y_{it}}}{y_{it}!}\exp\big(-\lambda_{it}\exp(u_{it})\big) \prod_{t=1}^{n}\prod_{i=1}^{k} \frac{1}{\sigma\sqrt{2\pi}}\exp\Bigg(-\frac{u_{it}^2}{2\sigma^2}\Bigg)
+  L(\boldsymbol{\beta}, \sigma;u_{it},y_{it})=\prod_{t=1}^{T}\prod_{i=1}^{m} \frac{(\lambda_{it}\exp(u_{it}))^{y_{it}}}{y_{it}!}\exp\big(-\lambda_{it}\exp(u_{it})\big) \prod_{t=1}^{T}\prod_{i=1}^{m} \frac{1}{\sigma\sqrt{2\pi}}\exp\Bigg(-\frac{u_{it}^2}{2\sigma^2}\Bigg)
 \end{equation}
 
-\section{Hierarchical generalized linear models}
+\section{Hierarchical generalized linear models}\label{HLMM}
 
 In this section selected theory related to hierarchical generalized linear models is presented. The model class was initially formulated by @Lee_1996 as a natural generalization of the generalized linear models to also incorporate random effects. A starting point in hierarchical modelling is an assumption that the distribution of random effects may be modeled by an exponential dispersion family. This family of models were first introduced by @Fisher_1922, and has proven to play an important role in mathematical statistics because of their simple inferential properties. The exponential dispersion family considers a family of distributions, which can be written on the form
 
@@ -229,13 +238,7 @@ In the compound Poisson Gamma model the conditional distribution of the count ob
   f_{Y|u}(y;u,\boldsymbol{\beta})=\frac{(\lambda u)^{y}}{y!}\exp(-\lambda u)
 \end{equation}
 
-The model for the fixed effects is specified as
-
-\begin{equation}
-  \log(\lambda_{it})=\boldsymbol{X}_t^T\boldsymbol{\beta}+\log(x_{it}), \quad i=1,\dots,k, \quad t=1,\dots,n
-\end{equation}
-
-Here $\boldsymbol X_t$ and $\boldsymbol \beta$ are $p$-dimensional vectors of covariates and fixed effects parameters respectively, where $p$ denotes the number of fixed effects parameters, $k$ denotes the number of groups, and $n$ denotes the length of the period. Additionally, the probability density function for the random effects $\boldsymbol u$ are assumed to follow a reparametrized Gamma distribution with mean $\boldsymbol 1$, $\boldsymbol u \sim \G(\boldsymbol 1/\phi,\phi)$ that is
+The probability density function for the random effects $\boldsymbol u$ are assumed to follow a reparametrized Gamma distribution with mean $\boldsymbol 1$, $\boldsymbol u \sim \G(\boldsymbol 1/\phi,\phi)$ that is
 
 \begin{equation} \label{eq:pdfGamma}
   f_{u}(u;\phi)=\frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)
@@ -292,12 +295,32 @@ for $z$ real and $y$ integer values. Consequently, the mean and variance of $Y$ 
 The likelihood function for estimating $(\boldsymbol \beta,\phi)$ is
 
 \begin{equation}
-  L(\boldsymbol \beta, \phi; y_{it})=\prod_{t=1}^{n}\prod_{i=1}^{k} \begin{pmatrix} y_{it}+1/\phi-1 \\ y_{it} \end{pmatrix} \frac{1}{(\lambda_{it}\phi+1)^{1/\phi}}\bigg(\frac{\lambda_{it}\phi}{\lambda_{it}\phi+1}\bigg)^{y_{it}}
+  L(\boldsymbol \beta, \phi; y_{it})=\prod_{t=1}^{T}\prod_{i=1}^{m} \begin{pmatrix} y_{it}+1/\phi-1 \\ y_{it} \end{pmatrix} \frac{1}{(\lambda_{it}\phi+1)^{1/\phi}}\bigg(\frac{\lambda_{it}\phi}{\lambda_{it}\phi+1}\bigg)^{y_{it}}
 \end{equation}
 
 \subsubsection{Inference on individual groups}
 
-In order to simplify the notation, the subscript indicating the group and time are omitted. Consider the compound Poisson Gamma model in \eqref{eq:PoisGam}, and assume that a value $Y=y$ has been observed. Then the conditional distribution of $u$ for given $Y=y$ is a Gamma distribution. 
+In order to simplify the notation, the subscript indicating the group and time are omitted. Consider the compound Poisson Gamma model in \eqref{eq:PoisGam}, and assume that a value $Y=y$ has been observed.
+
+
+Then the conditional distribution of $u$ for given $Y=y$ is found using Bayes Theorem
+
+\begin{equation}
+  \begin{aligned}
+    g_{u}(u|Y=y)&=\frac{f_{y,u}(y,u)}{g_Y(y;\lambda, \phi)} \\
+    &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\phi)} \\
+    &=\frac{1}{g_{Y}(y;\lambda,\phi)}\bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)\bigg) \\
+    &\propto u^{y+1/\phi-1} \exp \big(- u(\lambda\phi+1)/\phi\big)
+  \end{aligned}
+\end{equation}
+
+We identify the *kernel* of the probability density function
+
+\begin{equation}
+  u^{y+1/\phi-1} \exp (- u(\lambda\phi+1)/\phi)
+\end{equation}
+
+as the kernel of a Gamma distribution, $\G(y+1/\phi,\phi/(\lambda\phi+1))$, i.e. the conditional distribution of $u$ for given $Y=y$ can be written as
 
 \begin{equation}
   u| Y=y\sim \G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)
@@ -314,7 +337,7 @@ And the variance of the conditional distribution is:
   \V[u|Y=y]=\frac{( \phi^2+\phi)}{(\lambda \phi + 1)^2}
 \end{equation}
 
-These formulas provide the mean and variance of the conditional distribution of $u$ given the observed value $Y=y$.
+These formulas provide the mean and variance of the conditional distribution of $u$ given the observed value $Y=y$. 
 
 \subsubsection{Why do we choose the Gamma distribution to represent the variation between days?}
 
@@ -326,12 +349,62 @@ Additionally, the choice of the Gamma distribution has benefits in terms of the 
 
 Overall, the Gamma distribution is selected due to its alignment with the mean-value space of the Poisson distribution, its flexibility in capturing diverse distributions, and its analytical convenience in computing the marginal distribution of the response variable.
 
-\section{Implementation in R using \textbf{TMB}}
+\section{Parameter estimation}
 
-The models described in equations \eqref{eq:PoisN} and \eqref{eq:PoisGam} have been implemented in R using the open-source R package called \textbf{TMB} (Template Model Builder) developed by @Kristensen_2016. This package facilitates maximum likelihood estimation and uncertainty calculations for the parameters $\boldsymbol{\theta}$ and random effects $\boldsymbol{u}$ in an efficient manner. \textbf{TMB} achieves this by maximizing a user-provided objective function in the form of a C++ template. The likelihood maximization or a Laplace approximation for the marginal likelihood is then performed using conventional R optimization routines.
+In this section, the parameter estimation and implementation of the novel outbreak detection algorithm in R using the \textbf{TMB} (Template model Builder) package is presented. \textbf{TMB} is an open-source R package developed by @Kristensen_2016. This package facilitates efficient maximum likelihood estimation and uncertainty calculations for the parameter set $\boldsymbol \theta=(\boldsymbol{\beta, \Psi})$ and random effects $\boldsymbol u$. The presentation of the parameter estimation conducted in \textbf{TMB} is strongly inspired by Chapter 2 in @Kristensen_2016 and Section 5.10 in @Madsen_2010.
 
-Furthermore, \textbf{TMB} utilizes Automatic Differentiation (AD) techniques [@Griewank_2008] to evaluate first, second, and potentially third-order derivatives. For a comprehensive introduction to the concept of AD, it is recommended to read sections 2.1 and 2.2 of @Fournier_2012. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models.
+The \textbf{TMB} package maximizes a user-provided objective function in the form of a C++ template to estimate the maximum likelihood for the parameter set $\boldsymbol \theta = (\boldsymbol{\beta, \Psi})$. See Appendix \@ref(cpp) to access the C++ template files used in this master's thesis. The objective function maximizes the marginal log-likelihood function, which integrates out the random effects $\boldsymbol u$
+
+\begin{equation}
+  \ell_{M}(\boldsymbol{\theta; y})=\int_{\mathbb{R}^{q}} \ell (\boldsymbol{\theta;u,y}) d\boldsymbol{u}
+\end{equation}
+
+where $\ell(\boldsymbol{\theta, u,y})$ is the joint log-likelihood function of the data given the parameters and random effects. We use $\hat{\boldsymbol u}_{\boldsymbol \theta}$ to denote the maximizer of the joint log-likelihood $\ell(\boldsymbol{\theta;u,y})$ w.r.t. $\boldsymbol u$; i.e.,
+
+\begin{equation}
+  \hat{\boldsymbol u}_{\boldsymbol \theta}=\argmax_{\boldsymbol u} \ell(\boldsymbol{\theta;u,y})
+\end{equation}
+
+Using $H(\hat{\boldsymbol u}_{\boldsymbol \theta})$ to denote the negative Hessian of the joint log-likelihood evaluated at $\hat{\boldsymbol u}_{\boldsymbol \theta}$; i.e,
+
+\begin{equation}
+  H(\hat{\boldsymbol u}_{\boldsymbol \theta}) =-\ell_{uu}''(\boldsymbol{\theta, u, y})|_{\boldsymbol u=\hat{\boldsymbol u}_{\boldsymbol \theta}}
+\end{equation}
+
+The Laplace approximation for the marginal log-likelihood $\ell_M(\boldsymbol \theta)$ is
+
+\begin{equation}
+  \ell_{M,LA}(\boldsymbol{\theta, y})=\ell(\boldsymbol{\theta,u,y})-\frac{1}{2}\log \Big|\frac{H(\hat{\boldsymbol u}_{\boldsymbol \theta})}{2\pi}\Big|
+\end{equation}
+
+Our estimate of $\theta$ minimizes the negative log of the Laplace approximation, i.e.,
+
+\begin{equation}
+  -\ell_{M,LA}(\boldsymbol{\theta, y}) = - \ell(\boldsymbol{\theta, u, y}) + \frac{1}{2} \log \Big|\frac{H(\hat{\boldsymbol u}_{\boldsymbol \theta})}{2\pi} \Big|
+\end{equation}
+
+The maximization of the Laplace approximation for the marginal likelihood is then performed using conventional R optimization routines (e.g., BFGS) to optimize the objective and obtain our estimate $\hat{\boldsymbol \theta}$. Uncertainty of the estimate $\hat{\boldsymbol \theta}$, or any differentiable function of the estimate $\phi(\hat{\boldsymbol \theta})$, is obtained by the $\delta$-method:
+
+\begin{equation}
+  \V\big(\phi(\hat{\boldsymbol \theta})\big)=-\phi_{\boldsymbol \theta}'(\hat{\boldsymbol \theta})\Big(\Delta^2 \ell_{M,LA}(\boldsymbol{\hat{\theta}, y})\Big)^{-1} \phi_{\boldsymbol \theta}'(\hat{\boldsymbol \theta})^T
+\end{equation}
 
 
+WRITE SOMETHING ABOUT THE LIKELIHOOD ESTIMATION IN THE HIERARCHICAL POISSON GAMMA MODEL!
+
+Additionally, \textbf{TMB} utilized Automatic Differentiation (AD) techniques [@Griewank_2008] to evaluate first, second, and potentially third-order derivatives. For a comprehensive introduction to the concept of AD, it is recommended to read Section 2.1 and Section 2.2 of @Fournier_2012. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models.
+
+
+\section{Scoring rule}
+
+In this section, the scoring rule used to evaluate the overall score of the models is outlined. The approach is inspired by @Blicher_2021.  For a given time series ${y_t}={y_1,\dots,y_N}$, each forecast and its corresponding realized observation pair $(G_t,y_t)$ is evaluated. The overall score of the model is then reported as the average score:
+
+\begin{equation}
+\bar{S}(G,y)=\frac{1}{N} \sum_{t=1}^{N}S(G_t,y_t)
+\end{equation}
+
+One commonly used scoring rule is the \textit{logarithmic score} derived from likelihood theory, which is defined as $S(g,y)=-\log\big(f(y)\big)$ [@Good_1992]. This scoring rule is based on the probability density function and is equivalent to the log-likelihood of the forecast model. It has desirable properties as it captures all possible information about the observed data in relation to the model. However, it has a potential drawback in that it heavily penalizes unlikely observations. Consequently, even small changes in the tails of a density forecast can lead to significant changes in the \textit{logarithmic score}, even when the overall shape of the density remains unchanged.
+
+INCLUDE EXAMPLE USING POISSON DISTRIBUTION
 
 \cleardoublepage

@@ -110,22 +110,31 @@ baselineWeeks <- 313:575
 curWeeks <- 576:624
 
 
-simulationsPar <- expand_grid(scenario = 1:42, t = 1:n, replicate = 1:nRep) %>%
+simulationsPar <- expand_grid(scenario = 1:42, t = 1:n) %>%
   mutate(par = map(scenario, function(x) scenarios[x,]))
 
-realizations
+# realizations
 
-test <- simulations %>%
-  mutate(par = map(scenario, function(x) scenarios[x,]))
+# test <- simulations %>%
+#   mutate(par = map(scenario, function(x) scenarios[x,]))
 
-
-test <- test %>%
-  filter(scenario %in% c(8,10,12,17)) %>%
+realizations <- simulationsPar %>%
   mutate(realization = map2_dbl(.x = t, .y = par, .f = function(x, y) simFromNB(t = x, theta = y$theta, beta = y$beta, gamma1 = y$gamma1, gamma2 = y$gamma2, m = y$m, trend = y$trend, phi = y$phi)))
 
 
+# test <- test %>%
+#   filter(scenario %in% c(8,10,12,17)) %>%
+#   mutate(realization = map2_dbl(.x = t, .y = par, .f = function(x, y) simFromNB(t = x, theta = y$theta, beta = y$beta, gamma1 = y$gamma1, gamma2 = y$gamma2, m = y$m, trend = y$trend, phi = y$phi)))
 
-test %>%
+realizations %>%
+  filter(scenario %in% c(8, 10, 12, 17)) %>%
+  ggplot(mapping = aes(x = t, y = realization)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(facets = vars(scenario), scales = "free_y")
+
+
+subsetScenarios %>%
   ggplot(mapping = aes(x = t, y = realization)) +
   geom_point() +
   geom_line() +
@@ -142,6 +151,23 @@ subsetSimulations <- simulations %>%
   mutate(realization = map(data, function(x) do.call(what = "simFromNB", args = x)))
 
 
+
+
+prob <- diff(plnorm(q = 0:9, meanlog = 0, sdlog = 0.5))
+
+startOutbreak <- 510
+PoissonOutbreakSize <- 20
+
+
+floor(rlnorm(PoissonOutbreakSize, meanlog = 0, sdlog = 0.5)) + startOutbreak
+
+
+
+tmp <- sample(x = startOutbreak+0:(length(prob)-1), size = PoissonOutbreakSize, replace = TRUE, prob = prob)
+table(tmp)
+
+
+round(dlnorm(x= 0:10, meanlog = 0, sdlog = 0.5),2)
 
 simulations <- tibble()
 for(j in 1:nrow(scenarios)){

@@ -1,8 +1,28 @@
 \chapter{Introduction} 
 
-\blindtext
 
-All the methods are open-source and can be found at \href{https://github.com/telkamp7/AEDDO}{https://github.com/telkamp7/AEDDO}
+
+
+
+This master's thesis will primarily focus on diseases where timely detection of outbreaks results in interventions that are feasible to impose. However, the detection algorithms discussed in this master's thesis are not restricted to these diseases and can be used to detect aberrant counts in any type of disease.
+
+Today, outbreaks of foodborne illnesses can be detected in several ways:
+
+\begin{enumerate}
+  \item Reports from doctors: Physicians may report cases of foodborne illnesses they encounter in their practice to the relevant authorities.
+  \item Citizen reports: Individuals may directly contact food or health authorities to report suspected cases of foodborne illnesses.
+  \item Cluster identification through laboratory surveillance: Clusters of cases can be identified through routine laboratory testing and surveillance of samples from patients with suspected foodborne illnesses.
+  \item Identification of identical "fingerprints": When bacteria or viruses are type-tested, the presence of identical fingerprints among multi cases can strongly indicate a common source of infection.
+\end{enumerate}
+
+These various methods help in the early detection and investigation of foodborne disease outbreaks, enabling timely intervention and prevention measures. However, ...
+
+
+
+While generalized linear mixed effects models and hierarchical models have earned a reputation within ..., they are fairly unproven in the field of automatic detection of disease outbreaks.
+
+
+The novel outbreak detection algorithms discussed in this master's thesis are open-source and can be found at \href{https://github.com/telkamp7/AEDDO}{https://github.com/telkamp7/AEDDO}
 
 \cleardoublepage
 

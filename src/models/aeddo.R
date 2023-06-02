@@ -6,9 +6,11 @@ aeddo <- function(
     lower = -Inf,
     upper = Inf,
     model = NA_character_,
+    cpp.dir = NULL,
     cpp = NULL,
     k = 36,
-    excludePastOutbreaks = TRUE
+    excludePastOutbreaks = TRUE,
+    CI = FALSE
     ){
   
   if(is.null(cpp) & is.na(model)){
@@ -19,7 +21,7 @@ aeddo <- function(
   
   if(!is.na(model)){
     if(model %in% c("PoissonNormal", "PoissonGamma")){
-      TMB::compile(file = paste0(model,".cpp"))
+      TMB::compile(file = paste0(cpp.dir, model,".cpp"))
     }else{
       stop("Incorrect specification. ",
            "'model' can only take the arguements ",
@@ -28,9 +30,9 @@ aeddo <- function(
   }else{
     if(is.character(cpp)){
       if(grepl(pattern = ".cpp", x = cpp, fixed = TRUE)){
-        if(file.exists(cpp)){
+        if(file.exists(paste0(cpp.dir,cpp))){
           # Compile the C++ file
-          TMB::compile(file = cpp)
+          TMB::compile(file =  paste0(cpp.dir,cpp))
           # Extract the model name
           model <- gsub(pattern = ".cpp", replacement = "", x = cpp)
         }else{
@@ -51,7 +53,7 @@ aeddo <- function(
   }
   
   # Add dynlib extension
-  dyn.load(TMB::dynlib(model))
+  dyn.load(TMB::dynlib(paste0(cpp.dir, model)))
   
   # Extract the months
   Dates <- dplyr::`%>%`(data, dplyr::reframe(Date = unique(Date)))$Date
@@ -128,7 +130,7 @@ aeddo <- function(
       refDesign <- model.matrix(object = formula, data = refData)
       
       # Make the function for the reference data
-      refPoisLN <- TMB::MakeADFun(
+      refPoisN <- TMB::MakeADFun(
         data = list(y = refData$y, x = refData$n, X = refDesign),
         parameters = list(u = rep(1, length(refData$y)),
                           beta = theta[1:ncol(refDesign)],
@@ -139,7 +141,7 @@ aeddo <- function(
       )
       
       # Calculate the random effects
-      refRep <- TMB::sdreport(obj = refPoisLN, par.fixed = opt$par, hessian.fixed = opt$hessian)
+      refRep <- TMB::sdreport(obj = refPoisN, par.fixed = opt$par, hessian.fixed = opt$hessian)
       
       # Calculate the random effects and related information
       ran.ef <- dplyr::tibble(
@@ -155,12 +157,25 @@ aeddo <- function(
         alarm = p >= 0.95
       )
       
-      # Construct nice parameter table
-      par <- dplyr::tibble(
-        Parameter = c(colnames(designMatrix),"log_sigma"),
-        theta = opt$par,
-        se.theta = sqrt(diag(sdRep$cov.fixed))
-      )
+      if(CI){
+        # Calculate the confidence using root-finding
+        CI.theta <- sapply(X = 1:(ncol(designMatrix)+1), FUN = function(x) TMB::tmbroot(PoisN, x))
+        # Construct nice parameter table
+        par <- dplyr::tibble(
+          Parameter = c(colnames(designMatrix),"log_sigma"),
+          theta = opt$par,
+          CI.lwr = CI.theta[1,],
+          CI.upr = CI.theta[2,]
+        )
+      }else{
+        # Construct nice parameter table
+        par <- dplyr::tibble(
+          Parameter = c(colnames(designMatrix),"log_sigma"),
+          theta = opt$par,
+          se.theta = sqrt(diag(sdRep$cov.fixed))
+        )
+      }
+      
       
       # Combine the results in a tibble
       results <- dplyr::bind_rows(
@@ -169,6 +184,7 @@ aeddo <- function(
           ref.date = refDate,
           par = list(par),
           value = opt$value,
+          LogS = refPoisN$fn(x = opt$par),
           counts = list(opt$counts),
           convergence = opt$convergence,
           message = opt$message,
@@ -210,6 +226,15 @@ aeddo <- function(
       # Make a design matrix for the reference data
       refDesign <- model.matrix(object = formula, data = refData)
       
+      # Make the function for the reference data
+      refPoisG <- TMB::MakeADFun(
+        data = list(y = refData$y, x = refData$n, X = refDesign),
+        parameters = list(beta = theta[1:ncol(refDesign)],
+                          log_phi_u = theta[-(1:ncol(refDesign))]),
+        DLL = model,
+        silent = TRUE
+      )
+      
       # Calculate the random effects and related information
       ran.ef <- dplyr::tibble(
         ref.date = refDate,
@@ -224,12 +249,24 @@ aeddo <- function(
         alarm = p >= 0.95
       )
       
-      # Construct nice parameter table
-      par <- dplyr::tibble(
-        Parameter = c(colnames(designMatrix),"log_phi"),
-        theta = opt$par,
-        se.theta = sqrt(diag(sdRep$cov.fixed))
-      )
+      if(CI){
+        # Calculate the confidence using root-finding
+        CI.theta <- sapply(X = 1:(ncol(designMatrix)+1), FUN = function(x) TMB::tmbroot(PoisN, x))
+        # Construct nice parameter table
+        par <- dplyr::tibble(
+          Parameter = c(colnames(designMatrix),"log_phi"),
+          theta = opt$par,
+          CI.lwr = CI.theta[1,],
+          CI.upr = CI.theta[2,]
+        )
+      }else{
+        # Construct nice parameter table
+        par <- dplyr::tibble(
+          Parameter = c(colnames(designMatrix),"log_phi"),
+          theta = opt$par,
+          se.theta = sqrt(diag(sdRep$cov.fixed))
+        )
+      }
       
       # Combine the results in a tibble
       results <- dplyr::bind_rows(
@@ -238,6 +275,7 @@ aeddo <- function(
           ref.date = refDate,
           par = list(par),
           value = opt$value,
+          logS = refPoisG$fn(x = opt$par),
           counts = list(opt$counts),
           convergence = opt$convergence,
           message = opt$message,
