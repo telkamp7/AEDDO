@@ -191,4 +191,5 @@ SALM_alarms_StateOfTheArt %>%
 ```
 
 
-\chaper{Figures and Tables related to the case studies}\label{FigAndTabCaseStudy}
+\chapter{Figures and Tables related to the case studies}\label{FigAndTabCaseStudy}
+

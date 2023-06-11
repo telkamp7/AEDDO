@@ -36,7 +36,7 @@ theme_set(
 source(file = "../models/aeddo.R")
 
 # Load in the data
-dat <- read_rds(file = "../../data/processed/dat4.rds")
+dat <- read_rds(file = "../../data/processed/dat5.rds")
 
 # Summary statistic of all the data
 dat %>%
@@ -321,6 +321,11 @@ STEC_PoisN_ageGroup_trend_seasonality_unnested <- STEC_PoisN_ageGroup_trend_seas
   mutate(threshold = qnorm(p = 0.95, mean = 0, sd = exp(log_sigma))) %>%
   select(Date = ref.date, ageGroup, `u_Poisson Normal` = u, `alarm_Poisson Normal` = alarm, `threshold_Poisson Normal` = threshold)
 
+STEC_PoisN_ageGroup_trend_seasonality_par <- STEC_PoisN_ageGroup_trend_seasonality  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Normal")
+
 STEC_PoisN_ageGroup_trend_seasonality_unnested %>%
   ggplot(mapping = aes(x = Date)) +
   geom_point(mapping = aes(y = `u_Poisson Normal`, colour = ageGroup, group = ageGroup, shape = `alarm_Poisson Normal`), size = 2) +
@@ -349,7 +354,7 @@ STEC_PoisG_ageGroup <- aeddo(data = STEC,
                              excludePastOutbreaks = TRUE)
 
 write_rds(x = STEC_PoisG_ageGroup, file = "STEC_PoisG_ageGroup.rds")
-# read_rds(file = "STEC_PoisG_ageGroup.rds")
+# STEC_PoisG_ageGroup <- read_rds(file = "STEC_PoisG_ageGroup.rds")
 
 start.theta.PoisG <- STEC_PoisG_ageGroup %>%
   filter(row_number() == 1) %>%
@@ -372,6 +377,7 @@ STEC_PoisG_ageGroup_trend <- aeddo(data = STEC,
                                    excludePastOutbreaks = TRUE)
 
 write_rds(x = STEC_PoisG_ageGroup_trend, file = "STEC_PoisG_ageGroup_trend.rds")
+# STEC_PoisG_ageGroup_trend <- read_rds(file = "STEC_PoisG_ageGroup_trend.rds")
 
 STEC_PoisG_ageGroup_seasonality <- aeddo(data = STEC,
                                          formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
@@ -388,7 +394,7 @@ STEC_PoisG_ageGroup_seasonality <- aeddo(data = STEC,
                                          excludePastOutbreaks = TRUE)
 
 write_rds(x = STEC_PoisG_ageGroup_seasonality, file = "STEC_PoisG_ageGroup_seasonality.rds")
-# STEC_PoisG_ageGroup_seasonality <- read_rds(file = "STEC_PoisG_ageGroup_seasonality.rds")
+#  STEC_PoisG_ageGroup_seasonality <- read_rds(file = "STEC_PoisG_ageGroup_seasonality.rds")
 
 
 STEC_PoisG_ageGroup_trend_seasonality <- aeddo(data = STEC,
@@ -406,6 +412,18 @@ STEC_PoisG_ageGroup_trend_seasonality <- aeddo(data = STEC,
                                                excludePastOutbreaks = TRUE)
 
 write_rds(x = STEC_PoisG_ageGroup_trend_seasonality, file = "STEC_PoisG_ageGroup_trend_seasonality.rds")
+# STEC_PoisG_ageGroup_trend_seasonality <- read_rds(file = "STEC_PoisG_ageGroup_trend_seasonality.rds")
+
+STEC_PoisG_ageGroup_trend_seasonality_unnested <- STEC_PoisG_ageGroup_trend_seasonality %>% 
+  select(ran.ef) %>%
+  unnest(ran.ef) %>%
+  mutate(threshold = qgamma(p = 0.95, shape = 1/phi, scale = phi)) %>%
+  select(Date = ref.date, ageGroup, `u_Poisson Gamma` = u, `alarm_Poisson Gamma` = alarm, `threshold_Poisson Gamma` = threshold)
+
+STEC_PoisG_ageGroup_trend_seasonality_par <- STEC_PoisG_ageGroup_trend_seasonality  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Gamma")
 
 STEC_PoisG_ageGroup %>%
   summarise(avgLogS = mean(LogS))
@@ -498,10 +516,10 @@ STEC_novel_tbl %>% print(n = 68)
 write_rds(STEC_novel_tbl, file = "STEC_novel_tbl.rds")
 # Compare methods -------------------------------------------------------------------
 
-
-
 # Compare the Poisson Normal and Poisson Gamma model
-STEC_novel <- full_join(STEC_PoisN_ageGroup_unnested, STEC_PoisG_ageGroup_unnested, by = join_by(Date, ageGroup))
+STEC_novel <- full_join(STEC_PoisN_ageGroup_trend_seasonality_unnested,
+                        STEC_PoisG_ageGroup_trend_seasonality_unnested,
+                        by = join_by(Date, ageGroup))
 
 Compare_novel <- STEC_novel %>%
   pivot_longer(cols = c(`u_Poisson Normal`, `u_Poisson Gamma`), names_to = "method", names_prefix = "u_", values_to = "u") %>%
@@ -519,7 +537,7 @@ Compare_novel <- STEC_novel %>%
   scale_colour_manual(values = dtuPalette) +
   scale_shape_manual(values = c(1,19)) +
   guides(colour = "none", shape = "none")
-ggsave(filename = "Compare_novel.png",
+ggsave(filename = "Compare_novel_STEC.png",
        plot = Compare_novel,
        path = "../../figures/",
        device = png,
@@ -527,6 +545,98 @@ ggsave(filename = "Compare_novel.png",
        height = 8,
        units = "in",
        dpi = "print")  
+
+
+custom_labeller <- as_labeller(
+  c(`ageGroup<1 year`="beta[1~year]", `ageGroup1-4 years`="beta[1-4~years]",
+    `ageGroup5-14 years`="beta[5-14~years]",`ageGroup15-24 years`="beta[15-24~years]",
+    `ageGroup25-64 years`="beta[25-64~years]", `ageGroup65+ years`="beta[65+~years]",
+    `t`="beta[trend]", `sin(pi/6 * monthInYear)` ="beta[sin]",
+    `cos(pi/6 * monthInYear)`="beta[cos]", `log_phi`="phi", `log_sigma`="sigma"),
+  default = label_parsed
+)
+
+STEC_novel_par <- bind_rows(STEC_PoisG_ageGroup_trend_seasonality_par, STEC_PoisN_ageGroup_trend_seasonality_par) 
+
+
+STEC_novel_par_ageGroup <- STEC_novel_par %>%
+  filter(grepl(x = Parameter, pattern = "ageGroup")) %>%
+  ggplot(mapping = aes(x = ref.date)) +
+  geom_line(mapping = aes(y = theta, colour = Method), linewidth = 1) +
+  geom_line(mapping = aes(y = CI.lwr, colour = Method), lty = "dashed") +
+  geom_line(mapping = aes(y = CI.upr, colour = Method), lty = "dashed") +
+  facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
+  scale_color_manual(values = dtuPalette) +
+  scale_y_continuous(name = expression(beta[i])) +
+  scale_x_date(name = "Month")
+ggsave(filename = "STEC_novel_par_ageGroup.png",
+       plot = STEC_novel_par_ageGroup,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print") 
+
+STEC_novel_par_trend <- STEC_novel_par %>%
+  filter(Parameter == "t") %>%
+  ggplot(mapping = aes(x = ref.date)) +
+  geom_line(mapping = aes(y = theta, colour = Method), linewidth = 1) +
+  geom_line(mapping = aes(y = CI.lwr, colour = Method), lty = "dashed") +
+  geom_line(mapping = aes(y = CI.upr, colour = Method), lty = "dashed") +
+  facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
+  scale_color_manual(values = dtuPalette) +
+  scale_y_continuous(name = expression(beta[i])) +
+  scale_x_date(name = "Month")
+ggsave(filename = "STEC_novel_par_trend.png",
+       plot = STEC_novel_par_trend,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print") 
+
+STEC_novel_par_seasonality <- STEC_novel_par %>%
+  filter(grepl(x = Parameter, pattern = "cos|sin")) %>%
+  ggplot(mapping = aes(x = ref.date)) +
+  geom_line(mapping = aes(y = theta, colour = Method), linewidth = 1) +
+  geom_line(mapping = aes(y = CI.lwr, colour = Method), lty = "dashed") +
+  geom_line(mapping = aes(y = CI.upr, colour = Method), lty = "dashed") +
+  facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
+  scale_color_manual(values = dtuPalette) +
+  scale_y_continuous(name = expression(beta[i])) +
+  scale_x_date(name = "Month")
+ggsave(filename = "STEC_novel_par_seasonality.png",
+       plot = STEC_novel_par_seasonality,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print") 
+
+
+STEC_novel_par_dispersion <- STEC_novel_par %>%
+  filter(grepl(x = Parameter, pattern = "log_sigma|log_phi")) %>%
+  ggplot(mapping = aes(x = ref.date)) +
+  geom_line(mapping = aes(y = exp(theta), colour = Method), linewidth = 1) +
+  geom_line(mapping = aes(y = exp(CI.lwr), colour = Method), lty = "dashed") +
+  geom_line(mapping = aes(y = exp(CI.upr), colour = Method), lty = "dashed") +
+  facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
+  scale_color_manual(values = dtuPalette) +
+  scale_y_continuous(name = expression(Psi)) +
+  scale_x_date(name = "Month")
+ggsave(filename = "STEC_novel_par_dispersion.png",
+       plot = STEC_novel_par_dispersion,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")  
+
+
 
 
 

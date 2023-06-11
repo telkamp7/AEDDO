@@ -3,7 +3,7 @@
 
 This chapter presents the findings obtained by applying both the state-of-the-art outbreak detection algorithm and the novel outbreak detection algorithm to the subset of diseases examined in this master's thesis. The performance of these algorithms in identifying outbreaks within the selected diseases will be extensively discussed and analyzed. Additionally, a comprehensive comparative analysis will be conducted to offer valuable insights into the strengths and limitations of both the state-of-the-art algorithms and, more importantly, the novel algorithms. For a detailed presentation of the data used to generate these results, please refer to Chapter \@ref(Dataset).
 
-To demonstrate the practical application of these algorithms, a comprehensive case study centered on STEC will be presented as the primary focus. Following that, the results of the remaining case studies will be presented in a more concise manner to keep the reader engaged. However, for the complete collection of related figures and tables, please refer to Appendix \@ref{FigAndTabCaseStudy}.
+To demonstrate the practical application of these algorithms, a comprehensive case study centered on STEC will be presented as the primary focus. Following that, the results of the remaining case studies will be presented in a more concise manner to keep the reader engaged. However, for the complete collection of related figures and tables, please refer to Appendix \@ref(FigAndTabCaseStudy).
 
 \section{Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
 
@@ -13,7 +13,7 @@ ALL RESULTS REGARDING STEC IS GATHERED HERE
 
 \subsection{Applying the state-of-the-art outbreak detection algorithm to Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
 
-Initially, outbreak detection using the Farrington method and the Noufaily method, described in Section \@ref{StateOfTheArt}, are investigated. The methods are implemented in the `farringtonFlexible` function, which can be accessed through the R package known as \textbf{surveillance}. The `control` arguements for each of the methods can be found in Appendix \@ref{controlsStateOfTheArt}. The reference values for the analysis are based on data from January 2008 to February 2011. Subsequently, surveillance is conducted using the data from March 2011 to December 2021. The resulting series is visualized in Figure \@ref(fig:CompareStateOfTheArtSTEC).
+Initially, outbreak detection using the Farrington method and the Noufaily method, described in Section \@ref(StateOfTheArt), are investigated. The methods are implemented in the `farringtonFlexible` function, which can be accessed through the R package known as \textbf{surveillance}. The `control` arguements for each of the methods can be found in Appendix \@ref(controlsStateOfTheArt). The reference values for the analysis are based on data from January 2008 to February 2011. Subsequently, surveillance is conducted using the data from March 2011 to December 2021. The resulting series is visualized in Figure \@ref(fig:CompareStateOfTheArtSTEC).
 
 (ref:CompareStateOfTheArtSTEC) Monthly Shiga toxin (verotoxin)-producing \textit{Escherichia coli} incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations timepoints outside reference data. Alarm triggered (full opacity) if observations exceeds threshold. 
 
@@ -25,6 +25,27 @@ In Figure \@ref(fig:CompareStateOfTheArtSTEC), multiple alarms is observed for b
 
 \subsection{Applying the novel outbreak detection algorithm to Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
 
+At first, a suite of different models for the fixed effects is proposed
+
+\begin{equation}
+  \log(\lambda_{it})=\beta(ageGroup_{i})+\log(n_{it})
+\end{equation}
+
+\begin{equation}
+  \log(\lambda_{it})=\beta(ageGroup_{i}) + \beta_{trend} t + \log(n_{it})
+\end{equation}
+
+\begin{equation}
+  \log(\lambda_{it})=\beta(ageGroup_{i})+ \sin \big(\frac{\pi\cdot \tau_t}{6}\big) \beta_{\sin} + \cos \big(\frac{\pi\cdot \tau_t}{6}\big) \beta_{\cos} + \log(n_{it})
+\end{equation}
+
+\begin{equation}
+  \log(\lambda_{it})=\beta(ageGroup_{i}) + \beta_{trend} t + \sin \big(\frac{\pi\cdot \tau_t}{6}\big) \beta_{\sin} + \cos \big(\frac{\pi\cdot \tau_t}{6}\big) \beta_{\cos} + \log(n_{it})
+\end{equation}
+
+
+
+The average logarithmic score, $\bar{S}(G,y)$, and parameter estimate for the models assuming either the hierarchical Poisson normal model or the hierarchical Poisson Gamma model is gathered in Table \@ref(tab:STECNovelTbl).
 
 
 ```{r STECNovelTbl, echo=FALSE}
@@ -35,13 +56,18 @@ list(bold = FALSE, italic = FALSE)
 )
 
 STEC_novel_tbl %>%
-  mutate(`Estimate (CI)` = paste0(round(theta,2), " (",round(CI.lwr,2),", ",round(CI.upr,2),")"),
+  mutate(`Estimate (95\\% CI)` = paste0(round(theta,2), " (",round(CI.lwr,2),", ",round(CI.upr,2),")"),
          Model = case_when(
            grepl(pattern = "PoisN_", x = method) ~ "Poisson Normal",
            grepl(pattern = "PoisG_", x = method) ~ "Poisson Gamma"
            ),
          Formula = gsub(pattern = "PoisN_|PoisG_", replacement = "", x = method),
          Parameter = case_when(
+           Parameter == "ageGroup<1 year" ~ "$\\beta_{<1 year}$",
+           Parameter == "ageGroup1-4 years" ~ "$\\beta_{1-4 years}$",
+           Parameter == "ageGroup5-14 years" ~ "$\\beta_{5-14 years}$",
+           Parameter == "ageGroup15-24 years" ~ "$\\beta_{15-24 years}$",
+           Parameter == "ageGroup25-64 years" ~ "$\\beta_{25-64 years}$",
            Parameter == "ageGroup<65 years" ~ "$\\beta_{<65 years}$",
            Parameter == "ageGroup65+ years" ~ "$\\beta_{65+ years}$",
            Parameter == "t" ~ "$\\beta_{trend}$",
@@ -50,16 +76,16 @@ STEC_novel_tbl %>%
            Parameter == "sin(pi/6 * monthInYear)" ~ "$\\beta_{\\sin}$",
            Parameter == "cos(pi/6 * monthInYear)" ~ "$\\beta_{\\cos}$"
          )) %>%
-  mutate(Formula = gsub(pattern = "_", replacement = "", x = Formula)) %>%
-  # mutate(Formula = case_when(
-  #   Formula == "ageGroup" ~ "$\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})$",
-  #   Formula == "ageGroup_trend" ~ "$\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})$",
-  #   Formula == "ageGroup_seasonality" ~ "$\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})$",
-  #   Formula == "ageGroup_trend_seasonality" ~ "$\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})$"
-  # )) %>%
-  select(Model, Formula, avgLogS, Parameter, `Estimate (CI)`) %>%
-  kbl(booktabs = TRUE, escape = FALSE) %>%
-  kable_paper() %>%
+  # mutate(Formula = gsub(pattern = "_", replacement = "", x = Formula)) %>%
+  mutate(Formula = case_when(
+    Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}",
+    Formula == "ageGroup_trend" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})\\end{math}",
+    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
+    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
+  )) %>%
+  select(Model, Formula, `$\\bar{S}(G,y)$` = avgLogS, Parameter, `Estimate (95\\% CI)`) %>%
+  kbl(booktabs = TRUE, escape = FALSE, longtable = TRUE, caption = "The average logarithmic score, $\\bar{S}(G,y)$, along with the parameter estimates at $t_{0}$ for for a suite of models assuming either the hierarchical Poisson Normal model or the hierarchical Poisson Gamma model.  The confidence intervals for the estimates are calculated using profile likelihood confidence intervals.") %>%
+  kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   collapse_rows(columns = 1:3, 
                 row_group_label_position = "stack",
                 row_group_label_fonts = row_group_label_fonts,
@@ -69,33 +95,42 @@ STEC_novel_tbl %>%
 ```
 
 
+As expected, the models with including both trend and seasonality minimizes the logarithmic score assuming the hierarchical Poisson Normal model and the hierarchical Poisson Gamma model, respectively. Thus, these models are chosen for further consideration.
 
 
+(ref:CompareNovelSTEC) One-step ahead random effects $u_{t_1}$ of Shiga toxin (verotoxin)-producing \textit{Escherichia coli} in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $u_{t_1}$ exceeds the threshold (dashed line).
 
-\begin{equation}
-  \log(\lambda_{it})=\beta(ageGroup_{i})+\log(n_{it})
-\end{equation}
-
-\begin{equation}
-  \log(\lambda_{it})=\beta(ageGroup_{i})+ \sin \big(\frac{\pi\cdot \tau_t}{6}\big) \beta_{\sin} + \cos \big(\frac{\pi\cdot \tau_t}{6}\big) \beta_{\cos} + \log(n_{it})
-\end{equation}
-
-Here $\tau_t$ represents the month in year as a decimal number (01-12)-
-
-(ref:CompareStateOfTheArt) Placeholder caption 
-
-```{r CompareStateOfTheArt, echo=FALSE, out.width="100%", fig.cap="(ref:CompareStateOfTheArt)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/Compare_stateOfTheArt.png")
+```{r CompareNovelSTEC, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelSTEC)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_novel_STEC.png")
 ```
 
-(ref:CompareNovel) Placeholder caption 
+(ref:STECnovelparageGroup) Placeholder caption
 
-```{r CompareNovel, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovel)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/Compare_novel.png")
+```{r STECnovelparageGroup, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelparageGroup)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/STEC_novel_par_ageGroup.png")
 ```
 
 
+(ref:STECnovelpartrend) Placeholder caption
 
+```{r STECnovelpartrend, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelpartrend)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/STEC_novel_par_trend.png")
+```
+
+(ref:STECnovelparseasonality) Placeholder caption
+
+```{r STECnovelparseasonality, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelparseasonality)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/STEC_novel_par_seasonality.png")
+```
+
+Apart from the Poisson Gamma model being seemingly more robust, the estimated fixed effects parameters for the models are on a comparable scale. This can be seen in Figure \@ref(fig:STECnovelparageGroup)
+
+
+(ref:STECnovelparseaDispersion) Placeholder caption
+
+```{r STECnovelparseaDispersion, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelparseaDispersion)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/STEC_novel_par_dispersion.png")
+```
 
 
 \section{\textit{Listeriosis}}
@@ -121,20 +156,6 @@ It is worth noting that the other observations flagged by the methods may be rel
 \subsection{Applying the novel outbreak detection algorithm to \textit{Listeriosis}}
 
 At this stage, the novel outbreak detection algorithm presented in Section \@ref(Novel) is evaluated on its ability to detect outbreaks of \textit{Listeriosis}. 
-
-In both cases, a suite of models with increasing complexity is investigated and ...
-
-\begin{equation}
-  \log(\lambda_{it})=\beta(ageGroup_{i})+\log(n_{it})
-\end{equation}
-
-\begin{equation}
-  \log(\lambda_{it})=\beta(ageGroup_{i})+\beta_{trend} t +\log(n_{it})
-\end{equation}
-
-\begin{equation}
-  \log(\lambda_{it})=\beta(ageGroup_{i})+\beta_{trend} t + \beta_{\sin} \sin\Big(\frac{\pi\cdot monthInYear_t}{6}\Big) + \beta_{\cos} \cos\Big(\frac{\pi \cdot monthInYear_t}{6}\Big)
-\end{equation}
 
 
 ```{r LISTNovelTbl, echo=FALSE}

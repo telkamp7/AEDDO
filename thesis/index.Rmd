@@ -30,8 +30,8 @@ Sys.setlocale("LC_ALL","English")
 ```{r dataLoadResults, echo=FALSE, warning=FALSE}
 
 Compare_novel_dat <- read_rds(file = "../src/cases/Compare_novel_dat.rds")
-# LIST_novel_tbl <- read_rds(file = "../src/cases/LIST_novel_tbl.rds")
-STEC_novel_tbl <- read_rds(file = "../src/cases/LIST_novel_tbl.rds")
+LIST_novel_tbl <- read_rds(file = "../src/cases/LIST_novel_tbl.rds")
+STEC_novel_tbl <- read_rds(file = "../src/cases/STEC_novel_tbl.rds")
 # LIST_novel_tbl <- read_rds(file = "../src/cases/LIST_novel_tbl.rds")
 # LIST_novel_tbl <- read_rds(file = "../src/cases/LIST_novel_tbl.rds")
 
