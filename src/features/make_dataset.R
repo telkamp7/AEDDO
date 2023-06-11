@@ -247,8 +247,8 @@ FOLK1A <- tibble()
 for(age in agegroups){
   
   variables <- list(
-    list(code = "område", values = muniId),
-    list(code = "køn", values = "TOT"),
+    list(code = "omrÃ¥de", values = muniId),
+    list(code = "kÃ¸n", values = "TOT"),
     list(code = "alder", values = list(age)),
     list(code = "tid", values = list("*"))
   )
@@ -283,3 +283,4 @@ destFile <- "../../data/raw/NUTS_V1_2007.csv"
 
 # Apply download.file function in 
 download.file(urlNutsV12007, destFile)
+

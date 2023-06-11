@@ -36,7 +36,7 @@ theme_set(
 source(file = "../models/aeddo.R")
 
 # Load in the data
-dat <- read_rds(file = "../../data/processed/dat4.rds")
+dat <- read_rds(file = "../../data/processed/dat5.rds")
 
 # Summary statistic of all the data
 dat %>%
