@@ -36,7 +36,7 @@ theme_set(
 source(file = "../models/aeddo.R")
 
 # Load in the data
-dat <- read_rds(file = "../../data/processed/dat4.rds")
+dat <- read_rds(file = "../../data/processed/dat5.rds")
 
 # Summary statistic of all the data
 dat %>%
@@ -156,7 +156,6 @@ alarm_Noufaily <- as_tibble(SALM_Noufaily@alarm) %>%
                values_to = "alarm_Noufaily") %>%
   mutate(ageGroup = factor(x = ageGroup, levels = levels(SALM$ageGroup)))
 
-
 # Compare the Farrington and Noufaily method
 
 Compare_stateOfTheArt_SALM_dat <- SALM %>%
@@ -194,7 +193,6 @@ ggsave(filename = "Compare_stateOfTheArt_SALM.png",
        units = "in",
        dpi = "print")
 
-
 # Outbreaks invstigated by SSI ------------------------------------------------------
 
 SSI_outbreaks <- tibble(Start = as.Date(x = c("2018-10-15", "2015-03-01", "2015-06-01", "2015-11-01", "2019-05-31", "2020-06-08", "2020-11-12", "2021-03-26", "2021-09-15", "2022-04-01", "2022-03-31", "2022-08-15")),
@@ -219,3 +217,163 @@ ggsave(filename = "SALM_SSI_outbreaks.png",
        height = 8,
        units = "in",
        dpi = "print")  
+
+
+# Hierarchical Poisson Normal model ---------------------------------------
+
+SALM_PoisN_ageGroup <- aeddo(data = SALM,
+                             formula = y ~ -1 + ageGroup,
+                             theta = rep(0,7),
+                             method = "L-BFGS-B",
+                             lower = c(rep(1e-6,6), -6),
+                             upper = rep(1e2, 7),
+                             model = "PoissonNormal",
+                             k = 36,
+                             sig.level = 0.9,
+                             cpp.dir = "../models/",
+                             CI = TRUE,
+                             excludePastOutbreaks = TRUE)
+
+write_rds(x = SALM_PoisN_ageGroup, file = "SALM_PoisN_ageGroup.rds")
+# SALM_PoisN_ageGroup <- read_rds(file = "SALM_PoisN_ageGroup.rds")
+
+start.theta.PoisN <- SALM_PoisN_ageGroup %>%
+  filter(row_number() == 1) %>%
+  select(par) %>%
+  unnest(par) %>%
+  select(theta)%>%
+  .$theta
+
+SALM_PoisN_ageGroup_trend <- aeddo(data = SALM,
+                                   formula = y ~ -1 + t + ageGroup,
+                                   trend = TRUE,
+                                   theta = c(0, start.theta.PoisN),
+                                   method = "L-BFGS-B",
+                                   lower = c(-0.5, start.theta.PoisN-6),
+                                   upper = c(0.5, start.theta.PoisN+6),
+                                   model = "PoissonNormal", 
+                                   k = 36, 
+                                   sig.level = 0.9,
+                                   cpp.dir = "../models/",
+                                   CI = TRUE,
+                                   excludePastOutbreaks = TRUE)
+
+write_rds(x = SALM_PoisN_ageGroup_trend, file = "SALM_PoisN_ageGroup_trend.rds")
+# SALM_PoisN_ageGroup <- read_rds(file = "SALM_PoisN_ageGroup_trend.rds")
+
+SALM_PoisN_ageGroup_seasonality <- aeddo(data = SALM,
+                                         formula = y ~ -1 +  ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                         seasonality = TRUE,
+                                         theta = c(start.theta.PoisN[1:6], 0,0, start.theta.PoisN[7]),
+                                         method = "L-BFGS-B",
+                                         lower = c(start.theta.PoisN[1:6], 0,0, start.theta.PoisN[7]) - 6,
+                                         upper = c(start.theta.PoisN[1:6], 0,0, start.theta.PoisN[7]) + 6,
+                                         model = "PoissonNormal", 
+                                         k = 36, 
+                                         sig.level = 0.9,
+                                         cpp.dir = "../models/",
+                                         CI = TRUE,
+                                         excludePastOutbreaks = TRUE)
+
+write_rds(x = SALM_PoisN_ageGroup_seasonality, file = "SALM_PoisN_ageGroup_seasonality.rds")
+# SALM_PoisN_ageGroup <- read_rds(file = "SALM_PoisN_ageGroup_seasonality.rds")
+
+SALM_PoisN_ageGroup_trend_seasonality <- aeddo(data = SALM,
+                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                               trend = TRUE,
+                                               seasonality = TRUE,
+                                               theta = c(0, start.theta.PoisN[1:6], 0,0, start.theta.PoisN[7]),
+                                               method = "L-BFGS-B",
+                                               lower = c(-0.5, c(start.theta.PoisN[1:6], 0,0, start.theta.PoisN[7])-6),
+                                               upper = c(0.5, c(start.theta.PoisN[1:6], 0,0, start.theta.PoisN[7])+6),
+                                               model = "PoissonNormal", 
+                                               k = 36, 
+                                               sig.level = 0.9,
+                                               cpp.dir = "../models/",
+                                               CI = TRUE,
+                                               excludePastOutbreaks = TRUE)
+
+write_rds(x = SALM_PoisN_ageGroup_trend_seasonality, file = "SALM_PoisN_ageGroup_trend_seasonality.rds")
+# SALM_PoisN_ageGroup <- read_rds(file = "SALM_PoisN_ageGroup_trend_seasonality.rds")
+
+
+# Hierarchical Poisson Gamma model ----------------------------------------
+
+
+
+
+SALM_PoisG_ageGroup <- aeddo(data = SALM,
+                             formula = y ~ -1 + ageGroup,
+                             theta = rep(1,7),
+                             method = "L-BFGS-B",
+                             lower = c(rep(1e-6,7),-6),
+                             upper = rep(1e2, 7),
+                             model = "PoissonGamma",
+                             k = 36,
+                             cpp.dir = "../models/",
+                             sig.level = 0.9,
+                             CI = TRUE,
+                             excludePastOutbreaks = TRUE)
+
+write_rds(x = SALM_PoisG_ageGroup, file = "SALM_PoisG_ageGroup.rds")
+# SALM_PoisN_ageGroup <- read_rds(file = "SALM_PoisG_ageGroup.rds")
+
+start.theta.PoisG <- SALM_PoisG_ageGroup %>%
+  filter(row_number() == 1) %>%
+  select(par) %>%
+  unnest(par) %>%
+  select(theta)%>%
+  .$theta
+
+SALM_PoisG_ageGroup_trend <- aeddo(data = SALM,
+                                   formula = y ~ -1 + t + ageGroup,
+                                   trend = TRUE,
+                                   theta = c(0, start.theta.PoisG),
+                                   method = "L-BFGS-B",
+                                   lower = c(-0.5, start.theta.PoisG-6),
+                                   upper = c(0.5, start.theta.PoisG+6),
+                                   model = "PoissonGamma",
+                                   k = 36,
+                                   cpp.dir = "../models/",
+                                   sig.level = 0.9,
+                                   CI = TRUE,
+                                   excludePastOutbreaks = TRUE)
+
+write_rds(x = SALM_PoisG_ageGroup_trend, file = "SALM_PoisG_ageGroup_trend.rds")
+# SALM_PoisN_ageGroup <- read_rds(file = "SALM_PoisG_ageGroup_trend.rds")
+
+
+SALM_PoisG_ageGroup_seasonality <- aeddo(data = SALM,
+                                         formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                         seasonality = TRUE,
+                                         theta = c(start.theta.PoisG[1:6], 0,0, start.theta.PoisG[7]),
+                                         method = "L-BFGS-B",
+                                         lower = c(start.theta.PoisG[1:6], 0,0, start.theta.PoisG[7]) - 6,
+                                         upper = c(start.theta.PoisG[1:6], 0,0, start.theta.PoisG[7]) + 6,
+                                         model = "PoissonGamma",
+                                         k = 36,
+                                         cpp.dir = "../models/",
+                                         sig.level = 0.9,
+                                         CI = TRUE,
+                                         excludePastOutbreaks = TRUE)
+
+write_rds(x = SALM_PoisG_ageGroup_seasonality, file = "SALM_PoisG_ageGroup_seasonality.rds")
+# SALM_PoisN_ageGroup <- read_rds(file = "SALM_PoisG_ageGroup_trend.rds")
+
+SALM_PoisG_ageGroup_trend_seasonality <- aeddo(data = SALM,
+                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                               trend = TRUE,
+                                               seasonality = TRUE,
+                                               theta = c(0, start.theta.PoisG[1:6], 0,0, start.theta.PoisG[7]),
+                                               method = "L-BFGS-B",
+                                               lower = c(-0.5, c(start.theta.PoisG[1:6], 0,0, start.theta.PoisG[7]) - 6),
+                                               upper = c(0.5, c(start.theta.PoisG[1:6], 0,0, start.theta.PoisG[7]) + 6),
+                                               model = "PoissonGamma",
+                                               k = 36,
+                                               cpp.dir = "../models/",
+                                               sig.level = 0.9,
+                                               CI = TRUE,
+                                               excludePastOutbreaks = TRUE)
+
+write_rds(x = SALM_PoisG_ageGroup_trend_seasonality, file = "SALM_PoisG_ageGroup_trend_seasonality.rds")
+# SALM_PoisN_ageGroup <- read_rds(file = "SALM_PoisG_ageGroup_trend_seasonality.rds")

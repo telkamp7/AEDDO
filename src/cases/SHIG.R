@@ -36,7 +36,7 @@ theme_set(
 source(file = "../models/aeddo.R")
 
 # Load in the data
-dat <- read_rds(file = "../../data/processed/dat4.rds")
+dat <- read_rds(file = "../../data/processed/dat5.rds")
 
 # Summary statistic of all the data
 dat %>%
@@ -220,4 +220,164 @@ ggsave(filename = "SHIG_SSI_outbreaks.png",
        height = 8,
        units = "in",
        dpi = "print")  
+
+
+# Hierarchical Poisson Normal model ---------------------------------------
+
+SHIG_PoisN_ageGroup <- aeddo(data = SHIG,
+                             formula = y ~ -1 + ageGroup,
+                             theta = rep(0,3),
+                             method = "L-BFGS-B",
+                             lower = c(rep(1e-6,2), -6),
+                             upper = rep(1e2, 3),
+                             model = "PoissonNormal",
+                             k = 36,
+                             sig.level = 0.9,
+                             cpp.dir = "../models/",
+                             CI = TRUE,
+                             excludePastOutbreaks = TRUE)
+
+write_rds(x = SHIG_PoisN_ageGroup, file = "SHIG_PoisN_ageGroup.rds")
+# SHIG_PoisN_ageGroup <- read_rds(file = "SHIG_PoisN_ageGroup.rds")
+
+start.theta.PoisN <- SHIG_PoisN_ageGroup %>%
+  filter(row_number() == 1) %>%
+  select(par) %>%
+  unnest(par) %>%
+  select(theta)%>%
+  .$theta
+
+SHIG_PoisN_ageGroup_trend <- aeddo(data = SHIG,
+                                   formula = y ~ -1 + t + ageGroup,
+                                   trend = TRUE,
+                                   theta = c(0, start.theta.PoisN),
+                                   method = "L-BFGS-B",
+                                   lower = c(-0.5, start.theta.PoisN-6),
+                                   upper = c(0.5, start.theta.PoisN+6),
+                                   model = "PoissonNormal", 
+                                   k = 36, 
+                                   sig.level = 0.9,
+                                   cpp.dir = "../models/",
+                                   CI = TRUE,
+                                   excludePastOutbreaks = TRUE)
+
+write_rds(x = SHIG_PoisN_ageGroup_trend, file = "SHIG_PoisN_ageGroup_trend.rds")
+# SHIG_PoisN_ageGroup <- read_rds(file = "SHIG_PoisN_ageGroup_trend.rds")
+
+SHIG_PoisN_ageGroup_seasonality <- aeddo(data = SHIG,
+                                         formula = y ~ -1 +  ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                         seasonality = TRUE,
+                                         theta = c(start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3]),
+                                         method = "L-BFGS-B",
+                                         lower = c(start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3]) - 6,
+                                         upper = c(start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3]) + 6,
+                                         model = "PoissonNormal", 
+                                         k = 36, 
+                                         sig.level = 0.9,
+                                         cpp.dir = "../models/",
+                                         CI = TRUE,
+                                         excludePastOutbreaks = TRUE)
+
+write_rds(x = SHIG_PoisN_ageGroup_seasonality, file = "SHIG_PoisN_ageGroup_seasonality.rds")
+# SHIG_PoisN_ageGroup <- read_rds(file = "SHIG_PoisN_ageGroup_seasonality.rds")
+
+SHIG_PoisN_ageGroup_trend_seasonality <- aeddo(data = SHIG,
+                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                               trend = TRUE,
+                                               seasonality = TRUE,
+                                               theta = c(0, start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3]),
+                                               method = "L-BFGS-B",
+                                               lower = c(-0.5, c(start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3])-6),
+                                               upper = c(0.5, c(start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3])+6),
+                                               model = "PoissonNormal", 
+                                               k = 36, 
+                                               sig.level = 0.9,
+                                               cpp.dir = "../models/",
+                                               CI = TRUE,
+                                               excludePastOutbreaks = TRUE)
+
+write_rds(x = SHIG_PoisN_ageGroup_trend_seasonality, file = "SHIG_PoisN_ageGroup_trend_seasonality.rds")
+# SHIG_PoisN_ageGroup <- read_rds(file = "SHIG_PoisN_ageGroup_trend_seasonality.rds")
+
+
+# Hierarchical Poisson Gamma model ----------------------------------------
+
+
+
+
+SHIG_PoisG_ageGroup <- aeddo(data = SHIG,
+                             formula = y ~ -1 + ageGroup,
+                             theta = rep(1,3),
+                             method = "L-BFGS-B",
+                             lower = c(rep(1e-6,2),-6),
+                             upper = rep(1e2, 3),
+                             model = "PoissonGamma",
+                             k = 36,
+                             cpp.dir = "../models/",
+                             sig.level = 0.9,
+                             CI = TRUE,
+                             excludePastOutbreaks = TRUE)
+
+write_rds(x = SHIG_PoisG_ageGroup, file = "SHIG_PoisG_ageGroup.rds")
+# SHIG_PoisN_ageGroup <- read_rds(file = "SHIG_PoisG_ageGroup.rds")
+
+start.theta.PoisG <- SHIG_PoisG_ageGroup %>%
+  filter(row_number() == 1) %>%
+  select(par) %>%
+  unnest(par) %>%
+  select(theta)%>%
+  .$theta
+
+SHIG_PoisG_ageGroup_trend <- aeddo(data = SHIG,
+                                   formula = y ~ -1 + t + ageGroup,
+                                   trend = TRUE,
+                                   theta = c(0, start.theta.PoisG),
+                                   method = "L-BFGS-B",
+                                   lower = c(-0.5, start.theta.PoisG-6),
+                                   upper = c(0.5, start.theta.PoisG+6),
+                                   model = "PoissonGamma",
+                                   k = 36,
+                                   cpp.dir = "../models/",
+                                   sig.level = 0.9,
+                                   CI = TRUE,
+                                   excludePastOutbreaks = TRUE)
+
+write_rds(x = SHIG_PoisG_ageGroup_trend, file = "SHIG_PoisG_ageGroup_trend.rds")
+# SHIG_PoisN_ageGroup <- read_rds(file = "SHIG_PoisG_ageGroup_trend.rds")
+
+
+SHIG_PoisG_ageGroup_seasonality <- aeddo(data = SHIG,
+                                         formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                         seasonality = TRUE,
+                                         theta = c(start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]),
+                                         method = "L-BFGS-B",
+                                         lower = c(start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]) - 6,
+                                         upper = c(start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]) + 6,
+                                         model = "PoissonGamma",
+                                         k = 36,
+                                         cpp.dir = "../models/",
+                                         sig.level = 0.9,
+                                         CI = TRUE,
+                                         excludePastOutbreaks = TRUE)
+
+write_rds(x = SHIG_PoisG_ageGroup_seasonality, file = "SHIG_PoisG_ageGroup_seasonality.rds")
+# SHIG_PoisN_ageGroup <- read_rds(file = "SHIG_PoisG_ageGroup_trend.rds")
+
+SHIG_PoisG_ageGroup_trend_seasonality <- aeddo(data = SHIG,
+                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                               trend = TRUE,
+                                               seasonality = TRUE,
+                                               theta = c(0, start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]),
+                                               method = "L-BFGS-B",
+                                               lower = c(-0.5, c(start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]) - 6),
+                                               upper = c(0.5, c(start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]) + 6),
+                                               model = "PoissonGamma",
+                                               k = 36,
+                                               cpp.dir = "../models/",
+                                               sig.level = 0.9,
+                                               CI = TRUE,
+                                               excludePastOutbreaks = TRUE)
+
+write_rds(x = SHIG_PoisG_ageGroup_trend_seasonality, file = "SHIG_PoisG_ageGroup_trend_seasonality.rds")
+# SHIG_PoisN_ageGroup <- read_rds(file = "SHIG_PoisG_ageGroup_trend_seasonality.rds")
 

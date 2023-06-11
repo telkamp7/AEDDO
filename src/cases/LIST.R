@@ -214,7 +214,7 @@ ggsave(filename = "Compare_stateOfTheArt_LIST.png",
 
 # Hierarchical Poisson Normal model -------------------------------------------------
 
-LIST_PoisN_ageGroup_CI <- aeddo(data = LIST,
+LIST_PoisN_ageGroup <- aeddo(data = LIST,
                              formula = y ~ -1 + ageGroup,
                              theta = rep(0,3),
                              method = "L-BFGS-B",
@@ -224,14 +224,78 @@ LIST_PoisN_ageGroup_CI <- aeddo(data = LIST,
                              k = 36,
                              sig.level = 0.9,
                              cpp.dir = "../models/",
-                             excludePastOutbreaks = TRUE, CI = TRUE)
+                             CI = TRUE,
+                             excludePastOutbreaks = TRUE)
 
-LIST_PoisN_ageGroup_CI_par <- LIST_PoisN_ageGroup_CI  %>% 
+write_rds(x = LIST_PoisN_ageGroup, file = "LIST_PoisN_ageGroup.rds")
+# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisN_ageGroup.rds")
+
+start.theta.PoisN <- LIST_PoisN_ageGroup %>%
+  filter(row_number() == 1) %>%
+  select(par) %>%
+  unnest(par) %>%
+  select(theta)%>%
+  .$theta
+
+LIST_PoisN_ageGroup_trend <- aeddo(data = LIST,
+                                   formula = y ~ -1 + t + ageGroup,
+                                   trend = TRUE,
+                                   theta = c(0, start.theta.PoisN),
+                                   method = "L-BFGS-B",
+                                   lower = c(-0.5, start.theta.PoisN-6),
+                                   upper = c(0.5, start.theta.PoisN+6),
+                                   model = "PoissonNormal", 
+                                   k = 36, 
+                                   sig.level = 0.9,
+                                   cpp.dir = "../models/",
+                                   CI = TRUE,
+                                   excludePastOutbreaks = TRUE)
+
+write_rds(x = LIST_PoisN_ageGroup_trend, file = "LIST_PoisN_ageGroup_trend.rds")
+# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisN_ageGroup_trend.rds")
+
+LIST_PoisN_ageGroup_seasonality <- aeddo(data = LIST,
+                                         formula = y ~ -1 +  ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                         seasonality = TRUE,
+                                         theta = c(start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3]),
+                                         method = "L-BFGS-B",
+                                         lower = c(start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3]) - 6,
+                                         upper = c(start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3]) + 6,
+                                         model = "PoissonNormal", 
+                                         k = 36, 
+                                         sig.level = 0.9,
+                                         cpp.dir = "../models/",
+                                         CI = TRUE,
+                                         excludePastOutbreaks = TRUE)
+
+write_rds(x = LIST_PoisN_ageGroup_seasonality, file = "LIST_PoisN_ageGroup_seasonality.rds")
+# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisN_ageGroup_seasonality.rds")
+
+LIST_PoisN_ageGroup_trend_seasonality <- aeddo(data = LIST,
+                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                               trend = TRUE,
+                                               seasonality = TRUE,
+                                               theta = c(0, start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3]),
+                                               method = "L-BFGS-B",
+                                               lower = c(-0.5, c(start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3])-6),
+                                               upper = c(0.5, c(start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3])+6),
+                                               model = "PoissonNormal", 
+                                               k = 36, 
+                                               sig.level = 0.9,
+                                               cpp.dir = "../models/",
+                                               CI = TRUE,
+                                               excludePastOutbreaks = TRUE)
+
+write_rds(x = LIST_PoisN_ageGroup_trend_seasonality, file = "LIST_PoisN_ageGroup_trend_seasonality.rds")
+# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisN_ageGroup_trend_seasonality.rds")
+
+
+LIST_PoisN_ageGroup_par <- LIST_PoisN_ageGroup  %>% 
   select(ref.date, par) %>%
   unnest(par) %>% 
   mutate(Method = "Poisson Normal")
 
-LIST_PoisN_ageGroup_tbl <- LIST_PoisN_ageGroup_CI %>%
+LIST_PoisN_ageGroup_tbl <- LIST_PoisN_ageGroup %>%
   select(ref.date, par, LogS) %>%
   mutate(avgLogS = mean(LogS)) %>%
   filter(row_number() == n()) %>%
@@ -239,19 +303,19 @@ LIST_PoisN_ageGroup_tbl <- LIST_PoisN_ageGroup_CI %>%
   unnest(par) %>%
   mutate(method = "PoisN_ageGroup")
 
-LIST_PoisN_ageGroup_unnested <- LIST_PoisN_ageGroup_CI %>% 
+LIST_PoisN_ageGroup_unnested <- LIST_PoisN_ageGroup %>% 
   select(ran.ef) %>%
   unnest(ran.ef) %>%
   mutate(threshold = qnorm(p = 0.9, mean = 0, sd = exp(log_sigma))) %>%
   select(Date = ref.date, ageGroup, `u_Poisson Normal` = u, `alarm_Poisson Normal` = alarm, `threshold_Poisson Normal` = threshold)
 
-LIST_PoisN_ageGroup_par_unnested <- LIST_PoisN_ageGroup_CI %>% 
+LIST_PoisN_ageGroup_par_unnested <- LIST_PoisN_ageGroup %>% 
   select(ref.date, par) %>%
   unnest(par) %>% 
   mutate(Method = "Poisson Normal")
 
 # Inspect the periods with relatively bad convergence from the Poisson Normal model
-LIST_PoisN_ageGroup_CI %>% 
+LIST_PoisN_ageGroup %>% 
   select(ran.ef) %>%
   unnest(ran.ef) %>%
   select(ref.date, ageGroup, log_sigma) %>%
@@ -270,18 +334,8 @@ LIST_PoisN_ageGroup_unnested %>%
   scale_shape_manual(values = c(1,19)) +
   guides(shape = "none")
 
-LIST_PoisN_ageGroup_trend <- aeddo(data = LIST,
-                                   formula = y ~ -1 + t + ageGroup,
-                                   trend = TRUE,
-                                   theta = rep(0, 4),
-                                   method = "L-BFGS-B",
-                                   lower = c(rep(1e-6,3), -6),
-                                   upper = rep(1e2, 4),
-                                   model = "PoissonNormal", 
-                                   k = 36, 
-                                   sig.level = 0.9,
-                                   cpp.dir = "../models/",
-                                   excludePastOutbreaks = TRUE)
+
+
 
 LIST_PoisN_ageGroup_trend_tbl <- LIST_PoisN_ageGroup_trend %>%
   select(ref.date, par, LogS) %>%
@@ -309,18 +363,7 @@ LIST_PoisN_ageGroup_trend_unnested %>%
   guides(shape = "none")
 
 
-LIST_PoisN_ageGroup_seasonality <- aeddo(data = LIST,
-                                   formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear) ,
-                                   seasonality = TRUE,
-                                   theta = rep(0, 5),
-                                   method = "L-BFGS-B",
-                                   lower = c(rep(1e-6,2), rep(-Inf, 2), -6),
-                                   upper = rep(1e2, 5),
-                                   model = "PoissonNormal", 
-                                   k = 36, 
-                                   sig.level = 0.9,
-                                   cpp.dir = "../models/",
-                                   excludePastOutbreaks = TRUE)
+
 
 LIST_PoisN_ageGroup_seasonality_tbl <- LIST_PoisN_ageGroup_seasonality %>%
   select(ref.date, par, LogS) %>%
@@ -347,19 +390,7 @@ LIST_PoisN_ageGroup_seasonality_unnested %>%
   scale_shape_manual(values = c(1,19)) +
   guides(shape = "none")
 
-LIST_PoisN_ageGroup_trend_seasonality <- aeddo(data = LIST,
-                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
-                                               trend = TRUE,
-                                               seasonality = TRUE,
-                                               theta = rep(0, 6),
-                                               method = "L-BFGS-B",
-                                               lower = c(rep(1e-6,4),rep(-Inf,2), -6),
-                                               upper = rep(1e2, 6),
-                                               model = "PoissonNormal", 
-                                               k = 36, 
-                                               sig.level = 0.9,
-                                               cpp.dir = "../models/",
-                                               excludePastOutbreaks = TRUE)
+
 
 LIST_PoisN_ageGroup_trend_seasonality_tbl <- LIST_PoisN_ageGroup_trend_seasonality %>%
   select(ref.date, par, LogS) %>%
@@ -398,7 +429,7 @@ LIST_PoisN_ageGroup_trend_seasonality_unnested %>%
 #                              model = "PoissonGamma", k = 36, cpp.dir = "../models/",
 #                              excludePastOutbreaks = TRUE)
 
-LIST_PoisG_ageGroup_CI <- aeddo(data = LIST,
+LIST_PoisG_ageGroup <- aeddo(data = LIST,
                              formula = y ~ -1 + ageGroup,
                              theta = rep(1,3),
                              method = "L-BFGS-B",
@@ -408,24 +439,89 @@ LIST_PoisG_ageGroup_CI <- aeddo(data = LIST,
                              k = 36,
                              cpp.dir = "../models/",
                              sig.level = 0.9,
-                             excludePastOutbreaks = TRUE, CI = TRUE)
+                             CI = TRUE,
+                             excludePastOutbreaks = TRUE)
 
-LIST_PoisG_ageGroup_CI %>%
+write_rds(x = LIST_PoisG_ageGroup, file = "LIST_PoisG_ageGroup.rds")
+# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisG_ageGroup.rds")
+
+start.theta.PoisG <- LIST_PoisG_ageGroup %>%
+  filter(row_number() == 1) %>%
+  select(par) %>%
+  unnest(par) %>%
+  select(theta)%>%
+  .$theta
+
+LIST_PoisG_ageGroup_trend <- aeddo(data = LIST,
+                             formula = y ~ -1 + t + ageGroup,
+                             trend = TRUE,
+                             theta = c(0, start.theta.PoisG),
+                             method = "L-BFGS-B",
+                             lower = c(-0.5, start.theta.PoisG-6),
+                             upper = c(0.5, start.theta.PoisG+6),
+                             model = "PoissonGamma",
+                             k = 36,
+                             cpp.dir = "../models/",
+                             sig.level = 0.9,
+                             CI = TRUE,
+                             excludePastOutbreaks = TRUE)
+
+write_rds(x = LIST_PoisG_ageGroup_trend, file = "LIST_PoisG_ageGroup_trend.rds")
+# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisG_ageGroup_trend.rds")
+
+
+LIST_PoisG_ageGroup_seasonality <- aeddo(data = LIST,
+                                   formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                   seasonality = TRUE,
+                                   theta = c(start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]),
+                                   method = "L-BFGS-B",
+                                   lower = c(start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]) - 6,
+                                   upper = c(start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]) + 6,
+                                   model = "PoissonGamma",
+                                   k = 36,
+                                   cpp.dir = "../models/",
+                                   sig.level = 0.9,
+                                   CI = TRUE,
+                                   excludePastOutbreaks = TRUE)
+
+write_rds(x = LIST_PoisG_ageGroup_seasonality, file = "LIST_PoisG_ageGroup_seasonality.rds")
+# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisG_ageGroup_trend.rds")
+
+LIST_PoisG_ageGroup_trend_seasonality <- aeddo(data = LIST,
+                                         formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                         trend = TRUE,
+                                         seasonality = TRUE,
+                                         theta = c(0, start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]),
+                                         method = "L-BFGS-B",
+                                         lower = c(-0.5, c(start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]) - 6),
+                                         upper = c(0.5, c(start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]) + 6),
+                                         model = "PoissonGamma",
+                                         k = 36,
+                                         cpp.dir = "../models/",
+                                         sig.level = 0.9,
+                                         CI = TRUE,
+                                         excludePastOutbreaks = TRUE)
+
+write_rds(x = LIST_PoisG_ageGroup_trend_seasonality, file = "LIST_PoisG_ageGroup_trend_seasonality.rds")
+# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisG_ageGroup_trend_seasonality.rds")
+
+
+LIST_PoisG_ageGroup %>%
   summarise(avgLogS = mean(LogS))
 
-LIST_PoisG_ageGroup_CI_par <- LIST_PoisG_ageGroup_CI  %>% 
+LIST_PoisG_ageGroup_par <- LIST_PoisG_ageGroup  %>% 
   select(ref.date, par) %>%
   unnest(par) %>% 
   mutate(Method = "Poisson Gamma")
 
-LIST_PoisG_ageGroup_unnested <- LIST_PoisG_ageGroup_CI %>% 
+LIST_PoisG_ageGroup_unnested <- LIST_PoisG_ageGroup %>% 
   select(ran.ef) %>%
   unnest(ran.ef) %>%
   mutate(threshold = qgamma(p = 0.9, shape = 1/phi, scale = phi)) %>%
   select(Date = ref.date, ageGroup, `u_Poisson Gamma` = u, `alarm_Poisson Gamma` = alarm, `threshold_Poisson Gamma` = threshold)
 
 
-LIST_PoisG_ageGroup_tbl <- LIST_PoisG_ageGroup_CI %>%
+LIST_PoisG_ageGroup_tbl <- LIST_PoisG_ageGroup %>%
   select(ref.date, par, LogS) %>%
   mutate(avgLogS = mean(LogS)) %>%
   filter(row_number() == n()) %>%
@@ -520,7 +616,7 @@ ggsave(filename = "Compare_novel_LIST.png",
        dpi = "print")  
 
 
-LIST_novel_par <- bind_rows(LIST_PoisN_ageGroup_CI_par, LIST_PoisG_ageGroup_CI_par)
+LIST_novel_par <- bind_rows(LIST_PoisN_ageGroup_par, LIST_PoisG_ageGroup_par)
 LIST_novel_par_ageGroup <- LIST_novel_par %>%
   filter(grepl(x = Parameter, pattern = "ageGroup")) %>%
   ggplot(mapping = aes(x = ref.date)) +
