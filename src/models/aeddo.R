@@ -1,14 +1,17 @@
 aeddo <- function(
     data,
     formula,
+    seasonality = FALSE,
+    trend = FALSE,
     theta,
-    method = "BFGS",
     lower = -Inf,
     upper = Inf,
+    method = "BFGS",
     model = NA_character_,
     cpp.dir = NULL,
     cpp = NULL,
     k = 36,
+    sig.level = 0.95,
     excludePastOutbreaks = TRUE,
     CI = FALSE
     ){
@@ -61,6 +64,15 @@ aeddo <- function(
   # Count the number of observations
   nObs <- length(Dates)
   
+  
+  # Add seasonality
+  if(seasonality){
+    data <- dplyr::`%>%`(
+      data,
+      dplyr::mutate(monthInYear = as.integer(format(Date, "%m")))
+      )
+  }
+  
   # Make a placeholder for the 'results' and 'pastOutbreaks'
   results <- dplyr::tibble()
   
@@ -84,7 +96,24 @@ aeddo <- function(
     refData <- dplyr::`%>%`(
       data,
       dplyr::filter(Date %in% refDate)
+    )
+    # Add trend
+    if(trend){
+      yWindow <- dplyr::`%>%`(
+        yWindow,
+        dplyr::mutate(t = lubridate::interval(
+          Dates[i],
+          Date) %/% months(1) - k + 1
+        )
       )
+      refData <- dplyr::`%>%`(
+        refData,
+        dplyr::mutate(t = lubridate::interval(
+          Dates[i],
+          Date) %/% months(1) - k + 1
+        )
+      )
+    }
     
     # Exclude past observations, if they were deemed an outbreak
     # Turned on by 'excludePastOutbreaks = TRUE'
@@ -104,7 +133,7 @@ aeddo <- function(
       
       # Make the function for the window
       PoisN <- TMB::MakeADFun(
-        data = list(y = yWindow$y, x = yWindow$n, X = designMatrix),
+        data = list(y = yWindow$y, n = yWindow$n, X = designMatrix),
         parameters = list(u = rep(1, length(yWindow$y)),
                           beta = theta[1:ncol(designMatrix)],
                           log_sigma_u = theta[-(1:ncol(designMatrix))]),
@@ -129,9 +158,9 @@ aeddo <- function(
       # Make a design matrix for the reference data
       refDesign <- model.matrix(object = formula, data = refData)
       
-      # Make the function for the reference data
+      # Make the function for the reference datad
       refPoisN <- TMB::MakeADFun(
-        data = list(y = refData$y, x = refData$n, X = refDesign),
+        data = list(y = refData$y, n = refData$n, X = refDesign),
         parameters = list(u = rep(1, length(refData$y)),
                           beta = theta[1:ncol(refDesign)],
                           log_sigma_u = theta[-(1:ncol(refDesign))]),
@@ -149,12 +178,11 @@ aeddo <- function(
         ageGroup = refData$ageGroup,
         n = refData$n,
         y = refData$y,
-        monthInYear = refData$monthInYear,
         log_sigma = opt$par[-(1:ncol(designMatrix))],
         lambda = c(exp(refDesign %*% opt$par[1:ncol(refDesign)] - log(n))),
         u = refRep$par.random,
         p = pnorm(q = u, mean = 0, sd = exp(log_sigma)),
-        alarm = p >= 0.95
+        alarm = p >= sig.level
       )
       
       if(CI){
@@ -202,7 +230,7 @@ aeddo <- function(
       
       # Construct objective function with derivatives based on a compiled C++ template
       PoisG <- TMB::MakeADFun(
-        data = list(y = yWindow$y, x = yWindow$n, X = designMatrix),
+        data = list(y = yWindow$y, n = yWindow$n, X = designMatrix),
         parameters = list(beta = theta[1:ncol(designMatrix)],
                           log_phi_u = theta[-(1:ncol(designMatrix))]),
         hessian = TRUE,
@@ -228,7 +256,7 @@ aeddo <- function(
       
       # Make the function for the reference data
       refPoisG <- TMB::MakeADFun(
-        data = list(y = refData$y, x = refData$n, X = refDesign),
+        data = list(y = refData$y, n = refData$n, X = refDesign),
         parameters = list(beta = theta[1:ncol(refDesign)],
                           log_phi_u = theta[-(1:ncol(refDesign))]),
         DLL = model,
@@ -241,17 +269,16 @@ aeddo <- function(
         ageGroup = refData$ageGroup,
         n = refData$n,
         y = refData$y,
-        monthInYear = refData$monthInYear,
         phi = exp(opt$par[-(1:ncol(refDesign))]),
         lambda = c(exp(refDesign %*% opt$par[1:ncol(refDesign)] - log(n))),
         u = ( y*phi+1 ) / (lambda * phi + 1),
         p = pgamma(q = u, shape = 1/phi, scale = phi),
-        alarm = p >= 0.95
+        alarm = p >= sig.level
       )
       
       if(CI){
         # Calculate the confidence using root-finding
-        CI.theta <- sapply(X = 1:(ncol(designMatrix)+1), FUN = function(x) TMB::tmbroot(PoisN, x))
+        CI.theta <- sapply(X = 1:(ncol(designMatrix)+1), FUN = function(x) TMB::tmbroot(PoisG, x))
         # Construct nice parameter table
         par <- dplyr::tibble(
           Parameter = c(colnames(designMatrix),"log_phi"),
@@ -275,7 +302,7 @@ aeddo <- function(
           ref.date = refDate,
           par = list(par),
           value = opt$value,
-          logS = refPoisG$fn(x = opt$par),
+          LogS = refPoisG$fn(x = opt$par),
           counts = list(opt$counts),
           convergence = opt$convergence,
           message = opt$message,
@@ -298,9 +325,29 @@ aeddo <- function(
         dplyr::`%>%`(
           dplyr::`%>%`(
             ran.ef, dplyr::filter(alarm == TRUE)
-            ), dplyr::select(Date = ref.date, ageGroup, y, n, monthInYear)
+            ), dplyr::select(Date = ref.date, ageGroup, y, n)
           ), dplyr::bind_rows(pastOutbreaks)
         )
+      
+      # Add seasonality
+      if(seasonality){
+        pastOutbreaks <- dplyr::`%>%`(
+          pastOutbreaks,
+          dplyr::mutate(monthInYear = as.integer(format(Date, "%m")))
+        )
+      }
+      
+      # Add trend
+      if(trend){
+        pastOutbreaks <- dplyr::`%>%`(
+          pastOutbreaks,
+          dplyr::mutate(t = lubridate::interval(
+            Dates[i],
+            Date) %/% months(1) - k + 1
+          )
+        )
+      }
+      
     }
     
   }

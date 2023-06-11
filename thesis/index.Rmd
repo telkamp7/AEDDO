@@ -7,7 +7,7 @@ site: bookdown::bookdown_site
 options(digits = 4)
 
 # Install the packages needed by this book
-lapply(c("ggplot2", "readr", "dplyr", "kableExtra", "psych", "knitr"), function(pkg) {
+lapply(c("ggplot2", "readr", "dplyr", "tidyr", "forcats", "tibble","kableExtra", "psych", "knitr"), function(pkg) {
   if(system.file(package = pkg) == "") install.packages(pkg)
 })
 
@@ -15,10 +15,57 @@ lapply(c("ggplot2", "readr", "dplyr", "kableExtra", "psych", "knitr"), function(
 library(knitr)
 library(readr)
 library(dplyr)
+library(tidyr)
+library(tibble)
+library(forcats)
 library(kableExtra)
 library(psych)
 library(ggplot2)
 
-
+Sys.setlocale("LC_ALL","English")
 ```
 
+
+
+```{r dataLoadResults, echo=FALSE, warning=FALSE}
+
+Compare_novel_dat <- read_rds(file = "../src/cases/Compare_novel_dat.rds")
+# LIST_novel_tbl <- read_rds(file = "../src/cases/LIST_novel_tbl.rds")
+STEC_novel_tbl <- read_rds(file = "../src/cases/LIST_novel_tbl.rds")
+# LIST_novel_tbl <- read_rds(file = "../src/cases/LIST_novel_tbl.rds")
+# LIST_novel_tbl <- read_rds(file = "../src/cases/LIST_novel_tbl.rds")
+
+Compare_stateOfTheArt_LIST_dat <- read_rds(file = "../src/cases/Compare_stateOfTheArt_LIST_dat.rds")
+Compare_stateOfTheArt_SHIG_dat <- read_rds(file = "../src/cases/Compare_stateOfTheArt_SHIG_dat.rds")
+Compare_stateOfTheArt_STEC_dat <- read_rds(file = "../src/cases/Compare_stateOfTheArt_STEC_dat.rds")
+Compare_stateOfTheArt_SALM_dat <- read_rds(file = "../src/cases/Compare_stateOfTheArt_SALM_dat.rds")
+
+LIST_LogS <- LIST_novel_tbl %>%
+  group_by(method) %>%
+  distinct(avgLogS)
+
+STEC_LogS <- STEC_novel_tbl %>%
+  group_by(method) %>%
+  distinct(avgLogS)
+
+LIST_alarms_StateOfTheArt <- Compare_stateOfTheArt_LIST_dat %>% filter(Date %in% dateOfAlarm)
+SHIG_alarms_StateOfTheArt <- Compare_stateOfTheArt_SHIG_dat %>% filter(Date %in% dateOfAlarm)
+STEC_alarms_StateOfTheArt <- Compare_stateOfTheArt_STEC_dat %>% filter(Date %in% dateOfAlarm)
+SALM_alarms_StateOfTheArt <- Compare_stateOfTheArt_SALM_dat %>% filter(Date %in% dateOfAlarm)
+
+
+LIST_alarms_Farrington <- LIST_alarms_StateOfTheArt %>% filter(method == "Farrington") 
+STEC_alarms_Farrington <- STEC_alarms_StateOfTheArt %>% filter(method == "Farrington") 
+SHIG_alarms_Farrington <- SHIG_alarms_StateOfTheArt %>% filter(method == "Farrington") 
+SALM_alarms_Farrington <- SALM_alarms_StateOfTheArt %>% filter(method == "Farrington") 
+
+LIST_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm
+
+LIST_alarms_Noufaily <- LIST_alarms_StateOfTheArt %>% filter(method == "Noufaily") 
+STEC_alarms_Noufaily <- STEC_alarms_StateOfTheArt %>% filter(method == "Noufaily") 
+SHIG_alarms_Noufaily <- SHIG_alarms_StateOfTheArt %>% filter(method == "Noufaily") 
+SALM_alarms_Noufaily <- SALM_alarms_StateOfTheArt %>% filter(method == "Noufaily") 
+
+LIST_alarms <- Compare_novel_dat %>% filter(alarm) %>% summarize(alarms=unique(Date))
+
+```

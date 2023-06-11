@@ -1,2 +1,2 @@
-rmd_files: ["index.Rmd", "Chapters/01-Introduction.Rmd", "Chapters/02-Litterature.Rmd", "Chapters/03-Dataset.Rmd", "Chapters/04-Methods.Rmd", "Chapters/05-Results.Rmd", "Chapters/06-Discussion.Rmd", "Chapters/07-Conclusion.Rmd", "Backmatter/99-Appendix.Rmd"]
+rmd_files: ["index.Rmd", "Chapters/01-Introduction.Rmd", "Chapters/02-Litterature.Rmd", "Chapters/03-Dataset.Rmd", "Chapters/04-Methods.Rmd", "Chapters/05-Cases.Rmd", "Chapters/06-Simulation.Rmd", "Chapters/07-Discussion.Rmd", "Chapters/08-Conclusion.Rmd", "Backmatter/99-Appendix.Rmd"]
 delete_merged_file: true

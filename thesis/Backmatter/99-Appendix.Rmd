@@ -79,3 +79,116 @@ Type objective_function<Type>::operator() ()
   return f;
 }
 ```
+
+\chapter{State-of-the-art detection algorithm}
+
+\section{Controls}\label{controlsStateOfTheArt}
+
+In the function `farringtonFlexible`, users can select either the original Farrington method or the improved method by Noufaily by specifying the appropriate `control` arguments. The choice of algorithm variant is determined by the contents of the `control` slot. In the example provided, `con.farrington` indicates the use of the original method, while `con.noufaily` represents the options for the improved method.
+
+```{r ControlsLIST, eval=FALSE}
+
+con.farrington <- list(
+  range = NULL, b = 3, w = 2,
+  reweight = TRUE, weightsThreshold = 1,
+  verbose = TRUE, glmWarnings = TRUE,
+  alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
+  limit54 = c(0,4), powertrans = "2/3",
+  fitFun = "algo.farrington.fitGLM.flexible",
+  populationOffset = TRUE,
+  noPeriods = 1, pastWooksNotIncluded = NULL,
+  thersholdMethod = "delta"
+)
+
+con.noufaily <- list(
+  range = NULL, b = 3, w = 2,
+  reweight = TRUE, weightsThreshold = 2.58,
+  verbose = TRUE, glmWarnings = TRUE,
+  alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
+  limit54 = c(0,4), powertrans = "2/3",
+  fitFun = "algo.farrington.fitGLM.flexible",
+  populationOffset = TRUE,
+  noPeriods = 1, pastWooksNotIncluded = NULL,
+  thersholdMethod = "Noufaily"
+)
+
+```
+
+
+In this chapter an excerpt of the results
+
+
+```{r LISTStateOfTheArtTbl, echo=FALSE}
+
+LIST_alarms_StateOfTheArt %>%
+  select(Date, ageGroup, method, y, threshold, alarm) %>%
+  pivot_wider(names_from = method, values_from = c(threshold, alarm)) %>%
+  select(Date, `Age group` = ageGroup, `$y_t$` = y, Treshold.1 = threshold_Farrington, Alarm.1 = alarm_Farrington, Threshold.2 = threshold_Noufaily, Alarm.2 = alarm_Noufaily) %>%
+  kbl(booktabs = TRUE,
+      longtable = TRUE,
+      escape = FALSE,
+      caption = "Longtable",
+      col.names = gsub("\\.\\d", "", names(.))) %>%
+  kable_paper(latex_options = c("repeat_header"),  repeat_header_method = c("replace")) %>%
+  add_header_above(c(" " = 3, "Farrington" = 2, "Noufaily" = 2)) %>%
+  column_spec(1, bold = TRUE) %>%
+  collapse_rows(columns = 1)
+
+```
+
+```{r SHIGStateOfTheArtTbl, echo=FALSE, eval=FALSE}
+
+SHIG_alarms_StateOfTheArt %>%
+  select(Date, ageGroup, method, y, threshold, alarm) %>%
+  pivot_wider(names_from = method, values_from = c(threshold, alarm)) %>%
+  select(Date, `Age group` = ageGroup, `$y_t$` = y, Treshold.1 = threshold_Farrington, Alarm.1 = alarm_Farrington, Threshold.2 = threshold_Noufaily, Alarm.2 = alarm_Noufaily) %>%
+  kbl(booktabs = TRUE,
+      longtable = TRUE,
+      escape = FALSE,
+      caption = "Longtable",
+      col.names = gsub("\\.\\d", "", names(.))) %>%
+  kable_paper(latex_options = c("repeat_header"),  repeat_header_method = c("replace")) %>%
+  add_header_above(c(" " = 3, "Farrington" = 2, "Noufaily" = 2)) %>%
+  column_spec(1, bold = TRUE) %>%
+  collapse_rows(columns = 1)
+
+```
+
+```{r STECStateOfTheArtTbl, echo=FALSE, eval=FALSE}
+
+STEC_alarms_StateOfTheArt %>%
+  select(Date, ageGroup, method, y, threshold, alarm) %>%
+  pivot_wider(names_from = method, values_from = c(threshold, alarm)) %>%
+  select(Date, `Age group` = ageGroup, `$y_t$` = y, Treshold.1 = threshold_Farrington, Alarm.1 = alarm_Farrington, Threshold.2 = threshold_Noufaily, Alarm.2 = alarm_Noufaily) %>%
+  kbl(booktabs = TRUE,
+      longtable = TRUE,
+      escape = FALSE,
+      caption = "Longtable",
+      col.names = gsub("\\.\\d", "", names(.))) %>%
+  kable_paper(latex_options = c("repeat_header"),  repeat_header_method = c("replace")) %>%
+  add_header_above(c(" " = 3, "Farrington" = 2, "Noufaily" = 2)) %>%
+  column_spec(1, bold = TRUE) %>%
+  collapse_rows(columns = 1)
+
+```
+
+```{r SALMStateOfTheArtTbl, echo=FALSE, eval=FALSE}
+
+SALM_alarms_StateOfTheArt %>%
+  select(Date, ageGroup, method, y, threshold, alarm) %>%
+  pivot_wider(names_from = method, values_from = c(threshold, alarm)) %>%
+  select(Date, `Age group` = ageGroup, `$y_t$` = y, Treshold.1 = threshold_Farrington, Alarm.1 = alarm_Farrington, Threshold.2 = threshold_Noufaily, Alarm.2 = alarm_Noufaily) %>%
+  kbl(booktabs = TRUE,
+      longtable = TRUE,
+      escape = FALSE,
+      caption = "Longtable",
+      col.names = gsub("\\.\\d", "", names(.))) %>%
+  kable_paper(latex_options = c("repeat_header"),  repeat_header_method = c("replace")) %>%
+  add_header_above(c(" " = 3, "Farrington" = 2, "Noufaily" = 2)) %>%
+  column_spec(1, bold = TRUE) %>%
+  collapse_rows(columns = 1)
+
+```
+
+
+\chaper{Figures and Tables related to the case studies}\label{FigAndTabCaseStudy}

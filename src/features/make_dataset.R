@@ -27,27 +27,31 @@ for (cdf in diseaseCodes){
   dat <- tibble()
   # dat <- data.table()
   print(cdf)
-  for (ldel in 1:12){
+  # for (ldel in 1:12){
     for (agegrp in 1:12){
-      # tt <- read.table(file=paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",age_group,"&landsdelkode=",ldel,"&sygdomskode=",casedef,"&xaxis=Aar&yaxis=Maaned&aar=1994|2023&show=Table&lang=DA"), sep=";", header=TRUE)
-      tt <- read_csv2(file = paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",agegrp,"&landsdelkode=",ldel,"&sygdomskode=",cdf,"&xaxis=Aar&yaxis=Maaned&aar=1994|2022&show=Table&lang=DA"))
+      # tt <- read.table(file=paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",agegrp,"&sygdomskode=",cdf,"&xaxis=Aar&yaxis=Maaned&aar=2008|2023&show=Table&lang=DA"), sep=";", header=TRUE)
+      tt <- read_csv2(file = paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",agegrp,"&sygdomskode=",cdf,"&xaxis=Aar&yaxis=Maaned&aar=2008|2023&show=Table&lang=DA"))
       # setDT(tt)
-      print(c(ldel, agegrp, dim(tt)))
+      # print(c(ldel, agegrp, dim(tt)))
+      print(c(agegrp, dim(tt)))
       # Check if there have been any registered cases in the group
       # -- There is a bug in the API where it returns only a single year for a group, if
       # -- there havent been any cases.
       if(dim(tt)[2] == 2){
         tt2 <- expand_grid(month = c("Januar", "Februar", "Marts", "April", "Maj", "Juni",
                                      "Juli", "August", "September", "Oktober", "November", "December", "Uoplyst"),
-                           year = as.character(1994:2022),
+                           year = as.character(2008:2022),
                            cases = 0,
-                           landsdel = ldel,
+                           # landsdel = ldel,
                            ageGroup = agegrp)
       }else{
       tt2 <- tt %>%
         rename("month" = ...1) %>%
         pivot_longer(cols = -month, names_to = "year", values_to = "cases") %>%
-        mutate(landsdel = ldel, ageGroup = agegrp)
+        mutate(
+          # landsdel = ldel,
+          ageGroup = agegrp
+          )
       }
       dat <- bind_rows(dat, tt2)
 
@@ -55,7 +59,7 @@ for (cdf in diseaseCodes){
       # tt2[, landsdel := ldel][, age_group := age_group]
       # dat <- rbind(dat, tt2)
     }
-  }
+  # }
 
   dat <- dat %>%
     mutate(caseDef = cdf)
@@ -168,8 +172,11 @@ for (cdf in diseaseCodes){
 
 # SÃ¥ mangler vi bare de rigtige landsdelsnavne og aldersgrupper
 tt <-read_csv2(file = "https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?sygdomskode=SALM&xaxis=Landsdelkode&yaxis=Aldersgruppe&aar=1994|2023&show=Table&lang=DA", locale=locale(encoding="latin1"))
+# diseaseData <- diseaseData %>%
+#   mutate(ageGroup = tt$...1[ageGroup],
+#          landsdel = colnames(tt)[-1][landsdel])
 diseaseData <- diseaseData %>%
-  mutate(ageGroup = tt$...1[ageGroup], landsdel = colnames(tt)[-1][landsdel])
+  mutate(ageGroup = tt$...1[ageGroup])
 
 # tt <- fread(input = "https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?sygdomskode=SYPH&xaxis=Landsdelkode&yaxis=Aldersgruppe&aar=1994|2023&show=Table&lang=DA", encoding = "Latin-1")
 # dat[data.table(age_group=1:12, age_label = tt$V1), on = "age_group", age_label := i.age_label]
@@ -240,8 +247,8 @@ FOLK1A <- tibble()
 for(age in agegroups){
   
   variables <- list(
-    list(code = "omrÃ¥de", values = muniId),
-    list(code = "kÃ¸n", values = "TOT"),
+    list(code = "område", values = muniId),
+    list(code = "køn", values = "TOT"),
     list(code = "alder", values = list(age)),
     list(code = "tid", values = list("*"))
   )

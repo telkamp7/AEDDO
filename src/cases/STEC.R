@@ -50,8 +50,7 @@ dat %>%
 STEC <- dat %>%
   filter(caseDef == "STEC") %>%
   group_by(Date, ageGroup) %>%
-  reframe(y = sum(cases), n = sum(n)) %>%
-  mutate(monthInYear = as.integer(format(Date, "%m")))
+  reframe(y = sum(cases), n = sum(n)) 
 
 # Bar plot
 STEC_long_plot <- STEC %>%
@@ -69,23 +68,20 @@ ggsave(filename = "STEC_long_plot.png",
        units = "in",
        dpi = "print")
 
-
-STEC %>%
-  ggplot(mapping = aes(x = Date, y = y/n*1e5, fill = ageGroup, group = ageGroup)) +
-    geom_col() +
-    facet_wrap(facets = vars(ageGroup)) +
-    scale_y_continuous(name = "Incidence per 100.000") +
-    scale_x_date(name = "Date") +
-    scale_fill_manual(values = dtuPalette) +
-    guides(fill = "none")
-
-
+# STEC %>%
+#   ggplot(mapping = aes(x = Date, y = y/n*1e5, fill = ageGroup, group = ageGroup)) +
+#     geom_col() +
+#     facet_wrap(facets = vars(ageGroup)) +
+#     scale_y_continuous(name = "Incidence per 100.000") +
+#     scale_x_date(name = "Date") +
+#     scale_fill_manual(values = dtuPalette) +
+#     guides(fill = "none")
 
 # Prepare to use surveillance package -----------------------------------------------
 
 # Widen observations into a matrix format
 observed <- STEC %>%
-  select(-n, -monthInYear) %>%
+  select(-n) %>%
   pivot_wider(
     names_from = c(ageGroup),
     names_sep = ".",
@@ -94,7 +90,7 @@ observed <- STEC %>%
 
 # Widen population sizes into a matrix format
 population <- STEC %>%
-  select(-y, -monthInYear) %>%
+  select(-y) %>%
   pivot_wider(
     names_from = c(ageGroup),
     names_sep = ".",
@@ -118,7 +114,7 @@ con.farrington <- list(
   reweight = TRUE, weightsThreshold = 1,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
-  limit54 = c(5,4), powertrans = "2/3",
+  limit54 = c(0,4), powertrans = "2/3",
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
   noPeriods = 1, pastWooksNotIncluded = NULL,
@@ -148,7 +144,7 @@ con.noufaily <- list(
   reweight = TRUE, weightsThreshold = 2.58,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
-  limit54 = c(5,4), powertrans = "2/3",
+  limit54 = c(0,4), powertrans = "2/3",
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
   noPeriods = 1, pastWooksNotIncluded = NULL,
@@ -172,64 +168,8 @@ alarm_Noufaily <- as_tibble(STEC_Noufaily@alarm) %>%
   mutate(ageGroup = factor(x = ageGroup, levels = levels(dat$ageGroup)))
 
 
-
-# Hierarchical Poisson Normal model -------------------------------------------------
-
-STEC_PoisN <- aeddo(data = STEC,
-                    formula = y ~ -1 + ageGroup,
-                    theta = rep(1,7),
-                    method = "L-BFGS-B",
-                    lower = c(rep(1e-6,6), -6),
-                    upper = rep(1e2, 7),
-                    model = "PoissonNormal", k = 36, cpp.dir = "../models/",
-                    excludePastOutbreaks = TRUE)
-
-
-STEC_PoisN_unnested <- STEC_PoisN %>% 
-  select(ran.ef) %>%
-  unnest(ran.ef) %>%
-  mutate(threshold = qnorm(p = 0.95, mean = 0, sd = exp(log_sigma))) %>%
-  select(Date = ref.date, ageGroup, `u_Poisson Normal` = u, `alarm_Poisson Normal` = alarm, `threshold_Poisson Normal` = threshold)
-  
-
-# Hierarchical Poisson Gamma model ----------------------------------------------------
-
-STEC_PoisG_ageGroup <- aeddo(data = STEC,
-                    formula = y ~ -1 + ageGroup,
-                    theta = rep(1,7),
-                    method = "L-BFGS-B",
-                    lower = c(rep(1e-6,6), -6),
-                    upper = rep(1e2, 7),
-                    model = "PoissonGamma", k = 36, cpp.dir = "../models/",
-                    excludePastOutbreaks = TRUE)
-
-STEC_PoisG_ageGroup %>%
-  summarise(avgLogS = mean(logS))
-
-STEC_PoisG_ageGroupSeasonality <- aeddo(data = STEC,
-                                        formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
-                                        theta = rep(1,9),
-                                        method = "L-BFGS-B", 
-                                        lower = c(rep(1e-6,6),rep(-Inf,2),-6), 
-                                        upper = rep(1e2, 9),
-                                        model = "PoissonGamma", k = 36, cpp.dir = "../models/",
-                                        excludePastOutbreaks = TRUE)
-
-STEC_PoisG_ageGroupSeasonality %>%
-  summarise(avgLogS = mean(logS))
-  
-
-STEC_PoisG_ageGroup_unnested <- STEC_PoisG_ageGroup %>% 
-  select(ran.ef) %>%
-  unnest(ran.ef) %>%
-  mutate(threshold = qgamma(p = 0.95, shape = 1/phi, scale = phi)) %>%
-  select(Date = ref.date, ageGroup, `u_Poisson Gamma` = u, `alarm_Poisson Gamma` = alarm, `threshold_Poisson Gamma` = threshold)
-
-
-# Compare methods -------------------------------------------------------------------
-
 # Compare the Farrington and Noufaily method
-Compare_stateOfTheArt <- STEC %>%
+Compare_stateOfTheArt_STEC_dat <- STEC %>%
   left_join(upperbound_Farrington, by = join_by(Date, ageGroup)) %>%
   left_join(alarm_Farrington, by = join_by(Date, ageGroup)) %>%
   left_join(upperbound_Noufaily, by = join_by(Date, ageGroup)) %>%
@@ -238,13 +178,16 @@ Compare_stateOfTheArt <- STEC %>%
   pivot_longer(cols = c(alarm_Farrington,alarm_Noufaily), names_to = "method2", names_prefix = "alarm_", values_to = "alarm") %>%
   filter(method == method2) %>%
   select(-method2) %>%
-  mutate(dateOfAlarm = if_else(alarm, Date, NA)) %>%
+  mutate(dateOfAlarm = if_else(alarm, Date, NA))
+write_rds(x = Compare_stateOfTheArt_STEC_dat, file = "Compare_stateOfTheArt_STEC_dat.rds")
+
+Compare_stateOfTheArt_STEC <- Compare_stateOfTheArt_STEC_dat %>%
   ggplot(mapping = aes(x = Date, fill = ageGroup)) +
-  geom_col(mapping = aes(y = y/n*1e5, alpha = alarm), size = 0.4) +
-  geom_line(mapping = aes(x = Date, y = threshold/n*1e5), lty = "dashed", size = 0.4, inherit.aes = FALSE) +
+  geom_col(mapping = aes(y = y/n*1e5, alpha = alarm), linewidth = 0.4) +
+  geom_line(mapping = aes(x = Date, y = threshold/n*1e5), lty = "dashed", linewidth = 0.4, inherit.aes = FALSE) +
   facet_grid(rows = vars(ageGroup), cols = vars(method), scales = "free_y") +
   scale_y_continuous(name = "Incidence per 100.000") +
-  scale_x_date(name = "Date") +
+  scale_x_date(name = "Month") +
   scale_fill_manual(values = dtuPalette) +
   scale_alpha_manual(values = c(0.3, 1)) +
   guides(fill = "none", alpha = "none") +
@@ -252,8 +195,8 @@ Compare_stateOfTheArt <- STEC %>%
         # axis.ticks.x = element_blank(),
         axis.text.x = element_text(vjust = -1.2)) +
   annotate(geom = "rect", xmin = as.Date("2008-01-01")-10, xmax = as.Date("2011-03-01"), ymin = -Inf, ymax = Inf, alpha = 0.2)
-ggsave(filename = "Compare_stateOfTheArt.png",
-       plot = Compare_stateOfTheArt,
+ggsave(filename = "Compare_stateOfTheArt_STEC.png",
+       plot = Compare_stateOfTheArt_STEC,
        path = "../../figures/",
        device = png,
        width = 16,
@@ -261,8 +204,304 @@ ggsave(filename = "Compare_stateOfTheArt.png",
        units = "in",
        dpi = "print")
 
+# Hierarchical Poisson Normal model -------------------------------------------------
+
+STEC_PoisN_ageGroup <- aeddo(data = STEC,
+                    formula = y ~ -1 + ageGroup,
+                    theta = rep(1,7),
+                    method = "L-BFGS-B",
+                    lower = c(rep(1e-6,6), -6),
+                    upper = rep(1e2, 7),
+                    model = "PoissonNormal",
+                    k = 36,
+                    cpp.dir = "../models/",
+                    CI = TRUE,
+                    excludePastOutbreaks = TRUE)
+
+start.theta.PoisN <- STEC_PoisN_ageGroup %>%
+  filter(row_number() == 1) %>%
+  select(par) %>%
+  unnest(par) %>%
+  select(theta)%>%
+  .$theta
+
+write_rds(x = STEC_PoisN_ageGroup, file = "STEC_PoisN_ageGroup.rds")
+# STEC_PoisN_ageGroup <- read_rds(file = "STEC_PoisN_ageGroup.rds")
+
+STEC_PoisN_ageGroup_trend <- aeddo(data = STEC,
+                                   formula = y ~ -1 + t + ageGroup,
+                                   trend = TRUE,
+                                   theta = c(0, start.theta.PoisN),
+                                   method = "L-BFGS-B",
+                                   lower = c(-0.5, start.theta.PoisN-6),
+                                   upper = c(0.5, start.theta.PoisN+6),
+                                   model = "PoissonNormal", 
+                                   k = 36, 
+                                   cpp.dir = "../models/",
+                                   CI = TRUE,
+                                   excludePastOutbreaks = TRUE)
+
+write_rds(x = STEC_PoisN_ageGroup_trend, file = "STEC_PoisN_ageGroup_trend.rds")
+# STEC_PoisN_ageGroup_trend <- read_rds(file = "STEC_PoisN_ageGroup_trend.rds")
+
+STEC_PoisN_ageGroup_seasonality <- aeddo(data = STEC,
+                                         formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                         trend = TRUE,
+                                         seasonality = TRUE,
+                                         theta = c(start.theta.PoisN[1:6], 0,0,start.theta.PoisN[7]),
+                                         method = "L-BFGS-B",
+                                         lower = c(start.theta.PoisN[1:6], 0,0,start.theta.PoisN[7])-6,
+                                         upper = c(start.theta.PoisN[1:6], 0,0,start.theta.PoisN[7])+6,
+                                         model = "PoissonNormal", 
+                                         k = 36, 
+                                         cpp.dir = "../models/",
+                                         CI = TRUE,
+                                         excludePastOutbreaks = TRUE)
+
+write_rds(x = STEC_PoisN_ageGroup_seasonality, file = "STEC_PoisN_ageGroup_seasonality.rds")
+# STEC_PoisN_ageGroup_seasonality <- read_rds(file = "STEC_PoisN_ageGroup_seasonality.rds")
+
+
+STEC_PoisN_ageGroup_trend_seasonality <- aeddo(data = STEC,
+                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                               trend = TRUE,
+                                               seasonality = TRUE,
+                                               theta = c(0,start.theta.PoisN[1:6], 0,0,start.theta.PoisN[7]),
+                                               method = "L-BFGS-B",
+                                               lower = c(-0.5,c(start.theta.PoisN[1:6], 0,0,start.theta.PoisN[7])-6),
+                                               upper = c(0.5,c(start.theta.PoisN[1:6], 0,0,start.theta.PoisN[7])+6),
+                                               model = "PoissonNormal", 
+                                               k = 36, 
+                                               cpp.dir = "../models/",
+                                               CI = TRUE,
+                                               excludePastOutbreaks = TRUE)
+
+
+write_rds(x = STEC_PoisN_ageGroup_trend_seasonality, file = "STEC_PoisN_ageGroup_trend_seasonality.rds")
+# STEC_PoisN_ageGroup_trend_seasonality <- read_rds(file = "STEC_PoisN_ageGroup_trend_seasonality.rds")
+
+
+STEC_PoisN_ageGroup_unnested <- STEC_PoisN_ageGroup %>% 
+  select(ran.ef) %>%
+  unnest(ran.ef) %>%
+  mutate(threshold = qnorm(p = 0.95, mean = 0, sd = exp(log_sigma))) %>%
+  select(Date = ref.date, ageGroup, `u_Poisson Normal` = u, `alarm_Poisson Normal` = alarm, `threshold_Poisson Normal` = threshold)
+
+STEC_PoisN_ageGroup_unnested %>%
+  ggplot(mapping = aes(x = Date)) +
+  geom_point(mapping = aes(y = `u_Poisson Normal`, colour = ageGroup, group = ageGroup, shape = `alarm_Poisson Normal`), size = 2) +
+  geom_line(mapping = aes(y = `threshold_Poisson Normal`), linewidth = 0.4) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  scale_y_continuous(name = expression(u[t[1]])) +
+  scale_x_date(name = "Date") +
+  scale_colour_manual(values = dtuPalette) +
+  scale_shape_manual(values = c(1,19)) +
+  guides(shape = "none")
+
+STEC_PoisN_ageGroup_trend_unnested <- STEC_PoisN_ageGroup_trend %>% 
+  select(ran.ef) %>%
+  unnest(ran.ef) %>%
+  mutate(threshold = qnorm(p = 0.95, mean = 0, sd = exp(log_sigma))) %>%
+  select(Date = ref.date, ageGroup, `u_Poisson Normal` = u, `alarm_Poisson Normal` = alarm, `threshold_Poisson Normal` = threshold)
+
+STEC_PoisN_ageGroup_trend_unnested %>%
+  ggplot(mapping = aes(x = Date)) +
+  geom_point(mapping = aes(y = `u_Poisson Normal`, colour = ageGroup, group = ageGroup, shape = `alarm_Poisson Normal`), size = 2) +
+  geom_line(mapping = aes(y = `threshold_Poisson Normal`), linewidth = 0.4) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  scale_y_continuous(name = expression(u[t[1]])) +
+  scale_x_date(name = "Date") +
+  scale_colour_manual(values = dtuPalette) +
+  scale_shape_manual(values = c(1,19)) +
+  guides(shape = "none")
+
+STEC_PoisN_ageGroup_trend_seasonality_unnested <- STEC_PoisN_ageGroup_trend_seasonality %>% 
+  select(ran.ef) %>%
+  unnest(ran.ef) %>%
+  mutate(threshold = qnorm(p = 0.95, mean = 0, sd = exp(log_sigma))) %>%
+  select(Date = ref.date, ageGroup, `u_Poisson Normal` = u, `alarm_Poisson Normal` = alarm, `threshold_Poisson Normal` = threshold)
+
+STEC_PoisN_ageGroup_trend_seasonality_unnested %>%
+  ggplot(mapping = aes(x = Date)) +
+  geom_point(mapping = aes(y = `u_Poisson Normal`, colour = ageGroup, group = ageGroup, shape = `alarm_Poisson Normal`), size = 2) +
+  geom_line(mapping = aes(y = `threshold_Poisson Normal`), linewidth = 0.4) +
+  geom_hline(yintercept = 0, linetype = "dashed") +
+  scale_y_continuous(name = expression(u[t[1]])) +
+  scale_x_date(name = "Date") +
+  scale_colour_manual(values = dtuPalette) +
+  scale_shape_manual(values = c(1,19)) +
+  guides(shape = "none")
+
+
+# Hierarchical Poisson Gamma model ----------------------------------------------------
+
+
+STEC_PoisG_ageGroup <- aeddo(data = STEC,
+                             formula = y ~ -1 + ageGroup,
+                             theta = rep(1,7),
+                             method = "L-BFGS-B",
+                             lower = c(rep(1e-6,6), -6),
+                             upper = rep(1e2, 7),
+                             model = "PoissonGamma",
+                             k = 36,
+                             cpp.dir = "../models/",
+                             CI = TRUE,
+                             excludePastOutbreaks = TRUE)
+
+write_rds(x = STEC_PoisG_ageGroup, file = "STEC_PoisG_ageGroup.rds")
+# read_rds(file = "STEC_PoisG_ageGroup.rds")
+
+start.theta.PoisG <- STEC_PoisG_ageGroup %>%
+  filter(row_number() == 1) %>%
+  select(par) %>%
+  unnest(par) %>%
+  select(theta)%>%
+  .$theta
+
+STEC_PoisG_ageGroup_trend <- aeddo(data = STEC,
+                                   formula = y ~ -1 + t + ageGroup,
+                                   trend = TRUE,
+                                   theta = c(0, start.theta.PoisG),
+                                   method = "L-BFGS-B",
+                                   lower = c(-0.5, start.theta.PoisG-6),
+                                   upper = c(0.5, start.theta.PoisG+6),
+                                   model = "PoissonGamma", 
+                                   k = 36, 
+                                   cpp.dir = "../models/",
+                                   CI = TRUE,
+                                   excludePastOutbreaks = TRUE)
+
+write_rds(x = STEC_PoisG_ageGroup_trend, file = "STEC_PoisG_ageGroup_trend.rds")
+
+STEC_PoisG_ageGroup_seasonality <- aeddo(data = STEC,
+                                         formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                         trend = TRUE,
+                                         seasonality = TRUE,
+                                         theta = c(start.theta.PoisG[1:6],0,0,start.theta.PoisG[7]),
+                                         method = "L-BFGS-B",
+                                         lower = c(start.theta.PoisG[1:6],0,0,start.theta.PoisG[7])-6,
+                                         upper = c(start.theta.PoisG[1:6],0,0,start.theta.PoisG[7])+6,
+                                         model = "PoissonGamma", 
+                                         k = 36, 
+                                         cpp.dir = "../models/",
+                                         CI = TRUE,
+                                         excludePastOutbreaks = TRUE)
+
+write_rds(x = STEC_PoisG_ageGroup_seasonality, file = "STEC_PoisG_ageGroup_seasonality.rds")
+# STEC_PoisG_ageGroup_seasonality <- read_rds(file = "STEC_PoisG_ageGroup_seasonality.rds")
+
+
+STEC_PoisG_ageGroup_trend_seasonality <- aeddo(data = STEC,
+                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                               trend = TRUE,
+                                               seasonality = TRUE,
+                                               theta = c(0,start.theta.PoisG[1:6],0,0,start.theta.PoisG[7]),
+                                               method = "L-BFGS-B",
+                                               lower = c(-0.5,c(start.theta.PoisG[1:6],0,0,start.theta.PoisG[7])-6),
+                                               upper = c(0.5,c(start.theta.PoisG[1:6],0,0,start.theta.PoisG[7])+6),
+                                               model = "PoissonGamma", 
+                                               k = 36, 
+                                               cpp.dir = "../models/",
+                                               CI = TRUE,
+                                               excludePastOutbreaks = TRUE)
+
+write_rds(x = STEC_PoisG_ageGroup_trend_seasonality, file = "STEC_PoisG_ageGroup_trend_seasonality.rds")
+
+STEC_PoisG_ageGroup %>%
+  summarise(avgLogS = mean(LogS))
+
+STEC_PoisG_ageGroup_seasonality %>%
+  summarise(avgLogS = mean(LogS))
+
+STEC_PoisG_ageGroup_unnested <- STEC_PoisG_ageGroup %>% 
+  select(ran.ef) %>%
+  unnest(ran.ef) %>%
+  mutate(threshold = qgamma(p = 0.95, shape = 1/phi, scale = phi)) %>%
+  select(Date = ref.date, ageGroup, `u_Poisson Gamma` = u, `alarm_Poisson Gamma` = alarm, `threshold_Poisson Gamma` = threshold)
+
+STEC_PoisN_ageGroup_tbl <- STEC_PoisN_ageGroup %>%
+  select(ref.date, par, LogS) %>%
+  mutate(avgLogS = mean(LogS)) %>%
+  filter(row_number() == n()) %>%
+  select(-LogS) %>%
+  unnest(par) %>%
+  mutate(method = "PoisN_ageGroup")
+
+STEC_PoisN_ageGroup_trend_tbl <- STEC_PoisN_ageGroup_trend %>%
+  select(ref.date, par, LogS) %>%
+  mutate(avgLogS = mean(LogS)) %>%
+  filter(row_number() == n()) %>%
+  select(-LogS) %>%
+  unnest(par) %>%
+  mutate(method = "PoisN_ageGroup_trend")
+
+STEC_PoisN_ageGroup_seasonality_tbl <- STEC_PoisN_ageGroup_seasonality %>%
+  select(ref.date, par, LogS) %>%
+  mutate(avgLogS = mean(LogS)) %>%
+  filter(row_number() == n()) %>%
+  select(-LogS) %>%
+  unnest(par) %>%
+  mutate(method = "PoisN_ageGroup_seasonality")
+
+STEC_PoisN_ageGroup_trend_seasonality_tbl <- STEC_PoisN_ageGroup_trend_seasonality %>%
+  select(ref.date, par, LogS) %>%
+  mutate(avgLogS = mean(LogS)) %>%
+  filter(row_number() == n()) %>%
+  select(-LogS) %>%
+  unnest(par) %>%
+  mutate(method = "PoisN_ageGroup_trend_seasonality")
+
+STEC_PoisG_ageGroup_tbl <- STEC_PoisG_ageGroup %>%
+  select(ref.date, par, LogS) %>%
+  mutate(avgLogS = mean(LogS)) %>%
+  filter(row_number() == n()) %>%
+  select(-LogS) %>%
+  unnest(par) %>%
+  mutate(method = "PoisG_ageGroup")
+
+STEC_PoisG_ageGroup_trend_tbl <- STEC_PoisG_ageGroup_trend %>%
+  select(ref.date, par, LogS) %>%
+  mutate(avgLogS = mean(LogS)) %>%
+  filter(row_number() == n()) %>%
+  select(-LogS) %>%
+  unnest(par) %>%
+  mutate(method = "PoisG_ageGroup_trend")
+
+STEC_PoisG_ageGroup_seasonality_tbl <- STEC_PoisG_ageGroup_seasonality %>%
+  select(ref.date, par, LogS) %>%
+  mutate(avgLogS = mean(LogS)) %>%
+  filter(row_number() == n()) %>%
+  select(-LogS) %>%
+  unnest(par) %>%
+  mutate(method = "PoisG_ageGroup_seasonality")
+
+STEC_PoisG_ageGroup_trend_seasonality_tbl <- STEC_PoisG_ageGroup_trend_seasonality %>%
+  select(ref.date, par, LogS) %>%
+  mutate(avgLogS = mean(LogS)) %>%
+  filter(row_number() == n()) %>%
+  select(-LogS) %>%
+  unnest(par) %>%
+  mutate(method = "PoisG_ageGroup_trend_seasonality")
+
+STEC_novel_tbl <- bind_rows(
+  STEC_PoisN_ageGroup_tbl,
+  STEC_PoisN_ageGroup_trend_tbl, 
+  STEC_PoisN_ageGroup_seasonality_tbl,
+  STEC_PoisN_ageGroup_trend_seasonality_tbl,
+  STEC_PoisG_ageGroup_tbl,
+  STEC_PoisG_ageGroup_trend_tbl,
+  STEC_PoisG_ageGroup_seasonality_tbl,
+  STEC_PoisG_ageGroup_trend_seasonality_tbl)
+
+STEC_novel_tbl %>% print(n = 68)
+
+write_rds(STEC_novel_tbl, file = "STEC_novel_tbl.rds")
+# Compare methods -------------------------------------------------------------------
+
+
+
 # Compare the Poisson Normal and Poisson Gamma model
-STEC_novel <- full_join(STEC_PoisN_unnested, STEC_PoisG_ageGroup_unnested, by = join_by(Date, ageGroup))
+STEC_novel <- full_join(STEC_PoisN_ageGroup_unnested, STEC_PoisG_ageGroup_unnested, by = join_by(Date, ageGroup))
 
 Compare_novel <- STEC_novel %>%
   pivot_longer(cols = c(`u_Poisson Normal`, `u_Poisson Gamma`), names_to = "method", names_prefix = "u_", values_to = "u") %>%
@@ -319,4 +558,28 @@ ggsave(filename = "Compare_alarms.png",
        units = "in",
        dpi = "print")  
 
+# Outbreaks invstigated by SSI ------------------------------------------------------
+
+SSI_outbreaks <- tibble(Start = as.Date(x = c("2007-02-5","2012-09-15", "2018-09-03", "2019-05-06", "2021-12-03")),
+                        End = as.Date(x = c("2007-03-31","2012-10-15", "2018-12-02", "2019-06-07", "2022-01-06")))
+
+STEC_SSI_outbreaks <- SSI_outbreaks %>%
+  filter(Start > as.Date("2008-01-01")) %>%
+  arrange(desc(Start)) %>%
+  mutate(outbreak_no = row_number()) %>%
+  ggplot() +
+  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), linewidth = 1.2, colour = dtuPalette[2]) +
+  geom_point(mapping = aes(x = Start, y = outbreak_no), pch = 17, size = 3,colour = dtuPalette[6]) +
+  scale_x_date(name = "Date", limits = c(as.Date(c("2008-01-01", "2022-12-01")))) +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+ggsave(filename = "STEC_SSI_outbreaks.png",
+       plot = STEC_SSI_outbreaks,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")  
 

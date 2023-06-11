@@ -4,9 +4,9 @@ In this chapter, the current state-of-the-art methods for disease outbreak detec
 
 Due to the complexity of generalized mixed effects models, obtaining closed-form solutions is generally not feasible. Therefore, an overview of the Laplace approximation technique will be provided in this chapter, which allows for approximating the likelihood function in these models. Additionally, the implementation of these models in the R programming language will be presented. The presentation of this chapter is mostly inspired by @Madsen_2010.
 
-\section{State-of-the-art outbreak detection algorithm}
+\section{State-of-the-art outbreak detection algorithm}\label{StateOfTheArt}
 
-In this section, the Farrington method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will be outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this master's thesis. The presentation of these methods are strongly inspired by @Salmon_2016.
+In this section, the Farrington method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will be outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this master's thesis. Both of the aforementioned methods have been implemented in the R package called \textbf{surveillance} by @Salmon_2016, which can be accessed from the Comprehensive R Archive Network (CRAN) at \href{https://cran.r-project.org/web/packages/surveillance/index.html}{\nolinkurl{https://cran.r-project.org/web/packages/surveillance/index.html}}. The presentation of these methods are strongly inspired by @Salmon_2016.
 
 Both methods follow the same steps in the algorithm. The first step involves fitting an over-dispersed Poisson generalized linear model (GLM) with a log link to the reference data $y_{t_{0}}\subseteq\{y_t;t\leq t_0\}$. In this model, the baseline count $y_t$ corresponding to the baseline time point $t$ is assumed to have an expected value $\lambda_t$ and a variance $\phi\lambda_t$, where $\phi\geq1$ is ensured to account for over-dispersion. The systematic component of the model includes only a linear time trend in the frequency of reports. Therefore, the systematic component can be expressed as
 
@@ -24,13 +24,13 @@ However, @Noufaily_2013 demonstrated that the algorithm performs better when uti
 
 In this equation, $j(t)$ represents the seasonal factor level corresponding to time point $t$. The reference week $t_0$ is always associated with the reference seasonal level, denoted by $j(t_0) = 0$ and $\delta_0 = 0$.
 
-The idea of incorporating more data while preserving seasonality has been further expanded in the implementation of the method in the \textbf{surveillance} package by @Salmon_2016. The package allows the user to choose an arbitrary number of periods in each year. Consequently, the systematic component is adjusted as follows
+The idea of incorporating more data while preserving seasonality has been further expanded in the implementation of the method in the \textbf{surveillance} R package. The package allows the user to choose an arbitrary number of periods in each year. Consequently, the systematic component is adjusted as follows
 
 \begin{equation}
 \log(\lambda_t) = \alpha + \beta t + \delta_{c(t)}
 \end{equation}
 
-In this equation, $c(t)$ represents the coefficients of a zero-order spline with $\mathrm{noPeriods}+1$ knots. It can be conveniently represented as a $\mathrm{noPeriods}$-level factor that captures seasonality. The function $c(t)$ indicates which season or period of the year $t$ belongs to.
+In this equation, $c(t)$ represents the coefficients of a zero-order spline with $\mathtt{noPeriods}+1$ knots. It can be conveniently represented as a `noPeriods`-level factor that captures seasonality. The function $c(t)$ indicates which season or period of the year $t$ belongs to.
 
 Furthermore, @Noufaily_2013 demonstrated that it is beneficial to exclude the last 26 weeks before $t_0$ from the baseline calculation. This exclusion helps prevent a reduction in sensitivity when an outbreak has recently started before $t_0$.
 
@@ -64,7 +64,7 @@ Next, the significance of the time trend is checked. The time trend is included 
 
 Finally, past outbreaks are reweighted based on their Anscombe residuals. If the Anscombe residual of a count exceeds a certain weight threshold, it is reweighted in a second fitting of the GLM. In the original method by @Farrington_1996, a reweighting threshold of 1 was used. However, @Noufaily_2013 suggests using a value of 2.56 for the weight threshold to make the reweighting procedure less drastic, as it also reduces the variance of the observations.
 
-\section{Novel outbreak detection algorithm}
+\section{Novel outbreak detection algorithm}\label{Novel}
 
 In this section, the novel algorithm for the prospective detection of disease outbreaks proposed in this master's thesis is outlined. The algorithm utilizes a generalized mixed effects model or a hierarchical generalized linear model to model the count observations $\boldsymbol y$ and assess the unobserved random effects $\boldsymbol u$. These random effects are used directly in the detection algorithm to characterize an outbreak. The theoretical foundations of these models will be further discussed in Section \ref{GLMM} and Section \ref{HLMM}.
 
@@ -88,7 +88,7 @@ In this section selected theory related to generalized mixed effects models is p
   L_{M}(\boldsymbol{\theta; y})=\int_{\mathbb{R}^{q}} L(\boldsymbol{\theta;u,y}) d\boldsymbol{u}
 \end{equation}
 
-where $\boldsymbol{y}$ is the observed random variable, $\boldsymbol{\theta}$ is the model parameters to be estimated and $\boldsymbol{U}$ is the $q$ unobserved random variables. The likelihood function $L$ is the joint likelihood of both the observed and the unobserved random variables. The likelihood function for estimating $\boldsymbol{\theta}$ is the marginal likelihood $L_{M}$ obtained by integrating out the unobserved random variables. In general it is difficult to solve the integral in \eqref{eq:glmm} if the number of unobserved random variables is more than a few and hence numerical methods must be used.
+where $\boldsymbol{y}$ is the observed random variable, $\boldsymbol{\theta}$ is the model parameters to be estimated and $\boldsymbol{U}$ is the $q$ unobserved random variables. The likelihood function $L$ is the joint likelihood of both the observed and the unobserved random variables. The likelihood function for estimating $\boldsymbol{\theta}$ is the marginal likelihood $L_{M}$ obtained by integrating out the unobserved random variables. In general it is difficult to solve the integral in \eqref{eq:glmm} if the number of unobserved random variables is more than a few and hence numerical methods must be used. Thus, an outline of the Laplace approximation is included in this section.
 
 \subsection{Hierarchical models}\label{hierarchicalModels}
 
@@ -142,8 +142,9 @@ which implies that the Laplace approximation becomes
   \ell_{M,LA}(\boldsymbol{\theta, y})=\log f_{Y|u}(\boldsymbol{y; \tilde{u},\beta})+\log f_U(\boldsymbol{\tilde{u}, \Psi})-\frac{1}{2}\log\Bigg|\frac{\boldsymbol{H}(\boldsymbol{\tilde{u}})}{2\pi}\Bigg|
 \end{equation}
 
-\subsection{Formulation of the hierarchical Poisson Normal model}
 
+\subsection{Formulation of the hierarchical model}
+::: {.theorem #poisnTheorem name="Hierarchical Poisson Normal model"}
 In order to simplify the notation, the probability density functions are presented for a specific observation and hence the subscripts indicating the group and time are omitted. The conditional distribution of the count observations is assumed to be a Poisson distribution with intensities $\boldsymbol \lambda$
 
 \begin{equation}
@@ -175,9 +176,11 @@ Henceforth, the total set of parameters are $\boldsymbol{\theta}=(\boldsymbol{\b
 
 The joint likelihood for the count observations $\boldsymbol y$ and the random effects $\boldsymbol u$ becomes
 
-\begin{equation}\label{eq:jnllPoisN}
-  L(\boldsymbol{\beta}, \sigma;u_{it},y_{it})=\prod_{t=1}^{T}\prod_{i=1}^{m} \frac{(\lambda_{it}\exp(u_{it}))^{y_{it}}}{y_{it}!}\exp\big(-\lambda_{it}\exp(u_{it})\big) \prod_{t=1}^{T}\prod_{i=1}^{m} \frac{1}{\sigma\sqrt{2\pi}}\exp\Bigg(-\frac{u_{it}^2}{2\sigma^2}\Bigg)
-\end{equation}
+\begin{multline}\label{eq:jnllPoisN}
+  L(\boldsymbol{\beta}, \sigma;u_{it},y_{it})=\\
+  \prod_{t=1}^{T}\prod_{i=1}^{m} \frac{(\lambda_{it}\exp(u_{it}))^{y_{it}}}{y_{it}!}\exp\big(-\lambda_{it}\exp(u_{it})\big) \prod_{t=1}^{T}\prod_{i=1}^{m} \frac{1}{\sigma\sqrt{2\pi}}\exp\Bigg(-\frac{u_{it}^2}{2\sigma^2}\Bigg)
+\end{multline}
+:::
 
 \section{Hierarchical generalized linear models}\label{HLMM}
 
@@ -232,6 +235,32 @@ The distribution of $\boldsymbol V\in\Omega$ is a conjugated distribution to the
 
 \subsection{Formulation of the hierarchical Poisson Gamma model}
 
+To motivate the choice of distribution for unobserved random variables $\boldsymbol U$, an illustrative example is presented.
+
+INCLUDE AN EXAMPLE
+
+```{r PoisGexample, echo=FALSE}
+
+dat <- read_rds("../data/processed/dat4.rds")
+
+
+LIST <- dat %>%
+  filter(caseDef == "LIST") %>%
+  mutate(monthInYear = as.integer(format(Date, "%m")),
+         ageGroup = fct_collapse(ageGroup, `<65 years` = c("<1 year", "1-4 years", "5-14 years", "15-24 years", "25-64 years"))) %>%
+  group_by(Date, ageGroup) %>%
+  reframe(y = sum(cases), n = sum(n))
+
+LIST %>%
+  group_by(ageGroup) %>%
+  summarize(mean(y), var(y))
+
+
+
+```
+
+
+::: {.theorem #poisgTheorem name="Compound Poisson Gamma model"}
 In the compound Poisson Gamma model the conditional distribution of the count observations are assumed to be a Poisson distribution with intensities $\boldsymbol \lambda$
 
 \begin{equation}\label{eq:pdfPois}
@@ -297,6 +326,7 @@ The likelihood function for estimating $(\boldsymbol \beta,\phi)$ is
 \begin{equation}
   L(\boldsymbol \beta, \phi; y_{it})=\prod_{t=1}^{T}\prod_{i=1}^{m} \begin{pmatrix} y_{it}+1/\phi-1 \\ y_{it} \end{pmatrix} \frac{1}{(\lambda_{it}\phi+1)^{1/\phi}}\bigg(\frac{\lambda_{it}\phi}{\lambda_{it}\phi+1}\bigg)^{y_{it}}
 \end{equation}
+:::
 
 \subsubsection{Inference on individual groups}
 
@@ -399,12 +429,92 @@ Additionally, \textbf{TMB} utilized Automatic Differentiation (AD) techniques [@
 
 In this section, the scoring rule used to evaluate the overall score of the models is outlined. The approach is inspired by @Blicher_2021.  For a given time series ${y_t}={y_1,\dots,y_N}$, each forecast and its corresponding realized observation pair $(G_t,y_t)$ is evaluated. The overall score of the model is then reported as the average score:
 
-\begin{equation}
+\begin{equation}\label{eq:averageLogS}
 \bar{S}(G,y)=\frac{1}{N} \sum_{t=1}^{N}S(G_t,y_t)
 \end{equation}
 
-One commonly used scoring rule is the \textit{logarithmic score} derived from likelihood theory, which is defined as $S(g,y)=-\log\big(f(y)\big)$ [@Good_1992]. This scoring rule is based on the probability density function and is equivalent to the log-likelihood of the forecast model. It has desirable properties as it captures all possible information about the observed data in relation to the model. However, it has a potential drawback in that it heavily penalizes unlikely observations. Consequently, even small changes in the tails of a density forecast can lead to significant changes in the \textit{logarithmic score}, even when the overall shape of the density remains unchanged.
+One commonly used scoring rule is the \textit{logarithmic score} derived from likelihood theory, which is defined as $S(G,y)=-\log\big(f(y)\big)$ [@Good_1992]. This scoring rule is based on the probability density function and is equivalent to the log-likelihood of the forecast model. It has desirable properties as it captures all possible information about the observed data in relation to the model. However, it has a potential drawback in that it heavily penalizes unlikely observations. Consequently, even small changes in the tails of a density forecast can lead to significant changes in the \textit{logarithmic score}, even when the overall shape of the density remains unchanged.
 
-INCLUDE EXAMPLE USING POISSON DISTRIBUTION
+The calculation of the logarithmic score is shown in Example \@ref(exm:logs), which is adapted from @Blicher_2021.
+
+::: {.example #logs name="Calculation of the logarithmic score"}
+
+The Gamma distribution is used to represent the probabilistic forecast in this example. The Gamma distribution is parametrized by two parameters, shape ($\alpha$) and rate ($\beta$), and its probability density function (PDF) is given by:
+
+\begin{equation}
+f(y) = \frac{1}{\Gamma(\alpha)\beta}\left(\frac{y}{\beta}\right)^{\alpha-1}\exp\left(-\frac{y}{\beta}\right)
+\end{equation}
+
+In this example, the parameters of the true model, denoted as $f$, is chosen to be $(\alpha,\beta)=(3,3)$. We simulate 10 observations, denoted as $y_1,y_2,\dots,y_{10}$, which are shown in Table \@ref(tab:LogSExample). The true model $f$ is compared to a competing model, denoted as $g$, which is a Gamma distribution with parameters $(\alpha,\beta)=(3,8)$. The true model $f$, the competing model $g$, and the observations $\boldsymbol y$ are illustrated in Figure \@ref(fig:LogSExamplePlot).
+
+```{r LogSExample, echo=FALSE}
+
+set.seed(666)
+
+y <- round(rgamma(n = 10, shape = 3, rate = 3),3)
+
+t(tibble(`$i$` = paste(1:10), `$y_i$` = y)) %>% 
+  kbl(booktabs = TRUE, escape = FALSE, caption = "10 simulated observations following a G(3,3)-distribution.") %>%
+  kable_paper(full_width = TRUE, latex_options = "HOLD_position")
+
+```
+
+
+(ref:LogSExamplePlot) Observations (green dots) were simulated from a $\G(3,3)$-distribution. The true model $f$ (blue) is shown, along with the PDF for the competing model $g$, which follows a $G(3,8)$-distribution.
+
+```{r LogSExamplePlot, echo=FALSE, out.width="100%", fig.cap="(ref:LogSExamplePlot)", fig.pos = "H", fig.show = "hold"}
+
+cust_palette <- c("#2F3EEA", "#990000")
+
+plotData <- tibble(x = seq(from=0,to=3,length.out=10), y = y)
+
+ggplot(data = plotData, aes(x = x)) +
+  stat_function(fun = dgamma, args=list(3,3), linewidth = 1.2, aes(colour = "f(y) (True)")) +
+  stat_function(fun = dgamma, args=list(3,8), linewidth = 1.2, aes(colour = "g(y) (Wrong)")) +
+  geom_point(mapping = aes(x = y, y = 0), inherit.aes = FALSE, colour = "#008835", size = 2) +
+  geom_point(mapping = aes(x = y, y = 0), inherit.aes = FALSE, pch = 1, size = 2) +
+  scale_y_continuous(name = "PDF") +
+  scale_x_continuous(name = "y") +
+  scale_colour_manual(name = "", values = cust_palette) +
+  theme_bw() +
+  theme(legend.position = "top",
+        axis.text = element_text(size = 12),
+          axis.title = element_text(size = 15),
+          legend.text = element_text(size = 12))
+
+LogSf <- -dgamma(x = y, shape = 3, rate = 4, log = TRUE)
+LogSg <- -dgamma(x = y, shape = 3, rate = 8, log = TRUE)
+
+```
+
+The logarithmic score of the true model $f$ for the first observation, $y_1=`r y[1]`$, is calculated as follows
+
+\begin{equation}
+  \begin{aligned}
+  -\log\big(f(y_1)\big)&=-\log\big(f(`r y[1]`)\big) \\
+  &=-\log\left[ \frac{1}{\Gamma(3)4}\Big(\frac{`r y[1]`}{4}\Big)^{3-1}\exp(-`r y[1]`/4)\right] \\
+  &=`r round(dgamma(x = y[1], shape = 3, rate = 4, log = TRUE),3)`
+  \end{aligned}
+\end{equation}
+
+Similarly, the logarithmic scores for the other observations can be calculated using the same formula. The individual logarithmic scores for all 10 observations are presented in Table \@ref(tab:tabLogS). Among the 10 observations, `r sum(LogSf < LogSg)` of them are more likely to occur under the true model $f$ compared to the competing model $g$. The final key quantity, the average logarithmic score, $\bar{S}(G,\boldsymbol y)$, can be calculated using Equation \eqref{eq:averageLogS}.
+
+\begin{equation}
+  \begin{aligned}
+    \bar{S}(f,\boldsymbol y) &=`r round(mean(LogSf),2)` \\
+    \bar{S}(g,\boldsymbol y) &=`r round(mean(LogSg),2)`
+  \end{aligned}
+\end{equation}
+
+```{r tabLogS, echo=FALSE}
+
+t(tibble(`$i$` = paste(1:10), `$\\bar{S}(f,y_i)$` = round(LogSf,2), `$\\bar{S}(g,y_i)$` = round(LogSg,2))) %>%
+  kbl(booktabs = TRUE, escape = FALSE, caption = "Logarithmic scores of the two different Gamma models w.r.t. the 10 individual observations.") %>%
+  kable_paper(full_width = TRUE, latex_options = "HOLD_position")
+
+```
+
+:::
+
 
 \cleardoublepage

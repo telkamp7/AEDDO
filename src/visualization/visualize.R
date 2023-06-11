@@ -20,9 +20,11 @@ theme_set(
   new = theme_bw() +
     theme(legend.position = "top",
           strip.text = element_text(size = 14),
-          axis.text = element_text(size = 12),
-          axis.title = element_text(size = 18),
-          plot.title = element_text(size = 18))
+          axis.text = element_text(size = 20),
+          axis.title = element_text(size = 30),
+          plot.title = element_text(size = 18),
+          legend.text = element_text(size = 30),
+          legend.title = element_text(size = 35))
 )
 
 # DTU colours
@@ -40,7 +42,7 @@ dtuPalette <- c("#990000",
 
 # Load data
 # dat <- read_rds(file = "../../data/processed/dat.rds") # 11-agegroups
-dat <- read_rds(file = "../../data/processed/dat4.rds") # 6 agegroups
+dat <- read_rds(file = "../../data/processed/dat5.rds") # 6 agegroups
 
 monthLevels <- c("Jan", "Feb", "Mar", "Apr", "May", "Jun",
                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec")
@@ -50,42 +52,42 @@ finalDat <- dat %>%
   mutate(month = factor(format(x = Date, "%b"), levels = monthLevels),
          year = factor(format(x = Date, "%Y")))
 
-LIST_long_plot <- finalDat %>%
-  filter(caseDef == "LIST") %>%
-  ggplot(mapping = aes(x = Date, y = y/n*1e5, fill = "All")) +
-  geom_col() +
-  scale_y_continuous(name = "Incidence per 100.000") +
-  scale_x_date(name = "Date") +
-  scale_fill_manual(values = dtuPalette) +
-  guides(fill = "none")
-LIST_long_plot
-ggsave(filename = "LIST_long_plot.png", plot = LIST_long_plot, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
-
-
-STEC_long_plot <- dat %>%
-  filter(caseDef == "STEC") %>%
-  ggplot(mapping = aes(x = Date, y = cases/n*1e5, fill = ageGroup, group = ageGroup)) +
-  geom_col() +
-  facet_wrap(facets = vars(ageGroup)) +
-  scale_y_continuous(name = "Incidence per 100.000") +
-  scale_x_date(name = "Date") +
-  scale_fill_manual(values = dtuPalette) +
-  guides(fill = "none")
-STEC_long_plot
-ggsave(filename = "STEC_long_plot.png", plot = STEC_long_plot, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
-
-
-SHIG_long_plot <- dat %>%
-  filter(caseDef == "SHIG") %>%
-  ggplot(mapping = aes(x = Date, y = cases/n*1e5, fill = ageGroup, group = ageGroup)) +
-  geom_col() +
-  facet_wrap(facets = vars(ageGroup)) +
-  scale_y_continuous(name = "Incidence per 100.000") +
-  scale_x_date(name = "Date") +
-  scale_fill_manual(values = dtuPalette) +
-  guides(fill = "none")
-SHIG_long_plot
-ggsave(filename = "SHIG_long_plot.png", plot = SHIG_long_plot, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+# LIST_long_plot <- finalDat %>%
+#   filter(caseDef == "LIST") %>%
+#   ggplot(mapping = aes(x = Date, y = y/n*1e5, fill = "All")) +
+#   geom_col() +
+#   scale_y_continuous(name = "Incidence per 100.000") +
+#   scale_x_date(name = "Date") +
+#   scale_fill_manual(values = dtuPalette) +
+#   guides(fill = "none")
+# LIST_long_plot
+# ggsave(filename = "LIST_long_plot.png", plot = LIST_long_plot, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+# 
+# 
+# STEC_long_plot <- dat %>%
+#   filter(caseDef == "STEC") %>%
+#   ggplot(mapping = aes(x = Date, y = cases/n*1e5, fill = ageGroup, group = ageGroup)) +
+#   geom_col() +
+#   facet_wrap(facets = vars(ageGroup)) +
+#   scale_y_continuous(name = "Incidence per 100.000") +
+#   scale_x_date(name = "Date") +
+#   scale_fill_manual(values = dtuPalette) +
+#   guides(fill = "none")
+# STEC_long_plot
+# ggsave(filename = "STEC_long_plot.png", plot = STEC_long_plot, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+# 
+# 
+# SHIG_long_plot <- dat %>%
+#   filter(caseDef == "SHIG") %>%
+#   ggplot(mapping = aes(x = Date, y = cases/n*1e5, fill = ageGroup, group = ageGroup)) +
+#   geom_col() +
+#   facet_wrap(facets = vars(ageGroup)) +
+#   scale_y_continuous(name = "Incidence per 100.000") +
+#   scale_x_date(name = "Date") +
+#   scale_fill_manual(values = dtuPalette) +
+#   guides(fill = "none")
+# SHIG_long_plot
+# ggsave(filename = "SHIG_long_plot.png", plot = SHIG_long_plot, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 
 
 # Epidemiological plots
@@ -99,9 +101,9 @@ stecEpiPlot <- finalDat %>%
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(override.aes = list(size = 3, linewidth = 2), nrow = 1)) +
   theme(plot.margin = unit(c(1,0.5,0.5,0.5), "cm"),
-        axis.title = element_text(size = 15),
-        legend.text = element_text(size = 15),
-        legend.title = element_text(size = 17))
+        axis.title = element_text(size = 19),
+        legend.text = element_text(size = 22),
+        legend.title = element_text(size = 25))
 yearLegend <- get_legend(stecEpiPlot)
 
 shigellaEpiPlot <- finalDat %>%
@@ -114,7 +116,7 @@ shigellaEpiPlot <- finalDat %>%
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(nrow = 1)) +
   theme(plot.margin = unit(c(1,0.5,0.5,0.5), "cm"),
-        axis.title = element_text(size = 15))
+        axis.title = element_text(size = 19))
 
 
 listEpiPlot <- finalDat %>%
@@ -127,7 +129,7 @@ listEpiPlot <- finalDat %>%
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(nrow = 1)) +
   theme(plot.margin = unit(c(1,0.5,0.5,0.5), "cm"),
-        axis.title = element_text(size = 15))
+        axis.title = element_text(size = 19))
 
 salmEpiPlot <- finalDat %>%
   filter(caseDef == "SALM" & year %in% as.character(2012:2022)) %>%
@@ -139,7 +141,7 @@ salmEpiPlot <- finalDat %>%
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(nrow = 1)) +
   theme(plot.margin = unit(c(1,0.5,0.5,0.5), "cm"),
-          axis.title = element_text(size = 15))
+          axis.title = element_text(size = 19))
 
 
 
