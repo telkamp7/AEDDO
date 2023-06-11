@@ -34,9 +34,9 @@ diseaseData %>%
 # Change '?r' to 'years'
 diseaseData <- diseaseData %>%
   mutate(ageGroup = if_else(
-    ageGroup == "<1 år",
-    str_replace(ageGroup, pattern = "år", replacement = "year"),
-    str_replace(ageGroup, pattern = "år", replacement = "years")
+    ageGroup == "<1 Ã¥r",
+    str_replace(ageGroup, pattern = "Ã¥r", replacement = "year"),
+    str_replace(ageGroup, pattern = "Ã¥r", replacement = "years")
     ))
 
 # Make reference table for 'landsdele' and 'kommuner'
@@ -45,7 +45,7 @@ diseaseData <- diseaseData %>%
 #   pivot_wider(id_cols = KODE, names_from = NIVEAU, values_from = TITEL) %>%
 #   rename(Region = `1`, Landsdel = `2`, Kommune = `3`) %>%
 #   fill(Region, Landsdel, .direction = "down") %>%
-#   mutate(Kommune = replace(Kommune, Kommune=="København", "Copenhagen")) %>%
+#   mutate(Kommune = replace(Kommune, Kommune=="K?benhavn", "Copenhagen")) %>%
 #   mutate(Landsdel = str_replace(Landsdel, "Landsdel ", "")) %>%
 #   mutate(Landsdel = str_replace(Landsdel, "Byen KÃ¸benhavn", "KÃ¸benhavn by")) %>%
 #   drop_na()
