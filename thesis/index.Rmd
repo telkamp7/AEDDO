@@ -23,6 +23,12 @@ library(psych)
 library(ggplot2)
 
 Sys.setlocale("LC_ALL","English")
+
+row_group_label_fonts <- list(
+list(bold = TRUE, italic = TRUE),
+list(bold = FALSE, italic = FALSE)
+)
+
 ```
 
 
@@ -32,8 +38,8 @@ Sys.setlocale("LC_ALL","English")
 Compare_novel_dat <- read_rds(file = "../src/cases/Compare_novel_dat.rds")
 LIST_novel_tbl <- read_rds(file = "../src/cases/LIST_novel_tbl.rds")
 STEC_novel_tbl <- read_rds(file = "../src/cases/STEC_novel_tbl.rds")
-# LIST_novel_tbl <- read_rds(file = "../src/cases/LIST_novel_tbl.rds")
-# LIST_novel_tbl <- read_rds(file = "../src/cases/LIST_novel_tbl.rds")
+SHIG_novel_tbl <- read_rds(file = "../src/cases/SHIG_novel_tbl.rds")
+SALM_novel_tbl <- read_rds(file = "../src/cases/SALM_novel_tbl.rds")
 
 Compare_stateOfTheArt_LIST_dat <- read_rds(file = "../src/cases/Compare_stateOfTheArt_LIST_dat.rds")
 Compare_stateOfTheArt_SHIG_dat <- read_rds(file = "../src/cases/Compare_stateOfTheArt_SHIG_dat.rds")
@@ -45,6 +51,14 @@ LIST_LogS <- LIST_novel_tbl %>%
   distinct(avgLogS)
 
 STEC_LogS <- STEC_novel_tbl %>%
+  group_by(method) %>%
+  distinct(avgLogS)
+
+SHIG_LogS <- SHIG_novel_tbl %>%
+  group_by(method) %>%
+  distinct(avgLogS)
+
+SALM_LogS <- SALM_novel_tbl %>%
   group_by(method) %>%
   distinct(avgLogS)
 

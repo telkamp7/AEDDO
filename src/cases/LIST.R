@@ -252,7 +252,7 @@ LIST_PoisN_ageGroup_trend <- aeddo(data = LIST,
                                    excludePastOutbreaks = TRUE)
 
 write_rds(x = LIST_PoisN_ageGroup_trend, file = "LIST_PoisN_ageGroup_trend.rds")
-# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisN_ageGroup_trend.rds")
+# LIST_PoisN_ageGroup_trend <- read_rds(file = "LIST_PoisN_ageGroup_trend.rds")
 
 LIST_PoisN_ageGroup_seasonality <- aeddo(data = LIST,
                                          formula = y ~ -1 +  ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
@@ -269,7 +269,7 @@ LIST_PoisN_ageGroup_seasonality <- aeddo(data = LIST,
                                          excludePastOutbreaks = TRUE)
 
 write_rds(x = LIST_PoisN_ageGroup_seasonality, file = "LIST_PoisN_ageGroup_seasonality.rds")
-# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisN_ageGroup_seasonality.rds")
+# LIST_PoisN_ageGroup_seasonality <- read_rds(file = "LIST_PoisN_ageGroup_seasonality.rds")
 
 LIST_PoisN_ageGroup_trend_seasonality <- aeddo(data = LIST,
                                                formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
@@ -287,7 +287,7 @@ LIST_PoisN_ageGroup_trend_seasonality <- aeddo(data = LIST,
                                                excludePastOutbreaks = TRUE)
 
 write_rds(x = LIST_PoisN_ageGroup_trend_seasonality, file = "LIST_PoisN_ageGroup_trend_seasonality.rds")
-# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisN_ageGroup_trend_seasonality.rds")
+# LIST_PoisN_ageGroup_trend_seasonality <- read_rds(file = "LIST_PoisN_ageGroup_trend_seasonality.rds")
 
 
 LIST_PoisN_ageGroup_par <- LIST_PoisN_ageGroup  %>% 
@@ -467,7 +467,7 @@ LIST_PoisG_ageGroup_trend <- aeddo(data = LIST,
                              excludePastOutbreaks = TRUE)
 
 write_rds(x = LIST_PoisG_ageGroup_trend, file = "LIST_PoisG_ageGroup_trend.rds")
-# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisG_ageGroup_trend.rds")
+# LIST_PoisG_ageGroup_trend <- read_rds(file = "LIST_PoisG_ageGroup_trend.rds")
 
 
 LIST_PoisG_ageGroup_seasonality <- aeddo(data = LIST,
@@ -485,7 +485,7 @@ LIST_PoisG_ageGroup_seasonality <- aeddo(data = LIST,
                                    excludePastOutbreaks = TRUE)
 
 write_rds(x = LIST_PoisG_ageGroup_seasonality, file = "LIST_PoisG_ageGroup_seasonality.rds")
-# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisG_ageGroup_trend.rds")
+# LIST_PoisG_ageGroup_seasonality <- read_rds(file = "LIST_PoisG_ageGroup_seasonality.rds")
 
 LIST_PoisG_ageGroup_trend_seasonality <- aeddo(data = LIST,
                                          formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
@@ -503,7 +503,7 @@ LIST_PoisG_ageGroup_trend_seasonality <- aeddo(data = LIST,
                                          excludePastOutbreaks = TRUE)
 
 write_rds(x = LIST_PoisG_ageGroup_trend_seasonality, file = "LIST_PoisG_ageGroup_trend_seasonality.rds")
-# LIST_PoisN_ageGroup <- read_rds(file = "LIST_PoisG_ageGroup_trend_seasonality.rds")
+# LIST_PoisG_ageGroup_trend_seasonality <- read_rds(file = "LIST_PoisG_ageGroup_trend_seasonality.rds")
 
 
 LIST_PoisG_ageGroup %>%
@@ -701,6 +701,42 @@ LIST_SSI_outbreaks <- SSI_outbreaks %>%
         axis.ticks.y = element_blank())
 ggsave(filename = "LIST_SSI_outbreaks.png",
        plot = LIST_SSI_outbreaks,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")  
+
+
+# Compare alarms across all the models
+SSI_corrected <- SSI_outbreaks %>%
+  mutate(method = "SSI", alarm = TRUE) %>%
+  select(Date = Start, method:alarm)
+
+LIST_compare <- LIST_novel %>%
+  select(Date, ageGroup, `alarm_Poisson Normal`, `alarm_Poisson Gamma`) %>%
+  full_join(alarm_Farrington, by = join_by(Date, ageGroup)) %>%
+  full_join(alarm_Noufaily, by = join_by(Date, ageGroup)) %>%
+  pivot_longer(cols = `alarm_Poisson Normal`:alarm_Noufaily, names_to = "method", names_prefix = "alarm_", values_to = "alarm") %>%
+  group_by(Date, method) %>%
+  reframe(alarm = any(alarm)) %>%
+  bind_rows(SSI_corrected) %>%
+  mutate(alarmDate = if_else(alarm, Date, NA), method = factor(method), disease = "LIST")
+
+write_rds(x = LIST_compare, file = "LIST_compare.rds")
+
+Compare_alarms <- LIST_compare %>%
+  ggplot(mapping = aes(x = alarmDate, y = method, colour = method)) +
+  geom_point(shape = 17, size = 4) +
+  scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
+  scale_y_discrete(limits = rev(levels(LIST_compare$method))) +
+  scale_x_date(name = "Date") +
+  guides(colour = "none") +
+  theme(axis.title.y = element_blank(),
+        panel.spacing.x = unit(2.67, "lines"))
+ggsave(filename = "Compare_alarms_LIST.png",
+       plot = Compare_alarms,
        path = "../../figures/",
        device = png,
        width = 16,

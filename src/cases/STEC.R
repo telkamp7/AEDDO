@@ -637,10 +637,11 @@ ggsave(filename = "STEC_novel_par_dispersion.png",
        dpi = "print")  
 
 
-
-
-
 # Compare alarms across all the models
+SSI_corrected <- SSI_outbreaks %>%
+  mutate(method = "SSI", alarm = TRUE) %>%
+  select(Date = Start, method:alarm)
+
 STEC_compare <- STEC_novel %>%
   select(Date, ageGroup, `alarm_Poisson Normal`, `alarm_Poisson Gamma`) %>%
   full_join(alarm_Farrington, by = join_by(Date, ageGroup)) %>%
@@ -648,18 +649,21 @@ STEC_compare <- STEC_novel %>%
   pivot_longer(cols = `alarm_Poisson Normal`:alarm_Noufaily, names_to = "method", names_prefix = "alarm_", values_to = "alarm") %>%
   group_by(Date, method) %>%
   reframe(alarm = any(alarm)) %>%
-  mutate(alarmDate = if_else(alarm, Date, NA), method = factor(method))
+  bind_rows(SSI_corrected) %>%
+  mutate(alarmDate = if_else(alarm, Date, NA), method = factor(method), disease = "STEC")
+
+write_rds(x = STEC_compare, file = "STEC_compare.rds")
 
 Compare_alarms <- STEC_compare %>%
   ggplot(mapping = aes(x = alarmDate, y = method, colour = method)) +
   geom_point(shape = 17, size = 4) +
-  scale_color_manual(values = dtuPalette[c(7,9:11)]) +
+  scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
   scale_y_discrete(limits = rev(levels(STEC_compare$method))) +
   scale_x_date(name = "Date") +
   guides(colour = "none") +
   theme(axis.title.y = element_blank(),
         panel.spacing.x = unit(2.67, "lines"))
-ggsave(filename = "Compare_alarms.png",
+ggsave(filename = "Compare_alarms_STEC.png",
        plot = Compare_alarms,
        path = "../../figures/",
        device = png,
@@ -678,8 +682,8 @@ STEC_SSI_outbreaks <- SSI_outbreaks %>%
   arrange(desc(Start)) %>%
   mutate(outbreak_no = row_number()) %>%
   ggplot() +
-  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), linewidth = 1.2, colour = dtuPalette[2]) +
-  geom_point(mapping = aes(x = Start, y = outbreak_no), pch = 17, size = 3,colour = dtuPalette[6]) +
+  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), linewidth = 1.2, colour = dtuPalette[6]) +
+  geom_point(mapping = aes(x = Start, y = outbreak_no), pch = 17, size = 3, colour = dtuPalette[6]) +
   scale_x_date(name = "Date", limits = c(as.Date(c("2008-01-01", "2022-12-01")))) +
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank(),

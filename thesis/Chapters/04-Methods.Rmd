@@ -425,6 +425,8 @@ WRITE SOMETHING ABOUT THE LIKELIHOOD ESTIMATION IN THE HIERARCHICAL POISSON GAMM
 Additionally, \textbf{TMB} utilized Automatic Differentiation (AD) techniques [@Griewank_2008] to evaluate first, second, and potentially third-order derivatives. For a comprehensive introduction to the concept of AD, it is recommended to read Section 2.1 and Section 2.2 of @Fournier_2012. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models.
 
 
+
+
 \section{Scoring rule}
 
 In this section, the scoring rule used to evaluate the overall score of the models is outlined. The approach is inspired by @Blicher_2021.  For a given time series ${y_t}={y_1,\dots,y_N}$, each forecast and its corresponding realized observation pair $(G_t,y_t)$ is evaluated. The overall score of the model is then reported as the average score:

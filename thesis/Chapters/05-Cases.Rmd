@@ -50,10 +50,7 @@ The average logarithmic score, $\bar{S}(G,y)$, and parameter estimate for the mo
 
 ```{r STECNovelTbl, echo=FALSE}
 
-row_group_label_fonts <- list(
-list(bold = TRUE, italic = TRUE),
-list(bold = FALSE, italic = FALSE)
-)
+
 
 STEC_novel_tbl %>%
   mutate(`Estimate (95\\% CI)` = paste0(round(theta,2), " (",round(CI.lwr,2),", ",round(CI.upr,2),")"),
@@ -84,7 +81,7 @@ STEC_novel_tbl %>%
     Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
   )) %>%
   select(Model, Formula, `$\\bar{S}(G,y)$` = avgLogS, Parameter, `Estimate (95\\% CI)`) %>%
-  kbl(booktabs = TRUE, escape = FALSE, longtable = TRUE, caption = "The average logarithmic score, $\\bar{S}(G,y)$, along with the parameter estimates at $t_{0}$ for for a suite of models assuming either the hierarchical Poisson Normal model or the hierarchical Poisson Gamma model.  The confidence intervals for the estimates are calculated using profile likelihood confidence intervals.") %>%
+  kbl(booktabs = TRUE, escape = FALSE, longtable = TRUE, caption = "The average logarithmic score, $\\bar{S}(G,y)$, along with the parameter estimates at $t_{0}$ for a suite of models modelling Shiga toxin (verotoxin)-producing \\textit{Escherichia coli}, assuming either the hierarchical Poisson Normal model or the hierarchical Poisson Gamma model.  The confidence intervals for the estimates are calculated using profile likelihood confidence intervals.") %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   collapse_rows(columns = 1:3, 
                 row_group_label_position = "stack",
@@ -157,53 +154,6 @@ It is worth noting that the other observations flagged by the methods may be rel
 
 At this stage, the novel outbreak detection algorithm presented in Section \@ref(Novel) is evaluated on its ability to detect outbreaks of \textit{Listeriosis}. 
 
-
-```{r LISTNovelTbl, echo=FALSE}
-
-row_group_label_fonts <- list(
-list(bold = TRUE, italic = TRUE),
-list(bold = FALSE, italic = FALSE)
-)
-
-LIST_novel_tbl %>%
-  mutate(`Estimate (CI)` = paste0(round(theta,2), " (",round(CI.lwr,2),", ",round(CI.upr,2),")"),
-         Model = case_when(
-           grepl(pattern = "PoisN_", x = method) ~ "Poisson Normal",
-           grepl(pattern = "PoisG_", x = method) ~ "Poisson Gamma"
-           ),
-         Formula = gsub(pattern = "PoisN_|PoisG_", replacement = "", x = method),
-         Parameter = case_when(
-           Parameter == "ageGroup<65 years" ~ "$\\beta_{<65 years}$",
-           Parameter == "ageGroup65+ years" ~ "$\\beta_{65+ years}$",
-           Parameter == "t" ~ "$\\beta_{trend}$",
-           Parameter == "log_sigma" ~ "$\\log(\\sigma)$",
-           Parameter == "log_phi" ~ "$\\log(\\phi)$",
-           Parameter == "sin(pi/6 * monthInYear)" ~ "$\\beta_{\\sin}$",
-           Parameter == "cos(pi/6 * monthInYear)" ~ "$\\beta_{\\cos}$"
-         )) %>%
-  mutate(Formula = gsub(pattern = "_", replacement = "", x = Formula)) %>%
-  # mutate(Formula = case_when(
-  #   Formula == "ageGroup" ~ "$\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})$",
-  #   Formula == "ageGroup_trend" ~ "$\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})$",
-  #   Formula == "ageGroup_seasonality" ~ "$\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})$",
-  #   Formula == "ageGroup_trend_seasonality" ~ "$\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})$"
-  # )) %>%
-  select(Model, Formula, avgLogS, `$\\theta$` = Parameter, `Estimate (CI)`) %>%
-  kbl(booktabs = TRUE, escape = FALSE) %>%
-  kable_paper() %>%
-  collapse_rows(columns = 1:3, 
-                row_group_label_position = "stack",
-                row_group_label_fonts = row_group_label_fonts,
-                latex_hline = "custom",
-                custom_latex_hline = 1:3)
-
-```
-
-
-INCLUDE A TABLE WITH SCORING!
-
-WRITE SOMETHING ABOUT MODEL SELECTION!
-
 (ref:CompareNovelLIST) One-step ahead random effects $u_{t_1}$ of \textit{Listeriosis} in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $u_{t_1}$ exceeds the threshold (dashed line).
 
 ```{r CompareNovelLIST, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelLIST)", fig.pos = "H", fig.show = "hold"}
@@ -211,30 +161,6 @@ knitr::include_graphics("../figures/Compare_novel_LIST.png")
 ```
 
 The one-step ahead random effects $u_{t_1}$ for the disease are visualized in Figure \@ref(fig:CompareNovelLIST). It is clear that the models struggle to adequately describe the underlying process of the disease. Only a single alarm is raised in`r format(LIST_alarms$alarms, "%B %Y")`, which is in the midst of several concurrent outbreaks investigated by SSI, with several observations being borderline significant. When compared to the numerous outbreaks investigated by SSI in the same time period, this is not an impressive result. However, it is important to note that the current state-of-the-art detection method for \textit{Listeriosis} is laboratory-based and requires the use of WGS to link cases that occurred over an extended time period. Moreover, the start of outbreaks with \textit{Listeriosis} are usually dated back to the first identified case, which can be up to several months prior to the peak of the disease.
-
-
-Mostly, it is noted that the Poisson Gamma model seems more robust, than the Poisson Normal model. Specifically, this is observed in periods with low case counts, i.e. in November 2011, from August 2013 to January 2014, in February 2019, and again in the period from June 2020 to November 2021. 
-
-Apart from the Poisson Gamma model being seemingly more robust, the estimated fixed effects parameters for the models are on a comparable scale. This can be seen in Figure \@ref(fig:LISTnovelparageGroup)
-
-
-(ref:LISTnovelparageGroup) Placeholder caption
-
-```{r LISTnovelparageGroup, echo=FALSE, out.width="100%", fig.cap="(ref:LISTnovelparageGroup)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/LIST_novel_par_ageGroup.png")
-```
-
-
-(ref:LISTnovelparDispersion) Placeholder caption
-
-```{r LISTnovelparDispersion, echo=FALSE, out.width="100%", fig.cap="(ref:LISTnovelparDispersion)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/LIST_novel_par_dispersion.png")
-```
-
-
-
-Consider the models given in \eqref{eq:PoisN} and \eqref{eq:PoisGam}
-
 
 \section{\textit{Shiggellosis}}
 
@@ -250,11 +176,11 @@ knitr::include_graphics("../figures/Compare_stateOfTheArt_SHIG.png")
 
 \subsection{Applying the novel outbreak detection algorithm to \textit{Shigellosis}}
 
+(ref:CompareNovelSHIG) One-step ahead random effects $u_{t_1}$ of \textit{Shigellosis} in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $u_{t_1}$ exceeds the threshold (dashed line).
 
-
-
-
-
+```{r CompareNovelSHIG, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelSHIG)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_novel_SHIG.png")
+```
 
 \section{\textit{Salmonellosis}}
 
@@ -268,13 +194,36 @@ knitr::include_graphics("../figures/Compare_stateOfTheArt_SALM.png")
 
 \subsection{Applying the novel outbreak detection algorithm to \textit{Salmonellosis}}
 
+(ref:CompareNovelSALM) One-step ahead random effects $u_{t_1}$ of \textit{Salmonellosis} in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $u_{t_1}$ exceeds the threshold (dashed line).
+
+```{r ref:CompareNovelSALM, echo=FALSE, out.width="100%", fig.cap="(ref:ref:CompareNovelSALM)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_novel_SALM.png")
+```
 
 \section{Performance comparison of novel methods}
 
-(ref:CompareAlarms) Placeholder caption 
+(ref:CompareAlarmsSTEC) Placeholder caption 
 
-```{r CompareAlarms, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarms)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/Compare_alarms.png")
+```{r CompareAlarmsSTEC, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsSTEC)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_alarms_STEC.png")
+```
+
+(ref:CompareAlarmsLIST) Placeholder caption 
+
+```{r CompareAlarmsLIST, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsLIST)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_alarms_LIST.png")
+```
+
+(ref:'CompareAlarmsSHIG) Placeholder caption 
+
+```{r CompareAlarmsSHIG, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsSHIG)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_alarms_SHIG.png")
+```
+
+(ref:CompareAlarmsSALM) Placeholder caption 
+
+```{r CompareAlarmsSALM, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsSALM)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_alarms_SALM.png")
 ```
 
 
