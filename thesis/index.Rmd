@@ -73,8 +73,6 @@ STEC_alarms_Farrington <- STEC_alarms_StateOfTheArt %>% filter(method == "Farrin
 SHIG_alarms_Farrington <- SHIG_alarms_StateOfTheArt %>% filter(method == "Farrington") 
 SALM_alarms_Farrington <- SALM_alarms_StateOfTheArt %>% filter(method == "Farrington") 
 
-LIST_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm
-
 LIST_alarms_Noufaily <- LIST_alarms_StateOfTheArt %>% filter(method == "Noufaily") 
 STEC_alarms_Noufaily <- STEC_alarms_StateOfTheArt %>% filter(method == "Noufaily") 
 SHIG_alarms_Noufaily <- SHIG_alarms_StateOfTheArt %>% filter(method == "Noufaily") 

@@ -223,8 +223,8 @@ LIST_novel_tbl %>%
   mutate(Formula = case_when(
     Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}",
     Formula == "ageGroup_trend" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
+    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
+    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
   )) %>%
   select(Model, Formula, `$\\bar{S}(G,y)$` = avgLogS, Parameter, `Estimate (95\\% CI)`) %>%
   kbl(booktabs = TRUE, escape = FALSE, longtable = TRUE, caption = "The average logarithmic score, $\\bar{S}(G,y)$, along with the parameter estimates at $t_{0}$ for a suite of models modelling \\textit{Listeriosis}, assuming either the hierarchical Poisson Normal model or the hierarchical Poisson Gamma model.  The confidence intervals for the estimates are calculated using profile likelihood confidence intervals.") %>%
@@ -261,8 +261,8 @@ SHIG_novel_tbl %>%
   mutate(Formula = case_when(
     Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}",
     Formula == "ageGroup_trend" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
+    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
+    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
   )) %>%
   select(Model, Formula, `$\\bar{S}(G,y)$` = avgLogS, Parameter, `Estimate (95\\% CI)`) %>%
   kbl(booktabs = TRUE, escape = FALSE, longtable = TRUE, caption = "The average logarithmic score, $\\bar{S}(G,y)$, along with the parameter estimates at $t_{0}$ for a suite of models modelling \\textit{Shigellosis}, assuming either the hierarchical Poisson Normal model or the hierarchical Poisson Gamma model.  The confidence intervals for the estimates are calculated using profile likelihood confidence intervals.") %>%
@@ -304,11 +304,54 @@ STEC_novel_tbl %>%
   mutate(Formula = case_when(
     Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}",
     Formula == "ageGroup_trend" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
+    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
+    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
   )) %>%
   select(Model, Formula, `$\\bar{S}(G,y)$` = avgLogS, Parameter, `Estimate (95\\% CI)`) %>%
   kbl(booktabs = TRUE, escape = FALSE, longtable = TRUE, caption = "The average logarithmic score, $\\bar{S}(G,y)$, along with the parameter estimates at $t_{0}$ for a suite of models modelling Shiga toxin (verotoxin)-producing \\textit{Escherichia coli}, assuming either the hierarchical Poisson Normal model or the hierarchical Poisson Gamma model.  The confidence intervals for the estimates are calculated using profile likelihood confidence intervals.") %>%
+  kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
+  collapse_rows(columns = 1:3, 
+                row_group_label_position = "stack",
+                row_group_label_fonts = row_group_label_fonts,
+                latex_hline = "custom",
+                custom_latex_hline = 1:3)
+
+```
+
+\section{\textit{Salmonellosis}}
+
+```{r SALMNovelTblAppendix, echo=FALSE}
+
+SALM_novel_tbl %>%
+  mutate(`Estimate (95\\% CI)` = paste0(round(theta,2), " (",round(CI.lwr,2),", ",round(CI.upr,2),")"),
+         Model = case_when(
+           grepl(pattern = "PoisN_", x = method) ~ "Poisson Normal",
+           grepl(pattern = "PoisG_", x = method) ~ "Poisson Gamma"
+           ),
+         Formula = gsub(pattern = "PoisN_|PoisG_", replacement = "", x = method),
+         Parameter = case_when(
+           Parameter == "ageGroup<1 year" ~ "$\\beta_{<1 year}$",
+           Parameter == "ageGroup1-4 years" ~ "$\\beta_{1-4 years}$",
+           Parameter == "ageGroup5-14 years" ~ "$\\beta_{5-14 years}$",
+           Parameter == "ageGroup15-24 years" ~ "$\\beta_{15-24 years}$",
+           Parameter == "ageGroup25-64 years" ~ "$\\beta_{25-64 years}$",
+           Parameter == "ageGroup<65 years" ~ "$\\beta_{<65 years}$",
+           Parameter == "ageGroup65+ years" ~ "$\\beta_{65+ years}$",
+           Parameter == "t" ~ "$\\beta_{trend}$",
+           Parameter == "log_sigma" ~ "$\\log(\\sigma)$",
+           Parameter == "log_phi" ~ "$\\log(\\phi)$",
+           Parameter == "sin(pi/6 * monthInYear)" ~ "$\\beta_{\\sin}$",
+           Parameter == "cos(pi/6 * monthInYear)" ~ "$\\beta_{\\cos}$"
+         )) %>%
+  # mutate(Formula = gsub(pattern = "_", replacement = "", x = Formula)) %>%
+  mutate(Formula = case_when(
+    Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}",
+    Formula == "ageGroup_trend" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})\\end{math}",
+    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
+    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
+  )) %>%
+  select(Model, Formula, `$\\bar{S}(G,y)$` = avgLogS, Parameter, `Estimate (95\\% CI)`) %>%
+  kbl(booktabs = TRUE, escape = FALSE, longtable = TRUE, caption = "The average logarithmic score, $\\bar{S}(G,y)$, along with the parameter estimates at $t_{0}$ for a suite of models modelling \\textit{Listeriosis}, assuming either the hierarchical Poisson Normal model or the hierarchical Poisson Gamma model.  The confidence intervals for the estimates are calculated using profile likelihood confidence intervals.") %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   collapse_rows(columns = 1:3, 
                 row_group_label_position = "stack",

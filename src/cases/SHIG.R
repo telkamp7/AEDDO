@@ -206,7 +206,7 @@ SHIG_SSI_outbreaks <- SSI_outbreaks %>%
   arrange(desc(Start)) %>%
   mutate(outbreak_no = row_number()) %>%
   ggplot() +
-  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), size = 1.2, colour = dtuPalette[2]) +
+  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), linewidth = 1.2, colour = dtuPalette[4]) +
   geom_point(mapping = aes(x = Start, y = outbreak_no), pch = 17, size = 3,colour = dtuPalette[4]) +
   scale_x_date(name = "Date", limits = c(as.Date(c("2008-01-01", "2022-12-01")))) +
   theme(axis.title.y = element_blank(),
@@ -607,7 +607,6 @@ ggsave(filename = "SHIG_novel_par_dispersion.png",
        units = "in",
        dpi = "print")
 
-
 # Compare alarms across all the models
 SSI_corrected <- SSI_outbreaks %>%
   mutate(method = "SSI", alarm = TRUE) %>%
@@ -626,9 +625,10 @@ SHIG_compare <- SHIG_novel %>%
 write_rds(x = SHIG_compare, file = "SHIG_compare.rds")
 
 Compare_alarms <- SHIG_compare %>%
+  filter(Date >= as.Date("2011-01-01")) %>%
   ggplot(mapping = aes(x = alarmDate, y = method, colour = method)) +
   geom_point(shape = 17, size = 4) +
-  scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
+  scale_color_manual(values = dtuPalette[c(7,9:11,4)]) +
   scale_y_discrete(limits = rev(levels(SHIG_compare$method))) +
   scale_x_date(name = "Date") +
   guides(colour = "none") +

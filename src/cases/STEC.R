@@ -637,6 +637,33 @@ ggsave(filename = "STEC_novel_par_dispersion.png",
        dpi = "print")  
 
 
+
+# Outbreaks invstigated by SSI ------------------------------------------------------
+
+SSI_outbreaks <- tibble(Start = as.Date(x = c("2007-02-5","2012-09-15", "2018-09-03", "2019-05-06", "2021-12-03")),
+                        End = as.Date(x = c("2007-03-31","2012-10-15", "2018-12-02", "2019-06-07", "2022-01-06")))
+
+STEC_SSI_outbreaks <- SSI_outbreaks %>%
+  filter(Start > as.Date("2008-01-01")) %>%
+  arrange(desc(Start)) %>%
+  mutate(outbreak_no = row_number()) %>%
+  ggplot() +
+  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), linewidth = 1.2, colour = dtuPalette[6]) +
+  geom_point(mapping = aes(x = Start, y = outbreak_no), pch = 17, size = 3, colour = dtuPalette[6]) +
+  scale_x_date(name = "Date", limits = c(as.Date(c("2008-01-01", "2022-12-01")))) +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_blank(),
+        axis.ticks.y = element_blank())
+ggsave(filename = "STEC_SSI_outbreaks.png",
+       plot = STEC_SSI_outbreaks,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")  
+
+
 # Compare alarms across all the models
 SSI_corrected <- SSI_outbreaks %>%
   mutate(method = "SSI", alarm = TRUE) %>%
@@ -657,7 +684,7 @@ write_rds(x = STEC_compare, file = "STEC_compare.rds")
 Compare_alarms <- STEC_compare %>%
   ggplot(mapping = aes(x = alarmDate, y = method, colour = method)) +
   geom_point(shape = 17, size = 4) +
-  scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
+  scale_color_manual(values = dtuPalette[c(7,9:11,6)]) +
   scale_y_discrete(limits = rev(levels(STEC_compare$method))) +
   scale_x_date(name = "Date") +
   guides(colour = "none") +
@@ -665,31 +692,6 @@ Compare_alarms <- STEC_compare %>%
         panel.spacing.x = unit(2.67, "lines"))
 ggsave(filename = "Compare_alarms_STEC.png",
        plot = Compare_alarms,
-       path = "../../figures/",
-       device = png,
-       width = 16,
-       height = 8,
-       units = "in",
-       dpi = "print")  
-
-# Outbreaks invstigated by SSI ------------------------------------------------------
-
-SSI_outbreaks <- tibble(Start = as.Date(x = c("2007-02-5","2012-09-15", "2018-09-03", "2019-05-06", "2021-12-03")),
-                        End = as.Date(x = c("2007-03-31","2012-10-15", "2018-12-02", "2019-06-07", "2022-01-06")))
-
-STEC_SSI_outbreaks <- SSI_outbreaks %>%
-  filter(Start > as.Date("2008-01-01")) %>%
-  arrange(desc(Start)) %>%
-  mutate(outbreak_no = row_number()) %>%
-  ggplot() +
-  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), linewidth = 1.2, colour = dtuPalette[6]) +
-  geom_point(mapping = aes(x = Start, y = outbreak_no), pch = 17, size = 3, colour = dtuPalette[6]) +
-  scale_x_date(name = "Date", limits = c(as.Date(c("2008-01-01", "2022-12-01")))) +
-  theme(axis.title.y = element_blank(),
-        axis.text.y = element_blank(),
-        axis.ticks.y = element_blank())
-ggsave(filename = "STEC_SSI_outbreaks.png",
-       plot = STEC_SSI_outbreaks,
        path = "../../figures/",
        device = png,
        width = 16,

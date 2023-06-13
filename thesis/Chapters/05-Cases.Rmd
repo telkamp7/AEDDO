@@ -1,58 +1,78 @@
 \chapter{Case studies}
 
+This chapter presents the findings obtained from applying both the state-of-the-art outbreak detection algorithm and the novel outbreak detection algorithm to the subset of diseases examined in this master's thesis. To demonstrate the practical application of these algorithms, a comprehensive case study focused on STEC will be presented as the primary focus. The results of the remaining case studies will be presented in a more concise manner to maintain reader engagement. However, for a complete collection of related figures and tables, please refer to Appendix \@ref(FigAndTabCaseStudy).
 
-This chapter presents the findings obtained by applying both the state-of-the-art outbreak detection algorithm and the novel outbreak detection algorithm to the subset of diseases examined in this master's thesis. The performance of these algorithms in identifying outbreaks within the selected diseases will be extensively discussed and analyzed. Additionally, a comprehensive comparative analysis will be conducted to offer valuable insights into the strengths and limitations of both the state-of-the-art algorithms and, more importantly, the novel algorithms. For a detailed presentation of the data used to generate these results, please refer to Chapter \@ref(Dataset).
+It is widely recognized that effective monitoring of a surveillance time series necessitates accurate modeling of the time series prior to assessing aberrations. Therefore, the performance of these algorithms in identifying outbreaks within the selected diseases will be thoroughly discussed and analyzed. Both the state-of-the-art algorithms and the novel algorithms take into account trends and seasonality, which will be addressed in the analysis.
 
-To demonstrate the practical application of these algorithms, a comprehensive case study centered on STEC will be presented as the primary focus. Following that, the results of the remaining case studies will be presented in a more concise manner to keep the reader engaged. However, for the complete collection of related figures and tables, please refer to Appendix \@ref(FigAndTabCaseStudy).
+Furthermore, a comprehensive comparative analysis will be conducted to provide valuable insights into the strengths and limitations of both the state-of-the-art algorithms and, more importantly, the novel algorithms.
+
+For a detailed presentation of the data used to generate these results, please refer to Chapter \@ref(Dataset).
 
 \section{Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
 
-Initially, the ... is investigated.
+The initial analysis focuses on STEC. The data set comprises monthly counts of Danish STEC cases, denoted as $y_{it}$, where $i=1,\dots,6$ represents the six age groups and $t=1,\dots,T$ represents the time period of $T=180$ months starting in 2008. The first step involves applying the state-of-the-art outbreak detection algorithms to identify potential outbreaks in the time series.
 
-ALL RESULTS REGARDING STEC IS GATHERED HERE
+Following that, the novel outbreak detection algorithm is utilized, and different models for the fixed effects are proposed. Both the hierachical Poisson Normal model and the hierarchical Poisson Gamma model is considered for the modeling framework. The performance of these models is compared using the average logarithmic score, $\bar{S}(G,y)$, to determine the most appropriate model for further analysis.
 
 \subsection{Applying the state-of-the-art outbreak detection algorithm to Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
 
-Initially, outbreak detection using the Farrington method and the Noufaily method, described in Section \@ref(StateOfTheArt), are investigated. The methods are implemented in the `farringtonFlexible` function, which can be accessed through the R package known as \textbf{surveillance}. The `control` arguements for each of the methods can be found in Appendix \@ref(controlsStateOfTheArt). The reference values for the analysis are based on data from January 2008 to February 2011. Subsequently, surveillance is conducted using the data from March 2011 to December 2021. The resulting series is visualized in Figure \@ref(fig:CompareStateOfTheArtSTEC).
+To investigate outbreak detection, the Farrington method and the Noufaily method, as described in Section \@ref(StateOfTheArt), are initially explored. These methods can be implemented using the `farringtonFlexible` function, which is available in the R package called \textbf{surveillance}. The specific `control` arguments for each method can be found in Appendix \@ref(controlsStateOfTheArt).
 
-(ref:CompareStateOfTheArtSTEC) Monthly Shiga toxin (verotoxin)-producing \textit{Escherichia coli} incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations timepoints outside reference data. Alarm triggered (full opacity) if observations exceeds threshold. 
+For this analysis, the reference values are based on data collected from January 2008 to February 2011. Subsequently, surveillance is performed using the data spanning from March 2011 to December 2022. The resulting time series is visualized in Figure \@ref(fig:CompareStateOfTheArtSTEC).
+
+(ref:CompareStateOfTheArtSTEC) Monthly Shiga toxin (verotoxin)-producing \textit{Escherichia coli} incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations timepoints outside reference data. Alarm triggered (dark color) if observations exceeds threshold. 
 
 ```{r CompareStateOfTheArtSTEC, echo=FALSE, out.width="100%", fig.cap="(ref:CompareStateOfTheArtSTEC)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_stateOfTheArt_STEC.png")
 ```
 
-In Figure \@ref(fig:CompareStateOfTheArtSTEC), multiple alarms is observed for both the Farrington method and the Noufaily method. The Farrington method triggers a total of `r STEC_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces slightly fewer, specifically `r STEC_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms.
+
+Figure \@ref(fig:CompareStateOfTheArtSTEC) displays multiple alarms for both the Farrington method and the Noufaily method. The Farrington method generates a total of `r STEC_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces a slightly lower count of `r STEC_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms.
+
+The substantial number of alarms generated by both the Farrington method and the Noufaily method raises valid concerns. The sheer volume of alarms can overwhelm epidemiologists, posing challenges in effectively prioritizing and investigating potential outbreaks. It is crucial to avoid reacting solely to individual alarms and instead consider the bigger picture.
+
+Of particular importance are alarms that are triggered simultaneously in multiple age groups or during concurrent time points. Such patterns indicate potential outbreaks that warrant further attention and investigation by epidemiologists. By analyzing and interpreting the alarms in context, epidemiologists can gain a more comprehensive understanding of the outbreak situation and make informed decisions about resource allocation and intervention strategies.
 
 \subsection{Applying the novel outbreak detection algorithm to Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
 
-At first, a suite of different models for the fixed effects is proposed
+The subsequent investigation focuses on utilizing the novel outbreak detection algorithm to analyze the outbreaks. The reference values for this analysis are established using monthly data collected from January 2008 to December 2010. The time series is then monitored using data spanning from January 2011 to December 2022. To ensure effective monitoring, a range of models for the fixed effects is proposed, each building upon the previous model.
+
+In the initial model, the intensity $\lambda_{it}$ is assumed to be solely dependent on the age group and the population size $n_{it}$. The model is formulated as:
 
 \begin{equation}
-  \log(\lambda_{it})=\beta(ageGroup_{i})+\log(n_{it})
+  \log(\lambda_{it}) = \beta(ageGroup_{i}) + \log(n_{it})
 \end{equation}
+
+Here, $\beta(ageGroup_{i})$ represents the fixed effect specific to the age group $i$, capturing the age group's influence on the outbreak intensity. The term $\log(n_{it})$ acts as an offset, accounting for the population size at time $t$ for age group $i$.
+
+In the first extension of this initial model, the trend over time across all age groups is incorporated. The extended model is formulated as:
 
 \begin{equation}
   \log(\lambda_{it})=\beta(ageGroup_{i}) + \beta_{trend} t + \log(n_{it})
 \end{equation}
 
-\begin{equation}
-  \log(\lambda_{it})=\beta(ageGroup_{i})+ \sin \big(\frac{\pi\cdot \tau_t}{6}\big) \beta_{\sin} + \cos \big(\frac{\pi\cdot \tau_t}{6}\big) \beta_{\cos} + \log(n_{it})
-\end{equation}
+In this model, $\beta_{trend}$ quantifies the rate of change in the outbreak intensity over time. By including this parameter, the model accounts for the overall trend in the outbreak intensity across all age groups, allowing for a more comprehensive analysis of the outbreak dynamics.
+
+In addition to the models described earlier, another model is proposed, which incorporates seasonality into the analysis. This model builds upon the initial model and assumes an annual seasonality pattern. The intensity $\lambda_{it}$ is modeled as follows:
 
 \begin{equation}
-  \log(\lambda_{it})=\beta(ageGroup_{i}) + \beta_{trend} t + \sin \big(\frac{\pi\cdot \tau_t}{6}\big) \beta_{\sin} + \cos \big(\frac{\pi\cdot \tau_t}{6}\big) \beta_{\cos} + \log(n_{it})
+\log(\lambda_{it})=\beta(ageGroup_{i})+ \sin \big(\frac{2\pi\cdot \tau_t}{12}\big) \beta_{\sin} + \cos \big(2\frac{\pi\cdot \tau_t}{12}\big) \beta_{\cos} + \log(n_{it})
 \end{equation}
 
+In this model, $\tau_t$ represents the time period $t$ within a year, ranging from 1 to 12 (corresponding to the months of January to December). The parameters $\beta_{\sin}$ and $\beta_{\cos}$ capture the effect of the seasonal pattern on the outbreak intensity. By including sine and cosine functions of $\tau_t$, the model accounts for the periodic fluctuations in the outbreak intensity observed throughout the year. This allows for the detection and analysis of seasonality patterns in the outbreak data, providing insights into the seasonal variations in disease occurrence.
 
+In addition to the models described earlier, a final model is proposed that combines both trend and seasonality components. This model builds upon the previous models and includes the effects of both the overall trend over time and the seasonal patterns. The intensity $\lambda_{it}$ is modeled as follows:
 
-The average logarithmic score, $\bar{S}(G,y)$, and parameter estimate for the models assuming either the hierarchical Poisson normal model or the hierarchical Poisson Gamma model is gathered in Table \@ref(tab:STECNovelTbl).
+\begin{equation}\label{eq:AgegroupTrendSeasonality}
+  \log(\lambda_{it})=\beta(ageGroup_{i}) + \beta_{trend} t + \sin \big(\frac{2\pi\cdot \tau_t}{12}\big) \beta_{\sin} + \cos \big(\frac{2\pi\cdot \tau_t}{12}\big)\beta_{\cos} + \log(n_{it})
+\end{equation}
+
+The proposed models above are subsequently implemented and estimated in two different modeling frameworks: the hierarchical Poisson Normal model and the hierarchical Poisson Gamma model. The goodness-of-fit of these models is evaluated using the average logarithmic score, $\bar{S}(G,y)$. An excerpt of these results, namely for the models with the lowest logarithmic score, $\bar{S}(G,y)$, for both modeling frameworks, are summarized in Table \@ref(tab:STECNovelTbl). For the full table of results, refer to Table \@ref(tab:STECNovelTblAppendix).
 
 
 ```{r STECNovelTbl, echo=FALSE}
-
-
-
 STEC_novel_tbl %>%
+  filter(method %in% c("PoisN_ageGroup_trend_seasonality", "PoisG_ageGroup_trend_seasonality")) %>%
   mutate(`Estimate (95\\% CI)` = paste0(round(theta,2), " (",round(CI.lwr,2),", ",round(CI.upr,2),")"),
          Model = case_when(
            grepl(pattern = "PoisN_", x = method) ~ "Poisson Normal",
@@ -73,26 +93,22 @@ STEC_novel_tbl %>%
            Parameter == "sin(pi/6 * monthInYear)" ~ "$\\beta_{\\sin}$",
            Parameter == "cos(pi/6 * monthInYear)" ~ "$\\beta_{\\cos}$"
          )) %>%
-  # mutate(Formula = gsub(pattern = "_", replacement = "", x = Formula)) %>%
-  mutate(Formula = case_when(
-    Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot monthInYear_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot monthInYear_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
-  )) %>%
-  select(Model, Formula, `$\\bar{S}(G,y)$` = avgLogS, Parameter, `Estimate (95\\% CI)`) %>%
-  kbl(booktabs = TRUE, escape = FALSE, longtable = TRUE, caption = "The average logarithmic score, $\\bar{S}(G,y)$, along with the parameter estimates at $t_{0}$ for a suite of models modelling Shiga toxin (verotoxin)-producing \\textit{Escherichia coli}, assuming either the hierarchical Poisson Normal model or the hierarchical Poisson Gamma model.  The confidence intervals for the estimates are calculated using profile likelihood confidence intervals.") %>%
+  select(Model, `$\\bar{S}(G,y)$` = avgLogS, Parameter, `Estimate (95\\% CI)`) %>%
+  kbl(booktabs = TRUE, escape = FALSE, longtable = TRUE, caption = "The average logarithmic score, $\\bar{S}(G, y)$, is computed for the model described in  \\eqref{eq:AgegroupTrendSeasonality} that models Shiga toxin (verotoxin)-producing \\textit{Escherichia coli}. The parameter estimates at time $t_0$ are also obtained for this model. Both the hierarchical Poisson Normal model and the hierarchical Poisson Gamma model are considered for the analysis. Confidence intervals for the parameter estimates are calculated using profile likelihood confidence intervals.") %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
-  collapse_rows(columns = 1:3, 
+  collapse_rows(columns = 1:2, 
                 row_group_label_position = "stack",
                 row_group_label_fonts = row_group_label_fonts,
                 latex_hline = "custom",
-                custom_latex_hline = 1:3)
-
+                custom_latex_hline = 1:2)
 ```
 
 
-As expected, the models with including both trend and seasonality minimizes the logarithmic score assuming the hierarchical Poisson Normal model and the hierarchical Poisson Gamma model, respectively. Thus, these models are chosen for further consideration.
+As anticipated, the models incorporating both trends and seasonality result in lower logarithmic scores in both the hierarchical Poisson Normal model and the hierarchical Poisson Gamma model. This suggests that these models provide a better fit to the data.
+
+Furthermore, it is notable that the parameter estimates and confidence intervals for the fixed effects are similar across the two modeling frameworks, despite the different assumptions regarding the distribution of the random effects. This indicates that the choice of modeling framework does not significantly impact the estimation of the fixed effects in this analysis.
+
+
 
 
 (ref:CompareNovelSTEC) One-step ahead random effects $u_{t_1}$ of Shiga toxin (verotoxin)-producing \textit{Escherichia coli} in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $u_{t_1}$ exceeds the threshold (dashed line).
@@ -214,7 +230,7 @@ knitr::include_graphics("../figures/Compare_alarms_STEC.png")
 knitr::include_graphics("../figures/Compare_alarms_LIST.png")
 ```
 
-(ref:'CompareAlarmsSHIG) Placeholder caption 
+(ref:CompareAlarmsSHIG) Placeholder caption 
 
 ```{r CompareAlarmsSHIG, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsSHIG)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_alarms_SHIG.png")
