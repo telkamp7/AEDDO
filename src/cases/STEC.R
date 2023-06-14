@@ -322,7 +322,7 @@ STEC_PoisN_ageGroup_trend_unnested %>%
 STEC_PoisN_ageGroup_trend_seasonality_unnested <- STEC_PoisN_ageGroup_trend_seasonality %>% 
   select(ran.ef) %>%
   unnest(ran.ef) %>%
-  mutate(threshold = qnorm(p = 0.95, mean = 0, sd = exp(log_sigma))) %>%
+  mutate(threshold = qnorm(p = 0.9, mean = 0, sd = exp(log_sigma))) %>%
   select(Date = ref.date, ageGroup, `u_Poisson Normal` = u, `alarm_Poisson Normal` = alarm, `threshold_Poisson Normal` = threshold)
 
 STEC_PoisN_ageGroup_trend_seasonality_par <- STEC_PoisN_ageGroup_trend_seasonality  %>% 
@@ -425,7 +425,7 @@ write_rds(x = STEC_PoisG_ageGroup_trend_seasonality, file = "STEC_PoisG_ageGroup
 STEC_PoisG_ageGroup_trend_seasonality_unnested <- STEC_PoisG_ageGroup_trend_seasonality %>% 
   select(ran.ef) %>%
   unnest(ran.ef) %>%
-  mutate(threshold = qgamma(p = 0.95, shape = 1/phi, scale = phi)) %>%
+  mutate(threshold = qgamma(p = 0.9, shape = 1/phi, scale = phi)) %>%
   select(Date = ref.date, ageGroup, `u_Poisson Gamma` = u, `alarm_Poisson Gamma` = alarm, `threshold_Poisson Gamma` = threshold)
 
 STEC_PoisG_ageGroup_trend_seasonality_par <- STEC_PoisG_ageGroup_trend_seasonality  %>% 
