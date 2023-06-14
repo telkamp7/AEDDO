@@ -9,8 +9,9 @@ listArgs <- as.list(unlist(lapply(args, function(x) {
   return(z)
 })))
 
+
 # Converting numbers from character where possible
-surpressWarnings( tmpNum <- as.numeric(listArgs))
+suppressWarnings(tmpNum <- as.numeric(listArgs))
 listArgs[!is.na(tmpNum)] <- as.list(tmpNum[!is.na(tmpNum)])
 
 # Import the libraries
