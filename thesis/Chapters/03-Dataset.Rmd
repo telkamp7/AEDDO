@@ -104,9 +104,11 @@ knitr::include_graphics("../figures/LIST_long_plot.png")
 
 In general, SSI employs whole-genome sequencing (WGS) as the state-of-the-art method to detect disease outbreaks caused by \textit{Listeria monocytogenes}. This method involves mapping the entire DNA of the bacteria and enables SSI to identify cases where patients are infected with identical Listeria bacteria. However, it is important to note that for this master's thesis, the DNA typing data is unavailable for use.
 
-One notable outbreak investigated by SSI occurred between September 2013 and October 2014. This \textit{Listeriosis} outbreak involved a total of 41 cases, resulting in 17 deaths. Deli meat products from a specific company were identified as the source of the outbreak. The high mortality rate may be attributed to the consumption of these products in nursing homes and hospitals, where patients are more vulnerable. Following the discovery of Listeria at the facility, the Danish Veterinary and Food Administration recalled all products from the company.
+The first notified outbreak in the 20th century occurred in 2009 [@Smith_2011]. This outbreak affected 8 people, of which two died. The patient samples were isolated between the 6th and 11th of May and it was believed that the cause was infected beef meat from a meals-on-wheels delivery.
 
-In another \textit{Listeriosis} outbreak investigated by SSI, the source was traced back to cold-smoked and cured salmon products. A total of 5 related cases were identified, with 4 of them occurring in August 2017, and the fifth case in May 2017. 
+Another notable outbreak investigated by SSI occurred between September 2013 and October 2014 [@Kvistholm_2016]. This \textit{Listeriosis} outbreak involved a total of 41 cases, resulting in 17 deaths. Deli meat products from a specific company were identified as the source of the outbreak. The high mortality rate may be attributed to the consumption of these products in nursing homes and hospitals, where patients are more vulnerable. Following the discovery of Listeria at the facility, the Danish Veterinary and Food Administration recalled all products from the company.
+
+In another \textit{Listeriosis} outbreak investigated by SSI, the source was traced back to cold-smoked and cured salmon products [@Schjorring_2017]. A total of 5 related cases were identified, with 4 of them occurring in August 2017, and the fifth case in May 2017. 
 
 In some cases, despite extensive investigations, the source of contamination in an outbreak cannot always be identified. Such was the case in an unresolved outbreak that took place between the 13th of May and the 6th of June, 2022. During this period, a total of nine cases were infected with the same type of Listeria, with the majority of affected patients located in the Capital Region of Denmark. Despite thorough efforts, the specific source of contamination remained unknown.
 
@@ -141,7 +143,7 @@ knitr::include_graphics("../figures/LIST_SSI_outbreaks.png")
 knitr::include_graphics("../figures/SHIG_long_plot.png")
 ```
 
-In Denmark, another significant cause of \textit{Shigellosis} outbreaks is the importation of contaminated vegetables. This was evident in several incidents, including a 2007 outbreak where 215 individuals fell ill after consuming imported contaminated baby corn, a smaller outbreak in 2009 linked to sugar snap peas from Kenya, and a 2020 outbreak associated with fresh mint as the source of infection. 
+In Denmark, another significant cause of \textit{Shigellosis} outbreaks is the importation of contaminated vegetables. This was evident in several incidents, including a 2007 outbreak where 215 individuals fell ill after consuming imported contaminated baby corn [@Lewis_2009], a smaller outbreak in 2009 linked to sugar snap peas from Kenya [@Muller_2009], and a 2020 outbreak associated with fresh mint as the source of infection. 
 
 The 2020 outbreak is indeed a significant focus of this study, as it serves as a benchmark for evaluating the effectiveness of outbreak detection algorithms. It took place from the 22th of August to the 9th of September and was investigated by SSI in collaboration with the Danish Veterinary and Food Administration and the National Food Institute at the Technical University of Denmark. The outbreak affected 44 patients, mainly concentrated in the Capital Region of Denmark. During the investigation, at least five events were identified where individuals subsequently developed \textit{Shigellosis}.
 

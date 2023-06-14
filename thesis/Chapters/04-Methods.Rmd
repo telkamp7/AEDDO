@@ -76,9 +76,9 @@ The first step involves fitting either a hierarchical Poisson Normal model or a 
 
 Here $x_{it}$ and $\beta$ are $p$-dimensional vectors of covariates and fixed effects parameters respectively, where $p$ denotes the number of covariates or fixed effects parameters, $m$ denotes the number of groups, and $T$ denotes the length of the period, i.e. $T=t_0-k$.
 
-In the second step, the algorithm infers the one-step ahead random effect $\boldsymbol u_{t_1}$ using the fitted model. The threshold for detecting outbreaks is defined as a quantile of the distribution of the random effects in the second stage model. This can be either a Gaussian distribution using the plug-in estimate $\hat{\sigma}$ or a Gamma distribution using the plug-in estimate $\hat{\phi}$.
+In the second step, the algorithm infers the one-step ahead random effect $u_{i{t}_1}$ for each group  using the fitted model. The threshold for detecting outbreaks is defined as a quantile of the distribution of the random effects in the second stage model. This can be either a Gaussian distribution using the plug-in estimate $\hat{\sigma}$ or a Gamma distribution using the plug-in estimate $\hat{\phi}$.
 
-In the final step, the inferred random effect $u_{t_1}$ is compared to the upper bound $U_{t_0}$, and an alarm is raised if $u_{t_1}>U_{t_0}$. If an outbreak is detected, the related observation is omitted from the parameter estimation in the future. Thus, resulting in a smaller sample size for the rolling window until that specific observation is thrown away.
+In the final step, the inferred random effect $u_{i{t}_1}$ is compared to the upper bound $U_{t_0}$, and an alarm is raised if $u_{i{t}_1}>U_{t_0}$. If an outbreak is detected, the related observation is omitted from the parameter estimation in the future. Thus, resulting in a smaller sample size for the rolling window until that specific observation is thrown away.
 
 \section{General mixed effects models}\label{GLMM}
 
