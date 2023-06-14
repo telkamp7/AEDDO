@@ -235,10 +235,10 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
 if(length(listArgs)>0){
   parString <- paste0(names(listArgs),unlist(listArgs), collapse = "_")
 } else{
-  parString
+  parString <- "Default"
 }
 
-write_rds(x = Data, file = "simulations.Rds")
+write_rds(x = Data, file = paste0("~proj/AEDDO/src/simulation/",parString, ".Rds"))
 
 
 
