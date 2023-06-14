@@ -317,7 +317,7 @@ where we have used the convention
 
 for $z$ real and $y$ integer values. Consequently, the mean and variance of $Y$ are given by
 
-\begin{equation}
+\begin{equation}\label{eq:meanNB}
   \E[Y] = \lambda \qquad \V[Y] = \lambda (\lambda \phi + 1)
 \end{equation}
 

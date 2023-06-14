@@ -1,134 +1,107 @@
 # This script tries to replicate the outbreak simulation study, as seen in https://doi.org/10.1002/sim.5595
 
+args = (commandArgs(trailingOnly = TRUE))
+
+listArgs <- as.list(unlist(lapply(args, function(x) {
+  y <- strsplit(x, split = "=")[[1]]
+  z <- y[2]
+  names(z) <- y[1]
+  return(z)
+})))
+
+# Converting numbers from character where possible
+surpressWarnings( tmpNum <- as.numeric(listArgs))
+listArgs[!is.na(tmpNum)] <- as.list(tmpNum[!is.na(tmpNum)])
+
 # Import the libraries
 library(dplyr)
 library(tidyr)
-library(ggplot2)
+library(readr)
 library(purrr)
-library(surveillance)
+library(doParallel)
 library(TMB)
+library(surveillance)
 
+# Register number of cores to be used
+registerDoParallel(cores = 1)
+
+# Source the simulation functions
+source("simulation_functions.R")
 source("../models/aeddo.R")
 
-# Construct the function for the mean mu_t and linear predictor including trend and 
-# seasonality determined by Fourier terms.
-mu_t <- function(t, theta, beta, gamma1, gamma2, m, trend){
-  # Start construction of linear predictor
-  intExponent <- theta
-  # Add a trend, if the scenario request it
-  if(trend == 1){
-    intExponent <- intExponent + beta * t
-  }
-  # Add a seasonal component, it the scenario request it
-  if(m != 0){
-    j <- 1:m
-    
-    intExponent <- intExponent + sum( gamma1 * cos( (2*pi*j*t)/52 ) + gamma2 * sin( (2*pi*j*t)/52 ) )
-    
-  }
-  # Return the exponentation
-  return( exp(intExponent) )
-}
-
-# Make the function to simulate from the negative binomial distribution with
-# mean mu and variance phi*mu
-simFromNB <- function(t, theta, beta, gamma1, gamma2, m, trend, phi){
-  # Exctract the mu for this timepoint
-  mu <- mu_t(t, theta, beta, gamma1, gamma2, m, trend)
-  # Compute the variance of the distribution in this timepoint
-  variance = phi * mu
-  # Infer the size in the NB
-  size = (mu + mu^2)/variance
-  # Simulate the data
-  rnbinom(n = 1, mu = mu, size = size)
-}
-
-simOutbreak <- function(baselineData){
-  
-  realization <- baselineData$realization
-  
-  # Randomly draw k
-  kBaseline <- sample(x = c(2, 3, 5, 10), size = 4, replace = TRUE)
-  # Count the number of outbreaks
-  nOutbreaks <- 4
-  # Calculate the standard deviation of the baseline data
-  sdBaseline <- sd(realization)
-  # Randomly select a start for the oubreak
-  outbreakStarts <- sample(x = baselineWeeks, size = nOutbreaks, replace = FALSE)
-  
-  logs <- tibble()
-  # Loop over outbreaks
-  for(i in 1:nOutbreaks){
-    # Randomly generate a number from a Poisson distribution with mean k
-    outbreakSizes <- rpois(n = 1, lambda = kBaseline[i] * sdBaseline)
-    # Distribute the cases in the individual outbreaks
-    cases <- floor(rlnorm(outbreakSizes, meanlog = 0, sdlog = 0.5)) + outbreakStarts[i]
-    # Count up the cases
-    tmp <- plyr::count(cases)
-    # Add them to the baseline data
-    realization[tmp$x] <- realization[tmp$x] + tmp$freq
-    logs <- bind_rows(
-      logs,
-      tibble(Start = outbreakStarts[i],
-             End = max(c(Start,tmp$x)),
-             k = kBaseline[i],
-             Size = outbreakSizes,
-             Distributed = list(tmp))
-      )
-  }
-  
-  # Randomly draw k
-  kCurrent <- sample(x = 1:10, size = 1)
-  # Count the number of outbreaks
-  nOutbreak <- 1
-  # Randomly generate a number from a Poisson distribution with mean k
-  outbreakSize <- rpois(n = nOutbreak, lambda = kCurrent * sdBaseline)
-  # Randomly select a start for the oubreak
-  outbreakStart <- sample(x = curWeeks, size = nOutbreak, replace = FALSE)
-  
-  # Distribute the cases in the individual outbreaks
-  cases <- floor(rlnorm(outbreakSize, meanlog = 0, sdlog = 0.5)) + outbreakStart
-  cases[which(cases > max(curWeeks))] <- max(curWeeks)
-  # Count up the cases
-  tmp <- plyr::count(cases)
-  # Add them to the baseline data
-  realization[tmp$x] <- realization[tmp$x] + tmp$freq
-  logs <- bind_rows(
-    logs,
-    tibble(Start = outbreakStart,
-           End = max(c(Start,tmp$x)),
-           k = kCurrent,
-           Size = outbreakSize,
-           Distributed = list(tmp))
-  )
-  
-  return(list(realization = tibble(t = baselineData$t, realization = realization), logs = logs))
-  
-}
-
 # Determine paramters
-theta <- c(0.1, -2, 1.5, 0.5, 2.5, 3.75, 5)
-beta <- c(0.0025, 0.005, 0.003, 0.002, 0.001, 0.001, 0.0001)
-gamma1 <- c(0.6, 0.1, 0.2, 0.5, 1, 0.1, 0.05)
-gamma2 <- c(0.6, 0.3, -0.4, 0.5, 0.1, -0.1, 0.01)
-phi <- c(1.5, 2, 1, 5, 3, 1.1, 1.2)
-m <- 0:1
-trend <- 0:1
+refPar <- list(
+  theta = c(0.1, -2, 1.5, 0.5, 2.5, 3.75, 5),
+  beta = c(0.0025, 0.005, 0.003, 0.002, 0.001, 0.001, 0.0001),
+  gamma1 = c(0.6, 0.1, 0.2, 0.5, 1, 0.1, 0.05),
+  gamma2 = c(0.6, 0.3, -0.4, 0.5, 0.1, -0.1, 0.01),
+  phi = c(1.5, 2, 1, 5, 3, 1.1, 1.2),
+  m = 0:1,
+  trend = 0:1,
+  scenario = 1:28,
+  nRep = 100, # Assign the number of replicates
+  n = 624, # ... and the size of each scenario (in weeks)
+  trainWeeks = 1:312, # Now we assign the weeks used for training the adaptive re-weighting schemes
+  baselineWeeks = 313:575, # ... and the weeks for baseline
+  curWeeks = 576:624, # ... and the curWeeks
+  formula = y ~ 1 + t + cos(2*pi*t/52) + sin(2*pi*t/52),
+  alphaStateOfTheArt = 0.005
+)
+
+if(length(listArgs) > 0){
+  # Check which values to change
+  changes <- match(names(listArgs), names(refPar))
+  # Stop if trying to change non-existing parameter
+  if(any(is.na(changes))){
+    stop(paste( paste(names(listArgs)[is.na(changes)], collapse = ", "), 
+                "is/are not valid parameter names,"))
+  }
+  # Change the requested parameters values and return
+  for(i in 1:length(changes)){
+    refPar[[changes[i]]] <- listArgs[[i]]
+  }
+}
+
+con.farrington <- list(
+  range = NULL, b = 5, w = 3,
+  reweight = TRUE, weightsThreshold = 1,
+  verbose = TRUE, glmWarnings = TRUE,
+  alpha = refPar$alphaStateOfTheArt, trend = TRUE, pThresholdTrend = 0.05,
+  limit54 = c(0,4), powertrans = "2/3",
+  fitFun = "algo.farrington.fitGLM.flexible",
+  populationOffset = TRUE,
+  noPeriods = 1, pastWeeksNotIncluded  = NULL,
+  thersholdMethod = "delta"
+)
+
+con.noufaily <- list(
+  range = NULL, b = 5, w = 3,
+  reweight = TRUE, weightsThreshold = 2.58,
+  verbose = TRUE, glmWarnings = TRUE,
+  alpha = refPar$alphaStateOfTheArt, trend = TRUE, pThresholdTrend = 0.05,
+  limit54 = c(0,4), powertrans = "2/3",
+  fitFun = "algo.farrington.fitGLM.flexible",
+  populationOffset = TRUE,
+  noPeriods = 1, pastWeeksNotIncluded  = NULL,
+  thersholdMethod = "nbPlugin"
+)
+
+arb.dates <- seq.Date(from = as.Date("2000-01-01"), to = as.Date("2000-01-01")+(refPar$n-1)*7, length.out = refPar$n)
 
 # Allocate space for scenarios
 scenarios <- tibble()
 
-# Generate the 42 scenarios
+# Generate the 28 scenarios
 for(i in 1:7){
-  clusterScenario <- expand_grid(theta = theta[i], beta = c(0,beta[i]), m,  phi = phi[i])
+  clusterScenario <- expand_grid(theta = refPar$theta[i], beta = c(0,refPar$beta[i]), m = refPar$m,  phi = refPar$phi[i])
   
-  clusterScenario$gamma1 <- gamma1[i]
+  clusterScenario$gamma1 <- refPar$gamma1[i]
   clusterScenario[clusterScenario$m == 0,]$gamma1 <- 0
   
-  clusterScenario$gamma2 <- gamma2[i]
+  clusterScenario$gamma2 <- refPar$gamma2[i]
   clusterScenario[clusterScenario$m == 0,]$gamma2 <- 0
   
-  clusterScenario$trend <- rep(trend, each = length(m))
+  clusterScenario$trend <- rep(refPar$trend, each = length(refPar$m))
   
   scenarios <- bind_rows(scenarios, clusterScenario)
   
@@ -139,180 +112,133 @@ scenarios %>%
   select(theta, beta, gamma1, gamma2, phi, m, trend) %>%
   print(n=28)
 
-# Assign the number of replicates
-nRep <- 100
-# ... and the size of each scenario (in weeks)
-n <- 624
+# Only consider the chosen scenarios
+scenariosConsidered <- scenarios[refPar$scenario,]
 
-# Now we assign the weeks used for training the adaptive re-weighting schemes
-trainWeeks <- 1:312
-# ... and the weeks for baseline
-baselineWeeks <- 313:575
-# ... and the curWeeks
-curWeeks <- 576:624
+foreach(i = 1:3) %do% 
+  sqrt(i)
 
-# Construct parameters
-simulationsPar <- expand_grid(scenario = 1:nrow(scenarios), rep = 1:nRep, t = 1:n) %>%
-  mutate(par = map(scenario, function(x) scenarios[x,]))
-
-# realizations
-realizations <- simulationsPar %>%
-  mutate(realization = map2_dbl(.x = t, .y = par, .f = function(x, y) simFromNB(t = x, theta = y$theta, beta = y$beta, gamma1 = y$gamma1, gamma2 = y$gamma2, m = y$m, trend = y$trend, phi = y$phi))) %>%
-  group_by(scenario, rep) %>%
-  nest(baselineData = c(t, realization))
-
-outbreaks <- realizations %>%
-  mutate(realization = map(baselineData, .f = function(x) simOutbreak(baselineData = x))) %>%
-  ungroup() %>%
-  unnest_wider(realization)
-
-con.farrington <- list(
-  range = NULL, b = 5, w = 3,
-  reweight = TRUE, weightsThreshold = 1,
-  verbose = TRUE, glmWarnings = TRUE,
-  alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
-  limit54 = c(5,4), powertrans = "2/3",
-  fitFun = "algo.farrington.fitGLM.flexible",
-  populationOffset = TRUE,
-  noPeriods = 1, pastWooksNotIncluded = NULL,
-  thersholdMethod = "delta"
-)
-
-con.noufaily <- list(
-  range = NULL, b = 5, w = 3,
-  reweight = TRUE, weightsThreshold = 2.58,
-  verbose = TRUE, glmWarnings = TRUE,
-  alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
-  limit54 = c(5,4), powertrans = "2/3",
-  fitFun = "algo.farrington.fitGLM.flexible",
-  populationOffset = TRUE,
-  noPeriods = 1, pastWooksNotIncluded = NULL,
-  thersholdMethod = "Noufaily"
-)
-
-compile(file = "../models/PoissonNormal.cpp")
-dyn.load(dynlib("../models/PoissonNormal"))
-compile(file = "../models/PoissonGamma.cpp")
-dyn.load(dynlib("../models/PoissonGamma"))
-
-
-results <- tibble()
-# Loop over all the realizations
-# for(i in 1:nrow(realizations)){
-for(i in 1:2){
+Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "surveillance", "TMB")) %dopar% {
   
-  # Unpack the series
-  dat <- outbreaks %>%
-    filter(row_number() == i) %>%
-    unnest(realization) %>%
-    select(t, realization)
-
-  # Construct sts for surveillance package
-  disease.sts <- sts(observed = dat$realization, frequency = 52)
+  simulationPar <- expand_grid(scenario = refPar$scenario, t = 1:refPar$n) %>%
+    mutate(par = map(scenario, function(x) scenarios[x,]))
   
-  Farrington <- farringtonFlexible(sts = disease.sts, control = con.farrington)
+  realizations <- simulationPar %>%
+    mutate(realization = map2_dbl(.x = t, .y = par, .f = function(x, y) simFromNB(t = x, theta = y$theta, beta = y$beta, gamma1 = y$gamma1, gamma2 = y$gamma2, m = y$m, trend = y$trend, phi = y$phi))) %>%
+    group_by(scenario) %>%
+    mutate(Date = arb.dates, n = 1, ageGroup = "All") %>%
+    nest(baselineData = c(Date, t, realization, n, ageGroup))
   
-  Noufaily <- farringtonFlexible(sts = disease.sts, control = con.noufaily)
+  outbreaks <- realizations %>%
+    mutate(realization = map(baselineData, .f = function(x) simOutbreak(baselineData = x))) %>%
+    ungroup()
   
-  # Construct the design matrix
-  designMatrix <- model.matrix(object = realization ~ 1 + t + cos(2*pi*t/52) + sin(2*pi*t/52), data = dat)
+  ans <- tibble()
   
-  # Construct objective function with derivatives based on a compiled C++ template
-  PoisG <- MakeADFun(
-    data = list(y = dat$realization, n = 1, X = designMatrix),
-    parameters = list(beta = rep(0, ncol(designMatrix)),
-                      log_phi_u = log(1)),
-    hessian = TRUE,
-    method = "BFGS",
-    DLL = "PoissonGamma",
-    silent = TRUE
-  )
-  
-  
-  # Optimize the function
-  opt <- do.call(what = "optim", args = PoisG)
-  
-  
-  
-  
-  results <- bind_rows(results,
-                       tibble(Farrington = Farrington@alarm[,1],
-                              Noufaily = Noufaily@alarm[,1])
-                       )
+  for(j in outbreaks$scenario){
     
-}
+    series <- outbreaks %>%
+      filter(scenario == j) %>%
+      unnest(realization) %>%
+      select(Date, t, y = realization, n, ageGroup)
+    
+    disease.sts <- sts(observed = series$y, frequency = 52, epoch = series$Date, )
+    
+    farrington <- farringtonFlexible(sts = disease.sts, control = con.farrington)
+    
+    noufaily <- farringtonFlexible(sts = disease.sts, control = con.noufaily)
 
-
-tmp <- outbreaks %>% 
-  unnest_wider(realization) %>%
-  unnest(realization) %>%
-  mutate(con.farrington = list(con.farrington),
-         con.noufaily = list(con.noufaily),
-         sts = list(sts(observed = realization, frequency = 52))) 
-
-
-
-
-# test <- test %>%
-#   filter(scenario %in% c(8,10,12,17)) %>%
-#   mutate(realization = map2_dbl(.x = t, .y = par, .f = function(x, y) simFromNB(t = x, theta = y$theta, beta = y$beta, gamma1 = y$gamma1, gamma2 = y$gamma2, m = y$m, trend = y$trend, phi = y$phi)))
-
-realizations %>%
-  filter(scenario %in% c(8, 10, 12, 17)) %>%
-  ggplot(mapping = aes(x = t, y = realization)) +
-  geom_point() +
-  geom_line() +
-  facet_wrap(facets = vars(scenario), scales = "free_y")
-
-
-subsetScenarios %>%
-  ggplot(mapping = aes(x = t, y = realization)) +
-  geom_point() +
-  geom_line() +
-  facet_wrap(facets = vars(scenario), scales = "free_y")
-
-simulations <- simulations %>%
-  mutate(par = map(scenario, function(x) scenarios[x,])) %>%
-  unnest(par) %>%
-  group_by(scenario) %>%
-  nest(data = t:trend)
-
-subsetSimulations <- simulations %>% 
-  filter(scenario %in% c(8, 10, 12, 17)) %>%
-  mutate(realization = map(data, function(x) do.call(what = "simFromNB", args = x)))
-
-
-
-
-prob <- diff(plnorm(q = 0:9, meanlog = 0, sdlog = 0.5))
-
-
-
-
-
-tmp <- sample(x = startOutbreak+0:(length(prob)-1), size = PoissonOutbreakSize, replace = TRUE, prob = prob)
-table(tmp)
-
-
-round(dlnorm(x= 0:10, meanlog = 0, sdlog = 0.5),2)
-
-simulations <- tibble()
-for(j in 1:nrow(scenarios)){
-  
-  for(t in 1:n){
-    scenarioPar <- scenarios[j, ] %>%
-      mutate(t = t) %>%
-      as.list()
+    PoisN <- aeddo(data = series,
+                   formula = refPar$formula,
+                   trend = TRUE,
+                   seasonality = TRUE,
+                   theta = c(rep(0, 5)),
+                   method = "BFGS",
+                   model = "PoissonNormal", 
+                   k = 52*3, 
+                   sig.level = 0.95,
+                   cpp.dir = "../models/",
+                   period = "week",
+                   excludePastOutbreaks = TRUE)
+    
+    PoisG <- aeddo(data = series,
+                   formula = refPar$formula,
+                   trend = TRUE,
+                   seasonality = TRUE,
+                   theta = c(rep(0, 5)),
+                   method = "BFGS",
+                   model = "PoissonGamma", 
+                   k = 52*3, 
+                   sig.level = 0.95,
+                   cpp.dir = "../models/",
+                   period = "week",
+                   excludePastOutbreaks = TRUE)
     
     
-    do.call("mu_t", args = scenarioPar)
+    alarm_Farrington <- as_tibble(farrington@alarm) %>%
+      mutate(Date = as.Date(x = noufaily@epoch, origin = "1970-01-01")) %>%
+      rename(alarm_Farrington = observed1)
+    
+    alarm_Noufaily <- as_tibble(noufaily@alarm) %>%
+      mutate(Date = as.Date(x = noufaily@epoch, origin = "1970-01-01")) %>%
+      rename(alarm_Noufaily = observed1)
+    
+    alarm_PoisN <- PoisN %>%
+      select(ran.ef) %>% 
+      unnest(ran.ef) %>%
+      select(Date = ref.date, alarm_PoisN = alarm)
+    
+    alarm_PoisG <- PoisN %>%
+      select(ran.ef) %>% 
+      unnest(ran.ef) %>%
+      select(Date = ref.date, alarm_PoisG = alarm)
+    
+    
+    tmp <- outbreaks %>%
+      filter(scenario == j) %>%
+      unnest(realization) %>%
+      select(Date, t, y = realization, n, ageGroup, outbreak) %>%
+      full_join(y = alarm_Farrington, by = join_by("Date")) %>%
+      full_join(y = alarm_Noufaily, by = join_by("Date")) %>%
+      full_join(y = alarm_PoisN, by = join_by("Date")) %>%
+      full_join(y = alarm_PoisG, by = join_by("Date")) %>%
+      slice_tail(n = 49) %>%
+      mutate(outbreakTF = outbreak > 0) %>%
+      reframe(sim = sim,
+              scenario = j,
+              TP_Farrington =  sum(alarm_Farrington == TRUE & outbreakTF == TRUE),
+              TN_Farrington =  sum(alarm_Farrington == FALSE & outbreakTF == FALSE),
+              FP_Farrington =  sum(alarm_Farrington == TRUE & outbreakTF == FALSE),
+              FN_Farrington =  sum(alarm_Farrington == FALSE & outbreakTF == TRUE),
+              TP_Noufaily =  sum(alarm_Noufaily == TRUE & outbreakTF == TRUE),
+              TN_Noufaily =  sum(alarm_Noufaily == FALSE & outbreakTF == FALSE),
+              FP_Noufaily =  sum(alarm_Noufaily == TRUE & outbreakTF == FALSE),
+              FN_Noufaily =  sum(alarm_Noufaily == FALSE & outbreakTF == TRUE),
+              TP_PoisN =  sum(alarm_PoisN == TRUE & outbreakTF == TRUE),
+              TN_PoisN =  sum(alarm_PoisN == FALSE & outbreakTF == FALSE),
+              FP_PoisN =  sum(alarm_PoisN == TRUE & outbreakTF == FALSE),
+              FN_PoisN =  sum(alarm_PoisN == FALSE & outbreakTF == TRUE),
+              TP_PoisG =  sum(alarm_PoisG == TRUE & outbreakTF == TRUE),
+              TN_PoisG =  sum(alarm_PoisG == FALSE & outbreakTF == FALSE),
+              FP_PoisG =  sum(alarm_PoisG == TRUE & outbreakTF == FALSE),
+              FN_PoisG =  sum(alarm_PoisG == FALSE & outbreakTF == TRUE))
+    
+    ans <- ans %>%
+      bind_rows(tmp)
     
   }
+  
+  list(ans)
+  
 }
 
+if(length(listArgs)>0){
+  parString <- paste0(names(listArgs),unlist(listArgs), collapse = "_")
+} else{
+  parString
+}
 
-
-mu_t(t = 1, theta = 0.1, beta = 0, gamma1 = 0, gamma2 = 0, m = 0, trend = 0)
+write_rds(x = Data, file = "simulations.Rds")
 
 
 

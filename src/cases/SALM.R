@@ -106,7 +106,7 @@ con.farrington <- list(
   limit54 = c(0,4), powertrans = "2/3",
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
-  noPeriods = 1, pastWooksNotIncluded = NULL,
+  noPeriods = 1, pastWeeksNotIncluded = NULL,
   thersholdMethod = "delta"
 )
 
@@ -132,12 +132,12 @@ con.noufaily <- list(
   range = NULL, b = 3, w = 2,
   reweight = TRUE, weightsThreshold = 2.58,
   verbose = TRUE, glmWarnings = TRUE,
-  alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
+  alpha = 0.05, trend = TRUE, pThresholdTrend = 1,
   limit54 = c(0,4), powertrans = "2/3",
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
-  noPeriods = 1, pastWooksNotIncluded = NULL,
-  thersholdMethod = "Noufaily"
+  noPeriods = 1, pastWeeksNotIncluded = NULL,
+  thersholdMethod = "nbPlugin"
 )
 
 SALM_Noufaily <- farringtonFlexible(sts = SALM.sts, con.noufaily)

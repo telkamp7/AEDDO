@@ -119,38 +119,38 @@ The upper bounds $U_{t_0}$ are calculated based on the 90% quantile of the distr
 
 By visualizing the one-step ahead random effects and the upper bounds together, epidemiologists can easily identify periods or age groups where the random effects surpass the upper bounds, highlighting potential outbreaks that require further investigation and monitoring.
 
-is computed for the model described in  \\eqref{eq:AgegroupTrendSeasonality}
-
 (ref:CompareNovelSTEC) One-step ahead random effects $u_{t_1}$ (circles) given the model described in \eqref{eq:AgegroupTrendSeasonality} for Shiga toxin (verotoxin)-producing \textit{Escherichia coli} in Denmark, 2011-2022. Poisson Normal model (right) and Poisson Gamma model (left) monitor the disease. Alarm raised (solid circle) if $u_{t_1}$ exceeds the threshold (dashed line).
 
 ```{r CompareNovelSTEC, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelSTEC)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_novel_STEC.png")
 ```
 
+A slight, yet consistent, increase in the contribution from the age group to the overall intensity of STEC cases is observed in Figure \@ref(fig:STECnovelparageGroup) over the analyzed period, with only one instance of a decrease in intensity immediately after the 2020 Covid-19 lockdown.
 
-SKRIVE HER NÅR RESULTATER ER FÆRIGE
+It is worth noting that in the hierarchical Poisson Gamma framework, the parameter estimate for $\beta(ageGroup_i)$ directly represents the contribution of the age group to the disease intensity. This is possible due to the properties of the expected value described in Equation \eqref{eq:meanNB}. However, this direct interpretation does not hold for the parameter estimates obtained in the hierarchical Poisson Normal framework. Nevertheless, it can be observed that both sets of parameter estimates are similar throughout the entire time period, indicating that this discrepancy is not significant.
 
-(ref:STECnovelparageGroup) Estimates (solid line) and 95\% profile likelihood confidence intervals (dashed line) of $\beta(ageGroup_i)$ are shown using a rolling window with a width of $k=36$ for the time period between January 2011 and December 2022 for Shiga toxin (verotoxin)-producing \textit{Escherichia coli}.
+(ref:STECnovelparageGroup) Estimates (solid line) and 95% profile likelihood confidence intervals (dashed line) of $\beta(ageGroup_i)$ for the model given in Equation \eqref{eq:AgegroupTrendSeasonality} are displayed. The estimates are obtained using a rolling window with a width of $k=36$ for the time period between January 2011 and December 2022 for Shiga toxin (verotoxin)-producing \textit{Escherichia coli}.
 
 ```{r STECnovelparageGroup, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelparageGroup)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/STEC_novel_par_ageGroup.png")
 ```
 
+WRITE HERE
 
-(ref:STECnovelpartrend) Estimates (solid line) and 95\% profile likelihood confidence intervals (dashed line) of $\beta_{\sin}$ and $beta_{\cos}$ are shown using a rolling window with a width of $k=36$ for the time period between January 2011 and December 2022 for Shiga toxin (verotoxin)-producing \textit{Escherichia coli}.
+(ref:STECnovelpartrend) Estimates (solid line) and 95% profile likelihood confidence intervals (dashed line) of $\beta_{trend}$ for the model given in Equation \eqref{eq:AgegroupTrendSeasonality} are displayed. The estimates are obtained using a rolling window with a width of $k=36$ for the time period between January 2011 and December 2022 for Shiga toxin (verotoxin)-producing \textit{Escherichia coli}.
 
 ```{r STECnovelpartrend, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelpartrend)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/STEC_novel_par_trend.png")
 ```
 
-(ref:STECnovelparseasonality) Estimates (solid line) and 95\% profile likelihood confidence intervals (dashed line) of $\beta_{trend}$ are shown using a rolling window with a width of $k=36$ for the time period between January 2011 and December 2022 for Shiga toxin (verotoxin)-producing \textit{Escherichia coli}.
+WRITE HERE
 
+(ref:STECnovelparseasonality) Estimates (solid line) and 95% profile likelihood confidence intervals (dashed line) of $\beta_{\cos}$ and $\beta_{\sin}$ for the model given in Equation \eqref{eq:AgegroupTrendSeasonality} are displayed. The estimates are obtained using a rolling window with a width of $k=36$ for the time period between January 2011 and December 2022 for Shiga toxin (verotoxin)-producing \textit{Escherichia coli}.
 ```{r STECnovelparseasonality, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelparseasonality)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/STEC_novel_par_seasonality.png")
 ```
 
-Apart from the Poisson Gamma model being seemingly more robust, the estimated fixed effects parameters for the models are on a comparable scale. This can be seen in Figure \@ref(fig:STECnovelparageGroup)
-
+WRITE HERE
 
 (ref:STECnovelparseaDispersion) Estimates (solid line) and 95\% profile likelihood confidence intervals (dashed line) of $\phi$ and $\sigma$ are shown using a rolling window with a width of $k=36$ for the time period between January 2011 and December 2022 for Shiga toxin (verotoxin)-producing \textit{Escherichia coli}.
 
@@ -207,7 +207,7 @@ Both the state-of-the-art outbreak detection algorithm and the novel outbreak de
 
 \subsection{Applying the state-of-the-art outbreak detection algorithm to \textit{Shigellosis}}
 
-
+WRITE HERE
 
 (ref:CompareStateOfTheArtSHIG) Monthly \textit{Shigellosis} incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations timepoints outside reference data. Alarm triggered (full opacity) if observations exceeds threshold. 
 
@@ -216,6 +216,8 @@ knitr::include_graphics("../figures/Compare_stateOfTheArt_SHIG.png")
 ```
 
 \subsection{Applying the novel outbreak detection algorithm to \textit{Shigellosis}}
+
+WRITE HERE
 
 (ref:CompareNovelSHIG) One-step ahead random effects $u_{t_1}$ of \textit{Shigellosis} in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $u_{t_1}$ exceeds the threshold (dashed line).
 
@@ -231,6 +233,8 @@ Both the state-of-the-art outbreak detection algorithm and the novel outbreak de
 
 \subsection{Applying the state-of-the-art outbreak detection algorithm to \textit{Salmonellosis}}
 
+WRITE HERE
+
 (ref:CompareStateOfTheArtSALM) Monthly \textit{Salmonellosis} incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations timepoints outside reference data. Alarm triggered (full opacity) if observations exceeds threshold. 
 
 ```{r CompareStateOfTheArtSALM, echo=FALSE, out.width="100%", fig.cap="(ref:CompareStateOfTheArtSALM)", fig.pos = "H", fig.show = "hold"}
@@ -238,6 +242,8 @@ knitr::include_graphics("../figures/Compare_stateOfTheArt_SALM.png")
 ```
 
 \subsection{Applying the novel outbreak detection algorithm to \textit{Salmonellosis}}
+
+WRITE HERE
 
 (ref:CompareNovelSALM) One-step ahead random effects $u_{t_1}$ of \textit{Salmonellosis} in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $u_{t_1}$ exceeds the threshold (dashed line).
 
@@ -247,12 +253,9 @@ knitr::include_graphics("../figures/Compare_novel_SALM.png")
 
 
 
-
-
-
-
-
 \section{Performance comparison of novel methods}
+
+WRITE HERE
 
 (ref:CompareAlarmsSTEC) Placeholder caption 
 
@@ -260,11 +263,15 @@ knitr::include_graphics("../figures/Compare_novel_SALM.png")
 knitr::include_graphics("../figures/Compare_alarms_STEC.png")
 ```
 
+WRITE HERE
+
 (ref:CompareAlarmsLIST) Placeholder caption 
 
 ```{r CompareAlarmsLIST, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsLIST)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_alarms_LIST.png")
 ```
+
+WRITE HERE
 
 (ref:CompareAlarmsSHIG) Placeholder caption 
 
@@ -272,13 +279,13 @@ knitr::include_graphics("../figures/Compare_alarms_LIST.png")
 knitr::include_graphics("../figures/Compare_alarms_SHIG.png")
 ```
 
+WRITE HERE
+
 (ref:CompareAlarmsSALM) Placeholder caption 
 
 ```{r CompareAlarmsSALM, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsSALM)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_alarms_SALM.png")
 ```
-
-
 
 \cleardoublepage
 

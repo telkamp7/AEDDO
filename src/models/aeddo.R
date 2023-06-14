@@ -13,7 +13,8 @@ aeddo <- function(
     k = 36,
     sig.level = 0.95,
     excludePastOutbreaks = TRUE,
-    CI = FALSE
+    CI = FALSE,
+    period = "month"
     ){
   
   if(is.null(cpp) & is.na(model)){
@@ -67,10 +68,17 @@ aeddo <- function(
   
   # Add seasonality
   if(seasonality){
-    data <- dplyr::`%>%`(
-      data,
-      dplyr::mutate(monthInYear = as.integer(format(Date, "%m")))
+    if(period == "month"){
+      data <- dplyr::`%>%`(
+        data,
+        dplyr::mutate(periodInYear = as.integer(format(Date, "%m")))
+      )  
+    }else if(period == "week"){
+      data <- dplyr::`%>%`(
+        data,
+        dplyr::mutate(periodInYear = as.integer(format(Date, "%W")))
       )
+    }
   }
   
   # Make a placeholder for the 'results' and 'pastOutbreaks'
@@ -99,20 +107,32 @@ aeddo <- function(
     )
     # Add trend
     if(trend){
-      yWindow <- dplyr::`%>%`(
-        yWindow,
-        dplyr::mutate(t = lubridate::interval(
-          Dates[i],
-          Date) %/% months(1) - k + 1
+      if(period == "month"){
+        yWindow <- dplyr::`%>%`(
+          yWindow,
+          dplyr::mutate(t = lubridate::interval(
+            Dates[i],
+            Date) %/% months(1) - k + 1
+          )
         )
-      )
-      refData <- dplyr::`%>%`(
-        refData,
-        dplyr::mutate(t = lubridate::interval(
-          Dates[i],
-          Date) %/% months(1) - k + 1
+        refData <- dplyr::`%>%`(
+          refData,
+          dplyr::mutate(t = lubridate::interval(
+            Dates[i],
+            Date) %/% months(1) - k + 1
+          )
         )
-      )
+      }else if(period == "week"){
+        yWindow <- dplyr::`%>%`(
+          yWindow,
+          dplyr::mutate(t = 1:k-k)
+        )
+        refData <- dplyr::`%>%`(
+          refData,
+          dplyr::mutate(t = 0)
+        )
+      }
+      
     }
     
     # Exclude past observations, if they were deemed an outbreak
@@ -331,21 +351,35 @@ aeddo <- function(
       
       # Add seasonality
       if(seasonality){
-        pastOutbreaks <- dplyr::`%>%`(
-          pastOutbreaks,
-          dplyr::mutate(monthInYear = as.integer(format(Date, "%m")))
-        )
+        if(period == "month"){
+          pastOutbreaks <- dplyr::`%>%`(
+            pastOutbreaks,
+            dplyr::mutate(periodInYear = as.integer(format(Date, "%m")))
+          )  
+        }else if(period == "week"){
+          pastOutbreaks <- dplyr::`%>%`(
+            pastOutbreaks,
+            dplyr::mutate(periodInYear = as.integer(format(Date, "%W")))
+          )
+        }
       }
       
       # Add trend
       if(trend){
-        pastOutbreaks <- dplyr::`%>%`(
-          pastOutbreaks,
-          dplyr::mutate(t = lubridate::interval(
-            Dates[i],
-            Date) %/% months(1) - k + 1
+        if(period == "month"){
+          pastOutbreaks <- dplyr::`%>%`(
+            pastOutbreaks,
+            dplyr::mutate(t = lubridate::interval(
+              Dates[i],
+              Date) %/% months(1) - k + 1
+            )
           )
-        )
+        }else if(period == "week"){
+          pastOutbreaks <- dplyr::`%>%`(
+            pastOutbreaks,
+            dplyr::mutate(t = 0)
+          )
+        }
       }
       
     }
