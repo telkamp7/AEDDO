@@ -15,16 +15,17 @@ suppressWarnings(tmpNum <- as.numeric(listArgs))
 listArgs[!is.na(tmpNum)] <- as.list(tmpNum[!is.na(tmpNum)])
 
 # Import the libraries
-library(dplyr)
 library(tidyr)
-library(readr)
+# library(readr)
+library(plyr)
+library(dplyr)
 library(purrr)
 library(doParallel)
 library(TMB)
 library(surveillance)
 
 # Register number of cores to be used
-registerDoParallel(cores = 1)
+registerDoParallel(cores = 20)
 
 # Source the simulation functions
 source("simulation_functions.R")
@@ -116,10 +117,7 @@ scenarios %>%
 # Only consider the chosen scenarios
 scenariosConsidered <- scenarios[refPar$scenario,]
 
-foreach(i = 1:3) %do% 
-  sqrt(i)
-
-Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "surveillance", "TMB")) %dopar% {
+Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "surveillance", "TMB", "plyr")) %dopar% {
   
   simulationPar <- expand_grid(scenario = refPar$scenario, t = 1:refPar$n) %>%
     mutate(par = map(scenario, function(x) scenarios[x,]))
@@ -194,8 +192,7 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
       unnest(ran.ef) %>%
       select(Date = ref.date, alarm_PoisG = alarm)
     
-    
-    tmp <- outbreaks %>%
+    outbreaksAndAlarms <- outbreaks %>%
       filter(scenario == j) %>%
       unnest(realization) %>%
       select(Date, t, y = realization, n, ageGroup, outbreak) %>%
@@ -203,8 +200,12 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
       full_join(y = alarm_Noufaily, by = join_by("Date")) %>%
       full_join(y = alarm_PoisN, by = join_by("Date")) %>%
       full_join(y = alarm_PoisG, by = join_by("Date")) %>%
+      mutate(outbreakTF = outbreak > 0) %>% 
+      nest()
+    
+    tmp <- outbreaksAndAlarms %>%
+      unnest(data) %>%
       slice_tail(n = 49) %>%
-      mutate(outbreakTF = outbreak > 0) %>%
       reframe(sim = sim,
               scenario = j,
               TP_Farrington =  sum(alarm_Farrington == TRUE & outbreakTF == TRUE),
@@ -225,7 +226,8 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
               FN_PoisG =  sum(alarm_PoisG == FALSE & outbreakTF == TRUE))
     
     ans <- ans %>%
-      bind_rows(tmp)
+      bind_rows(tmp) %>%
+      bind_cols(outbreaksAndAlarms)
     
   }
   
@@ -239,7 +241,7 @@ if(length(listArgs)>0){
   parString <- "Default"
 }
 
-write_rds(x = Data, file = paste0("~proj/AEDDO/src/simulation/",parString, ".Rds"))
+write_rds(x = Data, file = paste0("~/proj/AEDDO/src/simulation/",parString, ".Rds"))
 
 
 
