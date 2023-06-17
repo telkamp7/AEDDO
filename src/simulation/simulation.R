@@ -1,5 +1,5 @@
 # This script tries to replicate the outbreak simulation study, as seen in https://doi.org/10.1002/sim.5595
-
+commandArgs(trailingOnly = TRUE)
 args = (commandArgs(trailingOnly = TRUE))
 
 listArgs <- as.list(unlist(lapply(args, function(x) {
@@ -15,16 +15,18 @@ suppressWarnings(tmpNum <- as.numeric(listArgs))
 listArgs[!is.na(tmpNum)] <- as.list(tmpNum[!is.na(tmpNum)])
 
 # Import the libraries
-library(dplyr)
 library(tidyr)
 library(readr)
+library(plyr)
+library(dplyr)
 library(purrr)
 library(doParallel)
 library(TMB)
 library(surveillance)
 
 # Register number of cores to be used
-registerDoParallel(cores = detectCores() - 1)
+
+registerDoParallel(cores = 20)
 
 # Source the simulation functions
 source("simulation_functions.R")
@@ -118,10 +120,7 @@ write_rds(x = scenarios, file = "scenarios.Rds")
 # Only consider the chosen scenarios
 scenariosConsidered <- scenarios[refPar$scenario,]
 
-foreach(i = 1:3) %do% 
-  sqrt(i)
-
-Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "surveillance", "TMB")) %dopar% {
+Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "surveillance", "TMB", "plyr")) %dopar% {
   
   simulationPar <- expand_grid(scenario = refPar$scenario, t = 1:refPar$n) %>%
     mutate(par = map(scenario, function(x) scenarios[x,]))
@@ -140,8 +139,14 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
   
   for(j in outbreaks$scenario){
     
-    series <- outbreaks %>%
+    scenarioUnpack <- outbreaks %>%
       filter(scenario == j) %>%
+      unnest_wider(realization)
+    
+    k <- scenarioUnpack %>%
+      select(k)
+    
+    series <- scenarioUnpack %>%
       unnest(realization) %>%
       select(Date, t, y = realization, n, ageGroup)
     
@@ -196,17 +201,19 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
       unnest(ran.ef) %>%
       select(Date = ref.date, alarm_PoisG = alarm)
     
-    
-    tmp <- outbreaks %>%
-      filter(scenario == j) %>%
+    outbreaksAndAlarms <- scenarioUnpack %>%
       unnest(realization) %>%
-      select(Date, t, y = realization, n, ageGroup, outbreak) %>%
+      select(Date, t, y = realization, n, ageGroup, outbreak, k) %>%
       full_join(y = alarm_Farrington, by = join_by("Date")) %>%
       full_join(y = alarm_Noufaily, by = join_by("Date")) %>%
       full_join(y = alarm_PoisN, by = join_by("Date")) %>%
       full_join(y = alarm_PoisG, by = join_by("Date")) %>%
+      mutate(outbreakTF = outbreak > 0) %>% 
+      nest()
+    
+    tmp <- outbreaksAndAlarms %>%
+      unnest(data) %>%
       slice_tail(n = 49) %>%
-      mutate(outbreakTF = outbreak > 0) %>%
       reframe(sim = sim,
               scenario = j,
               TP_Farrington =  sum(alarm_Farrington == TRUE & outbreakTF == TRUE),
@@ -227,7 +234,8 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
               FN_PoisG =  sum(alarm_PoisG == FALSE & outbreakTF == TRUE))
     
     ans <- ans %>%
-      bind_rows(tmp)
+      bind_rows(tmp) %>%
+      bind_cols(outbreaksAndAlarms)
     
   }
   
@@ -241,7 +249,7 @@ if(length(listArgs)>0){
   parString <- "Default"
 }
 
-write_rds(x = Data, file = paste0("~proj/AEDDO/src/simulation/",parString, ".Rds"))
+write_rds(x = list(Data=Data, refPar=refPar), file = paste0("~/proj/AEDDO/src/simulation/",parString, ".Rds"))
 
 
 
