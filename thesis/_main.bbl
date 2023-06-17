@@ -1,0 +1,2404 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{Madsen_2010}{book}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=ac5d1263fca18a1f2d85317607e7d734}{%
+           family={Madsen},
+           familyi={M\bibinitperiod},
+           given={Henrik},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3bfe9f7315b9256f467046677b0ef829}{%
+           family={Thyregod},
+           familyi={T\bibinitperiod},
+           given={Poul},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{publisher}{1}{%
+        {CRC Press}%
+      }
+      \strng{namehash}{a5ef6b01c33148694fe0227cb35460f4}
+      \strng{fullhash}{a5ef6b01c33148694fe0227cb35460f4}
+      \strng{bibnamehash}{a5ef6b01c33148694fe0227cb35460f4}
+      \strng{authorbibnamehash}{a5ef6b01c33148694fe0227cb35460f4}
+      \strng{authornamehash}{a5ef6b01c33148694fe0227cb35460f4}
+      \strng{authorfullhash}{a5ef6b01c33148694fe0227cb35460f4}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{isbn}{9781420091557}
+      \field{series}{Texts in statistical science}
+      \field{title}{Introduction to general and generalized linear models}
+      \field{year}{2011}
+    \endentry
+    \entry{Tulchinsky_2018}{incollection}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=3789f444650aa630b8ec30f2cae50109}{%
+           family={Tulchinsky},
+           familyi={T\bibinitperiod},
+           given={Theodore\bibnamedelima H.},
+           giveni={T\bibinitperiod\bibinitdelim H\bibinitperiod},
+           givenun=0}}%
+      }
+      \name{editor}{1}{}{%
+        {{hash=3789f444650aa630b8ec30f2cae50109}{%
+           family={Tulchinsky},
+           familyi={T\bibinitperiod},
+           given={Theodore\bibnamedelima H.},
+           giveni={T\bibinitperiod\bibinitdelim H\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Academic Press}%
+      }
+      \strng{namehash}{3789f444650aa630b8ec30f2cae50109}
+      \strng{fullhash}{3789f444650aa630b8ec30f2cae50109}
+      \strng{bibnamehash}{3789f444650aa630b8ec30f2cae50109}
+      \strng{authorbibnamehash}{3789f444650aa630b8ec30f2cae50109}
+      \strng{authornamehash}{3789f444650aa630b8ec30f2cae50109}
+      \strng{authorfullhash}{3789f444650aa630b8ec30f2cae50109}
+      \strng{editorbibnamehash}{3789f444650aa630b8ec30f2cae50109}
+      \strng{editornamehash}{3789f444650aa630b8ec30f2cae50109}
+      \strng{editorfullhash}{3789f444650aa630b8ec30f2cae50109}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Cholera was a major global scourge in the 19th century, with frequent large-scale epidemics in European cities primarily originating in the Indian subcontinent. John Snow conducted pioneering investigations on cholera epidemics in England and particularly in London in 1854 in which he demonstrated that contaminated water was the key source of the epidemics. His thorough investigation of an epidemic in the Soho district of London led to his conclusion that contaminated water from the Broad Street pump was the source of the disease and, consequently, the removal of the handle led to cessation of the epidemic. He further studied cholera in London homes that were receiving water from two water supply systems; one from the sewage contaminated portion of the Thames River and the other that drew its water upstream from an uncontaminated part of the river. Rates of infection among clients of the distribution system drawing contaminated water far exceeded the, rates among those served by the company whose water intake was from above the contaminated section of the river. This demonstration reinforced the goals of the sanitation movement, which developed sewage drainage systems and water purification systems in cities and towns in the following decades, therewith vastly reducing the threats of cholera, typhoid and many other waterborne diseases. Despite progress being made globally, the public health problems of waterborne disease, including cholera, are by no means gone today, even in high-income countries. The tragic introduction of cholera after the earthquake devastation in Haiti in 2010 resulted in many thousands of cases and deaths from cholera indicating the still-present dangers of diseases spread into disaster situations. Cholera and other waterborne diseases remain some of the heaviest burdens of disease and death in low-income countries, especially after natural disasters or warfare as in Yemen in 2017 and are continuing challenges for global health.}
+      \field{booktitle}{Case Studies in Public Health}
+      \field{isbn}{978-0-12-804571-8}
+      \field{title}{Chapter 5 - John Snow, Cholera, the Broad Street Pump; Waterborne Diseases Then and Now}
+      \field{year}{2018}
+      \field{pages}{77\bibrangedash 99}
+      \range{pages}{23}
+      \verb{doi}
+      \verb https://doi.org/10.1016/B978-0-12-804571-8.00017-2
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/B9780128045718000172
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/B9780128045718000172
+      \endverb
+      \keyw{John Snow,cholera,contaminated water,the Broad St pump,waterborne disease,cholera epidemics Haiti,Yemen,public health}
+    \endentry
+    \entry{Honardoost_2018}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=95ea31930361639b8c367b6745630df1}{%
+           family={Honardoost},
+           familyi={H\bibinitperiod},
+           given={Maryam},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=65af996805d208531d9e92514cb17d8d}{%
+           family={Rajabpour},
+           familyi={R\bibinitperiod},
+           given={Azam},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=701d81180f76a18346457efe811bffc0}{%
+           family={Vakil},
+           familyi={V\bibinitperiod},
+           given={Ladan},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{28df50a6c138276a111d4e8166aa271b}
+      \strng{fullhash}{28df50a6c138276a111d4e8166aa271b}
+      \strng{bibnamehash}{28df50a6c138276a111d4e8166aa271b}
+      \strng{authorbibnamehash}{28df50a6c138276a111d4e8166aa271b}
+      \strng{authornamehash}{28df50a6c138276a111d4e8166aa271b}
+      \strng{authorfullhash}{28df50a6c138276a111d4e8166aa271b}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Medical Journal of the Islamic Republic of Iran}
+      \field{note}{Cited by: 4; All Open Access, Gold Open Access, Green Open Access}
+      \field{number}{1}
+      \field{title}{Molecular epidemiology; New but impressive}
+      \field{type}{Article}
+      \field{volume}{32}
+      \field{year}{2018}
+      \verb{doi}
+      \verb 10.14196/mjiri.32.53
+      \endverb
+      \verb{urlraw}
+      \verb https://www.scopus.com/inward/record.uri?eid=2-s2.0-85065203514&doi=10.14196%2fmjiri.32.53&partnerID=40&md5=31ba202c2698dce55f73f5bfb6efb1a7
+      \endverb
+      \verb{url}
+      \verb https://www.scopus.com/inward/record.uri?eid=2-s2.0-85065203514&doi=10.14196%2fmjiri.32.53&partnerID=40&md5=31ba202c2698dce55f73f5bfb6efb1a7
+      \endverb
+    \endentry
+    \entry{Struelens_2013}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=592a96b40c9cff9879a1df0d1bc2dcc0}{%
+           family={Struelens},
+           familyi={S\bibinitperiod},
+           given={M\bibnamedelima J},
+           giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4cae8cb4be52821ee2984796d03afd52}{%
+           family={Brisse},
+           familyi={B\bibinitperiod},
+           given={S},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{1cc08e4c540c72701a2da54fd3c4cae6}
+      \strng{fullhash}{1cc08e4c540c72701a2da54fd3c4cae6}
+      \strng{bibnamehash}{1cc08e4c540c72701a2da54fd3c4cae6}
+      \strng{authorbibnamehash}{1cc08e4c540c72701a2da54fd3c4cae6}
+      \strng{authornamehash}{1cc08e4c540c72701a2da54fd3c4cae6}
+      \strng{authorfullhash}{1cc08e4c540c72701a2da54fd3c4cae6}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eid}{20386}
+      \field{journaltitle}{Eurosurveillance}
+      \field{number}{4}
+      \field{title}{From molecular to genomic epidemiology: transforming surveillance and control of infectious diseases}
+      \field{volume}{18}
+      \field{year}{2013}
+      \verb{doi}
+      \verb https://doi.org/10.2807/ese.18.04.20386-en
+      \endverb
+      \verb{urlraw}
+      \verb https://www.eurosurveillance.org/content/10.2807/ese.18.04.20386-en
+      \endverb
+      \verb{url}
+      \verb https://www.eurosurveillance.org/content/10.2807/ese.18.04.20386-en
+      \endverb
+    \endentry
+    \entry{Koeser_2012}{article}{}
+      \name{author}{20}{}{%
+        {{un=0,uniquepart=base,hash=a95909a205bd2cdab89d6bd518255606}{%
+           family={Koeser},
+           familyi={K\bibinitperiod},
+           given={Claudio\bibnamedelima U.},
+           giveni={C\bibinitperiod\bibinitdelim U\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b2aeb415e934c631703757eb0ee1165c}{%
+           family={Holden},
+           familyi={H\bibinitperiod},
+           given={Matthew\bibnamedelimb T.\bibnamedelimi G.},
+           giveni={M\bibinitperiod\bibinitdelim T\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b32c94d5de211063ac800036f1f146d6}{%
+           family={Ellington},
+           familyi={E\bibinitperiod},
+           given={Matthew\bibnamedelima J.},
+           giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4336f704a6e080c71ff4e12722c8e97d}{%
+           family={Cartwright},
+           familyi={C\bibinitperiod},
+           given={Edward\bibnamedelimb J.\bibnamedelimi P.},
+           giveni={E\bibinitperiod\bibinitdelim J\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e4de7605f18f2685aa47cf40a2a93c19}{%
+           family={Brown},
+           familyi={B\bibinitperiod},
+           given={Nicholas\bibnamedelima M.},
+           giveni={N\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=67179f7c77e9eb1fd37646a2a5cecea6}{%
+           family={Ogilvy-Stuart},
+           familyi={O\bibinithyphendelim S\bibinitperiod},
+           given={Amanda\bibnamedelima L.},
+           giveni={A\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=346f99974694525e62e2fb7499d5ec3a}{%
+           family={Hsu},
+           familyi={H\bibinitperiod},
+           given={Li\bibnamedelima Yang},
+           giveni={L\bibinitperiod\bibinitdelim Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ccf50c26a42ea9ddb68b235d0ff98e37}{%
+           family={Chewapreecha},
+           familyi={C\bibinitperiod},
+           given={Claire},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1bee69ccdda040b6f496c07e99b2d2e0}{%
+           family={Croucher},
+           familyi={C\bibinitperiod},
+           given={Nicholas\bibnamedelima J.},
+           giveni={N\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a34029365f0755ebd24ecb494530ce04}{%
+           family={Harris},
+           familyi={H\bibinitperiod},
+           given={Simon\bibnamedelima R.},
+           giveni={S\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2dff4b3b1f813e2802f29e485b85d651}{%
+           family={Sanders},
+           familyi={S\bibinitperiod},
+           given={Mandy},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fbab6a9108a2a9b1fd368eb6a7b8d6d0}{%
+           family={Enright},
+           familyi={E\bibinitperiod},
+           given={Mark\bibnamedelima C.},
+           giveni={M\bibinitperiod\bibinitdelim C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=49973df7f05708630b7bc98d4ef3d42d}{%
+           family={Dougan},
+           familyi={D\bibinitperiod},
+           given={Gordon},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=67ac2c757c1e0cf00dcb5ed131272c80}{%
+           family={Bentley},
+           familyi={B\bibinitperiod},
+           given={Stephen\bibnamedelima D.},
+           giveni={S\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=727786bb8744946bd546c53cab15ad58}{%
+           family={Parkhill},
+           familyi={P\bibinitperiod},
+           given={Julian},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3ef4e8977db26d52ea85af5ecc831ff8}{%
+           family={Fraser},
+           familyi={F\bibinitperiod},
+           given={Louise\bibnamedelima J.},
+           giveni={L\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4a78de9ab2bab7676a826f1950837932}{%
+           family={Betley},
+           familyi={B\bibinitperiod},
+           given={Jason\bibnamedelima R.},
+           giveni={J\bibinitperiod\bibinitdelim R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9ce9b3f791c781617530393d8523f2f1}{%
+           family={Schulz-Trieglaff},
+           familyi={S\bibinithyphendelim T\bibinitperiod},
+           given={Ole\bibnamedelima B.},
+           giveni={O\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=cd5b1a5b528ec606e7831d7756def7fe}{%
+           family={Smith},
+           familyi={S\bibinitperiod},
+           given={Geoffrey\bibnamedelima P.},
+           giveni={G\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0235abf3fb96b1bd3d6b51733633c2d3}{%
+           family={Peacock},
+           familyi={P\bibinitperiod},
+           given={Sharon\bibnamedelima J.},
+           giveni={S\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{99453c127b3292db06ce19fceb1e81d0}
+      \strng{fullhash}{bbf5faba345f9e192086f1df317bb0ea}
+      \strng{bibnamehash}{99453c127b3292db06ce19fceb1e81d0}
+      \strng{authorbibnamehash}{99453c127b3292db06ce19fceb1e81d0}
+      \strng{authornamehash}{99453c127b3292db06ce19fceb1e81d0}
+      \strng{authorfullhash}{bbf5faba345f9e192086f1df317bb0ea}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0028-4793}
+      \field{journaltitle}{NEW ENGLAND JOURNAL OF MEDICINE}
+      \field{month}{6}
+      \field{number}{24}
+      \field{title}{Rapid Whole-Genome Sequencing for Investigation of a Neonatal MRSA Outbreak}
+      \field{volume}{366}
+      \field{year}{2012}
+      \field{pages}{2267\bibrangedash 2275}
+      \range{pages}{9}
+    \endentry
+    \entry{Baldry_2010}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=a428f273c3d25136cb7525e1b3019ab7}{%
+           family={Baldry},
+           familyi={B\bibinitperiod},
+           given={Susannah},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{a428f273c3d25136cb7525e1b3019ab7}
+      \strng{fullhash}{a428f273c3d25136cb7525e1b3019ab7}
+      \strng{bibnamehash}{a428f273c3d25136cb7525e1b3019ab7}
+      \strng{authorbibnamehash}{a428f273c3d25136cb7525e1b3019ab7}
+      \strng{authornamehash}{a428f273c3d25136cb7525e1b3019ab7}
+      \strng{authorfullhash}{a428f273c3d25136cb7525e1b3019ab7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Nature Reviews Microbiology}
+      \field{note}{Cited by: 9; All Open Access, Bronze Open Access}
+      \field{number}{6}
+      \field{title}{Attack of the clones}
+      \field{type}{Note}
+      \field{volume}{8}
+      \field{year}{2010}
+      \field{pages}{390}
+      \range{pages}{1}
+      \verb{doi}
+      \verb 10.1038/nrmicro2369
+      \endverb
+      \verb{urlraw}
+      \verb https://www.scopus.com/inward/record.uri?eid=2-s2.0-77952857458&doi=10.1038%2fnrmicro2369&partnerID=40&md5=228603d5ee11cdcdf04bea3f5de7c9a8
+      \endverb
+      \verb{url}
+      \verb https://www.scopus.com/inward/record.uri?eid=2-s2.0-77952857458&doi=10.1038%2fnrmicro2369&partnerID=40&md5=228603d5ee11cdcdf04bea3f5de7c9a8
+      \endverb
+    \endentry
+    \entry{Buckeridge_2007}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=bfd5c0ca5bb5b2033ad1c2bd71085cb3}{%
+           family={Buckeridge},
+           familyi={B\bibinitperiod},
+           given={David\bibnamedelima L.},
+           giveni={D\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{bfd5c0ca5bb5b2033ad1c2bd71085cb3}
+      \strng{fullhash}{bfd5c0ca5bb5b2033ad1c2bd71085cb3}
+      \strng{bibnamehash}{bfd5c0ca5bb5b2033ad1c2bd71085cb3}
+      \strng{authorbibnamehash}{bfd5c0ca5bb5b2033ad1c2bd71085cb3}
+      \strng{authornamehash}{bfd5c0ca5bb5b2033ad1c2bd71085cb3}
+      \strng{authorfullhash}{bfd5c0ca5bb5b2033ad1c2bd71085cb3}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Public health agencies and other groups have invested considerable resources in automated surveillance systems over the last decade. These systems generally follow syndromes in pre-diagnostic data drawn from sources such as emergency department visits. A main goal of syndromic surveillance systems is to detect outbreaks rapidly and the number of studies evaluating outbreak detection has increased recently. This paper reviews these studies with the goal of identifying the determinants of outbreak detection in automated syndromic surveillance systems. The review identified 35 studies with 22 studies (63\%) relying on naturally occurring outbreaks and 13 studies (37\%) relying on simulated outbreaks. In general, the results from these studies suggest that syndromic surveillance systems are capable of detecting some types of disease outbreaks rapidly with high sensitivity. The determinants of detection included characteristics of the system and of the outbreak. Influential system characteristics included representativeness, the outbreak detection algorithm, and the specificity of the algorithm. Important outbreak characteristics included the magnitude and shape of the signal and the timing of the outbreak. Future evaluations should aim to address inconsistencies in the evidence noted in this review and to identify the potential influence of other factors on outbreak detection.}
+      \field{issn}{1532-0464}
+      \field{journaltitle}{Journal of Biomedical Informatics}
+      \field{note}{Public Health Informatics}
+      \field{number}{4}
+      \field{title}{Outbreak detection through automated surveillance: A review of the determinants of detection}
+      \field{volume}{40}
+      \field{year}{2007}
+      \field{pages}{370\bibrangedash 379}
+      \range{pages}{10}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.jbi.2006.09.003
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S1532046406000980
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S1532046406000980
+      \endverb
+      \keyw{Surveillance,Evaluation,Outbreak detection,Medical informatics,Public health}
+    \endentry
+    \entry{Unkel_2012}{article}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=1775e94689a75bd4037694ee17c6e5d3}{%
+           family={Unkel},
+           familyi={U\bibinitperiod},
+           given={Steffen},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ec086c654f22f97fd2905b6e3c80fc58}{%
+           family={Farrington},
+           familyi={F\bibinitperiod},
+           given={C.\bibnamedelimi Paddy},
+           giveni={C\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6bd04ddc1592ebd411a13c817821d2bd}{%
+           family={Garthwaite},
+           familyi={G\bibinitperiod},
+           given={Paul\bibnamedelima H.},
+           giveni={P\bibinitperiod\bibinitdelim H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=16bd2db884a897dcd0466913d15bc755}{%
+           family={Robertson},
+           familyi={R\bibinitperiod},
+           given={Chris},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a6facc7653baa2ccf21f7a7db8fa7c3f}{%
+           family={Andrews},
+           familyi={A\bibinitperiod},
+           given={Nick},
+           giveni={N\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Wiley}%
+      }
+      \strng{namehash}{85aac86b30dc3cf042c4df11859a78b3}
+      \strng{fullhash}{92a9f3f7894e17ba0d3e555b15ccbee5}
+      \strng{bibnamehash}{85aac86b30dc3cf042c4df11859a78b3}
+      \strng{authorbibnamehash}{85aac86b30dc3cf042c4df11859a78b3}
+      \strng{authornamehash}{85aac86b30dc3cf042c4df11859a78b3}
+      \strng{authorfullhash}{92a9f3f7894e17ba0d3e555b15ccbee5}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Unusual clusters of disease must be detected rapidly for effective public health interventions to be introduced. Over the past decade there has been a surge in interest in statistical methods for the early detection of infectious disease outbreaks. This growth in interest has given rise to much new methodological work, ranging across the spectrum of statistical methods. The paper presents a comprehensive review of the statistical approaches that have been proposed. Applications to both laboratory and syndromic surveillance data are provided to illustrate the various methods.}
+      \field{issn}{09641998, 1467985X}
+      \field{journaltitle}{Journal of the Royal Statistical Society. Series A (Statistics in Society)}
+      \field{number}{1}
+      \field{title}{Statistical methods for the prospective detection of infectious disease outbreaks: a review}
+      \field{urlday}{15}
+      \field{urlmonth}{2}
+      \field{urlyear}{2023}
+      \field{volume}{175}
+      \field{year}{2012}
+      \field{urldateera}{ce}
+      \field{pages}{49\bibrangedash 82}
+      \range{pages}{34}
+      \verb{urlraw}
+      \verb http://www.jstor.org/stable/41409708
+      \endverb
+      \verb{url}
+      \verb http://www.jstor.org/stable/41409708
+      \endverb
+    \endentry
+    \entry{Salmon_2016}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=7c835350492fb2e3b97ce81bce7e5ed4}{%
+           family={Salmon},
+           familyi={S\bibinitperiod},
+           given={Maëlle},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b74f82e5342255af7eaaf117817cf73b}{%
+           family={Schumacher},
+           familyi={S\bibinitperiod},
+           given={Dirk},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=95d00b36025ce24691c334de0ea84148}{%
+           family={Höhle},
+           familyi={H\bibinitperiod},
+           given={Michael},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{c16129090442e0232dae164feafb742d}
+      \strng{fullhash}{c16129090442e0232dae164feafb742d}
+      \strng{bibnamehash}{c16129090442e0232dae164feafb742d}
+      \strng{authorbibnamehash}{c16129090442e0232dae164feafb742d}
+      \strng{authornamehash}{c16129090442e0232dae164feafb742d}
+      \strng{authorfullhash}{c16129090442e0232dae164feafb742d}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Public health surveillance aims at lessening disease burden by, e.g., timely recognizing emerging outbreaks in case of infectious diseases. Seen from a statistical perspective, this implies the use of appropriate methods for monitoring time series of aggregated case reports. This paper presents the tools for such automatic aberration detection offered by the R package surveillance. We introduce the functionalities for the visualization, modeling and monitoring of surveillance time series. With respect to modeling we focus on univariate time series modeling based on generalized linear models (GLMs), multivariate GLMs, generalized additive models and generalized additive models for location, shape and scale. Applications of such modeling include illustrating implementational improvements and extensions of the well-known Farrington algorithm, e.g., by spline-modeling or by treating it in a Bayesian context. Furthermore, we look at categorical time series and address overdispersion using beta-binomial or Dirichlet-multinomial modeling. With respect to monitoring we consider detectors based on either a Shewhart-like single timepoint comparison between the observed count and the predictive distribution or by likelihoodratio based cumulative sum methods. Finally, we illustrate how surveillance can support aberration detection in practice by integrating it into the monitoring workflow of a public health institution. Altogether, the present article shows how well surveillance can support automatic aberration detection in a public health surveillance context.}
+      \field{journaltitle}{Journal of Statistical Software}
+      \field{number}{10}
+      \field{title}{Monitoring Count Time Series in R: Aberration Detection in Public Health Surveillance}
+      \field{volume}{70}
+      \field{year}{2016}
+      \field{pages}{1\bibrangedash 35}
+      \range{pages}{35}
+      \verb{doi}
+      \verb 10.18637/jss.v070.i10
+      \endverb
+      \verb{urlraw}
+      \verb https://www.jstatsoft.org/index.php/jss/article/view/v070i10
+      \endverb
+      \verb{url}
+      \verb https://www.jstatsoft.org/index.php/jss/article/view/v070i10
+      \endverb
+    \endentry
+    \entry{Farrington_1996}{article}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=cdc94cba2e3fedb34703a3f12b061a84}{%
+           family={Farrington},
+           familyi={F\bibinitperiod},
+           given={C.\bibnamedelimi P.},
+           giveni={C\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5ba58969a28309163d5f4e7cc086586d}{%
+           family={Andrews},
+           familyi={A\bibinitperiod},
+           given={N.\bibnamedelimi J.},
+           giveni={N\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=594e42beec875193e3c857aed4ea92ed}{%
+           family={Beale},
+           familyi={B\bibinitperiod},
+           given={A.\bibnamedelimi D.},
+           giveni={A\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4ac338880e3f609b2215181548bd97cd}{%
+           family={Catchpole},
+           familyi={C\bibinitperiod},
+           given={M.\bibnamedelimi A.},
+           giveni={M\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {[Wiley, Royal Statistical Society]}%
+      }
+      \strng{namehash}{6f2dcd373df95a0997e917da632137f7}
+      \strng{fullhash}{b2e54f179208f33ce3cd537ccb7578ce}
+      \strng{bibnamehash}{6f2dcd373df95a0997e917da632137f7}
+      \strng{authorbibnamehash}{6f2dcd373df95a0997e917da632137f7}
+      \strng{authornamehash}{6f2dcd373df95a0997e917da632137f7}
+      \strng{authorfullhash}{b2e54f179208f33ce3cd537ccb7578ce}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Outbreaks of infectious diseases must be detected early for effective control measures to be introduced. When dealing with large amounts of data, automated procedures can usefully supplement traditional surveillance methods, provided that the wide variety of patterns and frequencies of infections are taken into account. This paper describes a robust system developed to process weekly reports of infections received at the Communicable Disease Surveillance Centre. A simple regression algorithm is used to calculate suitable thresholds. Organisms exceeding their threshold are then flagged for further investigation.}
+      \field{issn}{09641998, 1467985X}
+      \field{journaltitle}{Journal of the Royal Statistical Society. Series A (Statistics in Society)}
+      \field{number}{3}
+      \field{title}{A Statistical Algorithm for the Early Detection of Outbreaks of Infectious Disease}
+      \field{urlday}{27}
+      \field{urlmonth}{1}
+      \field{urlyear}{2023}
+      \field{volume}{159}
+      \field{year}{1996}
+      \field{urldateera}{ce}
+      \field{pages}{547\bibrangedash 563}
+      \range{pages}{17}
+      \verb{urlraw}
+      \verb http://www.jstor.org/stable/2983331
+      \endverb
+      \verb{url}
+      \verb http://www.jstor.org/stable/2983331
+      \endverb
+    \endentry
+    \entry{Noufaily_2013}{article}{}
+      \name{author}{6}{}{%
+        {{un=0,uniquepart=base,hash=606d5f15fbc951a45077643908fef24a}{%
+           family={Noufaily},
+           familyi={N\bibinitperiod},
+           given={Angela},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c6c84b3b03c2ddac51896219c83b87e2}{%
+           family={Enki},
+           familyi={E\bibinitperiod},
+           given={Doyo\bibnamedelima G},
+           giveni={D\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=54da6a835eb753157b18d9ed2ff46230}{%
+           family={Farrington},
+           familyi={F\bibinitperiod},
+           given={Paddy},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5c131e53616791a0cbb418e3a43cac8e}{%
+           family={Garthwaite},
+           familyi={G\bibinitperiod},
+           given={Paul},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a6facc7653baa2ccf21f7a7db8fa7c3f}{%
+           family={Andrews},
+           familyi={A\bibinitperiod},
+           given={Nick},
+           giveni={N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=97e19fe3f8211811c907f4693c3aa135}{%
+           family={Charlett},
+           familyi={C\bibinitperiod},
+           given={André},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {en}%
+      }
+      \list{publisher}{1}{%
+        {[Wiley, Royal Statistical Society]}%
+      }
+      \strng{namehash}{34c8456edaa43ed92a332e368097e211}
+      \strng{fullhash}{5aed7140d1ad695b49e991b15bcaa449}
+      \strng{bibnamehash}{34c8456edaa43ed92a332e368097e211}
+      \strng{authorbibnamehash}{34c8456edaa43ed92a332e368097e211}
+      \strng{authornamehash}{34c8456edaa43ed92a332e368097e211}
+      \strng{authorfullhash}{5aed7140d1ad695b49e991b15bcaa449}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{In England and Wales, a large-scale multiple statistical surveillance system for infectious disease outbreaks has been in operation for nearly two decades. This system uses a robust quasi-Poisson regression algorithm to identify abberrances in weekly counts of isolates reported to the Health Protection Agency. In this paper, we review the performance of the system with a view to reducing the number of false reports, while retaining good power to detect genuine outbreaks. We undertook extensive simulations to evaluate the existing system in a range of contrasting scenarios. We suggest several improvements relating to the treatment of trends, seasonality, re-weighting of baselines and error structure. We validate these results by running the existing and proposed new systems in parallel on real data. We find that the new system greatly reduces the number of alarms while maintaining good overall performance and in some instances increasing the sensitivity.}
+      \field{journaltitle}{Online Journal of Public Health Informatics}
+      \field{month}{3}
+      \field{number}{7}
+      \field{title}{An Improved Algorithm for Outbreak Detection in Multiple Surveillance Systems}
+      \field{volume}{32}
+      \field{year}{2013}
+      \field{pages}{1206\bibrangedash 1222}
+      \range{pages}{17}
+    \endentry
+    \entry{Hulth_2010}{article}{}
+      \name{author}{7}{}{%
+        {{un=0,uniquepart=base,hash=342c1be5ed8f94bafff3ad8254bdb82f}{%
+           family={Hulth},
+           familyi={H\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a677f43c5089446452639e7051dd0c25}{%
+           family={Andrews},
+           familyi={A\bibinitperiod},
+           given={N.},
+           giveni={N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0cbbd7271f33d9c0f79a47de07f9e544}{%
+           family={Ethelberg},
+           familyi={E\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ea1c61e51d5eb353694572a3a3d98626}{%
+           family={Dreesman},
+           familyi={D\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9d9b0cb4e619d46135d02682f6b9c320}{%
+           family={Faensen},
+           familyi={F\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7aec6a532d0f4529defe2baf711063d1}{%
+           family={Pelt},
+           familyi={P\bibinitperiod},
+           given={W.},
+           giveni={W\bibinitperiod},
+           givenun=0,
+           prefix={van},
+           prefixi={v\bibinitperiod},
+           prefixun=0}}%
+        {{un=0,uniquepart=base,hash=b68050eb3e55677d224fd760d841976a}{%
+           family={Schnitzler},
+           familyi={S\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{69353e52c3ee920f6eedd9b9df36112f}
+      \strng{fullhash}{c5955261e45dbe1fc3c2516367621957}
+      \strng{bibnamehash}{69353e52c3ee920f6eedd9b9df36112f}
+      \strng{authorbibnamehash}{69353e52c3ee920f6eedd9b9df36112f}
+      \strng{authornamehash}{69353e52c3ee920f6eedd9b9df36112f}
+      \strng{authorfullhash}{c5955261e45dbe1fc3c2516367621957}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Eurosurveillance}
+      \field{note}{Cited by: 31}
+      \field{number}{36}
+      \field{title}{Practical usage of computer-supported outbreak detection in five european countries}
+      \field{type}{Article}
+      \field{volume}{15}
+      \field{year}{2010}
+      \field{pages}{1\bibrangedash 6}
+      \range{pages}{6}
+      \verb{urlraw}
+      \verb https://www.scopus.com/inward/record.uri?eid=2-s2.0-77957607700&partnerID=40&md5=ff916d06bcf38218b2388d0874eed9f8
+      \endverb
+      \verb{url}
+      \verb https://www.scopus.com/inward/record.uri?eid=2-s2.0-77957607700&partnerID=40&md5=ff916d06bcf38218b2388d0874eed9f8
+      \endverb
+    \endentry
+    \entry{Svendsen_2023}{article}{}
+      \name{author}{13}{}{%
+        {{un=0,uniquepart=base,hash=ed7f16fc0534186262206c28aa912b21}{%
+           family={Svendsen},
+           familyi={S\bibinitperiod},
+           given={Anna\bibnamedelima T{ø}lb{ø}ll},
+           giveni={A\bibinitperiod\bibinitdelim T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d9e583093a1793a71ce23ba1df52e5a6}{%
+           family={Nielsen},
+           familyi={N\bibinitperiod},
+           given={Hans\bibnamedelima Linde},
+           giveni={H\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2f366f42e65801e993af8d01ad1f9baa}{%
+           family={Bytzer},
+           familyi={B\bibinitperiod},
+           given={Peter},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5b68799ff6233658fb74fefcd59b1e4f}{%
+           family={Coia},
+           familyi={C\bibinitperiod},
+           given={John\bibnamedelima Eugenio},
+           giveni={J\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f08d0955eeee60e6c7db37f008c67435}{%
+           family={Engberg},
+           familyi={E\bibinitperiod},
+           given={J{ø}rgen},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c051bb79c979d62a93a2f6d608abb6a8}{%
+           family={Holt},
+           familyi={H\bibinitperiod},
+           given={Hanne\bibnamedelima Marie},
+           giveni={H\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c49d047d34a28f4990367ea4f250fb72}{%
+           family={Lemming},
+           familyi={L\bibinitperiod},
+           given={Lars},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0e431a0500201ad2821ad2b6910d69b5}{%
+           family={Lomborg},
+           familyi={L\bibinitperiod},
+           given={Steen},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0d69c7bcaddc439dbbad78630da13b42}{%
+           family={Marmolin},
+           familyi={M\bibinitperiod},
+           given={Ea\bibnamedelima Sofie},
+           giveni={E\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9032724b5382af2d62927f17f2e1df2b}{%
+           family={Olesen},
+           familyi={O\bibinitperiod},
+           given={Bente\bibnamedelima Scharvik},
+           giveni={B\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=98ebc7ffe4ebe251ac6a616271135f04}{%
+           family={Andersen},
+           familyi={A\bibinitperiod},
+           given={Leif\bibnamedelima Percival},
+           giveni={L\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bb6adce012b9ba8477b2b1133ff9d949}{%
+           family={Ethelberg},
+           familyi={E\bibinitperiod},
+           given={Steen},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f86e5838869482f38696030167509474}{%
+           family={Engsbro},
+           familyi={E\bibinitperiod},
+           given={Anne\bibnamedelima Line},
+           giveni={A\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor & Francis}%
+      }
+      \strng{namehash}{76f502f9c39bf4ef7c7610c7537f4487}
+      \strng{fullhash}{4444b5f8eaf5fed2eb8697c920fee9bc}
+      \strng{bibnamehash}{76f502f9c39bf4ef7c7610c7537f4487}
+      \strng{authorbibnamehash}{76f502f9c39bf4ef7c7610c7537f4487}
+      \strng{authornamehash}{76f502f9c39bf4ef7c7610c7537f4487}
+      \strng{authorfullhash}{4444b5f8eaf5fed2eb8697c920fee9bc}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Infectious Diseases}
+      \field{note}{PMID: 36868794}
+      \field{number}{5}
+      \field{title}{The incidence of laboratory-confirmed cases of enteric pathogens in Denmark 2018: a national observational study}
+      \field{volume}{55}
+      \field{year}{2023}
+      \field{pages}{340\bibrangedash 350}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1080/23744235.2023.2183253
+      \endverb
+      \verb{eprint}
+      \verb https://doi.org/10.1080/23744235.2023.2183253
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1080/23744235.2023.2183253
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1080/23744235.2023.2183253
+      \endverb
+    \endentry
+    \entry{Buss_2015}{article}{}
+      \name{author}{9}{}{%
+        {{un=0,uniquepart=base,hash=8d4f3b4998cee3f87e5719f2bb9076d3}{%
+           family={Buss},
+           familyi={B\bibinitperiod},
+           given={Sarah\bibnamedelima N.},
+           giveni={S\bibinitperiod\bibinitdelim N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ad06f391d17b64f20502eaa1f1ac5635}{%
+           family={Leber},
+           familyi={L\bibinitperiod},
+           given={Amy},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7733372d58248c2e10ad367ae9629ed5}{%
+           family={Chapin},
+           familyi={C\bibinitperiod},
+           given={Kimberle},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7bdbf59eced20174c48b40f1d5405779}{%
+           family={Fey},
+           familyi={F\bibinitperiod},
+           given={Paul\bibnamedelima D.},
+           giveni={P\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=daf30870974d725a12bbab2c8e833b22}{%
+           family={Bankowski},
+           familyi={B\bibinitperiod},
+           given={Matthew\bibnamedelima J.},
+           giveni={M\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c35e8811f8b6134352252b151f6bd42d}{%
+           family={Jones},
+           familyi={J\bibinitperiod},
+           given={Matthew\bibnamedelima K.},
+           giveni={M\bibinitperiod\bibinitdelim K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3ca56bb9dd1c2428161af0148818cb12}{%
+           family={Rogatcheva},
+           familyi={R\bibinitperiod},
+           given={Margarita},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c6868b1fdd449483e35a9296b7181e29}{%
+           family={Kanack},
+           familyi={K\bibinitperiod},
+           given={Kristen\bibnamedelima J.},
+           giveni={K\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d592d0589cc9bbfe316bf36595b120d1}{%
+           family={Bourzac},
+           familyi={B\bibinitperiod},
+           given={Kevin\bibnamedelima M.},
+           giveni={K\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{cca78072f3f6573a3190d7a3a01b7470}
+      \strng{fullhash}{0f79061201d2b011f5aa1a03a0b38a79}
+      \strng{bibnamehash}{cca78072f3f6573a3190d7a3a01b7470}
+      \strng{authorbibnamehash}{cca78072f3f6573a3190d7a3a01b7470}
+      \strng{authornamehash}{cca78072f3f6573a3190d7a3a01b7470}
+      \strng{authorfullhash}{0f79061201d2b011f5aa1a03a0b38a79}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Clinical Microbiology}
+      \field{note}{Cited by: 327; All Open Access, Bronze Open Access, Green Open Access}
+      \field{number}{3}
+      \field{title}{Multicenter evaluation of the BioFire FilmArray gastrointestinal panel for etiologic diagnosis of infectious gastroenteritis}
+      \field{type}{Article}
+      \field{volume}{53}
+      \field{year}{2015}
+      \field{pages}{915\bibrangedash 925}
+      \range{pages}{11}
+      \verb{doi}
+      \verb 10.1128/JCM.02674-14
+      \endverb
+      \verb{urlraw}
+      \verb https://www.scopus.com/inward/record.uri?eid=2-s2.0-84923376418&doi=10.1128%2fJCM.02674-14&partnerID=40&md5=a31098bbc8437c1849360924f660dacd
+      \endverb
+      \verb{url}
+      \verb https://www.scopus.com/inward/record.uri?eid=2-s2.0-84923376418&doi=10.1128%2fJCM.02674-14&partnerID=40&md5=a31098bbc8437c1849360924f660dacd
+      \endverb
+    \endentry
+    \entry{Knabl_2016}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=a412a0af127602ed75dec53f80240e85}{%
+           family={Knabl},
+           familyi={K\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ea9a5c9bbeb02132d31a1c8fbf3c8801}{%
+           family={Grutsch},
+           familyi={G\bibinitperiod},
+           given={I.},
+           giveni={I\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8def0753e76a0b69c385666613513c93}{%
+           family={Orth-Höller},
+           familyi={O\bibinithyphendelim H\bibinitperiod},
+           given={D.},
+           giveni={D\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{093b57c44b0dd20647fc4ea6989e0416}
+      \strng{fullhash}{093b57c44b0dd20647fc4ea6989e0416}
+      \strng{bibnamehash}{093b57c44b0dd20647fc4ea6989e0416}
+      \strng{authorbibnamehash}{093b57c44b0dd20647fc4ea6989e0416}
+      \strng{authornamehash}{093b57c44b0dd20647fc4ea6989e0416}
+      \strng{authorfullhash}{093b57c44b0dd20647fc4ea6989e0416}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{European Journal of Clinical Microbiology and Infectious Diseases}
+      \field{note}{Cited by: 22}
+      \field{number}{1}
+      \field{title}{Comparison of the BD MAX® Enteric Bacterial Panel assay with conventional diagnostic procedures in diarrheal stool samples}
+      \field{type}{Article}
+      \field{volume}{35}
+      \field{year}{2016}
+      \field{pages}{131\bibrangedash 136}
+      \range{pages}{6}
+      \verb{doi}
+      \verb 10.1007/s10096-015-2517-4
+      \endverb
+      \verb{urlraw}
+      \verb https://www.scopus.com/inward/record.uri?eid=2-s2.0-84954361539&doi=10.1007%2fs10096-015-2517-4&partnerID=40&md5=2800622c88a129b3ed2c8dbf533d2a39
+      \endverb
+      \verb{url}
+      \verb https://www.scopus.com/inward/record.uri?eid=2-s2.0-84954361539&doi=10.1007%2fs10096-015-2517-4&partnerID=40&md5=2800622c88a129b3ed2c8dbf533d2a39
+      \endverb
+    \endentry
+    \entry{Goulet_2012}{article}{}
+      \name{author}{7}{}{%
+        {{un=0,uniquepart=base,hash=3f6ad329a71a39f0277ab219a3a211b1}{%
+           family={Goulet},
+           familyi={G\bibinitperiod},
+           given={Véronique},
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=11c3b70b80022fce2f8204c99430fb12}{%
+           family={Hebert},
+           familyi={H\bibinitperiod},
+           given={Marjolaine},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=554f60904f65c1dc6210f9b9554d8a4d}{%
+           family={Hedberg},
+           familyi={H\bibinitperiod},
+           given={Craig},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5d861cecdee15589222396f1753541f6}{%
+           family={Laurent},
+           familyi={L\bibinitperiod},
+           given={Edith},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8796ef81f07e162215d1e6db0289a094}{%
+           family={Vaillant},
+           familyi={V\bibinitperiod},
+           given={Véronique},
+           giveni={V\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9d434b65e8e04f7356d3bf0facf1af8c}{%
+           family={De\bibnamedelima Valk},
+           familyi={D\bibinitperiod\bibinitdelim V\bibinitperiod},
+           given={Henriette},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=724fbfe0bde551738b44e167a4382e13}{%
+           family={Desenclos},
+           familyi={D\bibinitperiod},
+           given={Jean-Claude},
+           giveni={J\bibinithyphendelim C\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Oxford University Press}%
+      }
+      \strng{namehash}{5bb3244fb3d1b9638dc497121bd455ea}
+      \strng{fullhash}{707a3b8cd3335393596b4a79b614483a}
+      \strng{bibnamehash}{5bb3244fb3d1b9638dc497121bd455ea}
+      \strng{authorbibnamehash}{5bb3244fb3d1b9638dc497121bd455ea}
+      \strng{authornamehash}{5bb3244fb3d1b9638dc497121bd455ea}
+      \strng{authorfullhash}{707a3b8cd3335393596b4a79b614483a}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Clinical infectious diseases}
+      \field{number}{5}
+      \field{title}{Incidence of listeriosis and related mortality among groups at risk of acquiring listeriosis}
+      \field{volume}{54}
+      \field{year}{2012}
+      \field{pages}{652\bibrangedash 660}
+      \range{pages}{9}
+    \endentry
+    \entry{Awofisayo_2015}{article}{}
+      \name{author}{7}{}{%
+        {{un=0,uniquepart=base,hash=46fd1e9caee6f32395a6785d02cee668}{%
+           family={Awofisayo},
+           familyi={A\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2fb078d943818bc70d5c82a90c6efa73}{%
+           family={Amar},
+           familyi={A\bibinitperiod},
+           given={C.},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=1d206407086943ef2bf4018c7b198acd}{%
+           family={Ruggles},
+           familyi={R\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=51de304c550d4c3dc261fcd837602068}{%
+           family={Elson},
+           familyi={E\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=f3947d9579ad36cb6395a0a1892acf7f}{%
+           family={Adak},
+           familyi={A\bibinitperiod},
+           given={G.\bibnamedelimi K.},
+           giveni={G\bibinitperiod\bibinitdelim K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=51264ccef63a0583ca4f6604bbd47133}{%
+           family={Mook},
+           familyi={M\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=71282df6462a82e94124ea2ae2295385}{%
+           family={Grant},
+           familyi={G\bibinitperiod},
+           given={K.\bibnamedelimi A.},
+           giveni={K\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{6fb7d3a50ebd7a855a91f32491f9bed0}
+      \strng{fullhash}{d035bf190e1598ab154f29073945ec2c}
+      \strng{bibnamehash}{6fb7d3a50ebd7a855a91f32491f9bed0}
+      \strng{authorbibnamehash}{6fb7d3a50ebd7a855a91f32491f9bed0}
+      \strng{authornamehash}{6fb7d3a50ebd7a855a91f32491f9bed0}
+      \strng{authorfullhash}{d035bf190e1598ab154f29073945ec2c}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0950-2688}
+      \field{journaltitle}{EPIDEMIOLOGY AND INFECTION}
+      \field{month}{1}
+      \field{number}{2}
+      \field{title}{Pregnancy-associated listeriosis in England and Wales}
+      \field{volume}{143}
+      \field{year}{2015}
+      \field{pages}{249\bibrangedash 256}
+      \range{pages}{8}
+      \verb{doi}
+      \verb 10.1017/S0950268814000594
+      \endverb
+    \endentry
+    \entry{Smith_2011}{article}{}
+      \name{author}{9}{}{%
+        {{un=0,uniquepart=base,hash=661af25efdcede2da6f1d84feee822d2}{%
+           family={Smith},
+           familyi={S\bibinitperiod},
+           given={B.},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8468dfa024a637011b5efdbbe638d18f}{%
+           family={Larsson},
+           familyi={L\bibinitperiod},
+           given={J.T.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2d91687e39df0c7941246b5438faae4e}{%
+           family={Lisby},
+           familyi={L\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=84d1b20f401a3d4ea18242cbcb35556f}{%
+           family={Müller},
+           familyi={M\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=29e66be02f2170ca1aabbbe5ef46ee01}{%
+           family={Madsen},
+           familyi={M\bibinitperiod},
+           given={S.B.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=07e87e04363afc567d99c486198decb8}{%
+           family={Engberg},
+           familyi={E\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6592fb2621534170cab08e9c9db10c85}{%
+           family={Bangsborg},
+           familyi={B\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0cbbd7271f33d9c0f79a47de07f9e544}{%
+           family={Ethelberg},
+           familyi={E\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=aef905876dcd1b684c363f208a1b907e}{%
+           family={Kemp},
+           familyi={K\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{2a02a886a07d6850168ebd85c915746f}
+      \strng{fullhash}{a06a6514f0f65662a9ff433ac76fe0d9}
+      \strng{bibnamehash}{2a02a886a07d6850168ebd85c915746f}
+      \strng{authorbibnamehash}{2a02a886a07d6850168ebd85c915746f}
+      \strng{authornamehash}{2a02a886a07d6850168ebd85c915746f}
+      \strng{authorfullhash}{a06a6514f0f65662a9ff433ac76fe0d9}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1198-743X}
+      \field{journaltitle}{Clinical Microbiology and Infection}
+      \field{number}{1}
+      \field{title}{Outbreak of listeriosis caused by infected beef meat from a meals-on-wheels delivery in Denmark 2009}
+      \field{volume}{17}
+      \field{year}{2011}
+      \field{pages}{50\bibrangedash 52}
+      \range{pages}{3}
+      \verb{doi}
+      \verb https://doi.org/10.1111/j.1469-0691.2010.03200.x
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S1198743X14609125
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S1198743X14609125
+      \endverb
+      \keyw{Foodborne outbreak,,MLVA,patient interview,PFGE}
+    \endentry
+    \entry{Kvistholm_2016}{article}{}
+      \name{author}{14}{}{%
+        {{un=0,uniquepart=base,hash=dd9a97d3f645fb5b498a02e9f53b8b46}{%
+           family={Kvistholm\bibnamedelima Jensen},
+           familyi={K\bibinitperiod\bibinitdelim J\bibinitperiod},
+           given={Anne},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c76584cdd4de769bcce3f9a3eb67905a}{%
+           family={Nielsen},
+           familyi={N\bibinitperiod},
+           given={Eva\bibnamedelima Møller},
+           giveni={E\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=55697546b3512d8e86a1a41d26f56121}{%
+           family={Björkman},
+           familyi={B\bibinitperiod},
+           given={Jonas\bibnamedelima Torgny},
+           giveni={J\bibinitperiod\bibinitdelim T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0d9ac021667871eb56f433f2dcf0c92b}{%
+           family={Jensen},
+           familyi={J\bibinitperiod},
+           given={Tenna},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7a4e3d6a64f19a150f62135861431937}{%
+           family={Müller},
+           familyi={M\bibinitperiod},
+           given={Luise},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2c853d206426517ea4172dd1556797fa}{%
+           family={Persson},
+           familyi={P\bibinitperiod},
+           given={Søren},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7b39ed20a7ff3eb87d8dfe95dff70c17}{%
+           family={Bjerager},
+           familyi={B\bibinitperiod},
+           given={Gitte},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=eec0ccd4e7e0c712705930e72ad8efe5}{%
+           family={Perge},
+           familyi={P\bibinitperiod},
+           given={Annette},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=8a52cd6996cd93961df5042a38d2b4d3}{%
+           family={Krause},
+           familyi={K\bibinitperiod},
+           given={Tyra\bibnamedelima Grove},
+           giveni={T\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=134acee4c014cc5cf67bb4cc9d09f4e9}{%
+           family={Kiil},
+           familyi={K\bibinitperiod},
+           given={Kristoffer},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=089200ad38c724bccbca04afce6e083b}{%
+           family={Sørensen},
+           familyi={S\bibinitperiod},
+           given={Gitte},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3a84b67a659987e7dc004031abd11fc2}{%
+           family={Andersen},
+           familyi={A\bibinitperiod},
+           given={Jens\bibnamedelima Kirk},
+           giveni={J\bibinitperiod\bibinitdelim K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=145780d8b9001bdac0e31a34f432a68f}{%
+           family={Mølbak},
+           familyi={M\bibinitperiod},
+           given={Kåre},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bb6adce012b9ba8477b2b1133ff9d949}{%
+           family={Ethelberg},
+           familyi={E\bibinitperiod},
+           given={Steen},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{4989b2adab7d6b663a50fa611617f101}
+      \strng{fullhash}{3bc3fb1c7e6dd8b128ef66550508fc42}
+      \strng{bibnamehash}{4989b2adab7d6b663a50fa611617f101}
+      \strng{authorbibnamehash}{4989b2adab7d6b663a50fa611617f101}
+      \strng{authornamehash}{4989b2adab7d6b663a50fa611617f101}
+      \strng{authorfullhash}{3bc3fb1c7e6dd8b128ef66550508fc42}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1058-4838}
+      \field{journaltitle}{Clinical Infectious Diseases}
+      \field{month}{03}
+      \field{number}{1}
+      \field{title}{{Whole-genome Sequencing Used to Investigate a Nationwide Outbreak of Listeriosis Caused by Ready-to-eat Delicatessen Meat, Denmark, 2014}}
+      \field{volume}{63}
+      \field{year}{2016}
+      \field{pages}{64\bibrangedash 70}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1093/cid/ciw192
+      \endverb
+      \verb{eprint}
+      \verb https://academic.oup.com/cid/article-pdf/63/1/64/6711273/ciw192.pdf
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1093/cid/ciw192
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1093/cid/ciw192
+      \endverb
+    \endentry
+    \entry{Schjorring_2017}{article}{}
+      \name{author}{14}{}{%
+        {{un=0,uniquepart=base,hash=8ef8c1fc718b2bf0ef236a364957e058}{%
+           family={Schjorring},
+           familyi={S\bibinitperiod},
+           given={Susanne},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d10fd59e06d779c749e854497c6b3042}{%
+           family={Lassen},
+           familyi={L\bibinitperiod},
+           given={Sofie\bibnamedelima Gillesberg},
+           giveni={S\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0d9ac021667871eb56f433f2dcf0c92b}{%
+           family={Jensen},
+           familyi={J\bibinitperiod},
+           given={Tenna},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9215bd10128e514ef33a3e385dca8ac0}{%
+           family={Moura},
+           familyi={M\bibinitperiod},
+           given={Alexandra},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9f714c9560487f447f363d9652a80a6b}{%
+           family={Kjeldgaard},
+           familyi={K\bibinitperiod},
+           given={Jette\bibnamedelima S.},
+           giveni={J\bibinitperiod\bibinitdelim S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=626d1c929378f1de481b3ff4229e885a}{%
+           family={Mueller},
+           familyi={M\bibinitperiod},
+           given={Luise},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bb42144e618c62d66f4cb0dfb45066d3}{%
+           family={Thielke},
+           familyi={T\bibinitperiod},
+           given={Stine},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=240c9ffb324d96c143f3474bc10734c6}{%
+           family={Leclercq},
+           familyi={L\bibinitperiod},
+           given={Alexandre},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6ac612fbda374eac2f7a26aaf9248f2c}{%
+           family={Maury},
+           familyi={M\bibinitperiod},
+           given={Mylene\bibnamedelima M.},
+           giveni={M\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=9fc828ff2a5aa102a8bfec275123fd19}{%
+           family={Tourdjman},
+           familyi={T\bibinitperiod},
+           given={Mathieu},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0c52f195019a6925ae8e00c7c6d1eca4}{%
+           family={Donguy},
+           familyi={D\bibinitperiod},
+           given={Marie-Pierre},
+           giveni={M\bibinithyphendelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=388e14cc1ffbb7f5f79c6c5830c934ad}{%
+           family={Lecuit},
+           familyi={L\bibinitperiod},
+           given={Marc},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=bb6adce012b9ba8477b2b1133ff9d949}{%
+           family={Ethelberg},
+           familyi={E\bibinitperiod},
+           given={Steen},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a84f68fbffc19a6559e1bcc798575ec1}{%
+           family={Nielsen},
+           familyi={N\bibinitperiod},
+           given={Eva\bibnamedelima M.},
+           giveni={E\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{c7b3cb95cdcd411610425fc2f414556e}
+      \strng{fullhash}{774dd5a6bdfb3062fb4b9082eba85972}
+      \strng{bibnamehash}{c7b3cb95cdcd411610425fc2f414556e}
+      \strng{authorbibnamehash}{c7b3cb95cdcd411610425fc2f414556e}
+      \strng{authornamehash}{c7b3cb95cdcd411610425fc2f414556e}
+      \strng{authorfullhash}{774dd5a6bdfb3062fb4b9082eba85972}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1025-496X}
+      \field{journaltitle}{EUROSURVEILLANCE}
+      \field{month}{12}
+      \field{number}{50}
+      \field{title}{Cross-border outbreak of listeriosis caused by cold-smoked salmon, revealed by integrated surveillance and whole genome sequencing (WGS), Denmark and France, 2015 to 2017}
+      \field{volume}{22}
+      \field{year}{2017}
+      \field{pages}{8\bibrangedash 12}
+      \range{pages}{5}
+      \verb{doi}
+      \verb 10.2807/1560-7917.ES.2017.22.50.17-00762
+      \endverb
+    \endentry
+    \entry{Gillesberg_2016}{article}{}
+      \name{author}{9}{}{%
+        {{un=0,uniquepart=base,hash=1698b2c1f27ad316d18ccfd3276e565b}{%
+           family={{Gillesberg Lassen}},
+           familyi={G\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0cbbd7271f33d9c0f79a47de07f9e544}{%
+           family={Ethelberg},
+           familyi={E\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=d15f0600d442713e98b5ebf46d02f792}{%
+           family={Björkman},
+           familyi={B\bibinitperiod},
+           given={J.T.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2f7fd0319066c67b07e7001323090e03}{%
+           family={Jensen},
+           familyi={J\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=49e7678d044498a3bd1707485bd25fa1}{%
+           family={S{ø}rensen},
+           familyi={S\bibinitperiod},
+           given={G.},
+           giveni={G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b027c9351d3a2eca7d3727bee835098d}{%
+           family={{Kvistholm Jensen}},
+           familyi={K\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=84d1b20f401a3d4ea18242cbcb35556f}{%
+           family={Müller},
+           familyi={M\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a66b2f7feb6c0890707d959bcddde3a3}{%
+           family={Nielsen},
+           familyi={N\bibinitperiod},
+           given={E.M.},
+           giveni={E\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5a757a339b2cc4e158ed575b4a016c44}{%
+           family={M{ø}lbak},
+           familyi={M\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{ade942ac643a4c83f898aab9e589cd1e}
+      \strng{fullhash}{330177f9338a5bf84270ca6bc377c6ff}
+      \strng{bibnamehash}{ade942ac643a4c83f898aab9e589cd1e}
+      \strng{authorbibnamehash}{ade942ac643a4c83f898aab9e589cd1e}
+      \strng{authornamehash}{ade942ac643a4c83f898aab9e589cd1e}
+      \strng{authorfullhash}{330177f9338a5bf84270ca6bc377c6ff}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Listeria monocytogenes may contaminate and persist in food production facilities and cause repeated, seemingly sporadic, illnesses over extended periods of time. We report on the investigation of two such concurrent outbreaks. We compared patient isolates and available isolates from foods and food production facilities by use of whole-genome sequencing and subsequent multilocus sequence type and single nucleotide polymorphism analysis. Outbreak cases shared outbreak strains, defined as Listeria monocytogenes isolates belonging to the same sequence type with fewer than five single nucleotide polymorphism differences. We performed routine food consumption interviews of L. monocytogenes patients and compared outbreak cases with sporadic cases. Two outbreaks were defined, each consisting of ten outbreak cases in the period 2013–15. Seven outbreak cases and a fetus in gestational week 38 died. Listeria monocytogenes isolates from cold smoked or gravad fish products or their two respective production environments were repeatedly found to belong to the outbreak strains. Outbreak cases more often than sporadic cases stated that they consumed the relevant fish products, odds ratio 10.7. Routine collection and typing of food isolates was key to solving the outbreaks. Furthermore, these outbreaks illustrate the value of whole-genome sequencing for outbreak definition and investigation. Whole-genome sequencing combined with epidemiological investigations provided the discriminatory power to recognize low-intensity, extended time-period outbreaks and link them to food products from two different contaminated production facilities with sufficient strength for food authorities to intervene on. Cold smoked and gravad fish constitute risk products and may be responsible for more listeriosis cases than previously recognized.}
+      \field{issn}{1198-743X}
+      \field{journaltitle}{Clinical Microbiology and Infection}
+      \field{number}{7}
+      \field{title}{Two listeria outbreaks caused by smoked fish consumption—using whole-genome sequencing for outbreak investigations}
+      \field{volume}{22}
+      \field{year}{2016}
+      \field{pages}{620\bibrangedash 624}
+      \range{pages}{5}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.cmi.2016.04.017
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S1198743X16301148
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S1198743X16301148
+      \endverb
+      \keyw{Disease outbreak,Foodborne disease,Food safety,High throughput DNA sequencing,Listeria infections,Pregnancy complications (infectious)}
+    \endentry
+    \entry{Lewis_2009}{article}{}
+      \name{author}{18}{}{%
+        {{un=0,uniquepart=base,hash=c49310d378d95c61915e86b6e4265869}{%
+           family={Lewis},
+           familyi={L\bibinitperiod},
+           given={H.\bibnamedelimi C.},
+           giveni={H\bibinitperiod\bibinitdelim C\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0cbbd7271f33d9c0f79a47de07f9e544}{%
+           family={Ethelberg},
+           familyi={E\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b42239b2ed2b1880b093f6719a003088}{%
+           family={Olsen},
+           familyi={O\bibinitperiod},
+           given={K.\bibnamedelimi E.\bibnamedelimi P.},
+           giveni={K\bibinitperiod\bibinitdelim E\bibinitperiod\bibinitdelim P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a66b2f7feb6c0890707d959bcddde3a3}{%
+           family={Nielsen},
+           familyi={N\bibinitperiod},
+           given={E.\bibnamedelimi M.},
+           giveni={E\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2d91687e39df0c7941246b5438faae4e}{%
+           family={Lisby},
+           familyi={L\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=29e66be02f2170ca1aabbbe5ef46ee01}{%
+           family={Madsen},
+           familyi={M\bibinitperiod},
+           given={S.\bibnamedelimi B.},
+           giveni={S\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ed19f886a550e69f4c22a66a9b1a0a4e}{%
+           family={Boel},
+           familyi={B\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=b8bb0332963331b017c95d11e2a69ad4}{%
+           family={Stafford},
+           familyi={S\bibinitperiod},
+           given={R.},
+           giveni={R\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c4509c16bb5b7b51d3225ae90d66d278}{%
+           family={Kirk},
+           familyi={K\bibinitperiod},
+           given={M.},
+           giveni={M\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c90002cb96a7538b05c2ebb952fdcb33}{%
+           family={Smith},
+           familyi={S\bibinitperiod},
+           given={H.\bibnamedelimi V.},
+           giveni={H\bibinitperiod\bibinitdelim V\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fd9b8030effd4175c02d174a04115860}{%
+           family={Tikumrum},
+           familyi={T\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=de02249c75695a17df01d39f6b103904}{%
+           family={Wisetrojana},
+           familyi={W\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7f9da2a460cb7ad569a6fc4530c5569f}{%
+           family={Bangtrakulnonth},
+           familyi={B\bibinitperiod},
+           given={A.},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e02fc1de59731069f2ff084d328eb828}{%
+           family={Vithayarungruangsri},
+           familyi={V\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=23f335e7ccd80364fa49ada04810b43d}{%
+           family={Siriarayaporn},
+           familyi={S\bibinitperiod},
+           given={P.},
+           giveni={P\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ea8a3d47c1a51374470c4e525ae736ee}{%
+           family={Ungchusak},
+           familyi={U\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c8dc21f318ea690af14c6c4cc96277a6}{%
+           family={Bishop},
+           familyi={B\bibinitperiod},
+           given={J.},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=77ecac1034bb90cdbb7eb17ee324c600}{%
+           family={Molbak},
+           familyi={M\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Cambridge University Press}%
+      }
+      \strng{namehash}{667092109ec208736ee1fd8f0cccb633}
+      \strng{fullhash}{9eb5799948a0e8502fdfb22409c3930e}
+      \strng{bibnamehash}{667092109ec208736ee1fd8f0cccb633}
+      \strng{authorbibnamehash}{667092109ec208736ee1fd8f0cccb633}
+      \strng{authornamehash}{667092109ec208736ee1fd8f0cccb633}
+      \strng{authorfullhash}{9eb5799948a0e8502fdfb22409c3930e}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Epidemiology and Infection}
+      \field{number}{3}
+      \field{title}{Outbreaks of Shigella sonnei infections in Denmark and Australia linked to consumption of imported raw baby corn}
+      \field{volume}{137}
+      \field{year}{2009}
+      \field{pages}{326\bibrangedash 334}
+      \range{pages}{9}
+      \verb{doi}
+      \verb 10.1017/S0950268808001829
+      \endverb
+    \endentry
+    \entry{Muller_2009}{article}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=7d9cf4e79b5602ed6b5f17251cd420c3}{%
+           family={Muller},
+           familyi={M\bibinitperiod},
+           given={L.},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2f7fd0319066c67b07e7001323090e03}{%
+           family={Jensen},
+           familyi={J\bibinitperiod},
+           given={T.},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=272de2a6ce9a10385d6b864fc735ca0d}{%
+           family={Petersen},
+           familyi={P\bibinitperiod},
+           given={R.\bibnamedelimi F.},
+           giveni={R\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=77ecac1034bb90cdbb7eb17ee324c600}{%
+           family={Molbak},
+           familyi={M\bibinitperiod},
+           given={K.},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0cbbd7271f33d9c0f79a47de07f9e544}{%
+           family={Ethelberg},
+           familyi={E\bibinitperiod},
+           given={S.},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{0a95e8877a6b1ffc980e58b296bcc259}
+      \strng{fullhash}{bc44af6bfddb50fae2a5a08867de0b83}
+      \strng{bibnamehash}{0a95e8877a6b1ffc980e58b296bcc259}
+      \strng{authorbibnamehash}{0a95e8877a6b1ffc980e58b296bcc259}
+      \strng{authornamehash}{0a95e8877a6b1ffc980e58b296bcc259}
+      \strng{authorfullhash}{bc44af6bfddb50fae2a5a08867de0b83}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{1560-7917}
+      \field{journaltitle}{Eurosurveillance}
+      \field{month}{6}
+      \field{number}{24}
+      \field{title}{Imported fresh sugar peas as suspected source of an outbreak of Shigella sonnei in Denmark, April – May 2009}
+      \field{volume}{14}
+      \field{year}{2009}
+    \endentry
+    \entry{Menge_2020}{article}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=9e2ad6bae2eb95c1af77462813e6a833}{%
+           family={Menge},
+           familyi={M\bibinitperiod},
+           given={Christian},
+           giveni={C\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{9e2ad6bae2eb95c1af77462813e6a833}
+      \strng{fullhash}{9e2ad6bae2eb95c1af77462813e6a833}
+      \strng{bibnamehash}{9e2ad6bae2eb95c1af77462813e6a833}
+      \strng{authorbibnamehash}{9e2ad6bae2eb95c1af77462813e6a833}
+      \strng{authornamehash}{9e2ad6bae2eb95c1af77462813e6a833}
+      \strng{authorfullhash}{9e2ad6bae2eb95c1af77462813e6a833}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Many cattle are persistently colonized with Shiga toxin-producing Escherichia coli (STEC) and represent a major source of human infections with human-pathogenic STEC strains (syn. enterohemorrhagic E. coli (EHEC)). Intervention strategies most effectively protecting humans best aim at the limitation of bovine STEC shedding. Mechanisms enabling STEC to persist in cattle are only partialy understood. Cattle were long believed to resist the detrimental effects of Shiga toxins (Stxs), potent cytotoxins acting as principal virulence factors in the pathogenesis of human EHEC-associated diseases. However, work by different groups, summarized in this review, has provided substantial evidence that different types of target cells for Stxs exist in cattle. Peripheral and intestinal lymphocytes express the Stx receptor globotriaosylceramide (Gb3syn. CD77) in vitro and in vivo in an activation-dependent fashion with Stx-binding isoforms expressed predominantly at early stages of the activation process. Subpopulations of colonic epithelial cells and macrophage-like cells, residing in the bovine mucosa in proximity to STEC colonies, are also targeted by Stxs. STEC-inoculated calves are depressed in mounting appropriate cellular immune responses which can be overcome by vaccination of the animals against Stxs early in life before encountering STEC. Considering Stx target cells and the resulting effects of Stxs in cattle, which significantly differ from effects implicated in human disease, may open promising opportunities to improve existing yet insufficient measures to limit STEC carriage and shedding by the principal reservoir host.}
+      \field{issn}{2072-6651}
+      \field{journaltitle}{Toxins}
+      \field{number}{9}
+      \field{title}{The Role of Escherichia coli Shiga Toxins in STEC Colonization of Cattle}
+      \field{volume}{12}
+      \field{year}{2020}
+      \verb{doi}
+      \verb 10.3390/toxins12090607
+      \endverb
+      \verb{urlraw}
+      \verb https://www.mdpi.com/2072-6651/12/9/607
+      \endverb
+      \verb{url}
+      \verb https://www.mdpi.com/2072-6651/12/9/607
+      \endverb
+    \endentry
+    \entry{Soborg_2013}{article}{}
+      \name{author}{7}{}{%
+        {{un=0,uniquepart=base,hash=6262df1a90552712817e4e1060e09078}{%
+           family={Soborg},
+           familyi={S\bibinitperiod},
+           given={B},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4552b418d7917723db68b4f896789e2b}{%
+           family={Lassen},
+           familyi={L\bibinitperiod},
+           given={S\bibnamedelima G},
+           giveni={S\bibinitperiod\bibinitdelim G\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7d9cf4e79b5602ed6b5f17251cd420c3}{%
+           family={Muller},
+           familyi={M\bibinitperiod},
+           given={L},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2f7fd0319066c67b07e7001323090e03}{%
+           family={Jensen},
+           familyi={J\bibinitperiod},
+           given={T},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=0cbbd7271f33d9c0f79a47de07f9e544}{%
+           family={Ethelberg},
+           familyi={E\bibinitperiod},
+           given={S},
+           giveni={S\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=5a757a339b2cc4e158ed575b4a016c44}{%
+           family={M{ø}lbak},
+           familyi={M\bibinitperiod},
+           given={K},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=76594dea71d964cd671709d26ff47dac}{%
+           family={Scheutz},
+           familyi={S\bibinitperiod},
+           given={F},
+           giveni={F\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{46b3abc4bca9f28e2a7a831679ebcde7}
+      \strng{fullhash}{8e8ec6e229e635fc96fd598a45f5c506}
+      \strng{bibnamehash}{46b3abc4bca9f28e2a7a831679ebcde7}
+      \strng{authorbibnamehash}{46b3abc4bca9f28e2a7a831679ebcde7}
+      \strng{authornamehash}{46b3abc4bca9f28e2a7a831679ebcde7}
+      \strng{authorfullhash}{8e8ec6e229e635fc96fd598a45f5c506}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{eid}{20350}
+      \field{journaltitle}{Eurosurveillance}
+      \field{number}{2}
+      \field{title}{A verocytotoxin-producing E. coli outbreak with a surprisingly high risk of haemolytic uraemic syndrome, Denmark, September-October 2012}
+      \field{volume}{18}
+      \field{year}{2013}
+      \verb{doi}
+      \verb https://doi.org/10.2807/ese.18.02.20350-en
+      \endverb
+      \verb{urlraw}
+      \verb https://www.eurosurveillance.org/content/10.2807/ese.18.02.20350-en
+      \endverb
+      \verb{url}
+      \verb https://www.eurosurveillance.org/content/10.2807/ese.18.02.20350-en
+      \endverb
+    \endentry
+    \entry{Helwigh_2016}{book}{}
+      \name{editor}{3}{}{%
+        {{un=0,uniquepart=base,hash=1c252a15adb834e80ab614b31acc374c}{%
+           family={Helwigh},
+           familyi={H\bibinitperiod},
+           given={Birgitte},
+           giveni={B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=e25b2d4834105b5af3c71882871e7bc5}{%
+           family={Christensen},
+           familyi={C\bibinitperiod},
+           given={Julia},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7a4e3d6a64f19a150f62135861431937}{%
+           family={Müller},
+           familyi={M\bibinitperiod},
+           given={Luise},
+           giveni={L\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{language}{1}{%
+        {English}%
+      }
+      \list{publisher}{1}{%
+        {National Food Institute, Technical University of Denmark}%
+      }
+      \strng{namehash}{2bfce741f1cbba8bbb19d994d56b5ca9}
+      \strng{fullhash}{2bfce741f1cbba8bbb19d994d56b5ca9}
+      \strng{bibnamehash}{2bfce741f1cbba8bbb19d994d56b5ca9}
+      \strng{editorbibnamehash}{2bfce741f1cbba8bbb19d994d56b5ca9}
+      \strng{editornamehash}{2bfce741f1cbba8bbb19d994d56b5ca9}
+      \strng{editorfullhash}{2bfce741f1cbba8bbb19d994d56b5ca9}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{editor}
+      \field{labeltitlesource}{title}
+      \field{series}{Annual Report on Zoonoses in Denmark}
+      \field{title}{Annual report on zoonoses in Denmark 2015}
+      \field{year}{2016}
+    \endentry
+    \entry{Stroup_1989}{article}{}
+      \name{author}{4}{}{%
+        {{un=0,uniquepart=base,hash=4d7e6f33b1b7a3f9d6785682b4844368}{%
+           family={Stroup},
+           familyi={S\bibinitperiod},
+           given={D.\bibnamedelimi F.},
+           giveni={D\bibinitperiod\bibinitdelim F\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a2751c4539694d7f9b76088ae7eb570b}{%
+           family={Williamson},
+           familyi={W\bibinitperiod},
+           given={G.\bibnamedelimi D.},
+           giveni={G\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a9754b11d87b79011e9f897aadc2332d}{%
+           family={Herndon},
+           familyi={H\bibinitperiod},
+           given={J.\bibnamedelimi L.},
+           giveni={J\bibinitperiod\bibinitdelim L\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=3f68f7bc36ee702933fe42c963c9939a}{%
+           family={Karon},
+           familyi={K\bibinitperiod},
+           given={J.\bibnamedelimi M.},
+           giveni={J\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{238e5f8f15557e15250c0ce1d106840d}
+      \strng{fullhash}{1715fdf9e34b5aa40e412a29b5245253}
+      \strng{bibnamehash}{238e5f8f15557e15250c0ce1d106840d}
+      \strng{authorbibnamehash}{238e5f8f15557e15250c0ce1d106840d}
+      \strng{authornamehash}{238e5f8f15557e15250c0ce1d106840d}
+      \strng{authorfullhash}{1715fdf9e34b5aa40e412a29b5245253}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{issn}{0277-6715}
+      \field{journaltitle}{Statistics in medicine}
+      \field{month}{3}
+      \field{number}{3}
+      \field{title}{Detection of aberrations in the occurrence of notifiable diseases surveillance data}
+      \field{volume}{8}
+      \field{year}{1989}
+      \field{pages}{323\bibrangedash 329}
+      \range{pages}{7}
+      \verb{doi}
+      \verb 10.1002/sim.4780080312
+      \endverb
+    \endentry
+    \entry{Wolfinger_1997}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=c833749cc152e2ba6591b68b3e3f0a5b}{%
+           family={Wolfinger},
+           familyi={W\bibinitperiod},
+           given={Russell\bibnamedelima D.},
+           giveni={R\bibinitperiod\bibinitdelim D\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=715abbf13771af0330339351e0874aa3}{%
+           family={Lin},
+           familyi={L\bibinitperiod},
+           given={Xihong},
+           giveni={X\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{e0ab9f8ed2cb2795b7d20fed4664356b}
+      \strng{fullhash}{e0ab9f8ed2cb2795b7d20fed4664356b}
+      \strng{bibnamehash}{e0ab9f8ed2cb2795b7d20fed4664356b}
+      \strng{authorbibnamehash}{e0ab9f8ed2cb2795b7d20fed4664356b}
+      \strng{authornamehash}{e0ab9f8ed2cb2795b7d20fed4664356b}
+      \strng{authorfullhash}{e0ab9f8ed2cb2795b7d20fed4664356b}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Computational Statistics and Data Analysis}
+      \field{note}{Cited by: 87}
+      \field{number}{4}
+      \field{title}{Two Taylor-series approximation methods for nonlinear mixed models}
+      \field{type}{Article}
+      \field{volume}{25}
+      \field{year}{1997}
+      \field{pages}{465\bibrangedash 490}
+      \range{pages}{26}
+      \verb{doi}
+      \verb 10.1016/S0167-9473(97)00012-1
+      \endverb
+      \verb{urlraw}
+      \verb https://www.scopus.com/inward/record.uri?eid=2-s2.0-0031222254&doi=10.1016%2fS0167-9473%2897%2900012-1&partnerID=40&md5=dbf7ca1e47d836029af4044ff9880463
+      \endverb
+      \verb{url}
+      \verb https://www.scopus.com/inward/record.uri?eid=2-s2.0-0031222254&doi=10.1016%2fS0167-9473%2897%2900012-1&partnerID=40&md5=dbf7ca1e47d836029af4044ff9880463
+      \endverb
+    \endentry
+    \entry{Lee_1996}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=1d50c5d908fe9ead398d6448f784be74}{%
+           family={Lee},
+           familyi={L\bibinitperiod},
+           given={Y.},
+           giveni={Y\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=97a60525676f2f0735b3bace8039e9af}{%
+           family={Nelder},
+           familyi={N\bibinitperiod},
+           given={J.\bibnamedelimi A.},
+           giveni={J\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {[Royal Statistical Society, Wiley]}%
+      }
+      \strng{namehash}{c24f073f5d3c4ebf5ac18882fa09ccf1}
+      \strng{fullhash}{c24f073f5d3c4ebf5ac18882fa09ccf1}
+      \strng{bibnamehash}{c24f073f5d3c4ebf5ac18882fa09ccf1}
+      \strng{authorbibnamehash}{c24f073f5d3c4ebf5ac18882fa09ccf1}
+      \strng{authornamehash}{c24f073f5d3c4ebf5ac18882fa09ccf1}
+      \strng{authorfullhash}{c24f073f5d3c4ebf5ac18882fa09ccf1}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{We consider hierarchical generalized linear models which allow extra error components in the linear predictors of generalized linear models. The distribution of these components is not restricted to be normal; this allows a broader class of models, which includes generalized linear mixed models. We use a generalization of Henderson's joint likelihood, called a hierarchical or h-likelihood, for inferences from hierarchical generalized linear models. This avoids the integration that is necessary when marginal likelihood is used. Under appropriate conditions maximizing the h-likelihood gives fixed effect estimators that are asymptotically equivalent to those obtained from the use of marginal likelihood; at the same time we obtain the random effect estimates that are asymptotically best unbiased predictors. An adjusted profile h-likelihood is shown to give the required generalization of restricted maximum likelihood for the estimation of dispersion components. A scaled deviance test for the goodness of fit, a model selection criterion for choosing between various dispersion models and a graphical method for checking the distributional assumption of random effects are proposed. The ideas of quasi-likelihood and extended quasi-likelihood are generalized to the new class. We give examples of the Poisson-gamma, binomial-beta and gamma-inverse gamma hierarchical generalized linear models. A resolution is proposed for the apparent difference between population-averaged and subject-specific models. A unified framework is provided for viewing and extending many existing methods.}
+      \field{issn}{00359246}
+      \field{journaltitle}{Journal of the Royal Statistical Society. Series B (Methodological)}
+      \field{number}{4}
+      \field{title}{Hierarchical Generalized Linear Models}
+      \field{urlday}{16}
+      \field{urlmonth}{5}
+      \field{urlyear}{2023}
+      \field{volume}{58}
+      \field{year}{1996}
+      \field{urldateera}{ce}
+      \field{pages}{619\bibrangedash 678}
+      \range{pages}{60}
+      \verb{urlraw}
+      \verb http://www.jstor.org/stable/2346105
+      \endverb
+      \verb{url}
+      \verb http://www.jstor.org/stable/2346105
+      \endverb
+    \endentry
+    \entry{Fisher_1922}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=565b1403c3b3172839fa752390fdd3bf}{%
+           family={Fisher},
+           familyi={F\bibinitperiod},
+           given={R.\bibnamedelimi A.},
+           giveni={R\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=6bbfd1d77e330a30c43ac1fc969c3c1d}{%
+           family={Russell},
+           familyi={R\bibinitperiod},
+           given={Edward\bibnamedelima John},
+           giveni={E\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{8fc0af2e396be93e5a18d2b3302e295a}
+      \strng{fullhash}{8fc0af2e396be93e5a18d2b3302e295a}
+      \strng{bibnamehash}{8fc0af2e396be93e5a18d2b3302e295a}
+      \strng{authorbibnamehash}{8fc0af2e396be93e5a18d2b3302e295a}
+      \strng{authornamehash}{8fc0af2e396be93e5a18d2b3302e295a}
+      \strng{authorfullhash}{8fc0af2e396be93e5a18d2b3302e295a}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Several reasons have contributed to the prolonged neglect into which the study of statistics, in its theoretical aspects, has fallen. In spite of the immense amount of fruitful labour which has been expended in its practical applications, the basic principles of this organ of science are still in a state of obscurity, and it cannot be denied that, during the recent rapid development of practical methods, fundamental problems have been ignored and fundamental paradoxes left unresolved. This anomalous state of statistical science is strikingly exemplified by a recent paper entitled "The Fundamental Problem of Practical Statistics," in which one of the most eminent of modern statisticians presents what purports to be a general proof of BAYES' postulate, a proof which, in the opinion of a second statistician of equal eminence, "seems to rest upon a very peculiar -- not to say hardly supposable -- relation."}
+      \field{journaltitle}{Philosophical Transactions of the Royal Society of London. Series A, Containing Papers of a Mathematical or Physical Character}
+      \field{number}{594-604}
+      \field{title}{On the mathematical foundations of theoretical statistics}
+      \field{volume}{222}
+      \field{year}{1922}
+      \field{pages}{309\bibrangedash 368}
+      \range{pages}{60}
+      \verb{doi}
+      \verb 10.1098/rsta.1922.0009
+      \endverb
+      \verb{eprint}
+      \verb https://royalsocietypublishing.org/doi/pdf/10.1098/rsta.1922.0009
+      \endverb
+      \verb{urlraw}
+      \verb https://royalsocietypublishing.org/doi/abs/10.1098/rsta.1922.0009
+      \endverb
+      \verb{url}
+      \verb https://royalsocietypublishing.org/doi/abs/10.1098/rsta.1922.0009
+      \endverb
+    \endentry
+    \entry{Kristensen_2016}{article}{}
+      \name{author}{5}{}{%
+        {{un=0,uniquepart=base,hash=af4021d811c7c338149b137bba43dfce}{%
+           family={Kristensen},
+           familyi={K\bibinitperiod},
+           given={Kasper},
+           giveni={K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4f11652d75ee2e5512ea3ea7d7e37b6d}{%
+           family={Nielsen},
+           familyi={N\bibinitperiod},
+           given={Anders},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=acb47aea8e3af8546a81e442b52b8e46}{%
+           family={Berg},
+           familyi={B\bibinitperiod},
+           given={Casper\bibnamedelima W.},
+           giveni={C\bibinitperiod\bibinitdelim W\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=2b65bd438e504d255f7279856a4dbe2c}{%
+           family={Skaug},
+           familyi={S\bibinitperiod},
+           given={Hans},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=c3515934a37603fa52dd74538755337f}{%
+           family={Bell},
+           familyi={B\bibinitperiod},
+           given={Bradley\bibnamedelima M.},
+           giveni={B\bibinitperiod\bibinitdelim M\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{195d495c77a2806094897d3e57ab84ee}
+      \strng{fullhash}{f3bf76e3adf2a6c5810a12f60e76b940}
+      \strng{bibnamehash}{195d495c77a2806094897d3e57ab84ee}
+      \strng{authorbibnamehash}{195d495c77a2806094897d3e57ab84ee}
+      \strng{authornamehash}{195d495c77a2806094897d3e57ab84ee}
+      \strng{authorfullhash}{f3bf76e3adf2a6c5810a12f60e76b940}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of Statistical Software}
+      \field{number}{5}
+      \field{title}{{TMB}: Automatic Differentiation and {L}aplace Approximation}
+      \field{volume}{70}
+      \field{year}{2016}
+      \field{pages}{1\bibrangedash 21}
+      \range{pages}{21}
+      \verb{doi}
+      \verb 10.18637/jss.v070.i05
+      \endverb
+    \endentry
+    \entry{Griewank_2008}{book}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=9d68c52b6098887b6e6de85daafbb0bb}{%
+           family={Griewank},
+           familyi={G\bibinitperiod},
+           given={Andreas},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=68a9142e72a38a6200c3beb53fe90f40}{%
+           family={Walther},
+           familyi={W\bibinitperiod},
+           given={Andrea},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{2}{%
+        {Society for Industrial}%
+        {Applied Mathematics}%
+      }
+      \strng{namehash}{77366ceff7089ab546dc44d384ee46ac}
+      \strng{fullhash}{77366ceff7089ab546dc44d384ee46ac}
+      \strng{bibnamehash}{77366ceff7089ab546dc44d384ee46ac}
+      \strng{authorbibnamehash}{77366ceff7089ab546dc44d384ee46ac}
+      \strng{authornamehash}{77366ceff7089ab546dc44d384ee46ac}
+      \strng{authorfullhash}{77366ceff7089ab546dc44d384ee46ac}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{edition}{Second}
+      \field{title}{Evaluating Derivatives}
+      \field{year}{2008}
+      \verb{doi}
+      \verb 10.1137/1.9780898717761
+      \endverb
+      \verb{eprint}
+      \verb https://epubs.siam.org/doi/pdf/10.1137/1.9780898717761
+      \endverb
+      \verb{urlraw}
+      \verb https://epubs.siam.org/doi/abs/10.1137/1.9780898717761
+      \endverb
+      \verb{url}
+      \verb https://epubs.siam.org/doi/abs/10.1137/1.9780898717761
+      \endverb
+    \endentry
+    \entry{Fournier_2012}{article}{}
+      \name{author}{8}{}{%
+        {{un=0,uniquepart=base,hash=0ed48d398b03073f87a288aa14e59d72}{%
+           family={Fournier},
+           familyi={F\bibinitperiod},
+           given={David\bibnamedelima A.},
+           giveni={D\bibinitperiod\bibinitdelim A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=a5bafbe908369703bd010124ba526df2}{%
+           family={Skaug},
+           familyi={S\bibinitperiod},
+           given={Hans\bibnamedelima J.},
+           giveni={H\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=fbd2889742320e8bcb34d671ed163758}{%
+           family={Ancheta},
+           familyi={A\bibinitperiod},
+           given={Johnoel},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=843f9a1ce3348083ff02f16ee5a1202f}{%
+           family={Ianelli},
+           familyi={I\bibinitperiod},
+           given={James},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=704fdb18fc91c80bf0399660485a90d8}{%
+           family={Magnusson},
+           familyi={M\bibinitperiod},
+           given={Arni},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=7dbfa76a6cd9c98b4977ca5fa5914b81}{%
+           family={Maunder},
+           familyi={M\bibinitperiod},
+           given={Mark\bibnamedelima N.},
+           giveni={M\bibinitperiod\bibinitdelim N\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=4f11652d75ee2e5512ea3ea7d7e37b6d}{%
+           family={Nielsen},
+           familyi={N\bibinitperiod},
+           given={Anders},
+           giveni={A\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=482aa8aa8e89982143642251226d079a}{%
+           family={Sibert},
+           familyi={S\bibinitperiod},
+           given={John},
+           giveni={J\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor & Francis}%
+      }
+      \strng{namehash}{a0f8d4bbf1b90e4b74b442dea89037dd}
+      \strng{fullhash}{c2572d85e1427b0b0995228524323c11}
+      \strng{bibnamehash}{a0f8d4bbf1b90e4b74b442dea89037dd}
+      \strng{authorbibnamehash}{a0f8d4bbf1b90e4b74b442dea89037dd}
+      \strng{authornamehash}{a0f8d4bbf1b90e4b74b442dea89037dd}
+      \strng{authorfullhash}{c2572d85e1427b0b0995228524323c11}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Optimization Methods and Software}
+      \field{number}{2}
+      \field{title}{AD Model Builder: using automatic differentiation for statistical inference of highly parameterized complex nonlinear models}
+      \field{volume}{27}
+      \field{year}{2012}
+      \field{pages}{233\bibrangedash 249}
+      \range{pages}{17}
+      \verb{doi}
+      \verb 10.1080/10556788.2011.597854
+      \endverb
+      \verb{eprint}
+      \verb https://doi.org/10.1080/10556788.2011.597854
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1080/10556788.2011.597854
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1080/10556788.2011.597854
+      \endverb
+    \endentry
+    \entry{Blicher_2021}{article}{}
+      \name{author}{3}{}{%
+        {{un=0,uniquepart=base,hash=e0fecf1ef5e558b46f301c62e6e67850}{%
+           family={Bjerreg{å}rd},
+           familyi={B\bibinitperiod},
+           given={Mathias\bibnamedelima Blicher},
+           giveni={M\bibinitperiod\bibinitdelim B\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=de341522d92c0810968059270c804930}{%
+           family={M{ø}ller},
+           familyi={M\bibinitperiod},
+           given={Jan\bibnamedelima Kloppenborg},
+           giveni={J\bibinitperiod\bibinitdelim K\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=ac5d1263fca18a1f2d85317607e7d734}{%
+           family={Madsen},
+           familyi={M\bibinitperiod},
+           given={Henrik},
+           giveni={H\bibinitperiod},
+           givenun=0}}%
+      }
+      \strng{namehash}{3148b39b299438308267be39c21b1b55}
+      \strng{fullhash}{3148b39b299438308267be39c21b1b55}
+      \strng{bibnamehash}{3148b39b299438308267be39c21b1b55}
+      \strng{authorbibnamehash}{3148b39b299438308267be39c21b1b55}
+      \strng{authornamehash}{3148b39b299438308267be39c21b1b55}
+      \strng{authorfullhash}{3148b39b299438308267be39c21b1b55}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{Probabilistic forecasting is becoming increasingly important for a wide range of applications, especially for energy systems such as forecasting wind power production. A need for proper evaluation of probabilistic forecasts follows naturally with this, because evaluation is the key to improving the forecasts. Although plenty of excellent reviews and research papers on probabilistic forecast evaluation already exist, we find that there is a need for an introduction with some practical application. In particular, many forecast scenarios in energy systems are inherently multivariate, and while univariate evaluation methods are well understood and documented, only limited and scattered work has been done on their multivariate counterparts. This paper therefore contains a review of a selected set of probabilistic forecast evaluation methods, primarily scoring rules, as well as practical sections that explain how these methods can be calculated and estimated. In three case studies featuring simple autoregressive models, stochastic differential equations and real wind power data, we implement, apply and discuss the logarithmic score, the continuous ranked probability score and the variogram score for forecasting problems of varying dimension. Finally, the advantages and disadvantages of the three scoring rules are highlighted, and this provides a significant step towards deciding on an evaluation method for a given multivariate forecast scenario including forecast scenarios relevant for energy systems.}
+      \field{issn}{2666-5468}
+      \field{journaltitle}{Energy and AI}
+      \field{title}{An introduction to multivariate probabilistic forecast evaluation}
+      \field{volume}{4}
+      \field{year}{2021}
+      \field{pages}{100058}
+      \range{pages}{1}
+      \verb{doi}
+      \verb https://doi.org/10.1016/j.egyai.2021.100058
+      \endverb
+      \verb{urlraw}
+      \verb https://www.sciencedirect.com/science/article/pii/S2666546821000124
+      \endverb
+      \verb{url}
+      \verb https://www.sciencedirect.com/science/article/pii/S2666546821000124
+      \endverb
+      \keyw{Probabilistic forecast evaluation,Multivariate scoring rules,Wind power forecast,Ensemble forecast,Time series analysis}
+    \endentry
+    \entry{Good_1992}{inbook}{}
+      \name{author}{1}{}{%
+        {{un=0,uniquepart=base,hash=b86a87765e61c9d06430e684291fa9f9}{%
+           family={Good},
+           familyi={G\bibinitperiod},
+           given={I.\bibnamedelimi J.},
+           giveni={I\bibinitperiod\bibinitdelim J\bibinitperiod},
+           givenun=0}}%
+      }
+      \name{editor}{2}{}{%
+        {{hash=3e3c22dfe3b36ff075adfaa64ce7661a}{%
+           family={Kotz},
+           familyi={K\bibinitperiod},
+           given={Samuel},
+           giveni={S\bibinitperiod}}}%
+        {{hash=42134aac82ec7ee488d5679523870362}{%
+           family={Johnson},
+           familyi={J\bibinitperiod},
+           given={Norman\bibnamedelima L.},
+           giveni={N\bibinitperiod\bibinitdelim L\bibinitperiod}}}%
+      }
+      \list{location}{1}{%
+        {New York, NY}%
+      }
+      \list{publisher}{1}{%
+        {Springer New York}%
+      }
+      \strng{namehash}{b86a87765e61c9d06430e684291fa9f9}
+      \strng{fullhash}{b86a87765e61c9d06430e684291fa9f9}
+      \strng{bibnamehash}{b86a87765e61c9d06430e684291fa9f9}
+      \strng{authorbibnamehash}{b86a87765e61c9d06430e684291fa9f9}
+      \strng{authornamehash}{b86a87765e61c9d06430e684291fa9f9}
+      \strng{authorfullhash}{b86a87765e61c9d06430e684291fa9f9}
+      \strng{editorbibnamehash}{09392c8ca2f5970b74b6cec44c645f3a}
+      \strng{editornamehash}{09392c8ca2f5970b74b6cec44c645f3a}
+      \strng{editorfullhash}{09392c8ca2f5970b74b6cec44c645f3a}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{abstract}{This paper deals first with the relationship between the theory of probability and the theory of rational behaviour. A method is then suggested for encouraging people to make accurate probability estimates, a connection with the theory of information being mentioned. Finally Wald's theory of statistical decision functions is summarised and generalised and its relation to the theory of rational behaviour is discussed.}
+      \field{booktitle}{Breakthroughs in Statistics: Foundations and Basic Theory}
+      \field{isbn}{978-1-4612-0919-5}
+      \field{title}{Rational Decisions}
+      \field{year}{1992}
+      \field{pages}{365\bibrangedash 377}
+      \range{pages}{13}
+      \verb{doi}
+      \verb 10.1007/978-1-4612-0919-5_24
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1007/978-1-4612-0919-5_24
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1007/978-1-4612-0919-5_24
+      \endverb
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

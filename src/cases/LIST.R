@@ -6,6 +6,7 @@ library(forcats)
 library(readr)
 library(surveillance)
 library(ggplot2)
+library(zoo)
 
 # DTU colours
 dtuPalette <- c("#990000",
@@ -52,6 +53,30 @@ LIST <- dat %>%
   mutate(ageGroup = fct_collapse(ageGroup, `<65 years` = c("<1 year", "1-4 years", "5-14 years", "15-24 years", "25-64 years"))) %>%
   group_by(Date, ageGroup) %>%
   reframe(y = sum(cases), n = sum(n))
+
+
+LIST_meanAndStandardDeviation <- LIST %>%
+  group_by(ageGroup) %>%
+  mutate(Mean = across(y, ~ rollapply(., 36, sd, fill = NA)),
+         `Std. deviation` = across(y, ~ rollapply(., 36, mean, fill = NA))) %>%
+  ungroup() %>%
+  pivot_longer(cols = Mean:`Std. deviation`, names_to = "Statistic", values_to = "value") %>%
+  ggplot(mapping = aes(x = Date, y = value$y, colour = Statistic, group = Statistic)) +
+  geom_line(linewidth=1.2) +
+  facet_wrap(facets = vars(ageGroup)) +
+  scale_x_date(name = "Month")+
+  scale_y_continuous(name = "Value") +
+  scale_color_manual(name = "Statistic", values = dtuPalette[10:11])
+ggsave(filename = "LIST_meanAndStandardDeviation.png",
+       plot = LIST_meanAndStandardDeviation,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+
 
 LIST_long_plot <- LIST %>%
   ggplot(mapping = aes(x = Date, y = y, fill = ageGroup)) +

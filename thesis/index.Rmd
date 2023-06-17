@@ -35,6 +35,8 @@ list(bold = FALSE, italic = FALSE)
 
 ```{r dataLoadResults, echo=FALSE, warning=FALSE}
 
+scenarios <- read_rds(file = "../src/simulation/scenarios.Rds")
+
 Compare_novel_dat <- read_rds(file = "../src/cases/Compare_novel_dat.rds")
 LIST_novel_tbl <- read_rds(file = "../src/cases/LIST_novel_tbl.rds")
 STEC_novel_tbl <- read_rds(file = "../src/cases/STEC_novel_tbl.rds")
@@ -79,5 +81,11 @@ SHIG_alarms_Noufaily <- SHIG_alarms_StateOfTheArt %>% filter(method == "Noufaily
 SALM_alarms_Noufaily <- SALM_alarms_StateOfTheArt %>% filter(method == "Noufaily") 
 
 LIST_alarms <- Compare_novel_dat %>% filter(alarm) %>% summarize(alarms=unique(Date))
+
+
+# View(LIST_alarms_StateOfTheArt %>% filter(alarm) %>% select(-n, -dateOfAlarm))
+# View(SHIG_alarms_StateOfTheArt %>% filter(alarm) %>% select(-n, -dateOfAlarm))
+# View(STEC_alarms_StateOfTheArt %>% filter(alarm) %>% select(-n, -dateOfAlarm))
+# View(SALM_alarms_StateOfTheArt %>% filter(alarm) %>% select(-n, -dateOfAlarm))
 
 ```

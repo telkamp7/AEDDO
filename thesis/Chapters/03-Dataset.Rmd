@@ -37,11 +37,11 @@ In addition to the individually notifiable diseases, SSI has implemented a labor
 
 \section{Introducing the case studies}
 
-For the scope of this master's thesis, only a specific subset of diseases from the mandatory notification system will be considered. This subset consists of \textit{Listeriosis}, \textit{Shigellosis}, Shiga toxin (verotoxin)-producing \textit{Escherichia coli} (STEC), and \textit{Salmonellosis}. These diseases have been chosen for analysis and investigation based on various factors, such as seasonality, incidence, and severity. Additionally, these diseases have been associated with documented outbreaks observed by SSI (\href{https://www.ssi.dk/sygdomme-beredskab-og-forskning/sygdomsudbrud/arkiv}{https://www.ssi.dk/sygdomme-beredskab-og-forskning/sygdomsudbrud/arkiv}) in the past decade, which adds to their relevance for the study. 
+For the scope of this master's thesis, only a specific subset of diseases from the mandatory notification system will be considered. This subset consists of \textit{Listeriosis}, \textit{Shigellosis}, STEC, and \textit{Salmonellosis}. These diseases have been chosen for analysis and investigation based on various factors, such as seasonality, incidence, and severity. Additionally, these diseases have been associated with documented outbreaks observed by SSI (\href{https://www.ssi.dk/sygdomme-beredskab-og-forskning/sygdomsudbrud/arkiv}{https://www.ssi.dk/sygdomme-beredskab-og-forskning/sygdomsudbrud/arkiv}) in the past decade, which adds to their relevance for the study. 
 
 The count observations are observed in the period from `r format(datePeriod$Date[1], "%B %Y")` to `r format(datePeriod$Date[2], "%B %Y")`. An epidemic curve graph for an excerpt of the data for each of the diseases considered in this master's thesis is shown in Figure \ref{fig:EpiPlot}.
 
-(ref:EpiPlot) Epidemic curve showing the incidence per 100,000 in Denmark, 2012-2022, for the subset of diseases considered in this master thesis. \textbf{(a)} Listeriosis, \textbf{(b)} Shigellosis, \textbf{(c)} STEC, and \textbf{(d)} Salmonellosis.
+(ref:EpiPlot) Epidemic curve showing the incidence per 100,000 in Denmark, 2012-2022, for the subset of diseases considered in this master thesis. \textbf{(a)} \textit{Listeriosis}, \textbf{(b)} \textit{Listeriosis}, \textbf{(c)} STEC, and \textbf{(d)} \textit{Listeriosis}
 
 ```{r EpiPlot, echo=FALSE, out.width="100%", fig.cap="(ref:EpiPlot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/EpiPlot.png")
@@ -55,15 +55,15 @@ Evidently, the subset of diseases in Figure \@ref(fig:EpiPlot) exhibits varying 
 \item Large social gatherings: Events such as weddings, large festivals, or other gatherings where a significant number of people consume potentially contaminated food or drinking water.
 \end{itemize}
 
-Moreover, one could hypothesize that the warmer climate during the summer could potentially directly influence the proliferation of bacteria, which in turn may have an indirect impact on the transmission and spread of these diseases.
+Moreover, one could hypothesize that the warmer climate during the summer could potentially directly influence the proliferation of bacteria, which in turn may have an impact on the transmission and spread of these diseases.
 
 In general, there is a noticeable decrease in the number of observed cases starting from March 2020 and continuing until January 2021. This decline can be attributed to the strict lockdown measures implemented in Denmark in response to the Covid-19 pandemic. These measures, which involved restrictions on movement and social interactions, likely played a significant role in reducing the transmission of infectious diseases, including the ones being investigated.
 
-In Figure \ref{fig:EpiPlot}a...
+From Figure \@ref{fig:EpiPlot}a, it is evident that the incidence of \textit{Listeriosis} remains relatively low but stable over time. However, there are six specific months that stand out due to higher incidence rates. These months include July and August 2014, May and June 2022, and October and November 2022. These periods show a notable increase in the number of reported cases compared to the rest of the time series.
 
 In Figure \ref{fig:EpiPlot}b...
 
-Furthermore, in Figure \ref{fig:EpiPlot}c, a significant increase in the amplitude of the seasonal variation can be observed starting from 2018, with incidences doubling compared to the preceding years. At a first glance, this increase in the incidences might be recognized as a serious, reoccurring outbreak of the disease, but a more reasonable explanation can be found. Up to 2018, most departments of clinical microbiology used culture-based methods as a diagnostic test for bacterial pathogens and the process of changing the test method to polymerase chain reaction (PCR) methods was ongoing [@Svendsen_2023]. In general, PCR resulted in higher incidences compared to other test methods, which is to no surprise as higher sensitivity is well documented for PCR [@Buss_2015; @Knabl_2016].
+Furthermore, in Figure \ref{fig:EpiPlot}c, a significant increase in the amplitude of the seasonal variation in STEC can be observed starting from 2018, with incidences doubling compared to the preceding years. At a first glance, this increase in the incidences might be recognized as a serious, reoccurring outbreak of the disease, but a more reasonable explanation can be found. Up to 2018, most departments of clinical microbiology used culture-based methods as a diagnostic test for bacterial pathogens and the process of changing the test method to polymerase chain reaction (PCR) methods was ongoing [@Svendsen_2023]. In general, PCR resulted in higher incidences compared to other test methods, which is to no surprise as higher sensitivity is well documented for PCR [@Buss_2015; @Knabl_2016].
 
 Figure \ref{fig:EpiPlot}d ...
 

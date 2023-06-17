@@ -39,6 +39,15 @@ dtuPalette <- c("#990000",
                 "#E83F48",
                 "#008835", 
                 "#79238E")
+                
+
+
+PDFLogNormal <- ggplot(data = data.frame(z = c(0,3)), aes(z)) +
+  stat_function(fun = dlnorm, n = 101, args = list(mean = 0, sd = 0.5), colour = "#1FD082", linewidth = 1.2) +
+  scale_y_continuous(name = "PDF", breaks = c(0,0.2,0.4,0.6,0.8,1), limits = c(0,1)) +
+  scale_x_continuous(name = )
+ggsave(filename = "PDFLogNormal.png", plot = PDFLogNormal, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+
 
 # Load data
 # dat <- read_rds(file = "../../data/processed/dat.rds") # 11-agegroups

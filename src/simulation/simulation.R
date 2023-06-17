@@ -24,7 +24,7 @@ library(TMB)
 library(surveillance)
 
 # Register number of cores to be used
-registerDoParallel(cores = 1)
+registerDoParallel(cores = detectCores() - 1)
 
 # Source the simulation functions
 source("simulation_functions.R")
@@ -112,6 +112,8 @@ for(i in 1:7){
 scenarios %>%
   select(theta, beta, gamma1, gamma2, phi, m, trend) %>%
   print(n=28)
+
+write_rds(x = scenarios, file = "scenarios.Rds")
 
 # Only consider the chosen scenarios
 scenariosConsidered <- scenarios[refPar$scenario,]

@@ -1,0 +1,375 @@
+\documentclass[aspectratio=169]{beamer}
+
+% Default packages
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage[backend=bibtex,style=authoryear]{biblatex}
+\usepackage[ruled]{algorithm2e}
+\bibliography{bibliography.bib}
+
+% Removes icon in bibliography
+\setbeamertemplate{bibliography item}{}
+
+% Font selection
+% Latin Modern
+\usepackage{lmodern}
+% Verdana font type
+%\usepackage{verdana}
+% Helvetica
+%\usepackage{helvet}
+% Times (text and math)
+%\usepackage{newtx, newtxmath}
+% Nice font combination
+%\usepackage{mathptmx} % math
+%\usepackage{sourcesanspro} % sans-serif
+\usepackage{charter} % serif
+
+%Avoid shaded in RMarkdown
+
+% Use DTU theme, see below for options
+\usetheme[department=compute]{DTU}
+
+\title[Automated and Early Detection of Disease Outbreaks]{Automated and
+Early Detection of Disease Outbreaks}
+\author{Kasper Schou Telkamp}
+\institute{Section for Dynamical Systems}
+\date{2023-02-09}
+	
+\newcommand{\tabitem}{{\color{dtured}$\bullet$} }
+
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\V}{V}
+\DeclareMathOperator{\G}{G}
+\DeclareMathOperator{\N}{N}
+\DeclareMathOperator{\NB}{NB}
+\DeclareMathOperator{\Pois}{Pois}
+\DeclareMathOperator{\Geom}{Geom}
+
+
+\begin{document}
+
+
+\frame{
+	\maketitle
+}
+
+\frame{
+	\frametitle{Outline}
+\begin{scriptsize}
+	\tableofcontents
+\end{scriptsize}
+}
+
+\hypertarget{data}{%
+\section{Data}\label{data}}
+
+\begin{frame}{Data}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/EpiPlot} \caption{Epidemic curve showing the incidence per 100,000 in Denmark, 2012-2022, for the subset of diseases considered in this master thesis. \textbf{(a)} Listeriosis, \textbf{(b)} Shigellosis, \textbf{(c)} STEC, and \textbf{(d)} Salmonellosis.}\label{fig:EpiPlot}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\hypertarget{novel-algorithm-for-prospective-disease-outbreak-detection}{%
+\section{Novel Algorithm for Prospective Disease Outbreak
+Detection}\label{novel-algorithm-for-prospective-disease-outbreak-detection}}
+
+\hypertarget{procedure}{%
+\subsection{Procedure}\label{procedure}}
+
+\begin{frame}{Step 1: Modeling Framework}
+\protect\hypertarget{step-1-modeling-framework}{}
+\begin{itemize}
+  \item Assume a hierarchical Poisson Normal or Poisson Gamma model to reference data using a log link.
+  \item Assume count is proportional to population size $n$
+  \item Incorporate covariates by supplying a model formula on the form.
+  \begin{equation}
+    \log(\lambda_{it})=\boldsymbol x_{it}\boldsymbol \beta+\log(n_{it}), \quad i=1,\dots,m, \quad t=1,\dots,T
+  \end{equation}
+  \item Account for structural changes in the time series using a rolling window of width $k$.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Step 2: Inference of Random Effects}
+\protect\hypertarget{step-2-inference-of-random-effects}{}
+\begin{itemize}
+  \item Infer one-step ahead random effects $u_{i{t_0}}$ for each group using the fitted model.
+  \item Define outbreak detection threshold $U_{t_0}$ as a quantile of the second stage model's random effects distribution
+  \item Use either a Gaussian or Gamma distribution with respective plug-in estimates
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Step 3: Outbreak Detection and Parameter Estimation}
+\protect\hypertarget{step-3-outbreak-detection-and-parameter-estimation}{}
+\begin{itemize}
+  \item Compare inferred random effects $u_{i{t_0}}$ to an upper bound $U_{t_0}$
+  \item Raise and alarm if the inferred random effect exceeds the upper bound, i.e. $u_{i{t_0}}>U_{t_0}$
+  \item Omit outbreak related observations from future parameter estimation, reducing the rolling window's sample size until the observation is discarded.
+\end{itemize}
+\end{frame}
+
+\hypertarget{hierarchical-poisson-normal-model}{%
+\subsection{Hierarchical Poisson Normal
+model}\label{hierarchical-poisson-normal-model}}
+
+\begin{frame}{Hierarchical Poisson Normal model}
+\begin{subequations} \label{eq:PoisN}
+  \begin{alignat}{2}
+    \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) \label{eq:pois_n0} \\ 
+    \boldsymbol{u} &\sim \N(\boldsymbol{0},I\sigma^2) \label{eq:pois_n1}
+  \end{alignat}
+\end{subequations}
+\end{frame}
+
+\hypertarget{hierarchical-poisson-gamma-model}{%
+\subsection{Hierarchical Poisson Gamma
+model}\label{hierarchical-poisson-gamma-model}}
+
+\begin{frame}{Hierarchical Poisson Gamma model}
+\begin{subequations} \label{eq:PoisGam}
+  \begin{alignat}{2}
+    \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \label{eq:pois_g0} \\ 
+    \boldsymbol{u} &\sim \G(\boldsymbol 1/\phi,\phi) \label{eq:pois_g1}
+  \end{alignat}
+\end{subequations}
+\end{frame}
+
+\hypertarget{proposed-models-for-the-novel-algorithm}{%
+\section{Proposed Models for the Novel
+Algorithm}\label{proposed-models-for-the-novel-algorithm}}
+
+\hypertarget{constant-model}{%
+\subsection{Constant model}\label{constant-model}}
+
+\begin{frame}{Constant model}
+\begin{equation}\label{eq:Agegroup}
+  \log(\lambda_{it}) = \beta(ageGroup_{i}) + \log(n_{it})
+\end{equation}
+
+\begin{itemize}
+  \item $\lambda_{it}$ is the outbreak intensity at time $t$ for age group $i$.
+  \item $\beta(ageGroup_{i})$ is the fixed effect specific to age group $i$.
+  \item $\log(n_{it})$ acts as an offset, accounting for the population size at time $t$ for age group $i$.
+\end{itemize}
+\end{frame}
+
+\hypertarget{trend-model}{%
+\subsection{Trend model}\label{trend-model}}
+
+\begin{frame}{Trend model}
+\begin{equation}
+  \log(\lambda_{it})=\beta(ageGroup_{i}) + \beta_{trend} t + \log(n_{it})
+\end{equation}
+
+\begin{itemize}
+  \item In addition to Model 1, includes a trend component.
+  \item $\beta_{trend}$ quantifies the rate of change in the outbreak intensity over time.
+\end{itemize}
+\end{frame}
+
+\hypertarget{seasonality-model}{%
+\subsection{Seasonality model}\label{seasonality-model}}
+
+\begin{frame}{Seasonality model}
+\begin{equation}
+\log(\lambda_{it})=\beta(ageGroup_{i})+ \sin \big(\frac{2\pi\cdot \tau_t}{12}\big) \beta_{\sin} + \cos \big(2\frac{\pi\cdot \tau_t}{12}\big) \beta_{\cos} + \log(n_{it})
+\end{equation}
+
+\begin{itemize}
+  \item In addition to Model 1, incorporates an annual seasonality pattern.
+  \item $\tau_t$ represents the time period $t$ within a year (1-12).
+  \item $\beta_{\sin}$ and $\beta_{\cos}$ capture the effect of the seasonal pattern.
+\end{itemize}
+\end{frame}
+
+\hypertarget{combined-trend-and-seasonality-model}{%
+\subsection{Combined trend and seasonality
+model}\label{combined-trend-and-seasonality-model}}
+
+\begin{frame}{Combined trend and seasonality model}
+\begin{equation}\label{eq:AgegroupTrendSeasonality}
+  \log(\lambda_{it})=\beta(ageGroup_{i}) + \beta_{trend} t + \sin \big(\frac{2\pi\cdot \tau_t}{12}\big) \beta_{\sin} + \cos \big(\frac{2\pi\cdot \tau_t}{12}\big)\beta_{\cos} + \log(n_{it})
+\end{equation}
+
+\begin{itemize}
+  \item Builds upon previous models, combining trend and seasonality components.
+  \item Includes both $\beta_{trend}$ and $\beta_{\sin}$/$\beta_{\cos}$ parameters.
+\end{itemize}
+\end{frame}
+
+\hypertarget{state-of-the-art-algorithm-for-prospective-disease-outbreak-detection}{%
+\section{State-of-the-art Algorithm for Prospective Disease Outbreak
+Detection}\label{state-of-the-art-algorithm-for-prospective-disease-outbreak-detection}}
+
+\begin{frame}{State-of-the-art Algorithm for Prospective Disease
+Outbreak Detection}
+State-of-the-art methods for aberration detection is presented in
+\cite{Salmon_2016} and implemented in the R package
+\textbf{surveillance}. The R package includes methods such as the
+Farrington method introduced by \cite{Farrington_1996} together with the
+improvements proposed by \cite{Noufaily_2013}.
+\end{frame}
+
+\hypertarget{case-studies}{%
+\section{Case studies}\label{case-studies}}
+
+\hypertarget{listeriosis}{%
+\subsection{\texorpdfstring{\emph{Listeriosis}}{Listeriosis}}\label{listeriosis}}
+
+\begin{frame}{\emph{Listeriosis}}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/Compare_stateOfTheArt_LIST} \caption{One-step ahead random effects $u_{t_1}$ (circles) given the model described in \eqref{eq:Agegroup} for \textit{Listeriosis} in Denmark, 2011-2022. Poisson Normal model (right) and Poisson Gamma model (left) monitor the disease. Alarm raised (solid circle) if $u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).}\label{fig:CompareStateOfTheArtLIST}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{\emph{Listeriosis}}
+\protect\hypertarget{listeriosis-1}{}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/Compare_novel_LIST} \caption{One-step ahead random effects $u_{t_1}$ of \textit{Listeriosis} in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).}\label{fig:CompareNovelLIST}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{\emph{Listeriosis}}
+\protect\hypertarget{listeriosis-2}{}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/Compare_alarms_LIST} \caption{Alarm plot displaying alarms for \textit{Listeriosis} time series using four different algorithms, along with outbreaks investigated by SSI.}\label{fig:CompareAlarmsLIST}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\hypertarget{shigellosis}{%
+\subsection{\texorpdfstring{\emph{Shigellosis}}{Shigellosis}}\label{shigellosis}}
+
+\begin{frame}{\emph{Shigellosis}}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/Compare_stateOfTheArt_SHIG} \caption{Monthly \textit{Shigellosis} incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations timepoints outside reference data. Alarm triggered (full opacity) if observations exceeds threshold. }\label{fig:CompareStateOfTheArtSHIG}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{\emph{Shigellosis}}
+\protect\hypertarget{shigellosis-1}{}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/Compare_novel_SHIG} \caption{One-step ahead random effects $u_{t_1}$ of \textit{Shigellosis} in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).}\label{fig:CompareNovelSHIG}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{\emph{Shigellosis}}
+\protect\hypertarget{shigellosis-2}{}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/Compare_alarms_SHIG} \caption{Alarm plot displaying alarms for \textit{Shigellosis} time series using four different algorithms, along with outbreaks investigated by SSI.}\label{fig:CompareAlarmsSHIG}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\hypertarget{shiga-toxin-verotoxin-producing-escherichia-coli}{%
+\subsection{\texorpdfstring{Shiga toxin (verotoxin)-producing
+\emph{Escherichia
+coli}}{Shiga toxin (verotoxin)-producing Escherichia coli}}\label{shiga-toxin-verotoxin-producing-escherichia-coli}}
+
+\begin{frame}{Shiga toxin (verotoxin)-producing \emph{Escherichia coli}}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/Compare_stateOfTheArt_STEC} \caption{Monthly Shiga toxin (verotoxin)-producing \textit{Escherichia coli} incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations timepoints outside reference data. Alarm triggered (dark color) if observations exceeds threshold. }\label{fig:CompareStateOfTheArtSTEC}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{Shiga toxin (verotoxin)-producing \emph{Escherichia coli}}
+\protect\hypertarget{shiga-toxin-verotoxin-producing-escherichia-coli-1}{}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/Compare_novel_STEC} \caption{One-step ahead random effects $u_{t_1}$ (circles) given the model described in \eqref{eq:AgegroupTrendSeasonality} for Shiga toxin (verotoxin)-producing \textit{Escherichia coli} in Denmark, 2011-2022. Poisson Normal model (right) and Poisson Gamma model (left) monitor the disease. Alarm raised (solid circle) if $u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).}\label{fig:CompareNovelSTEC}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{Shiga toxin (verotoxin)-producing \emph{Escherichia coli}}
+\protect\hypertarget{shiga-toxin-verotoxin-producing-escherichia-coli-2}{}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/Compare_alarms_STEC} \caption{Alarm plot displaying alarms for \textit{Shigellosis} time series using four different algorithms, along with outbreaks investigated by SSI.}\label{fig:CompareAlarmsSTEC}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\hypertarget{salmonellosis}{%
+\subsection{\texorpdfstring{\emph{Salmonellosis}}{Salmonellosis}}\label{salmonellosis}}
+
+\begin{frame}{\emph{Salmonellosis}}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/Compare_stateOfTheArt_SALM} \caption{Monthly \textit{Salmonellosis} incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations timepoints outside reference data. Alarm triggered (full opacity) if observations exceeds threshold. }\label{fig:CompareStateOfTheArtSALM}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{\emph{Salmonellosis}}
+\protect\hypertarget{salmonellosis-1}{}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/Compare_novel_SALM} \caption{One-step ahead random effects $u_{t_1}$ of \textit{Salmonellosis} in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).}\label{fig:ref:CompareNovelSALM}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{\emph{Salmonellosis}}
+\protect\hypertarget{salmonellosis-2}{}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/Compare_alarms_SALM} \caption{Alarm plot displaying alarms for \textit{Salmonellosis} time series using four different algorithms, along with outbreaks investigated by SSI.}\label{fig:CompareAlarmsSALM}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\hypertarget{references}{%
+\section{References}\label{references}}
+
+\begin{frame}{References}
+\printbibliography[heading=none]
+\end{frame}
+
+
+\end{document}
