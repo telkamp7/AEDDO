@@ -1,5 +1,5 @@
 # This script tries to replicate the outbreak simulation study, as seen in https://doi.org/10.1002/sim.5595
-
+commandArgs(trailingOnly = TRUE)
 args = (commandArgs(trailingOnly = TRUE))
 
 listArgs <- as.list(unlist(lapply(args, function(x) {
@@ -16,7 +16,7 @@ listArgs[!is.na(tmpNum)] <- as.list(tmpNum[!is.na(tmpNum)])
 
 # Import the libraries
 library(tidyr)
-# library(readr)
+library(readr)
 library(plyr)
 library(dplyr)
 library(purrr)
@@ -136,8 +136,14 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
   
   for(j in outbreaks$scenario){
     
-    series <- outbreaks %>%
+    scenarioUnpack <- outbreaks %>%
       filter(scenario == j) %>%
+      unnest_wider(realization)
+    
+    k <- scenarioUnpack %>%
+      select(k)
+    
+    series <- scenarioUnpack %>%
       unnest(realization) %>%
       select(Date, t, y = realization, n, ageGroup)
     
@@ -192,10 +198,9 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
       unnest(ran.ef) %>%
       select(Date = ref.date, alarm_PoisG = alarm)
     
-    outbreaksAndAlarms <- outbreaks %>%
-      filter(scenario == j) %>%
+    outbreaksAndAlarms <- scenarioUnpack %>%
       unnest(realization) %>%
-      select(Date, t, y = realization, n, ageGroup, outbreak) %>%
+      select(Date, t, y = realization, n, ageGroup, outbreak, k) %>%
       full_join(y = alarm_Farrington, by = join_by("Date")) %>%
       full_join(y = alarm_Noufaily, by = join_by("Date")) %>%
       full_join(y = alarm_PoisN, by = join_by("Date")) %>%
@@ -241,7 +246,7 @@ if(length(listArgs)>0){
   parString <- "Default"
 }
 
-write_rds(x = Data, file = paste0("~/proj/AEDDO/src/simulation/",parString, ".Rds"))
+write_rds(x = list(Data=Data, refPar=refPar), file = paste0("~/proj/AEDDO/src/simulation/",parString, ".Rds"))
 
 
 

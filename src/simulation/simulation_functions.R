@@ -88,5 +88,5 @@ simOutbreak <- function(baselineData){
   realization <- realization %>% 
     mutate(realization = updatedRealization, outbreak = updatedOutbreak)
   
-  return(realization)
+  return(list(realization=realization,k=kCurrent))
 }
