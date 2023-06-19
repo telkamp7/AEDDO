@@ -90,16 +90,16 @@ It is important to note that the FPR is a rate per week, while the POD is a rate
 
 ```{r FPR, echo=FALSE, out.width="100%", fig.cap="(ref:FPR)", fig.pos = "H", fig.show = "hold"}
 
-knitr::include_graphics("../figures/Placeholder.png")
+knitr::include_graphics("../figures/FPR.png")
 
 ```
 
 
-(ref:PropDetect) Idea, maybe make a plot with proportion detected like Figure 9 in @Noufaily_2013.
+(ref:PropDetect) Placeholder caption
 
 ```{r PropDetect, echo=FALSE, out.width="100%", fig.cap="(ref:PropDetect)", fig.pos = "H", fig.show = "hold"}
 
-knitr::include_graphics("../figures/Placeholder.png")
+knitr::include_graphics("../figures/PropDetect.png")
 
 ```
 

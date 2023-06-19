@@ -8,53 +8,51 @@
 \contentsline {chapter}{\numberline {3}Surveillance data in Denmark}{5}{chapter.0.3}%
 \contentsline {section}{\numberline {3.1}Data collection and data quality}{5}{section.0.3.1}%
 \contentsline {section}{\numberline {3.2}Introducing the case studies}{6}{section.0.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}\textit {Listeriosis}}{7}{subsection.0.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}\textit {Shiggellosis}}{9}{subsection.0.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.1}\textit {Listeriosis}}{8}{subsection.0.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}\textit {Shiggellosis}}{10}{subsection.0.3.2.2}%
 \contentsline {subsection}{\numberline {3.2.3}Shiga toxin (verotoxin)-producing \textit {Escherichia coli}}{11}{subsection.0.3.2.3}%
-\contentsline {subsection}{\numberline {3.2.4}\textit {Salmonellosis}}{12}{subsection.0.3.2.4}%
-\contentsline {chapter}{\numberline {4}Methods}{15}{chapter.0.4}%
-\contentsline {section}{\numberline {4.1}State-of-the-art outbreak detection algorithm}{15}{section.0.4.1}%
-\contentsline {section}{\numberline {4.2}Novel outbreak detection algorithm}{17}{section.0.4.2}%
-\contentsline {section}{\numberline {4.3}General mixed effects models}{18}{section.0.4.3}%
-\contentsline {subsection}{\numberline {4.3.1}Hierarchical models}{18}{subsection.0.4.3.1}%
-\contentsline {subsection}{\numberline {4.3.2}Laplace Approximation}{19}{subsection.0.4.3.2}%
-\contentsline {subsection}{\numberline {4.3.3}Formulation of the hierarchical model}{19}{subsection.0.4.3.3}%
-\contentsline {section}{\numberline {4.4}Hierarchical generalized linear models}{20}{section.0.4.4}%
-\contentsline {subsection}{\numberline {4.4.1}Standard conjugate distribution}{20}{subsection.0.4.4.1}%
-\contentsline {subsection}{\numberline {4.4.2}Definition of the hierarchical generalized linear model}{21}{subsection.0.4.4.2}%
-\contentsline {subsection}{\numberline {4.4.3}Formulation of the hierarchical Poisson Gamma model}{21}{subsection.0.4.4.3}%
-\contentsline {subsubsection}{Inference on individual groups}{23}{subsubsection*.12}%
-\contentsline {subsubsection}{Why do we choose the Gamma distribution to represent the variation between days?}{23}{subsubsection*.13}%
-\contentsline {section}{\numberline {4.5}Parameter estimation}{24}{section.0.4.5}%
-\contentsline {section}{\numberline {4.6}Scoring rule}{25}{section.0.4.6}%
-\contentsline {chapter}{\numberline {5}Case studies}{29}{chapter.0.5}%
-\contentsline {section}{\numberline {5.1}Shiga toxin (verotoxin)-producing \textit {Escherichia coli}}{29}{section.0.5.1}%
-\contentsline {subsection}{\numberline {5.1.1}Applying the state-of-the-art outbreak detection algorithm to Shiga toxin (verotoxin)-producing \textit {Escherichia coli}}{29}{subsection.0.5.1.1}%
-\contentsline {subsection}{\numberline {5.1.2}Applying the novel outbreak detection algorithm to Shiga toxin (verotoxin)-producing \textit {Escherichia coli}}{30}{subsection.0.5.1.2}%
-\contentsline {section}{\numberline {5.2}\textit {Listeriosis}}{36}{section.0.5.2}%
-\contentsline {subsection}{\numberline {5.2.1}Applying the state-of-the-art outbreak detection algorithm to \textit {Listeriosis}}{36}{subsection.0.5.2.1}%
-\contentsline {subsection}{\numberline {5.2.2}Applying the novel outbreak detection algorithm to \textit {Listeriosis}}{37}{subsection.0.5.2.2}%
-\contentsline {section}{\numberline {5.3}\textit {Shiggellosis}}{38}{section.0.5.3}%
-\contentsline {subsection}{\numberline {5.3.1}Applying the state-of-the-art outbreak detection algorithm to \textit {Shigellosis}}{39}{subsection.0.5.3.1}%
-\contentsline {subsection}{\numberline {5.3.2}Applying the novel outbreak detection algorithm to \textit {Shigellosis}}{39}{subsection.0.5.3.2}%
-\contentsline {section}{\numberline {5.4}\textit {Salmonellosis}}{40}{section.0.5.4}%
-\contentsline {subsection}{\numberline {5.4.1}Applying the state-of-the-art outbreak detection algorithm to \textit {Salmonellosis}}{40}{subsection.0.5.4.1}%
-\contentsline {subsection}{\numberline {5.4.2}Applying the novel outbreak detection algorithm to \textit {Salmonellosis}}{40}{subsection.0.5.4.2}%
-\contentsline {section}{\numberline {5.5}Performance comparison of novel methods}{41}{section.0.5.5}%
-\contentsline {chapter}{\numberline {6}Simulation study}{45}{chapter.0.6}%
-\contentsline {section}{\numberline {6.1}The simulated baseline data}{45}{section.0.6.1}%
-\contentsline {section}{\numberline {6.2}The simulated outbreaks}{47}{section.0.6.2}%
-\contentsline {section}{\numberline {6.3}Evaluation measures}{48}{section.0.6.3}%
-\contentsline {section}{\numberline {6.4}Results of the simulations}{48}{section.0.6.4}%
-\contentsline {chapter}{\numberline {7}Discussion}{51}{chapter.0.7}%
-\contentsline {chapter}{\numberline {8}Conclusion}{53}{chapter.0.8}%
-\contentsline {chapter}{Bibliography}{55}{chapter*.38}%
-\contentsline {chapter}{\numberline {A}Some probability functions}{59}{appendix.A}%
-\contentsline {chapter}{\numberline {B}C++ templates for the negative joint log-likelihood}{60}{appendix.B}%
-\contentsline {chapter}{\numberline {C}State-of-the-art detection algorithm}{62}{appendix.C}%
-\contentsline {section}{\numberline {C.1}Controls}{62}{section.C.1}%
-\contentsline {chapter}{\numberline {D}Figures and Tables related to the case studies}{65}{appendix.D}%
-\contentsline {section}{\numberline {D.1}\textit {Listeriosis}}{65}{section.D.1}%
-\contentsline {section}{\numberline {D.2}\textit {Shigellosis}}{65}{section.D.2}%
-\contentsline {section}{\numberline {D.3}Shiga toxin (verotoxin)-producing \textit {Escherichia coli}}{66}{section.D.3}%
-\contentsline {section}{\numberline {D.4}\textit {Salmonellosis}}{68}{section.D.4}%
+\contentsline {subsection}{\numberline {3.2.4}\textit {Salmonellosis}}{13}{subsection.0.3.2.4}%
+\contentsline {chapter}{\numberline {4}Methods}{17}{chapter.0.4}%
+\contentsline {section}{\numberline {4.1}State-of-the-art outbreak detection algorithm}{17}{section.0.4.1}%
+\contentsline {section}{\numberline {4.2}Novel outbreak detection algorithm}{19}{section.0.4.2}%
+\contentsline {section}{\numberline {4.3}General mixed effects models}{20}{section.0.4.3}%
+\contentsline {subsection}{\numberline {4.3.1}Hierarchical models}{20}{subsection.0.4.3.1}%
+\contentsline {subsection}{\numberline {4.3.2}Laplace Approximation}{20}{subsection.0.4.3.2}%
+\contentsline {subsection}{\numberline {4.3.3}Formulation of the generalized mixed effects model}{21}{subsection.0.4.3.3}%
+\contentsline {section}{\numberline {4.4}Hierarchical generalized linear models}{22}{section.0.4.4}%
+\contentsline {subsection}{\numberline {4.4.1}Formulation of the hierarchical model}{24}{subsection.0.4.4.1}%
+\contentsline {subsubsection}{Inference on individual groups}{25}{subsubsection*.14}%
+\contentsline {subsubsection}{Why is the Gamma distribution chosen to represent the variation between months?}{26}{subsubsection*.15}%
+\contentsline {section}{\numberline {4.5}Parameter estimation}{26}{section.0.4.5}%
+\contentsline {section}{\numberline {4.6}Scoring rule}{27}{section.0.4.6}%
+\contentsline {chapter}{\numberline {5}Case studies}{31}{chapter.0.5}%
+\contentsline {section}{\numberline {5.1}Shiga toxin (verotoxin)-producing \textit {Escherichia coli}}{31}{section.0.5.1}%
+\contentsline {subsection}{\numberline {5.1.1}Applying the state-of-the-art outbreak detection algorithm to Shiga toxin (verotoxin)-producing \textit {Escherichia coli}}{31}{subsection.0.5.1.1}%
+\contentsline {subsection}{\numberline {5.1.2}Applying the novel outbreak detection algorithm to Shiga toxin (verotoxin)-producing \textit {Escherichia coli}}{32}{subsection.0.5.1.2}%
+\contentsline {section}{\numberline {5.2}\textit {Listeriosis}}{38}{section.0.5.2}%
+\contentsline {subsection}{\numberline {5.2.1}Applying the state-of-the-art outbreak detection algorithm to \textit {Listeriosis}}{38}{subsection.0.5.2.1}%
+\contentsline {subsection}{\numberline {5.2.2}Applying the novel outbreak detection algorithm to \textit {Listeriosis}}{39}{subsection.0.5.2.2}%
+\contentsline {section}{\numberline {5.3}\textit {Shiggellosis}}{40}{section.0.5.3}%
+\contentsline {subsection}{\numberline {5.3.1}Applying the state-of-the-art outbreak detection algorithm to \textit {Shigellosis}}{41}{subsection.0.5.3.1}%
+\contentsline {subsection}{\numberline {5.3.2}Applying the novel outbreak detection algorithm to \textit {Shigellosis}}{41}{subsection.0.5.3.2}%
+\contentsline {section}{\numberline {5.4}\textit {Salmonellosis}}{42}{section.0.5.4}%
+\contentsline {subsection}{\numberline {5.4.1}Applying the state-of-the-art outbreak detection algorithm to \textit {Salmonellosis}}{42}{subsection.0.5.4.1}%
+\contentsline {subsection}{\numberline {5.4.2}Applying the novel outbreak detection algorithm to \textit {Salmonellosis}}{42}{subsection.0.5.4.2}%
+\contentsline {section}{\numberline {5.5}Performance comparison of novel methods}{43}{section.0.5.5}%
+\contentsline {chapter}{\numberline {6}Simulation study}{47}{chapter.0.6}%
+\contentsline {section}{\numberline {6.1}The simulated baseline data}{47}{section.0.6.1}%
+\contentsline {section}{\numberline {6.2}The simulated outbreaks}{49}{section.0.6.2}%
+\contentsline {section}{\numberline {6.3}Evaluation measures}{50}{section.0.6.3}%
+\contentsline {section}{\numberline {6.4}Results of the simulations}{50}{section.0.6.4}%
+\contentsline {chapter}{\numberline {7}Discussion}{53}{chapter.0.7}%
+\contentsline {chapter}{\numberline {8}Conclusion}{55}{chapter.0.8}%
+\contentsline {chapter}{Bibliography}{57}{chapter*.40}%
+\contentsline {chapter}{\numberline {A}Some probability functions}{61}{appendix.A}%
+\contentsline {chapter}{\numberline {B}C++ templates for the negative joint log-likelihood}{62}{appendix.B}%
+\contentsline {chapter}{\numberline {C}State-of-the-art detection algorithm}{64}{appendix.C}%
+\contentsline {section}{\numberline {C.1}Controls}{64}{section.C.1}%
+\contentsline {chapter}{\numberline {D}Figures and Tables related to the case studies}{67}{appendix.D}%
+\contentsline {section}{\numberline {D.1}\textit {Listeriosis}}{67}{section.D.1}%
+\contentsline {section}{\numberline {D.2}\textit {Shigellosis}}{67}{section.D.2}%
+\contentsline {section}{\numberline {D.3}Shiga toxin (verotoxin)-producing \textit {Escherichia coli}}{68}{section.D.3}%
+\contentsline {section}{\numberline {D.4}\textit {Salmonellosis}}{70}{section.D.4}%

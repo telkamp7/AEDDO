@@ -1935,8 +1935,8 @@
       \strng{authorbibnamehash}{238e5f8f15557e15250c0ce1d106840d}
       \strng{authornamehash}{238e5f8f15557e15250c0ce1d106840d}
       \strng{authorfullhash}{1715fdf9e34b5aa40e412a29b5245253}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
       \field{extradatescope}{labelyear}
       \field{labeldatesource}{}
       \field{labelnamesource}{author}
@@ -2137,8 +2137,8 @@
       \strng{authorbibnamehash}{195d495c77a2806094897d3e57ab84ee}
       \strng{authornamehash}{195d495c77a2806094897d3e57ab84ee}
       \strng{authorfullhash}{f3bf76e3adf2a6c5810a12f60e76b940}
-      \field{sortinit}{3}
-      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
       \field{extradatescope}{labelyear}
       \field{labeldatesource}{}
       \field{labelnamesource}{author}
@@ -2396,6 +2396,56 @@
       \endverb
       \verb{url}
       \verb https://doi.org/10.1007/978-1-4612-0919-5_24
+      \endverb
+    \endentry
+    \entry{Tilmann_2007}{article}{}
+      \name{author}{2}{}{%
+        {{un=0,uniquepart=base,hash=cf94799d213c0ab2fd2012473da7440b}{%
+           family={Gneiting},
+           familyi={G\bibinitperiod},
+           given={Tilmann},
+           giveni={T\bibinitperiod},
+           givenun=0}}%
+        {{un=0,uniquepart=base,hash=205b9f60128ee13642fa79b6f1330d63}{%
+           family={Raftery},
+           familyi={R\bibinitperiod},
+           given={Adrian\bibnamedelima E},
+           giveni={A\bibinitperiod\bibinitdelim E\bibinitperiod},
+           givenun=0}}%
+      }
+      \list{publisher}{1}{%
+        {Taylor & Francis}%
+      }
+      \strng{namehash}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \strng{fullhash}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \strng{bibnamehash}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \strng{authorbibnamehash}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \strng{authornamehash}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \strng{authorfullhash}{e1cf3b58d0c2bb5af66e55c7f264277d}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{extradatescope}{labelyear}
+      \field{labeldatesource}{}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Journal of the American Statistical Association}
+      \field{number}{477}
+      \field{title}{Strictly Proper Scoring Rules, Prediction, and Estimation}
+      \field{volume}{102}
+      \field{year}{2007}
+      \field{pages}{359\bibrangedash 378}
+      \range{pages}{20}
+      \verb{doi}
+      \verb 10.1198/016214506000001437
+      \endverb
+      \verb{eprint}
+      \verb https://doi.org/10.1198/016214506000001437
+      \endverb
+      \verb{urlraw}
+      \verb https://doi.org/10.1198/016214506000001437
+      \endverb
+      \verb{url}
+      \verb https://doi.org/10.1198/016214506000001437
       \endverb
     \endentry
   \enddatalist
