@@ -1,9 +1,6 @@
 \chapter{Simulation study}
 
-In this chapter ...
-
-
-The simulation study is adapted from @Noufaily_2013.
+In this chapter, comprehensive simulations are performed to assess the performance of the novel outbreak detection algorithm in comparisons to the state-of-the-art outbreak detection algorithms. The simulations cover a variety of contrasting scenarios adapted from the study by @Noufaily_2013. However, for the purpose of this master's thesis, the focus is not on diseases with bi-annual seasonality. Therefore, the scenarios involving bi-annual seasonality are excluded from the simulation study.
 
 \section{The simulated baseline data}
 
