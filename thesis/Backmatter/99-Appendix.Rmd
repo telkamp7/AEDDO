@@ -136,9 +136,9 @@ LIST_alarms_StateOfTheArt %>%
 
 ```
 
-```{r SHIGStateOfTheArtTbl, echo=FALSE, eval=FALSE}
+```{r SHILStateOfTheArtTbl, echo=FALSE, eval=FALSE}
 
-SHIG_alarms_StateOfTheArt %>%
+SHIL_alarms_StateOfTheArt %>%
   select(Date, ageGroup, method, y, threshold, alarm) %>%
   pivot_wider(names_from = method, values_from = c(threshold, alarm)) %>%
   select(Date, `Age group` = ageGroup, `$y_t$` = y, Treshold.1 = threshold_Farrington, Alarm.1 = alarm_Farrington, Threshold.2 = threshold_Noufaily, Alarm.2 = alarm_Noufaily) %>%
@@ -239,9 +239,9 @@ LIST_novel_tbl %>%
 
 \section{\textit{Shigellosis}}
 
-```{r SHIGNovelTblAppendix, echo=FALSE}
+```{r SHILNovelTblAppendix, echo=FALSE}
 
-SHIG_novel_tbl %>%
+SHIL_novel_tbl %>%
   mutate(`Estimate (95\\% CI)` = paste0(round(theta,2), " (",round(CI.lwr,2),", ",round(CI.upr,2),")"),
          Model = case_when(
            grepl(pattern = "PoisN_", x = method) ~ "Poisson Normal",

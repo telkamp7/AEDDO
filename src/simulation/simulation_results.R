@@ -9,7 +9,7 @@ library(ggplot2)
 theme_set(
   new = theme_bw() +
     theme(legend.position = "top",
-          strip.text = element_text(size = 14),
+          strip.text = element_text(size = 20),
           axis.text = element_text(size = 20),
           axis.title = element_text(size = 30),
           plot.title = element_text(size = 18),
@@ -100,7 +100,8 @@ FPR <- results %>%
   facet_wrap(facets = vars(Method)) +
   scale_x_discrete(name = "Scenario") +
   scale_fill_manual(values = dtuPalette[c(7,9:11,5)]) +
-  guides(fill = "none")
+  guides(fill = "none") +
+  theme(axis.text.x = element_text(size = 18))
 ggsave(filename = "FPR.png",
        plot = FPR,
        path = "../../figures/",
