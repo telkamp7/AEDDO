@@ -343,8 +343,6 @@ STEC_PoisN_ageGroup_trend_seasonality_unnested %>%
 
 
 # Hierarchical Poisson Gamma model ----------------------------------------------------
-
-
 STEC_PoisG_ageGroup <- aeddo(data = STEC,
                              formula = y ~ -1 + ageGroup,
                              theta = rep(1,7),

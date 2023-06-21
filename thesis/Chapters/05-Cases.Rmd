@@ -225,9 +225,9 @@ It is important to emphasize that the periods with overdispersion are of particu
 
 \section{\textit{Shiggellosis}}
 
-In Denmark, the surveillance of SHIG involves both individual notifications and the laboratory notification system. The data from the laboratory notification system is generally preferred, as it often includes information about the specific type of \textit{Shigella} bacteria. In Denmark, the majority of SHIG infections are caused by \textit{Shigella sonnei}. However, for the purpose of this master's thesis, all four types of \textit{Shigella} bacteria are analyzed collectively, regardless of the availability of type-specific information in the data.
+In Denmark, the surveillance of SHIL involves both individual notifications and the laboratory notification system. The data from the laboratory notification system is generally preferred, as it often includes information about the specific type of \textit{Shigella} bacteria. In Denmark, the majority of SHIL infections are caused by \textit{Shigella sonnei}. However, for the purpose of this master's thesis, all four types of \textit{Shigella} bacteria are analyzed collectively, regardless of the availability of type-specific information in the data.
 
-In this case study, both the state-of-the-art and novel oubteak detection algorithms are applied to the SHIG data set. The data set comprises monthly counts of Danish SHIG cases, denoted as $y_{it}$. The subscript $i$ distinguishes between two age groups, namely $i=1$ representing the age group below 25 years and $i=2$ representing the age group above 25 years. The subscript $t$ represents the time period, ranging from $t=1,\cdots,T$, where $T=180$ corresponds to the total number of months starting in 2008.
+In this case study, both the state-of-the-art and novel oubteak detection algorithms are applied to the SHIL data set. The data set comprises monthly counts of Danish SHIL cases, denoted as $y_{it}$. The subscript $i$ distinguishes between two age groups, namely $i=1$ representing the age group below 25 years and $i=2$ representing the age group above 25 years. The subscript $t$ represents the time period, ranging from $t=1,\cdots,T$, where $T=180$ corresponds to the total number of months starting in 2008.
 
 \subsection{Applying the state-of-the-art outbreak detection algorithm to \textit{Shigellosis}}
 
@@ -235,7 +235,7 @@ Outbreak detection utilizing the state-of-the-art outbreak algorithms are perfor
 
 In Figure \@ref(fig:CompareStateOfTheArtSHIG), a significant number of alarms are observed sporadically in the time series for both methods. For the Farrington method, the number of alarms is `r SHIG_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm`, while for the Noufaily method, the number of alarms is `r SHIG_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm`.
 
-(ref:CompareStateOfTheArtSHIG) Monthly SHIG incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations time points outside reference data. Alarm triggered (full opacity) if observations exceeds threshold. 
+(ref:CompareStateOfTheArtSHIG) Monthly SHIL incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations time points outside reference data. Alarm triggered (full opacity) if observations exceeds threshold. 
 
 ```{r CompareStateOfTheArtSHIG, echo=FALSE, out.width="100%", fig.cap="(ref:CompareStateOfTheArtSHIG)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_stateOfTheArt_SHIG.png")
@@ -253,7 +253,7 @@ For this disease, it is found that including a trend in the model results in the
 
 The one-step ahead random effects $u_{i{t_1}}$ are depicted in Figure \@ref(fig:CompareNovelSHIG). It is observed that the hierarchical Poisson Normal model generates two additional alarms in the age group below 25 years compared to the hierarchical Poisson Gamma model. However, it can be seen that the corresponding random effects in the latter model are borderline significant.
 
-(ref:CompareNovelSHIG) One-step ahead random effects $\hat u_{t_1}$ of SHIG in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).
+(ref:CompareNovelSHIG) One-step ahead random effects $\hat u_{t_1}$ of SHIL in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).
 
 ```{r CompareNovelSHIG, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelSHIG)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_novel_SHIG.png")
@@ -307,7 +307,7 @@ knitr::include_graphics("../figures/Compare_alarms_LIST.png")
 
 WRITE HERE
 
-(ref:CompareAlarmsSHIG) Alarm plot displaying alarms for SHIG time series using four different algorithms, along with outbreaks investigated by SSI.
+(ref:CompareAlarmsSHIG) Alarm plot displaying alarms for SHIL time series using four different algorithms, along with outbreaks investigated by SSI.
 
 ```{r CompareAlarmsSHIG, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsSHIG)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_alarms_SHIG.png")

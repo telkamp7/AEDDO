@@ -5,13 +5,13 @@
 \contentsline {section}{Notation}{v}{Doc-Start}%
 \contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.0.1}%
 \contentsline {chapter}{\numberline {2}Setting the scene}{3}{chapter.0.2}%
-\contentsline {chapter}{\numberline {3}Surveillance data in Denmark}{5}{chapter.0.3}%
-\contentsline {section}{\numberline {3.1}Data collection and data quality}{5}{section.0.3.1}%
-\contentsline {section}{\numberline {3.2}Introducing the case studies}{6}{section.0.3.2}%
-\contentsline {subsection}{\numberline {3.2.1}\textit {Listeriosis}}{8}{subsection.0.3.2.1}%
-\contentsline {subsection}{\numberline {3.2.2}\textit {Shiggellosis}}{10}{subsection.0.3.2.2}%
-\contentsline {subsection}{\numberline {3.2.3}Shiga toxin (verotoxin)-producing \textit {Escherichia coli}}{11}{subsection.0.3.2.3}%
-\contentsline {subsection}{\numberline {3.2.4}\textit {Salmonellosis}}{13}{subsection.0.3.2.4}%
+\contentsline {chapter}{\numberline {3}Surveillance data in Denmark}{6}{chapter.0.3}%
+\contentsline {section}{\numberline {3.1}Data collection and data quality}{6}{section.0.3.1}%
+\contentsline {section}{\numberline {3.2}Introducing the case studies}{7}{section.0.3.2}%
+\contentsline {subsection}{\numberline {3.2.1}\textit {Listeriosis}}{9}{subsection.0.3.2.1}%
+\contentsline {subsection}{\numberline {3.2.2}\textit {Shiggellosis}}{11}{subsection.0.3.2.2}%
+\contentsline {subsection}{\numberline {3.2.3}Shiga toxin (verotoxin)-producing \textit {Escherichia coli}}{12}{subsection.0.3.2.3}%
+\contentsline {subsection}{\numberline {3.2.4}\textit {Salmonellosis}}{14}{subsection.0.3.2.4}%
 \contentsline {chapter}{\numberline {4}Methods}{17}{chapter.0.4}%
 \contentsline {section}{\numberline {4.1}State-of-the-art outbreak detection algorithm}{17}{section.0.4.1}%
 \contentsline {section}{\numberline {4.2}Novel outbreak detection algorithm}{19}{section.0.4.2}%
