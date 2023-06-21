@@ -12,5 +12,16 @@ Expanding on the field of automated disease outbreak detection is crucial to ful
 
 Further research and development in automated disease outbreak detection, specifically tailored to leverage MiBa data, can significantly enhance our ability to detect and respond to infectious disease outbreaks more proactively and efficiently. By maximizing the potential of MiBa-based surveillance and continuously improving automated detection methods, we can strengthen our overall disease surveillance efforts and better protect public health.
 
+...
+
+One potential extension of the novel outbreak detection method proposed in this master's thesis is the incorporation of correlation, either in time or between groups. 
+
+(ref:ACF) Maybe include an ACF plot of one of the disease investigated in this masters thesis, to highlight the correlation in time.
+
+```{r ACF, echo=FALSE, out.width="100%", fig.cap="(ref:ACF)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Placeholder.png")
+```
+
+This extension can be readily implemented within the framework of the hierarchical Poisson Normal model. However, the implementation in the hierarchical Poisson Gamma model is more complex and requires further investigation.
 
 \cleardoublepage

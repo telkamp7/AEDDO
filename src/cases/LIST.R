@@ -57,10 +57,10 @@ LIST <- dat %>%
 
 LIST_meanAndStandardDeviation <- LIST %>%
   group_by(ageGroup) %>%
-  mutate(Mean = across(y, ~ rollapply(., 36, sd, fill = NA)),
-         `Std. deviation` = across(y, ~ rollapply(., 36, mean, fill = NA))) %>%
+  mutate(Mean = across(y, ~ rollapply(., 36, mean, fill = NA)),
+         `Variance` = across(y, ~ rollapply(., 36, var, fill = NA))) %>%
   ungroup() %>%
-  pivot_longer(cols = Mean:`Std. deviation`, names_to = "Statistic", values_to = "value") %>%
+  pivot_longer(cols = Mean:`Variance`, names_to = "Statistic", values_to = "value") %>%
   ggplot(mapping = aes(x = Date, y = value$y, colour = Statistic, group = Statistic)) +
   geom_line(linewidth=1.2) +
   facet_wrap(facets = vars(ageGroup)) +

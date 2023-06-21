@@ -76,7 +76,8 @@ The first step involves fitting either a hierarchical Poisson Normal or Poisson 
 
 Here $\boldsymbol x_{it}$ and $\boldsymbol\beta$ are $p$-dimensional vectors of covariates and fixed effects parameters respectively, where $p$ denotes the number of covariates or fixed effects parameters, $m$ denotes the number of groups, and $T$ denotes the length of the period.
 
-Then, in the second step, as a new observation becomes available, the algorithm infers the one-step ahead random effect $u_{i{t}_1}$ for each group using the obtained model estimates $\hat{\theta}_{t_0}$. The threshold $U_{t_0}$ for detecting outbreaks is defined as a quantile of the distribution of the random effects in the second stage model. This can be either a Gaussian distribution using the plug-in estimate $\hat{\sigma}$ or a Gamma distribution using the plug-in estimate $\hat{\phi}$.
+
+In the second step of the algorithm, as a new observation becomes available, the algorithm infers the one-step ahead random effect $u_{i{t_1}}$ for each group using the obtained model estimates $\hat{\theta}_{t_0}$. Here, $t_0$ represents the current time point, and $t_1$ represents the one-step ahead time point. The threshold $U_{t_0}$ for detecting outbreaks is defined as a quantile of the distribution of the random effects in the second stage model. This threshold can be calculated based on either a Gaussian distribution using the plug-in estimate $\hat{\sigma}$ or a Gamma distribution using the plug-in estimate $\hat{\phi}$. The choice of distribution depends on the specific modeling framework and assumptions used in the analysis.
 
 In the final step, the inferred random effect $\hat{u}_{i{t}_1}$ is compared to the upper bound $U_{t_0}$, and an alarm is raised if $\hat{u}_{i{t}_1}>U_{t_0}$. If an outbreak is detected, the related observation $y_{i1}$ is omitted from the parameter estimation in the future. Thus, resulting in a smaller sample size for the rolling window until that specific observation is discarded.
 
@@ -438,7 +439,7 @@ The maximization of the Laplace approximation for the marginal likelihood is the
   \V\big(\phi(\hat{\boldsymbol \theta})\big)=-\phi_{\boldsymbol \theta}'(\hat{\boldsymbol \theta})\Big(\Delta^2 \ell_{M,LA}(\boldsymbol{\hat{\theta}, y})\Big)^{-1} \phi_{\boldsymbol \theta}'(\hat{\boldsymbol \theta})^T
 \end{equation}
 
-Additionally, \textbf{TMB} utilizes Automatic Differentiation (AD) techniques [@Griewank_2008] to evaluate first, second, and potentially third-order derivatives. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models. Therefore, even though the random effects are analytically integrated out in \eqref{eq:jnllPoisG}, and the Laplace approximation is not needed, implementing the joint log-likelihood function in TMB can still result in more efficient computations.
+Additionally, \textbf{TMB} utilizes Automatic Differentiation (AD) techniques [@Griewank_2008] to evaluate first, second, and potentially third-order derivatives. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models. Therefore, even though the random effects are analytically integrated out in \eqref{eq:jnllPoisG}, and the Laplace approximation is not needed, implementing the joint log-likelihood function in \textbf{TMB} can still result in more efficient computations.
 
 For a comprehensive introduction to the concept of AD, it is recommended to read Section 2.1 and Section 2.2 of @Fournier_2012. 
 
