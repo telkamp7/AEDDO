@@ -29,13 +29,12 @@ diseaseData %>%
   group_by(ageGroup) %>%
   summarize(sum(cases)) %>%print(n=144)
 
-
-# Change 'år' to 'years'
+# Change '?r' to 'years'
 diseaseData <- diseaseData %>%
   mutate(ageGroup = if_else(
-    ageGroup == "<1 år",
-    str_replace(ageGroup, pattern = "år", replacement = "year"),
-    str_replace(ageGroup, pattern = "år", replacement = "years")
+    ageGroup == "<1 Ã¥r",
+    str_replace(ageGroup, pattern = "Ã¥r", replacement = "year"),
+    str_replace(ageGroup, pattern = "Ã¥r", replacement = "years")
   ))
 
 datTmp <- diseaseData %>%
