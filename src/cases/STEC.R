@@ -247,7 +247,7 @@ write_rds(x = STEC_PoisN_ageGroup_trend, file = "STEC_PoisN_ageGroup_trend.rds")
 # STEC_PoisN_ageGroup_trend <- read_rds(file = "STEC_PoisN_ageGroup_trend.rds")
 
 STEC_PoisN_ageGroup_seasonality <- aeddo(data = STEC,
-                                         formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                         formula = y ~ -1 + ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
                                          trend = TRUE,
                                          seasonality = TRUE,
                                          theta = c(start.theta.PoisN[1:6], 0,0,start.theta.PoisN[7]),
@@ -266,7 +266,7 @@ write_rds(x = STEC_PoisN_ageGroup_seasonality, file = "STEC_PoisN_ageGroup_seaso
 
 
 STEC_PoisN_ageGroup_trend_seasonality <- aeddo(data = STEC,
-                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
                                                trend = TRUE,
                                                seasonality = TRUE,
                                                theta = c(0,start.theta.PoisN[1:6], 0,0,start.theta.PoisN[7]),
@@ -384,7 +384,7 @@ write_rds(x = STEC_PoisG_ageGroup_trend, file = "STEC_PoisG_ageGroup_trend.rds")
 # STEC_PoisG_ageGroup_trend <- read_rds(file = "STEC_PoisG_ageGroup_trend.rds")
 
 STEC_PoisG_ageGroup_seasonality <- aeddo(data = STEC,
-                                         formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                         formula = y ~ -1 + ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
                                          trend = TRUE,
                                          seasonality = TRUE,
                                          theta = c(start.theta.PoisG[1:6],0,0,start.theta.PoisG[7]),
@@ -403,7 +403,7 @@ write_rds(x = STEC_PoisG_ageGroup_seasonality, file = "STEC_PoisG_ageGroup_seaso
 
 
 STEC_PoisG_ageGroup_trend_seasonality <- aeddo(data = STEC,
-                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
                                                trend = TRUE,
                                                seasonality = TRUE,
                                                theta = c(0,start.theta.PoisG[1:6],0,0,start.theta.PoisG[7]),
@@ -557,8 +557,8 @@ custom_labeller <- as_labeller(
   c(`ageGroup<1 year`="beta[1~year]", `ageGroup1-4 years`="beta[1-4~years]",
     `ageGroup5-14 years`="beta[5-14~years]",`ageGroup15-24 years`="beta[15-24~years]",
     `ageGroup25-64 years`="beta[25-64~years]", `ageGroup65+ years`="beta[65+~years]",
-    `t`="beta[trend]", `sin(pi/6 * monthInYear)` ="beta[sin]",
-    `cos(pi/6 * monthInYear)`="beta[cos]", `log_phi`="phi", `log_sigma`="sigma"),
+    `t`="beta[trend]", `sin(pi/6 * periodInYear)` ="beta[sin]",
+    `cos(pi/6 * periodInYear)`="beta[cos]", `log_phi`="phi", `log_sigma`="sigma"),
   default = label_parsed
 )
 
