@@ -1,3 +1,4 @@
+
 # Import libraries
 library(dplyr)
 library(readr)
@@ -38,7 +39,7 @@ theme_set(
 source(file = "../models/aeddo.R")
 
 # Load in the data
-dat <- read_rds(file = "../../data/processed/dat5.rds")
+dat <- read_rds(file = "../../data/processed/dat2.rds")
 
 # Summary statistic of all the data
 dat %>%
@@ -49,11 +50,10 @@ dat %>%
 
 # Only consider the LIST cases
 LIST <- dat %>%
-  filter(caseDef == "LIST") %>%
+  filter(caseDef == "LIST" & Date <= as.Date("2022-12-31")) %>%
   mutate(ageGroup = fct_collapse(ageGroup, `<65 years` = c("<1 year", "1-4 years", "5-14 years", "15-24 years", "25-64 years"))) %>%
   group_by(Date, ageGroup) %>%
   reframe(y = sum(cases), n = sum(n))
-
 
 LIST_meanAndStandardDeviation <- LIST %>%
   group_by(ageGroup) %>%
@@ -75,8 +75,6 @@ ggsave(filename = "LIST_meanAndStandardDeviation.png",
        height = 8,
        units = "in",
        dpi = "print")
-
-
 
 LIST_long_plot <- LIST %>%
   ggplot(mapping = aes(x = Date, y = y, fill = ageGroup)) +
@@ -121,7 +119,6 @@ LIST.sts <- sts(
   frequency = 12,
   population = as.matrix(population[,-1])
 )
-
 
 # Farrington ------------------------------------------------------------------------
 

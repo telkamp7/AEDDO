@@ -9,7 +9,7 @@ datePeriod <- dat %>%
 nCasesXCaseDef <- dat %>%
   group_by(Date, caseDef) %>%
   reframe(y = sum(cases)) %>%
-  mutate(caseDef = fct_relevel(caseDef, "LIST", "SHIG", "STEC", "SALM"))
+  mutate(caseDef = fct_relevel(caseDef, "LIST", "SHIL", "STEC", "SALM"))
 
 ```
 
@@ -20,7 +20,7 @@ This chapter delves into the data collection methods and quality assurance proce
 
 \begin{itemize}
   \item LIST: \textit{Listeriosis}
-  \item SHIG: \textit{Shigellosis}
+  \item SHIL: \textit{Shigellosis}
   \item STEC: Shiga toxin (verotoxin)-producing \textit{Escherichia coli}
   \item SALM: \textit{Salmonellosis}
 \end{itemize}
@@ -41,7 +41,7 @@ For the scope of this master's thesis, only a specific subset of diseases from t
 
 The count observations are observed in the period from `r format(datePeriod$Date[1], "%B %Y")` to `r format(datePeriod$Date[2], "%B %Y")`. An epidemic curve graph for an excerpt of the data for each of the diseases considered in this master's thesis is shown in Figure \ref{fig:EpiPlot}.
 
-(ref:EpiPlot) Epidemic curve showing the incidence per 100,000 in Denmark, 2012-2022, for the subset of diseases considered in this master thesis. \textbf{(a)} LIST, \textbf{(b)} SHIG, \textbf{(c)} STEC, and \textbf{(d)} SALM.
+(ref:EpiPlot) Epidemic curve showing the incidence per 100,000 in Denmark, 2012-2022, for the subset of diseases considered in this master thesis. \textbf{(a)} LIST, \textbf{(b)} SHIL, \textbf{(c)} STEC, and \textbf{(d)} SALM.
 
 ```{r EpiPlot, echo=FALSE, out.width="100%", fig.cap="(ref:EpiPlot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/EpiPlot.png")
@@ -61,7 +61,7 @@ In general, there is a noticeable decrease in the number of observed cases start
 
 From Figure \@ref(fig:EpiPlot)a, it is evident that the incidence of LIST remains relatively low but stable over time. However, there are six specific months that stand out due to higher incidence rates. These months include July and August 2014, May and June 2022, and October and November 2022. These periods show a notable increase in the number of reported cases compared to the rest of the time series.
 
-In Figure \@ref(fig:EpiPlot)b, a clear annual seasonality of SHIG is observed. The incidence of the disease shows a consistent pattern over the years, with peaks occurring in the summer months of 2016 and 2017. These years exhibit the highest incidences of the disease. On the other hand, the lowest incidences are observed in 2012 and 2020.
+In Figure \@ref(fig:EpiPlot)b, a clear annual seasonality of SHIL is observed. The incidence of the disease shows a consistent pattern over the years, with peaks occurring in the summer months of 2016 and 2017. These years exhibit the highest incidences of the disease. On the other hand, the lowest incidences are observed in 2012 and 2020.
 
 Furthermore, in Figure \@ref(fig:EpiPlot)c, a significant increase in the amplitude of the seasonal variation in STEC can be observed starting from 2018, with incidences doubling compared to the preceding years. At a first glance, this increase in the incidences might be recognized as a serious, reoccurring outbreak of the disease, but a more reasonable explanation can be found. Up to 2018, most departments of clinical microbiology used culture-based methods as a diagnostic test for bacterial pathogens and the process of changing the test method to polymerase chain reaction (PCR) methods was ongoing [@Svendsen_2023]. In general, PCR resulted in higher incidences compared to other test methods, which is to no surprise as higher sensitivity is well documented for PCR [@Buss_2015; @Knabl_2016].
 
@@ -134,19 +134,19 @@ knitr::include_graphics("../figures/LIST_SSI_outbreaks.png")
 
 \subsection{\textit{Shiggellosis}}
 
-SHIG is a diarrheal illness that is caused by a group of bacteria called \textit{Shigella}. There are four types of \textit{Shigella} bacteria, namely: \textit{Shigella dysenteriae}, \textit{Shigella boydii}, \textit{Shigella flexneri}, and \textit{Shigella sonnei}. The latter is the most common species in Denmark. The bacteria are highly contagious and can be transmitted through direct person-to-person contact, consumption of contaminated food, or ingestion of water contaminated with human feces. SHIG infections are most commonly observed in children under the age of 5, individuals traveling to regions with poor sanitation and unsafe water and food practices, as well as gay, bisexual, and other men who have sex with men. 
+SHIL is a diarrheal illness that is caused by a group of bacteria called \textit{Shigella}. There are four types of \textit{Shigella} bacteria, namely: \textit{Shigella dysenteriae}, \textit{Shigella boydii}, \textit{Shigella flexneri}, and \textit{Shigella sonnei}. The latter is the most common species in Denmark. The bacteria are highly contagious and can be transmitted through direct person-to-person contact, consumption of contaminated food, or ingestion of water contaminated with human feces. SHIL infections are most commonly observed in children under the age of 5, individuals traveling to regions with poor sanitation and unsafe water and food practices, as well as gay, bisexual, and other men who have sex with men. 
 
-(ref:SHIGLongPlot) A stacked bar graph illustrating the number of SHIG cases observed in the period from 2008 to 2022 for the age groups below and above 25 years.
+(ref:SHIGLongPlot) A stacked bar graph illustrating the number of SHIL cases observed in the period from 2008 to 2022 for the age groups below and above 25 years.
 
 ```{r SHIGLongPlot, echo=FALSE, out.width="100%", fig.cap="(ref:SHIGLongPlot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/SHIG_long_plot.png")
 ```
 
-In Denmark, another significant cause of SHIG outbreaks is the importation of contaminated vegetables. This was evident in several incidents, including a 2007 outbreak where 215 individuals fell ill after consuming imported contaminated baby corn [@Lewis_2009], a smaller outbreak in 2009 linked to sugar snap peas from Kenya [@Muller_2009], and a 2020 outbreak associated with fresh mint as the source of infection. 
+In Denmark, another significant cause of SHIL outbreaks is the importation of contaminated vegetables. This was evident in several incidents, including a 2007 outbreak where 215 individuals fell ill after consuming imported contaminated baby corn [@Lewis_2009], a smaller outbreak in 2009 linked to sugar snap peas from Kenya [@Muller_2009], and a 2020 outbreak associated with fresh mint as the source of infection. 
 
 The 2020 outbreak is indeed a significant focus of this study, as it serves as a benchmark for evaluating the effectiveness of outbreak detection algorithms. It took place from the 22th of August to the 9th of September and was investigated by SSI in collaboration with the Danish Veterinary and Food Administration and the National Food Institute at the Technical University of Denmark. The outbreak affected 44 patients, mainly concentrated in the Capital Region of Denmark. During the investigation, at least five events were identified where individuals subsequently developed \textit{Shigellosis}.
 
-(ref:SHIGSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of SHIG by SSI and possible collaborators.
+(ref:SHIGSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of SHIL by SSI and possible collaborators.
 
 ```{r SHIGSSIoutbreaks, echo=FALSE, out.width="100%", fig.cap="(ref:SHIGSSIoutbreaks)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/SHIG_SSI_outbreaks.png")

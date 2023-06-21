@@ -38,7 +38,7 @@
 \contentsline {section}{\numberline {5.4}\textit {Salmonellosis}}{44}{section.0.5.4}%
 \contentsline {subsection}{\numberline {5.4.1}Applying the state-of-the-art outbreak detection algorithm to \textit {Salmonellosis}}{44}{subsection.0.5.4.1}%
 \contentsline {subsection}{\numberline {5.4.2}Applying the novel outbreak detection algorithm to \textit {Salmonellosis}}{45}{subsection.0.5.4.2}%
-\contentsline {section}{\numberline {5.5}Performance comparison of novel methods}{45}{section.0.5.5}%
+\contentsline {section}{\numberline {5.5}Performance comparison of novel methods}{46}{section.0.5.5}%
 \contentsline {chapter}{\numberline {6}Simulation study}{49}{chapter.0.6}%
 \contentsline {section}{\numberline {6.1}The simulated baseline data}{49}{section.0.6.1}%
 \contentsline {section}{\numberline {6.2}The simulated outbreaks}{51}{section.0.6.2}%

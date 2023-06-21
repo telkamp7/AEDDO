@@ -36,31 +36,24 @@ theme_set(
 source(file = "../models/aeddo.R")
 
 # Load in the data
-dat <- read_rds(file = "../../data/processed/dat5.rds")
-
-# Summary statistic of all the data
-dat %>%
-  group_by(Date, caseDef) %>%
-  reframe(y = sum(cases)) %>% 
-  group_by(caseDef) %>%
-  summarise(meanCases = mean(y), medianCases = median(y))
+dat <- read_rds(file = "../../data/processed/dat2.rds")
 
 # Only consider the STEC cases
-SHIG <- dat %>%
-  filter(caseDef == "SHIG") %>%
+SHIL <- dat %>%
+  filter(caseDef == "SHIL") %>%
   mutate(ageGroup = fct_collapse(ageGroup, `<25 years` = c("<1 year", "1-4 years","5-14 years","15-24 years")),
          ageGroup = fct_collapse(ageGroup, `25+ years` = c("25-64 years","65+ years"))) %>%
   group_by(Date, ageGroup) %>%
   reframe(y = sum(cases), n = sum(n))
 
-SHIG_long_plot <- SHIG %>%
+SHIL_long_plot <- SHIL %>%
   ggplot(mapping = aes(x = Date, y = y, fill = ageGroup)) +
   geom_bar(position = "stack", stat = "identity") +
   scale_fill_manual(name = "Age group", values = dtuPalette) +
   scale_y_continuous(name = "Number of cases") +
   scale_x_date(name = "Month")
-ggsave(filename = "SHIG_long_plot.png",
-       plot = SHIG_long_plot,
+ggsave(filename = "SHIL_long_plot.png",
+       plot = SHIL_long_plot,
        path = "../../figures/",
        device = png,
        width = 16,
@@ -71,7 +64,7 @@ ggsave(filename = "SHIG_long_plot.png",
 # Prepare to use surveillance package -----------------------------------------------
 
 # Widen observations into a matrix format
-observed <- SHIG %>%
+observed <- SHIL %>%
   select(-n) %>%
   pivot_wider(
     names_from = c(ageGroup),
@@ -80,7 +73,7 @@ observed <- SHIG %>%
   arrange(Date)
 
 # Widen population sizes into a matrix format
-population <- SHIG %>%
+population <- SHIL %>%
   select(-y) %>%
   pivot_wider(
     names_from = c(ageGroup),
@@ -89,7 +82,7 @@ population <- SHIG %>%
   arrange(Date)
 
 # Convert observations into an 'sts' class
-SHIG.sts <- sts(
+SHIL.sts <- sts(
   observed = observed[,-1],
   epoch = observed$Date,
   epochAsDate = TRUE,
@@ -112,21 +105,21 @@ con.farrington <- list(
   thersholdMethod = "delta"
 )
 
-SHIG_Farrington <- farringtonFlexible(sts = SHIG.sts, con.farrington)
+SHIL_Farrington <- farringtonFlexible(sts = SHIL.sts, con.farrington)
 
-upperbound_Farrington <- as_tibble(SHIG_Farrington@upperbound) %>%
-  mutate(Date = as.Date(x = SHIG_Farrington@epoch, origin = "1970-01-01")) %>%
+upperbound_Farrington <- as_tibble(SHIL_Farrington@upperbound) %>%
+  mutate(Date = as.Date(x = SHIL_Farrington@epoch, origin = "1970-01-01")) %>%
   pivot_longer(cols = -Date, 
                names_to = "ageGroup",
                values_to = "threshold_Farrington") %>%
-  mutate(ageGroup = factor(x = ageGroup, levels = levels(SHIG$ageGroup)))
+  mutate(ageGroup = factor(x = ageGroup, levels = levels(SHIL$ageGroup)))
 
-alarm_Farrington <- as_tibble(SHIG_Farrington@alarm) %>%
-  mutate(Date = as.Date(x = SHIG_Farrington@epoch, origin = "1970-01-01")) %>%
+alarm_Farrington <- as_tibble(SHIL_Farrington@alarm) %>%
+  mutate(Date = as.Date(x = SHIL_Farrington@epoch, origin = "1970-01-01")) %>%
   pivot_longer(cols = -Date, 
                names_to = "ageGroup",
                values_to = "alarm_Farrington") %>%
-  mutate(ageGroup = factor(x = ageGroup, levels = levels(SHIG$ageGroup)))
+  mutate(ageGroup = factor(x = ageGroup, levels = levels(SHIL$ageGroup)))
 
 # Noufaily --------------------------------------------------------------------------
 
@@ -142,26 +135,26 @@ con.noufaily <- list(
   thersholdMethod = "nbPlugin"
 )
 
-SHIG_Noufaily <- farringtonFlexible(sts = SHIG.sts, con.noufaily)
+SHIL_Noufaily <- farringtonFlexible(sts = SHIL.sts, con.noufaily)
 
-upperbound_Noufaily <- as_tibble(SHIG_Noufaily@upperbound) %>%
-  mutate(Date = as.Date(x = SHIG_Noufaily@epoch, origin = "1970-01-01")) %>%
+upperbound_Noufaily <- as_tibble(SHIL_Noufaily@upperbound) %>%
+  mutate(Date = as.Date(x = SHIL_Noufaily@epoch, origin = "1970-01-01")) %>%
   pivot_longer(cols = -Date, 
                names_to = "ageGroup",
                values_to = "threshold_Noufaily") %>%
-  mutate(ageGroup = factor(x = ageGroup, levels = levels(SHIG$ageGroup)))
+  mutate(ageGroup = factor(x = ageGroup, levels = levels(SHIL$ageGroup)))
 
-alarm_Noufaily <- as_tibble(SHIG_Noufaily@alarm) %>%
-  mutate(Date = as.Date(x = SHIG_Noufaily@epoch, origin = "1970-01-01")) %>%
+alarm_Noufaily <- as_tibble(SHIL_Noufaily@alarm) %>%
+  mutate(Date = as.Date(x = SHIL_Noufaily@epoch, origin = "1970-01-01")) %>%
   pivot_longer(cols = -Date, 
                names_to = "ageGroup",
                values_to = "alarm_Noufaily") %>%
-  mutate(ageGroup = factor(x = ageGroup, levels = levels(SHIG$ageGroup)))
+  mutate(ageGroup = factor(x = ageGroup, levels = levels(SHIL$ageGroup)))
 
 
 # Compare the Farrington and Noufaily method
 
-Compare_stateOfTheArt_SHIG_dat <- SHIG %>%
+Compare_stateOfTheArt_SHIL_dat <- SHIL %>%
   left_join(upperbound_Farrington, by = join_by(Date, ageGroup)) %>%
   left_join(alarm_Farrington, by = join_by(Date, ageGroup)) %>%
   left_join(upperbound_Noufaily, by = join_by(Date, ageGroup)) %>%
@@ -171,9 +164,9 @@ Compare_stateOfTheArt_SHIG_dat <- SHIG %>%
   filter(method == method2) %>%
   select(-method2) %>%
   mutate(dateOfAlarm = if_else(alarm, Date, NA))
-write_rds(x = Compare_stateOfTheArt_SHIG_dat, file = "Compare_stateOfTheArt_SHIG_dat.rds")
+write_rds(x = Compare_stateOfTheArt_SHIL_dat, file = "Compare_stateOfTheArt_SHIL_dat.rds")
 
-Compare_stateOfTheArt_SHIG <- Compare_stateOfTheArt_SHIG_dat %>%
+Compare_stateOfTheArt_SHIL <- Compare_stateOfTheArt_SHIL_dat %>%
   ggplot(mapping = aes(x = Date, fill = ageGroup)) +
   geom_col(mapping = aes(y = y/n*1e5, alpha = alarm), linewidth = 0.4) +
   geom_line(mapping = aes(x = Date, y = threshold/n*1e5), lty = "dashed", linewidth = 0.4, inherit.aes = FALSE) +
@@ -187,8 +180,8 @@ Compare_stateOfTheArt_SHIG <- Compare_stateOfTheArt_SHIG_dat %>%
         # axis.ticks.x = element_blank(),
         axis.text.x = element_text(vjust = -1.2)) +
   annotate(geom = "rect", xmin = as.Date("2008-01-01")-10, xmax = as.Date("2011-03-01"), ymin = -Inf, ymax = Inf, alpha = 0.2)
-ggsave(filename = "Compare_stateOfTheArt_SHIG.png",
-       plot = Compare_stateOfTheArt_SHIG,
+ggsave(filename = "Compare_stateOfTheArt_SHIL.png",
+       plot = Compare_stateOfTheArt_SHIL,
        path = "../../figures/",
        device = png,
        width = 16,
@@ -201,7 +194,7 @@ ggsave(filename = "Compare_stateOfTheArt_SHIG.png",
 SSI_outbreaks <- tibble(Start = as.Date(x = c("2007-08-06", "2009-04-01", "2020-08-22")),
                         End = as.Date(x = c("2007-08-24", "2009-06-01", "2020-09-9")))
 
-SHIG_SSI_outbreaks <- SSI_outbreaks %>%
+SHIL_SSI_outbreaks <- SSI_outbreaks %>%
   filter(Start > as.Date("2008-01-01")) %>%
   arrange(desc(Start)) %>%
   mutate(outbreak_no = row_number()) %>%
@@ -212,8 +205,8 @@ SHIG_SSI_outbreaks <- SSI_outbreaks %>%
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank(),
         axis.ticks.y = element_blank())
-ggsave(filename = "SHIG_SSI_outbreaks.png",
-       plot = SHIG_SSI_outbreaks,
+ggsave(filename = "SHIL_SSI_outbreaks.png",
+       plot = SHIL_SSI_outbreaks,
        path = "../../figures/",
        device = png,
        width = 16,
@@ -224,7 +217,7 @@ ggsave(filename = "SHIG_SSI_outbreaks.png",
 
 # Hierarchical Poisson Normal model ---------------------------------------
 
-SHIG_PoisN_ageGroup <- aeddo(data = SHIG,
+SHIL_PoisN_ageGroup <- aeddo(data = SHIL,
                              formula = y ~ -1 + ageGroup,
                              theta = rep(0,3),
                              method = "L-BFGS-B",
@@ -237,17 +230,17 @@ SHIG_PoisN_ageGroup <- aeddo(data = SHIG,
                              CI = TRUE,
                              excludePastOutbreaks = TRUE)
 
-write_rds(x = SHIG_PoisN_ageGroup, file = "SHIG_PoisN_ageGroup.rds")
-# SHIG_PoisN_ageGroup <- read_rds(file = "SHIG_PoisN_ageGroup.rds")
+write_rds(x = SHIL_PoisN_ageGroup, file = "SHIL_PoisN_ageGroup.rds")
+# SHIL_PoisN_ageGroup <- read_rds(file = "SHIL_PoisN_ageGroup.rds")
 
-start.theta.PoisN <- SHIG_PoisN_ageGroup %>%
+start.theta.PoisN <- SHIL_PoisN_ageGroup %>%
   filter(row_number() == 1) %>%
   select(par) %>%
   unnest(par) %>%
   select(theta)%>%
   .$theta
 
-SHIG_PoisN_ageGroup_trend <- aeddo(data = SHIG,
+SHIL_PoisN_ageGroup_trend <- aeddo(data = SHIL,
                                    formula = y ~ -1 + t + ageGroup,
                                    trend = TRUE,
                                    theta = c(0, start.theta.PoisN),
@@ -261,10 +254,10 @@ SHIG_PoisN_ageGroup_trend <- aeddo(data = SHIG,
                                    CI = TRUE,
                                    excludePastOutbreaks = TRUE)
 
-write_rds(x = SHIG_PoisN_ageGroup_trend, file = "SHIG_PoisN_ageGroup_trend.rds")
-# SHIG_PoisN_ageGroup_trend <- read_rds(file = "SHIG_PoisN_ageGroup_trend.rds")
+write_rds(x = SHIL_PoisN_ageGroup_trend, file = "SHIL_PoisN_ageGroup_trend.rds")
+# SHIL_PoisN_ageGroup_trend <- read_rds(file = "SHIL_PoisN_ageGroup_trend.rds")
 
-SHIG_PoisN_ageGroup_seasonality <- aeddo(data = SHIG,
+SHIL_PoisN_ageGroup_seasonality <- aeddo(data = SHIL,
                                          formula = y ~ -1 +  ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
                                          seasonality = TRUE,
                                          theta = c(start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3]),
@@ -278,10 +271,10 @@ SHIG_PoisN_ageGroup_seasonality <- aeddo(data = SHIG,
                                          CI = TRUE,
                                          excludePastOutbreaks = TRUE)
 
-write_rds(x = SHIG_PoisN_ageGroup_seasonality, file = "SHIG_PoisN_ageGroup_seasonality.rds")
-# SHIG_PoisN_ageGroup_seasonality <- read_rds(file = "SHIG_PoisN_ageGroup_seasonality.rds")
+write_rds(x = SHIL_PoisN_ageGroup_seasonality, file = "SHIL_PoisN_ageGroup_seasonality.rds")
+# SHIL_PoisN_ageGroup_seasonality <- read_rds(file = "SHIL_PoisN_ageGroup_seasonality.rds")
 
-SHIG_PoisN_ageGroup_trend_seasonality <- aeddo(data = SHIG,
+SHIL_PoisN_ageGroup_trend_seasonality <- aeddo(data = SHIL,
                                                formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
                                                trend = TRUE,
                                                seasonality = TRUE,
@@ -296,8 +289,8 @@ SHIG_PoisN_ageGroup_trend_seasonality <- aeddo(data = SHIG,
                                                CI = TRUE,
                                                excludePastOutbreaks = TRUE)
 
-write_rds(x = SHIG_PoisN_ageGroup_trend_seasonality, file = "SHIG_PoisN_ageGroup_trend_seasonality.rds")
-# SHIG_PoisN_ageGroup_trend_seasonality <- read_rds(file = "SHIG_PoisN_ageGroup_trend_seasonality.rds")
+write_rds(x = SHIL_PoisN_ageGroup_trend_seasonality, file = "SHIL_PoisN_ageGroup_trend_seasonality.rds")
+# SHIL_PoisN_ageGroup_trend_seasonality <- read_rds(file = "SHIL_PoisN_ageGroup_trend_seasonality.rds")
 
 
 # Hierarchical Poisson Gamma model ----------------------------------------
@@ -305,7 +298,7 @@ write_rds(x = SHIG_PoisN_ageGroup_trend_seasonality, file = "SHIG_PoisN_ageGroup
 
 
 
-SHIG_PoisG_ageGroup <- aeddo(data = SHIG,
+SHIL_PoisG_ageGroup <- aeddo(data = SHIL,
                              formula = y ~ -1 + ageGroup,
                              theta = rep(1,3),
                              method = "L-BFGS-B",
@@ -318,17 +311,17 @@ SHIG_PoisG_ageGroup <- aeddo(data = SHIG,
                              CI = TRUE,
                              excludePastOutbreaks = TRUE)
 
-write_rds(x = SHIG_PoisG_ageGroup, file = "SHIG_PoisG_ageGroup.rds")
-# SHIG_PoisG_ageGroup <- read_rds(file = "SHIG_PoisG_ageGroup.rds")
+write_rds(x = SHIL_PoisG_ageGroup, file = "SHIL_PoisG_ageGroup.rds")
+# SHIL_PoisG_ageGroup <- read_rds(file = "SHIL_PoisG_ageGroup.rds")
 
-start.theta.PoisG <- SHIG_PoisG_ageGroup %>%
+start.theta.PoisG <- SHIL_PoisG_ageGroup %>%
   filter(row_number() == 1) %>%
   select(par) %>%
   unnest(par) %>%
   select(theta)%>%
   .$theta
 
-SHIG_PoisG_ageGroup_trend <- aeddo(data = SHIG,
+SHIL_PoisG_ageGroup_trend <- aeddo(data = SHIL,
                                    formula = y ~ -1 + t + ageGroup,
                                    trend = TRUE,
                                    theta = c(0, start.theta.PoisG),
@@ -342,11 +335,11 @@ SHIG_PoisG_ageGroup_trend <- aeddo(data = SHIG,
                                    CI = TRUE,
                                    excludePastOutbreaks = TRUE)
 
-write_rds(x = SHIG_PoisG_ageGroup_trend, file = "SHIG_PoisG_ageGroup_trend.rds")
-# SHIG_PoisG_ageGroup_trend <- read_rds(file = "SHIG_PoisG_ageGroup_trend.rds")
+write_rds(x = SHIL_PoisG_ageGroup_trend, file = "SHIL_PoisG_ageGroup_trend.rds")
+# SHIL_PoisG_ageGroup_trend <- read_rds(file = "SHIL_PoisG_ageGroup_trend.rds")
 
 
-SHIG_PoisG_ageGroup_seasonality <- aeddo(data = SHIG,
+SHIL_PoisG_ageGroup_seasonality <- aeddo(data = SHIL,
                                          formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
                                          seasonality = TRUE,
                                          theta = c(start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]),
@@ -360,10 +353,10 @@ SHIG_PoisG_ageGroup_seasonality <- aeddo(data = SHIG,
                                          CI = TRUE,
                                          excludePastOutbreaks = TRUE)
 
-write_rds(x = SHIG_PoisG_ageGroup_seasonality, file = "SHIG_PoisG_ageGroup_seasonality.rds")
-# SHIG_PoisG_ageGroup_seasonality <- read_rds(file = "SHIG_PoisG_ageGroup_seasonality.rds")
+write_rds(x = SHIL_PoisG_ageGroup_seasonality, file = "SHIL_PoisG_ageGroup_seasonality.rds")
+# SHIL_PoisG_ageGroup_seasonality <- read_rds(file = "SHIL_PoisG_ageGroup_seasonality.rds")
 
-SHIG_PoisG_ageGroup_trend_seasonality <- aeddo(data = SHIG,
+SHIL_PoisG_ageGroup_trend_seasonality <- aeddo(data = SHIL,
                                                formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
                                                trend = TRUE,
                                                seasonality = TRUE,
@@ -378,14 +371,14 @@ SHIG_PoisG_ageGroup_trend_seasonality <- aeddo(data = SHIG,
                                                CI = TRUE,
                                                excludePastOutbreaks = TRUE)
 
-write_rds(x = SHIG_PoisG_ageGroup_trend_seasonality, file = "SHIG_PoisG_ageGroup_trend_seasonality.rds")
-# SHIG_PoisG_ageGroup_trend_seasonality <- read_rds(file = "SHIG_PoisG_ageGroup_trend_seasonality.rds")
+write_rds(x = SHIL_PoisG_ageGroup_trend_seasonality, file = "SHIL_PoisG_ageGroup_trend_seasonality.rds")
+# SHIL_PoisG_ageGroup_trend_seasonality <- read_rds(file = "SHIL_PoisG_ageGroup_trend_seasonality.rds")
 
 
 
 
 
-SHIG_PoisN_ageGroup_tbl <- SHIG_PoisN_ageGroup %>%
+SHIL_PoisN_ageGroup_tbl <- SHIL_PoisN_ageGroup %>%
   select(ref.date, par, LogS) %>%
   mutate(avgLogS = mean(LogS)) %>%
   filter(row_number() == n()) %>%
@@ -393,7 +386,7 @@ SHIG_PoisN_ageGroup_tbl <- SHIG_PoisN_ageGroup %>%
   unnest(par) %>%
   mutate(method = "PoisN_ageGroup")
 
-SHIG_PoisN_ageGroup_trend_tbl <- SHIG_PoisN_ageGroup_trend %>%
+SHIL_PoisN_ageGroup_trend_tbl <- SHIL_PoisN_ageGroup_trend %>%
   select(ref.date, par, LogS) %>%
   mutate(avgLogS = mean(LogS)) %>%
   filter(row_number() == n()) %>%
@@ -401,7 +394,7 @@ SHIG_PoisN_ageGroup_trend_tbl <- SHIG_PoisN_ageGroup_trend %>%
   unnest(par) %>%
   mutate(method = "PoisN_ageGroup_trend")
 
-SHIG_PoisN_ageGroup_seasonality_tbl <- SHIG_PoisN_ageGroup_seasonality %>%
+SHIL_PoisN_ageGroup_seasonality_tbl <- SHIL_PoisN_ageGroup_seasonality %>%
   select(ref.date, par, LogS) %>%
   mutate(avgLogS = mean(LogS)) %>%
   filter(row_number() == n()) %>%
@@ -409,7 +402,7 @@ SHIG_PoisN_ageGroup_seasonality_tbl <- SHIG_PoisN_ageGroup_seasonality %>%
   unnest(par) %>%
   mutate(method = "PoisN_ageGroup_seasonality")
 
-SHIG_PoisN_ageGroup_trend_seasonality_tbl <- SHIG_PoisN_ageGroup_trend_seasonality %>%
+SHIL_PoisN_ageGroup_trend_seasonality_tbl <- SHIL_PoisN_ageGroup_trend_seasonality %>%
   select(ref.date, par, LogS) %>%
   mutate(avgLogS = mean(LogS)) %>%
   filter(row_number() == n()) %>%
@@ -417,7 +410,7 @@ SHIG_PoisN_ageGroup_trend_seasonality_tbl <- SHIG_PoisN_ageGroup_trend_seasonali
   unnest(par) %>%
   mutate(method = "PoisN_ageGroup_trend_seasonality")
 
-SHIG_PoisG_ageGroup_tbl <- SHIG_PoisG_ageGroup %>%
+SHIL_PoisG_ageGroup_tbl <- SHIL_PoisG_ageGroup %>%
   select(ref.date, par, LogS) %>%
   mutate(avgLogS = mean(LogS)) %>%
   filter(row_number() == n()) %>%
@@ -425,7 +418,7 @@ SHIG_PoisG_ageGroup_tbl <- SHIG_PoisG_ageGroup %>%
   unnest(par) %>%
   mutate(method = "PoisG_ageGroup")
 
-SHIG_PoisG_ageGroup_trend_tbl <- SHIG_PoisG_ageGroup_trend %>%
+SHIL_PoisG_ageGroup_trend_tbl <- SHIL_PoisG_ageGroup_trend %>%
   select(ref.date, par, LogS) %>%
   mutate(avgLogS = mean(LogS)) %>%
   filter(row_number() == n()) %>%
@@ -433,7 +426,7 @@ SHIG_PoisG_ageGroup_trend_tbl <- SHIG_PoisG_ageGroup_trend %>%
   unnest(par) %>%
   mutate(method = "PoisG_ageGroup_trend")
 
-SHIG_PoisG_ageGroup_seasonality_tbl <- SHIG_PoisG_ageGroup_seasonality %>%
+SHIL_PoisG_ageGroup_seasonality_tbl <- SHIL_PoisG_ageGroup_seasonality %>%
   select(ref.date, par, LogS) %>%
   mutate(avgLogS = mean(LogS)) %>%
   filter(row_number() == n()) %>%
@@ -441,7 +434,7 @@ SHIG_PoisG_ageGroup_seasonality_tbl <- SHIG_PoisG_ageGroup_seasonality %>%
   unnest(par) %>%
   mutate(method = "PoisG_ageGroup_seasonality")
 
-SHIG_PoisG_ageGroup_trend_seasonality_tbl <- SHIG_PoisG_ageGroup_trend_seasonality %>%
+SHIL_PoisG_ageGroup_trend_seasonality_tbl <- SHIL_PoisG_ageGroup_trend_seasonality %>%
   select(ref.date, par, LogS) %>%
   mutate(avgLogS = mean(LogS)) %>%
   filter(row_number() == n()) %>%
@@ -449,28 +442,28 @@ SHIG_PoisG_ageGroup_trend_seasonality_tbl <- SHIG_PoisG_ageGroup_trend_seasonali
   unnest(par) %>%
   mutate(method = "PoisG_ageGroup_trend_seasonality")
 
-SHIG_novel_tbl <- bind_rows(
-  SHIG_PoisN_ageGroup_tbl,
-  SHIG_PoisN_ageGroup_trend_tbl, 
-  SHIG_PoisN_ageGroup_seasonality_tbl,
-  SHIG_PoisN_ageGroup_trend_seasonality_tbl,
-  SHIG_PoisG_ageGroup_tbl,
-  SHIG_PoisG_ageGroup_trend_tbl,
-  SHIG_PoisG_ageGroup_seasonality_tbl,
-  SHIG_PoisG_ageGroup_trend_seasonality_tbl)
+SHIL_novel_tbl <- bind_rows(
+  SHIL_PoisN_ageGroup_tbl,
+  SHIL_PoisN_ageGroup_trend_tbl, 
+  SHIL_PoisN_ageGroup_seasonality_tbl,
+  SHIL_PoisN_ageGroup_trend_seasonality_tbl,
+  SHIL_PoisG_ageGroup_tbl,
+  SHIL_PoisG_ageGroup_trend_tbl,
+  SHIL_PoisG_ageGroup_seasonality_tbl,
+  SHIL_PoisG_ageGroup_trend_seasonality_tbl)
 
-SHIG_novel_tbl %>% print(n = 68)
+SHIL_novel_tbl %>% print(n = 68)
 
-write_rds(SHIG_novel_tbl, file = "SHIG_novel_tbl.rds")
+write_rds(SHIL_novel_tbl, file = "SHIL_novel_tbl.rds")
 # Compare methods -------------------------------------------------------------------
 
-SHIG_PoisN_ageGroup_trend_unnested <- SHIG_PoisN_ageGroup_trend  %>% 
+SHIL_PoisN_ageGroup_trend_unnested <- SHIL_PoisN_ageGroup_trend  %>% 
   select(ran.ef) %>%
   unnest(ran.ef) %>%
   mutate(threshold = qnorm(p = 0.9, mean = 0, sd = exp(log_sigma))) %>%
   select(Date = ref.date, ageGroup, `u_Poisson Normal` = u, `alarm_Poisson Normal` = alarm, `threshold_Poisson Normal` = threshold)
 
-SHIG_PoisG_ageGroup_trend_unnested <- SHIG_PoisG_ageGroup_trend %>% 
+SHIL_PoisG_ageGroup_trend_unnested <- SHIL_PoisG_ageGroup_trend %>% 
   select(ran.ef) %>%
   unnest(ran.ef) %>%
   mutate(threshold = qgamma(p = 0.9, shape = 1/phi, scale = phi)) %>%
@@ -478,11 +471,11 @@ SHIG_PoisG_ageGroup_trend_unnested <- SHIG_PoisG_ageGroup_trend %>%
 
 
 # Compare the Poisson Normal and Poisson Gamma model
-SHIG_novel <- full_join(SHIG_PoisN_ageGroup_trend_unnested,
-                        SHIG_PoisG_ageGroup_trend_unnested,
+SHIL_novel <- full_join(SHIL_PoisN_ageGroup_trend_unnested,
+                        SHIL_PoisG_ageGroup_trend_unnested,
                         by = join_by(Date, ageGroup))
 
-Compare_novel <- SHIG_novel %>%
+Compare_novel <- SHIL_novel %>%
   pivot_longer(cols = c(`u_Poisson Normal`, `u_Poisson Gamma`), names_to = "method", names_prefix = "u_", values_to = "u") %>%
   pivot_longer(cols = c(`alarm_Poisson Normal`, `alarm_Poisson Gamma`), names_to = "method2", names_prefix = "alarm_", values_to = "alarm") %>%
   pivot_longer(cols = c(`threshold_Poisson Normal`, `threshold_Poisson Gamma`), names_to = "method3", names_prefix = "threshold_", values_to = "threshold") %>%
@@ -498,7 +491,7 @@ Compare_novel <- SHIG_novel %>%
   scale_colour_manual(values = dtuPalette) +
   scale_shape_manual(values = c(1,19)) +
   guides(colour = "none", shape = "none")
-ggsave(filename = "Compare_novel_SHIG.png",
+ggsave(filename = "Compare_novel_SHIL.png",
        plot = Compare_novel,
        path = "../../figures/",
        device = png,
@@ -518,20 +511,20 @@ custom_labeller <- as_labeller(
   default = label_parsed
 )
 
-SHIG_PoisG_ageGroup_trend_par <- SHIG_PoisG_ageGroup_trend  %>% 
+SHIL_PoisG_ageGroup_trend_par <- SHIL_PoisG_ageGroup_trend  %>% 
   select(ref.date, par) %>%
   unnest(par) %>% 
   mutate(Method = "Poisson Gamma")
 
-SHIG_PoisN_ageGroup_trend_par <- SHIG_PoisN_ageGroup_trend  %>% 
+SHIL_PoisN_ageGroup_trend_par <- SHIL_PoisN_ageGroup_trend  %>% 
   select(ref.date, par) %>%
   unnest(par) %>% 
   mutate(Method = "Poisson Normal")
 
-SHIG_novel_par <- bind_rows(SHIG_PoisG_ageGroup_trend_par, SHIG_PoisN_ageGroup_trend_par) 
+SHIL_novel_par <- bind_rows(SHIL_PoisG_ageGroup_trend_par, SHIL_PoisN_ageGroup_trend_par) 
 
 
-SHIG_novel_par_ageGroup <- SHIG_novel_par %>%
+SHIL_novel_par_ageGroup <- SHIL_novel_par %>%
   filter(grepl(x = Parameter, pattern = "ageGroup")) %>%
   ggplot(mapping = aes(x = ref.date)) +
   geom_line(mapping = aes(y = theta, colour = Method), linewidth = 1) +
@@ -541,8 +534,8 @@ SHIG_novel_par_ageGroup <- SHIG_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(beta[i])) +
   scale_x_date(name = "Month")
-ggsave(filename = "SHIG_novel_par_ageGroup.png",
-       plot = SHIG_novel_par_ageGroup,
+ggsave(filename = "SHIL_novel_par_ageGroup.png",
+       plot = SHIL_novel_par_ageGroup,
        path = "../../figures/",
        device = png,
        width = 16,
@@ -550,7 +543,7 @@ ggsave(filename = "SHIG_novel_par_ageGroup.png",
        units = "in",
        dpi = "print") 
 
-SHIG_novel_par_trend <- SHIG_novel_par %>%
+SHIL_novel_par_trend <- SHIL_novel_par %>%
   filter(Parameter == "t") %>%
   ggplot(mapping = aes(x = ref.date)) +
   geom_line(mapping = aes(y = theta, colour = Method), linewidth = 1) +
@@ -560,8 +553,8 @@ SHIG_novel_par_trend <- SHIG_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(beta[i])) +
   scale_x_date(name = "Month")
-ggsave(filename = "SHIG_novel_par_trend.png",
-       plot = SHIG_novel_par_trend,
+ggsave(filename = "SHIL_novel_par_trend.png",
+       plot = SHIL_novel_par_trend,
        path = "../../figures/",
        device = png,
        width = 16,
@@ -569,7 +562,7 @@ ggsave(filename = "SHIG_novel_par_trend.png",
        units = "in",
        dpi = "print") 
 
-# SHIG_novel_par_seasonality <- SHIG_novel_par %>%
+# SHIL_novel_par_seasonality <- SHIL_novel_par %>%
 #   filter(grepl(x = Parameter, pattern = "cos|sin")) %>%
 #   ggplot(mapping = aes(x = ref.date)) +
 #   geom_line(mapping = aes(y = theta, colour = Method), linewidth = 1) +
@@ -579,8 +572,8 @@ ggsave(filename = "SHIG_novel_par_trend.png",
 #   scale_color_manual(values = dtuPalette) +
 #   scale_y_continuous(name = expression(beta[i])) +
 #   scale_x_date(name = "Month")
-# ggsave(filename = "SHIG_novel_par_seasonality.png",
-#        plot = SHIG_novel_par_seasonality,
+# ggsave(filename = "SHIL_novel_par_seasonality.png",
+#        plot = SHIL_novel_par_seasonality,
 #        path = "../../figures/",
 #        device = png,
 #        width = 16,
@@ -588,7 +581,7 @@ ggsave(filename = "SHIG_novel_par_trend.png",
 #        units = "in",
 #        dpi = "print") 
 
-SHIG_novel_par_dispersion <- SHIG_novel_par %>%
+SHIL_novel_par_dispersion <- SHIL_novel_par %>%
   filter(grepl(x = Parameter, pattern = "log_sigma|log_phi")) %>%
   ggplot(mapping = aes(x = ref.date)) +
   geom_line(mapping = aes(y = exp(theta), colour = Method), linewidth = 1) +
@@ -598,8 +591,8 @@ SHIG_novel_par_dispersion <- SHIG_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(Psi)) +
   scale_x_date(name = "Month")
-ggsave(filename = "SHIG_novel_par_dispersion.png",
-       plot = SHIG_novel_par_dispersion,
+ggsave(filename = "SHIL_novel_par_dispersion.png",
+       plot = SHIL_novel_par_dispersion,
        path = "../../figures/",
        device = png,
        width = 16,
@@ -612,7 +605,7 @@ SSI_corrected <- SSI_outbreaks %>%
   mutate(method = "SSI", alarm = TRUE) %>%
   select(Date = Start, method:alarm)
 
-SHIG_compare <- SHIG_novel %>%
+SHIL_compare <- SHIL_novel %>%
   select(Date, ageGroup, `alarm_Poisson Normal`, `alarm_Poisson Gamma`) %>%
   full_join(alarm_Farrington, by = join_by(Date, ageGroup)) %>%
   full_join(alarm_Noufaily, by = join_by(Date, ageGroup)) %>%
@@ -620,21 +613,21 @@ SHIG_compare <- SHIG_novel %>%
   group_by(Date, method) %>%
   reframe(alarm = any(alarm)) %>%
   bind_rows(SSI_corrected) %>%
-  mutate(alarmDate = if_else(alarm, Date, NA), method = factor(method), disease = "SHIG")
+  mutate(alarmDate = if_else(alarm, Date, NA), method = factor(method), disease = "SHIL")
 
-write_rds(x = SHIG_compare, file = "SHIG_compare.rds")
+write_rds(x = SHIL_compare, file = "SHIL_compare.rds")
 
-Compare_alarms <- SHIG_compare %>%
+Compare_alarms <- SHIL_compare %>%
   filter(Date >= as.Date("2011-01-01")) %>%
   ggplot(mapping = aes(x = alarmDate, y = method, colour = method)) +
   geom_point(shape = 17, size = 4) +
   scale_color_manual(values = dtuPalette[c(7,9:11,4)]) +
-  scale_y_discrete(limits = rev(levels(SHIG_compare$method))) +
+  scale_y_discrete(limits = rev(levels(SHIL_compare$method))) +
   scale_x_date(name = "Date") +
   guides(colour = "none") +
   theme(axis.title.y = element_blank(),
         panel.spacing.x = unit(2.67, "lines"))
-ggsave(filename = "Compare_alarms_SHIG.png",
+ggsave(filename = "Compare_alarms_SHIL.png",
        plot = Compare_alarms,
        path = "../../figures/",
        device = png,
