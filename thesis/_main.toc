@@ -43,7 +43,7 @@
 \contentsline {section}{\numberline {6.1}The simulated baseline data}{49}{section.0.6.1}%
 \contentsline {section}{\numberline {6.2}The simulated outbreaks}{51}{section.0.6.2}%
 \contentsline {section}{\numberline {6.3}Evaluation measures}{52}{section.0.6.3}%
-\contentsline {section}{\numberline {6.4}Results of the simulations}{52}{section.0.6.4}%
+\contentsline {section}{\numberline {6.4}Results of the simulations}{53}{section.0.6.4}%
 \contentsline {chapter}{\numberline {7}Discussion}{55}{chapter.0.7}%
 \contentsline {chapter}{\numberline {8}Conclusion}{57}{chapter.0.8}%
 \contentsline {chapter}{Bibliography}{59}{chapter*.41}%

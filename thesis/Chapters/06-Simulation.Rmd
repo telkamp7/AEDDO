@@ -2,6 +2,8 @@
 
 In this chapter, comprehensive simulations are performed to assess the performance of the novel outbreak detection algorithm in comparisons to the state-of-the-art outbreak detection algorithms. The simulations cover a variety of contrasting scenarios adapted from the study by @Noufaily_2013. However, for the purpose of this master's thesis, the focus is not on diseases with bi-annual seasonality. Therefore, the scenarios involving bi-annual seasonality are excluded from the simulation study.
 
+First, the method for simulating the baseline data is presented. These data are generated using a negative binomial model with a time-dependent mean $\mu(t)$. Hereafter, the assumptions regarding the simulated outbreaks are outlined, i.e. outbreak size and distribution in time. Then, the evaluation measures are presented just before the results.
+
 \section{The simulated baseline data}
 
 The simulated baseline data is generated using a negative binomial model with a mean parameter $\mu$ and a variance parameter $\phi\mu$. The dispersion parameter $\phi$ is assumed to be greater than or equal to 1. The mean $\mu(t)$ is defined by a linear predictor that includes a trend component and a seasonality component represented by Fourier terms.
@@ -33,7 +35,7 @@ To simulate the baseline data without outbreaks, 100 replicates are generated fo
 
 The 624 weeks are divided into three periods: 1-313 are used as training weeks for the adaptive re-weighting schemes, weeks 313-575 are considered as baseline weeks, and weeks 576-624 are designated as the "current" weeks for evaluation. 
 
-The simulation results are based on the "current" weeks of all the replicates, totaling $100\times 49=4900$ replicates, for each of the 28 data scenarios and each method investigated.S
+The simulation results are based on the "current" weeks of all the replicates, totaling $100\times 49=4900$ replicates, for each of the 28 data scenarios and each method investigated.
 
 (ref:Realizations) Insert some realization examples
 
@@ -43,7 +45,6 @@ knitr::include_graphics("../figures/Placeholder.png")
 
 ```
 
-
 \section{The simulated outbreaks}
 
 The outbreaks starting in week $t$ are simulated using the following procedure. First, a constant value $k$ is chosen. The size of the outbreak, denoted as $n$, is then generated randomly from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline count at time $t$.
@@ -52,7 +53,7 @@ Next, the outbreak is distributed randomly in time according to a log-normal dis
 
 The probability density function for the log-normal distribution is visualized in Figure \@ref(fig:PDFLogNormal).
 
-(ref:PDFLogNormal) Placeholder caption
+(ref:PDFLogNormal) Probaility density function for the log-normal distribution with a mean of 0 and a standard deviation of 0.5, i.e. $Z \sim \LN(0,0.5^2)$.
 
 ```{r PDFLogNormal, echo=FALSE, out.width="100%", fig.cap="(ref:PDFLogNormal)", fig.pos = "H", fig.show = "hold"}
 
@@ -71,19 +72,22 @@ To simulate outbreaks, the following procedure is followed:
 
 \section{Evaluation measures}
 
-To evaluate the performance of the detection system, various measures are used to assess its effectiveness in both the absence and presence of current outbreaks. These measures are designed to capture meaningful quantities in the given context.
+o evaluate the performance of the outbreak detection system, several measures are employed to assess its effectiveness in detecting current outbreaks. These measures are specifically designed to capture relevant quantities in the given context.
 
-In scenarios where no outbreaks occur in the baselines, the False Positive Rate (FPR) is calculated for each of the 28 scenarios. The FPR is determined as the proportion of the current 49 weeks and 100 replicates in which the observed value exceeds the threshold, assuming no current outbreaks during those weeks.
+One of the primary measures used is the False Positive Rate (FPR), which is calculated for each of the 28 scenarios and methods. The FPR is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold, even though there are no actual outbreaks during those weeks.
 
-To evaluate the impact of outbreaks in the baselines, the FPR is calculated in a similar manner, but only for the current weeks that coincide with at least one baseline week containing an outbreak.
-
-The probability of detecting an outbreak (POD), also known as power, is calculated for each of the 28 scenarios. The algorithm is applied iteratively for the 49 current weeks, and an outbreak is considered detected if the observed value exceeds the threshold at least once within the start and end times of the outbreak. The POD is then determined as the proportion of outbreaks detected out of the 100 runs. There are no restrictions on the calculation when evaluating the impact of outbreaks in the baselines.
+Another measure is the probability of detecting and outbreak (POD), also known as power. Likewise, this is calculated for each of the 28 scenarios. The algorithm is applied iteratively for the 49 current weeks, and an outbreak is considered detected if the observed value exceeds the threshold at least one within the start and end times of the outbreak. The POD is then determined as the proportion of outbreaks detected out of the 100 runs.
 
 It is important to note that the FPR is a rate per week, while the POD is a rate per outbreak. These evaluation measures are chosen because they provide insights into the performance of the detection system on individual time series.
 
 \section{Results of the simulations}
 
-(ref:FPR) Insert FPR plot
+
+
+
+In the analysis, 
+
+(ref:FPR) FPRs obtained in each of the 28 scenarios for each of the methods applied. Thresholds are based on the $0.95$ quantile
 
 ```{r FPR, echo=FALSE, out.width="100%", fig.cap="(ref:FPR)", fig.pos = "H", fig.show = "hold"}
 
@@ -92,7 +96,10 @@ knitr::include_graphics("../figures/FPR.png")
 ```
 
 
-(ref:PropDetect) Placeholder caption
+As expected, the PODs increase with $k$
+
+
+(ref:PropDetect) PODs of $k$ standard deviations, along with the median curves (bold), corresponding to the 28 scenarios for each of the methods applied.
 
 ```{r PropDetect, echo=FALSE, out.width="100%", fig.cap="(ref:PropDetect)", fig.pos = "H", fig.show = "hold"}
 

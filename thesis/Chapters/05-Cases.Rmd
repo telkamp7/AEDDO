@@ -233,12 +233,12 @@ In this case study, both the state-of-the-art and novel oubteak detection algori
 
 Outbreak detection utilizing the state-of-the-art outbreak algorithms are performed on the data set. The reference values for the analysis are based on data ranging the period from January 2008 to February 2011. Hereafter, surveillance is conducted using the data from March 2011 to December 2022.
 
-In Figure \@ref(fig:CompareStateOfTheArtSHIG), a significant number of alarms are observed sporadically in the time series for both methods. For the Farrington method, the number of alarms is `r SHIG_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm`, while for the Noufaily method, the number of alarms is `r SHIG_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm`.
+In Figure \@ref(fig:CompareStateOfTheArtSHIL), a significant number of alarms are observed sporadically in the time series for both methods. For the Farrington method, the number of alarms is `r SHIL_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm`, while for the Noufaily method, the number of alarms is `r SHIL_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm`.
 
-(ref:CompareStateOfTheArtSHIG) Monthly SHIL incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations time points outside reference data. Alarm triggered (full opacity) if observations exceeds threshold. 
+(ref:CompareStateOfTheArtSHIL) Monthly SHIL incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations time points outside reference data. Alarm triggered (full opacity) if observations exceeds threshold. 
 
-```{r CompareStateOfTheArtSHIG, echo=FALSE, out.width="100%", fig.cap="(ref:CompareStateOfTheArtSHIG)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/Compare_stateOfTheArt_SHIG.png")
+```{r CompareStateOfTheArtSHIL, echo=FALSE, out.width="100%", fig.cap="(ref:CompareStateOfTheArtSHIL)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_stateOfTheArt_SHIL.png")
 ```
 
 It is worth noting that some of these alarms occur in clusters over a specific time period and are raised simultaneously in both age groups. This clustering is particularly evident in the period from July 2015 to August 2016, where multiple alarms are observed. However, it is important to consider that the threshold for detection during this period is relatively low due to the very few cases reported up to that point. Therefore, these alarms may be an artifact of the method used rather than indicative of true outbreaks. Atleast, no outbreaks were investigated by SSI in the same period. 
@@ -251,12 +251,12 @@ Another cluster is forming towards the end of the series.
 
 For this disease, it is found that including a trend in the model results in the lowest logarithmic score $\bar S(G,y)$ for both modeling frameworks. Therefore, the analysis is continued using the formula described in \eqref{eq:Trend}.
 
-The one-step ahead random effects $u_{i{t_1}}$ are depicted in Figure \@ref(fig:CompareNovelSHIG). It is observed that the hierarchical Poisson Normal model generates two additional alarms in the age group below 25 years compared to the hierarchical Poisson Gamma model. However, it can be seen that the corresponding random effects in the latter model are borderline significant.
+The one-step ahead random effects $u_{i{t_1}}$ are depicted in Figure \@ref(fig:CompareNovelSHIL). It is observed that the hierarchical Poisson Normal model generates two additional alarms in the age group below 25 years compared to the hierarchical Poisson Gamma model. However, it can be seen that the corresponding random effects in the latter model are borderline significant.
 
-(ref:CompareNovelSHIG) One-step ahead random effects $\hat u_{t_1}$ of SHIL in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).
+(ref:CompareNovelSHIL) One-step ahead random effects $\hat u_{t_1}$ of SHIL in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).
 
-```{r CompareNovelSHIG, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelSHIG)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/Compare_novel_SHIG.png")
+```{r CompareNovelSHIL, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelSHIL)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_novel_SHIL.png")
 ```
 
 It is worth noting that the novel outbreak detection algorithms identify significantly fewer alarms compared to the state-of-the-art outbreak detection algorithm. However, they still detect some alarms in the same time periods.
@@ -307,10 +307,10 @@ knitr::include_graphics("../figures/Compare_alarms_LIST.png")
 
 WRITE HERE
 
-(ref:CompareAlarmsSHIG) Alarm plot displaying alarms for SHIL time series using four different algorithms, along with outbreaks investigated by SSI.
+(ref:CompareAlarmsSHIL) Alarm plot displaying alarms for SHIL time series using four different algorithms, along with outbreaks investigated by SSI.
 
-```{r CompareAlarmsSHIG, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsSHIG)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/Compare_alarms_SHIG.png")
+```{r CompareAlarmsSHIL, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsSHIL)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_alarms_SHIL.png")
 ```
 
 WRITE HERE
