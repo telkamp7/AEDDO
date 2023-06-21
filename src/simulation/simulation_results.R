@@ -50,6 +50,23 @@ for(i in 1:length(scenarioFiles)){
   }
 }
 
+Realizations <- results %>%
+  filter(scenario %in% c(5, 7,  12, 28) & sim == 1) %>%
+  select(scenario, data) %>%
+  unnest(data) %>%
+  ggplot(mapping = aes(x = t, y = y)) +
+  geom_line() +
+  facet_wrap(facets = vars(scenario), scales = "free_y") +
+  scale_x_continuous(name = "week") +
+  scale_y_continuous(name = "count")
+ggsave(filename = "Realizations.png",
+       plot = Realizations,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
 
 results %>%
   arrange(scenario) %>%
@@ -75,11 +92,13 @@ FPR <- results %>%
                          labels = c("Farrington",
                                     "Noufaily", 
                                     "Poisson Normal", 
-                                    "Poisson Gamma"))) %>%
+                                    "Poisson Gamma")),
+         scenario = factor(scenario, levels = 1:28,
+                           labels = 1:28)) %>%
   ggplot(mapping = aes(x = scenario, y = FPR, group = scenario, fill = Method)) +
   geom_boxplot(fatten = 3, alpha = 0.7) +
   facet_wrap(facets = vars(Method)) +
-  scale_x_continuous(breaks = 1:28) +
+  scale_x_discrete(name = "Scenario") +
   scale_fill_manual(values = dtuPalette[c(7,9:11,5)]) +
   guides(fill = "none")
 ggsave(filename = "FPR.png",
@@ -178,8 +197,6 @@ results %>%
   group_by(scenario, Method, k) %>%
   reframe(POD = mean(Detected)) %>%
   filter(scenario == 7 & k == 10)
-
-
 
 results %>%
   filter(scenario == 7) %>%

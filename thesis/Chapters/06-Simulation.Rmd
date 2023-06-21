@@ -1,8 +1,12 @@
 \chapter{Simulation study}
 
-In this chapter, comprehensive simulations are performed to assess the performance of the novel outbreak detection algorithm in comparisons to the state-of-the-art outbreak detection algorithms. The simulations cover a variety of contrasting scenarios adapted from the study by @Noufaily_2013. However, for the purpose of this master's thesis, the focus is not on diseases with bi-annual seasonality. Therefore, the scenarios involving bi-annual seasonality are excluded from the simulation study.
+In this chapter, a comprehensive simulation study is conducted to evaluate the performance of the novel outbreak detection algorithm compared to state-of-the-art algorithms. The simulations cover various scenarios, adapted from the study by @Noufaily_2013. However, for the purpose of this master's thesis, the focus is not on diseases with bi-annual seasonality. Therefore, the scenarios involving bi-annual seasonality are excluded from the simulation study.
 
-First, the method for simulating the baseline data is presented. These data are generated using a negative binomial model with a time-dependent mean $\mu(t)$. Hereafter, the assumptions regarding the simulated outbreaks are outlined, i.e. outbreak size and distribution in time. Then, the evaluation measures are presented just before the results.
+The chapter begins by describing the method used to simulate the baseline data. These data are generated using a negative binomial model with a time-dependent mean $\mu(t)$. Next, the assumptions regarding the simulated outbreaks are outlined, including the outbreak size and distribution in time.
+
+The evaluation measures used to assess the performance of the outbreak detection algorithms are then presented. These measures are designed to capture relevant quantities in the context of outbreak detection.
+
+Finally, the chapter presents the results of applying both the state-of-the-art outbreak detection algorithms and the novel outbreak detection algorithm to the simulated data. The performance of each algorithm is evaluated based on the simulation results.
 
 \section{The simulated baseline data}
 
@@ -37,11 +41,11 @@ The 624 weeks are divided into three periods: 1-313 are used as training weeks f
 
 The simulation results are based on the "current" weeks of all the replicates, totaling $100\times 49=4900$ replicates, for each of the 28 data scenarios and each method investigated.
 
-(ref:Realizations) Insert some realization examples
+(ref:Realizations) Plots of an excerpt of the realizations for scenario 5, scenario 7, scenario 12, and scenario 28 (see Table \@ref(tab:scenariosTbl)).
 
 ```{r Realizations, echo=FALSE, out.width="100%", fig.cap="(ref:Realizations)", fig.pos = "H", fig.show = "hold"}
 
-knitr::include_graphics("../figures/Placeholder.png")
+knitr::include_graphics("../figures/Realizations.png")
 
 ```
 
@@ -72,7 +76,7 @@ To simulate outbreaks, the following procedure is followed:
 
 \section{Evaluation measures}
 
-o evaluate the performance of the outbreak detection system, several measures are employed to assess its effectiveness in detecting current outbreaks. These measures are specifically designed to capture relevant quantities in the given context.
+To evaluate the performance of the outbreak detection system, several measures are employed to assess its effectiveness in detecting current outbreaks. These measures are specifically designed to capture relevant quantities in the given context.
 
 One of the primary measures used is the False Positive Rate (FPR), which is calculated for each of the 28 scenarios and methods. The FPR is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold, even though there are no actual outbreaks during those weeks.
 
@@ -82,10 +86,31 @@ It is important to note that the FPR is a rate per week, while the POD is a rate
 
 \section{Results of the simulations}
 
+In this section, the results regarding the simulation study is presented. Both the state-of-the-art outbreak detection algorithm and the novel outbreak detection algorithm are applied to the simulated data. 
+
+The `control` arguements for the Farrington and Noufaily method respectively can be found in Appendix \@ref(controlsStateOfTheArt).
+
+
+For both of the state-of-the-art outbreak detection algorithms 
+
+
+In all of the methods, a 
+
+
+The model for the fixed effects in each of the modeling frameworks respectively, is defined as:
+
+\begin{equation}
+  \log(\lambda_{t}) = \beta_{intercept} + \beta_{trend} t + \sin \big(\frac{2\pi\cdot \tau_t}{52}\big) \beta_{\sin} + \cos \big(\frac{2\pi\cdot \tau_t}{52}\big)\beta_{\cos}
+\end{equation}
 
 
 
-In the analysis, 
+
+in each of the modeling frameworks
+
+
+In general, one obtains relatively higher FPRs when using the Farrington method compared to the other methods. This is to no surprise, as this method is known for being overly sensitive, and thus producing more false alarms.
+
 
 (ref:FPR) FPRs obtained in each of the 28 scenarios for each of the methods applied. Thresholds are based on the $0.95$ quantile
 
@@ -96,8 +121,13 @@ knitr::include_graphics("../figures/FPR.png")
 ```
 
 
-As expected, the PODs increase with $k$
 
+
+
+
+The PODs for the 28 scenarios and eac
+
+To no surprise, the PODs increase with size of $k$. Intuitively, the larger the outbreak size is, the more likely it is that the outbreak is detected.
 
 (ref:PropDetect) PODs of $k$ standard deviations, along with the median curves (bold), corresponding to the 28 scenarios for each of the methods applied.
 
@@ -106,6 +136,8 @@ As expected, the PODs increase with $k$
 knitr::include_graphics("../figures/PropDetect.png")
 
 ```
+
+Interestingly, some scenarios produce unusual low power curves. Specifically, this is seen in the Noufaily method for scenario 5, 7, and 15. Here, these scenarios leads to less than 60% of the outbreaks detected with this method, when the outbreak size is $k=10$ times the standard deviation. In general, scenario 7 leads to the lowest power curve across all methods, with none of the outbreaks being detected by the Noufaily method.
 
 
 \cleardoublepage
