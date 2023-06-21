@@ -106,6 +106,7 @@ con.farrington <- list(
 )
 
 SHIL_Farrington <- farringtonFlexible(sts = SHIL.sts, con.farrington)
+write_rds(x = SHIL_Farrington, file = "SHIL_Farrington.rds")
 
 upperbound_Farrington <- as_tibble(SHIL_Farrington@upperbound) %>%
   mutate(Date = as.Date(x = SHIL_Farrington@epoch, origin = "1970-01-01")) %>%
@@ -136,6 +137,7 @@ con.noufaily <- list(
 )
 
 SHIL_Noufaily <- farringtonFlexible(sts = SHIL.sts, con.noufaily)
+write_rds(x = SHIL_Noufaily, file = "SHIL_Noufaily.rds")
 
 upperbound_Noufaily <- as_tibble(SHIL_Noufaily@upperbound) %>%
   mutate(Date = as.Date(x = SHIL_Noufaily@epoch, origin = "1970-01-01")) %>%
@@ -258,7 +260,7 @@ write_rds(x = SHIL_PoisN_ageGroup_trend, file = "SHIL_PoisN_ageGroup_trend.rds")
 # SHIL_PoisN_ageGroup_trend <- read_rds(file = "SHIL_PoisN_ageGroup_trend.rds")
 
 SHIL_PoisN_ageGroup_seasonality <- aeddo(data = SHIL,
-                                         formula = y ~ -1 +  ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                         formula = y ~ -1 +  ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
                                          seasonality = TRUE,
                                          theta = c(start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3]),
                                          method = "L-BFGS-B",
@@ -275,7 +277,7 @@ write_rds(x = SHIL_PoisN_ageGroup_seasonality, file = "SHIL_PoisN_ageGroup_seaso
 # SHIL_PoisN_ageGroup_seasonality <- read_rds(file = "SHIL_PoisN_ageGroup_seasonality.rds")
 
 SHIL_PoisN_ageGroup_trend_seasonality <- aeddo(data = SHIL,
-                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
                                                trend = TRUE,
                                                seasonality = TRUE,
                                                theta = c(0, start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3]),
@@ -340,7 +342,7 @@ write_rds(x = SHIL_PoisG_ageGroup_trend, file = "SHIL_PoisG_ageGroup_trend.rds")
 
 
 SHIL_PoisG_ageGroup_seasonality <- aeddo(data = SHIL,
-                                         formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                         formula = y ~ -1 + ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
                                          seasonality = TRUE,
                                          theta = c(start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]),
                                          method = "L-BFGS-B",
@@ -357,7 +359,7 @@ write_rds(x = SHIL_PoisG_ageGroup_seasonality, file = "SHIL_PoisG_ageGroup_seaso
 # SHIL_PoisG_ageGroup_seasonality <- read_rds(file = "SHIL_PoisG_ageGroup_seasonality.rds")
 
 SHIL_PoisG_ageGroup_trend_seasonality <- aeddo(data = SHIL,
-                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+                                               formula = y ~ -1 + t + ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
                                                trend = TRUE,
                                                seasonality = TRUE,
                                                theta = c(0, start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]),
@@ -506,8 +508,8 @@ custom_labeller <- as_labeller(
     `ageGroup5-14 years`="beta[5-14~years]",`ageGroup15-24 years`="beta[15-24~years]",
     `ageGroup25-64 years`="beta[25-64~years]", `ageGroup65+ years`="beta[65+~years]",
     `ageGroup<25 years`="beta['<25~years']",`ageGroup25+ years`="beta[25+~years]",
-    `t`="beta[trend]", `sin(pi/6 * monthInYear)` ="beta[sin]",
-    `cos(pi/6 * monthInYear)`="beta[cos]", `log_phi`="phi", `log_sigma`="sigma"),
+    `t`="beta[trend]", `sin(pi/6 * periodInYear)` ="beta[sin]",
+    `cos(pi/6 * periodInYear)`="beta[cos]", `log_phi`="phi", `log_sigma`="sigma"),
   default = label_parsed
 )
 

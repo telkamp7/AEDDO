@@ -277,7 +277,7 @@ write_rds(x = LIST_PoisN_ageGroup, file = "LIST_PoisN_ageGroup.rds")
 # # LIST_PoisN_ageGroup_trend <- read_rds(file = "LIST_PoisN_ageGroup_trend.rds")
 # 
 # LIST_PoisN_ageGroup_seasonality <- aeddo(data = LIST,
-#                                          formula = y ~ -1 +  ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+#                                          formula = y ~ -1 +  ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
 #                                          seasonality = TRUE,
 #                                          theta = c(start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3]),
 #                                          method = "L-BFGS-B",
@@ -294,7 +294,7 @@ write_rds(x = LIST_PoisN_ageGroup, file = "LIST_PoisN_ageGroup.rds")
 # LIST_PoisN_ageGroup_seasonality <- read_rds(file = "LIST_PoisN_ageGroup_seasonality.rds")
 
 # LIST_PoisN_ageGroup_trend_seasonality <- aeddo(data = LIST,
-#                                                formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+#                                                formula = y ~ -1 + t + ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
 #                                                trend = TRUE,
 #                                                seasonality = TRUE,
 #                                                theta = c(0, start.theta.PoisN[1:2], 0,0, start.theta.PoisN[3]),
@@ -493,7 +493,7 @@ write_rds(x = LIST_PoisG_ageGroup, file = "LIST_PoisG_ageGroup.rds")
 # 
 # 
 # LIST_PoisG_ageGroup_seasonality <- aeddo(data = LIST,
-#                                    formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+#                                    formula = y ~ -1 + ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
 #                                    seasonality = TRUE,
 #                                    theta = c(start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]),
 #                                    method = "L-BFGS-B",
@@ -510,7 +510,7 @@ write_rds(x = LIST_PoisG_ageGroup, file = "LIST_PoisG_ageGroup.rds")
 # LIST_PoisG_ageGroup_seasonality <- read_rds(file = "LIST_PoisG_ageGroup_seasonality.rds")
 
 # LIST_PoisG_ageGroup_trend_seasonality <- aeddo(data = LIST,
-#                                          formula = y ~ -1 + t + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+#                                          formula = y ~ -1 + t + ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
 #                                          trend = TRUE,
 #                                          seasonality = TRUE,
 #                                          theta = c(0, start.theta.PoisG[1:2], 0,0, start.theta.PoisG[3]),
@@ -568,7 +568,7 @@ LIST_PoisG_ageGroup_tbl <- LIST_PoisG_ageGroup %>%
 #   mutate(method = "PoisG_ageGroup")
 # 
 # LIST_PoisG_ageGroup_seasonality <- aeddo(data = LIST,
-#                                          formula = y ~ -1 + ageGroup + sin(pi/6*monthInYear) + cos(pi/6*monthInYear),
+#                                          formula = y ~ -1 + ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
 #                                          seasonality = TRUE,
 #                                          theta = rep(1, 5),
 #                                          method = "L-BFGS-B",
