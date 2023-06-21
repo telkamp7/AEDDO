@@ -2389,32 +2389,32 @@
     <bcf:citekey order="22" intorder="1">Svendsen_2023</bcf:citekey>
     <bcf:citekey order="23" intorder="1">Soborg_2013</bcf:citekey>
     <bcf:citekey order="24" intorder="1">Helwigh_2016</bcf:citekey>
-    <bcf:citekey order="25" intorder="1">Madsen_2010</bcf:citekey>
-    <bcf:citekey order="26" intorder="1">Farrington_1996</bcf:citekey>
-    <bcf:citekey order="27" intorder="1">Noufaily_2013</bcf:citekey>
+    <bcf:citekey order="25" intorder="1">Farrington_1996</bcf:citekey>
+    <bcf:citekey order="26" intorder="1">Noufaily_2013</bcf:citekey>
+    <bcf:citekey order="27" intorder="1">Salmon_2016</bcf:citekey>
     <bcf:citekey order="28" intorder="1">Salmon_2016</bcf:citekey>
-    <bcf:citekey order="29" intorder="1">Salmon_2016</bcf:citekey>
-    <bcf:citekey order="30" intorder="1">Stroup_1989</bcf:citekey>
+    <bcf:citekey order="29" intorder="1">Stroup_1989</bcf:citekey>
+    <bcf:citekey order="30" intorder="1">Noufaily_2013</bcf:citekey>
     <bcf:citekey order="31" intorder="1">Noufaily_2013</bcf:citekey>
     <bcf:citekey order="32" intorder="1">Noufaily_2013</bcf:citekey>
-    <bcf:citekey order="33" intorder="1">Noufaily_2013</bcf:citekey>
-    <bcf:citekey order="34" intorder="1">Farrington_1996</bcf:citekey>
-    <bcf:citekey order="35" intorder="1">Noufaily_2013</bcf:citekey>
+    <bcf:citekey order="33" intorder="1">Farrington_1996</bcf:citekey>
+    <bcf:citekey order="34" intorder="1">Noufaily_2013</bcf:citekey>
+    <bcf:citekey order="35" intorder="1">Madsen_2010</bcf:citekey>
     <bcf:citekey order="36" intorder="1">Wolfinger_1997</bcf:citekey>
     <bcf:citekey order="37" intorder="1">Lee_1996</bcf:citekey>
     <bcf:citekey order="38" intorder="1">Fisher_1922</bcf:citekey>
-    <bcf:citekey order="39" intorder="1">Kristensen_2016</bcf:citekey>
+    <bcf:citekey order="39" intorder="1">Madsen_2010</bcf:citekey>
     <bcf:citekey order="40" intorder="1">Kristensen_2016</bcf:citekey>
-    <bcf:citekey order="41" intorder="1">Madsen_2010</bcf:citekey>
-    <bcf:citekey order="42" intorder="1">Griewank_2008</bcf:citekey>
-    <bcf:citekey order="43" intorder="1">Fournier_2012</bcf:citekey>
-    <bcf:citekey order="44" intorder="1">Blicher_2021</bcf:citekey>
-    <bcf:citekey order="45" intorder="1">Good_1992</bcf:citekey>
-    <bcf:citekey order="46" intorder="1">Blicher_2021</bcf:citekey>
-    <bcf:citekey order="47" intorder="1">Svendsen_2023</bcf:citekey>
-    <bcf:citekey order="48" intorder="1">Noufaily_2013</bcf:citekey>
+    <bcf:citekey order="41" intorder="1">Kristensen_2016</bcf:citekey>
+    <bcf:citekey order="42" intorder="1">Madsen_2010</bcf:citekey>
+    <bcf:citekey order="43" intorder="1">Griewank_2008</bcf:citekey>
+    <bcf:citekey order="44" intorder="1">Fournier_2012</bcf:citekey>
+    <bcf:citekey order="45" intorder="1">Blicher_2021</bcf:citekey>
+    <bcf:citekey order="46" intorder="1">Good_1992</bcf:citekey>
+    <bcf:citekey order="46" intorder="2">Tilmann_2007</bcf:citekey>
+    <bcf:citekey order="47" intorder="1">Blicher_2021</bcf:citekey>
+    <bcf:citekey order="48" intorder="1">Svendsen_2023</bcf:citekey>
     <bcf:citekey order="49" intorder="1">Noufaily_2013</bcf:citekey>
-    <bcf:citekey order="50" intorder="1">Noufaily_2013</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="none">

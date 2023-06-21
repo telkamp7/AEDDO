@@ -14,8 +14,9 @@ library(tidyr)
 
 # Disease codes ---------------------------------------------------------------------
 
-diseaseCodes <- c("VTEC",
-                  "SHIG",
+diseaseCodes <- c("STEC",
+                  "SHIL",
+                  "VTEC",
                   "LIST",
                   "SALM")
 
@@ -28,163 +29,58 @@ for (cdf in diseaseCodes){
   # dat <- data.table()
   print(cdf)
   # for (ldel in 1:12){
-    for (agegrp in 1:12){
-      # tt <- read.table(file=paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",agegrp,"&sygdomskode=",cdf,"&xaxis=Aar&yaxis=Maaned&aar=2008|2023&show=Table&lang=DA"), sep=";", header=TRUE)
-      tt <- read_csv2(file = paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",agegrp,"&sygdomskode=",cdf,"&xaxis=Aar&yaxis=Maaned&aar=2008|2023&show=Table&lang=DA"))
-      # setDT(tt)
-      # print(c(ldel, agegrp, dim(tt)))
-      print(c(agegrp, dim(tt)))
-      # Check if there have been any registered cases in the group
-      # -- There is a bug in the API where it returns only a single year for a group, if
-      # -- there havent been any cases.
-      if(dim(tt)[2] == 2){
-        tt2 <- expand_grid(month = c("Januar", "Februar", "Marts", "April", "Maj", "Juni",
-                                     "Juli", "August", "September", "Oktober", "November", "December", "Uoplyst"),
-                           year = as.character(2008:2022),
-                           cases = 0,
-                           # landsdel = ldel,
-                           ageGroup = agegrp)
-      }else{
+  for (agegrp in 1:12){
+    # tt <- read.table(file=paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",agegrp,"&sygdomskode=",cdf,"&xaxis=Aar&yaxis=Maaned&aar=2008|2023&show=Table&lang=DA"), sep=";", header=TRUE)
+    tt <- read_csv2(file = paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",agegrp,"&sygdomskode=",cdf,"&xaxis=Aar&yaxis=Maaned&aar=2008|2023&show=Table&lang=DA"))
+    # setDT(tt)
+    # print(c(ldel, agegrp, dim(tt)))
+    print(c(agegrp, dim(tt)))
+    # Check if there have been any registered cases in the group
+    # -- There is a bug in the API where it returns only a single year for a group, if
+    # -- there havent been any cases.
+    if(dim(tt)[2] == 2){
+      tt2 <- expand_grid(month = c("Januar", "Februar", "Marts", "April", "Maj", "Juni",
+                                   "Juli", "August", "September", "Oktober", "November", "December", "Uoplyst"),
+                         year = as.character(2008:2022),
+                         cases = 0,
+                         # landsdel = ldel,
+                         ageGroup = agegrp)
+    }else{
       tt2 <- tt %>%
         rename("month" = ...1) %>%
         pivot_longer(cols = -month, names_to = "year", values_to = "cases") %>%
         mutate(
           # landsdel = ldel,
           ageGroup = agegrp
-          )
-      }
-      dat <- bind_rows(dat, tt2)
-
-      # tt2 <- melt(tt, id.vars = 1, variable.name = "year")
-      # tt2[, landsdel := ldel][, age_group := age_group]
-      # dat <- rbind(dat, tt2)
+        )
     }
-  # }
+    dat <- bind_rows(dat, tt2)
 
+  }
+  
   dat <- dat %>%
-    mutate(caseDef = cdf)
-
+    mutate(caseDef = cdf) %>%
+    group_by(caseDef)
+  
   diseaseData <- rbind(diseaseData, dat)
 }
 
-
-# for (cdf in diseaseCodes){
-#   dat <- tibble()
-#   print(cdf)
-#   for (agegrp in 1:12){
-#     tt <- read_csv2(file = paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",agegrp,"&sygdomskode=",cdf,"&xaxis=Aar&yaxis=Maaned&aar=2001|2023&show=Table&lang=DA"))
-#     print(c(agegrp, dim(tt)))
-#     if(dim(tt)[2] == 2){
-#       tt2 <- expand_grid(month = c("Januar", "Februar", "Marts", "April", "Maj", "Juni",
-#                                    "Juli", "August", "September", "Oktober", "November", "December", "Uoplyst"),
-#                          year = as.character(1994:2022),
-#                          cases = 0,
-#                          ageGroup = agegrp)
-#     }else{
-#       tt2 <- tt %>%
-#         rename("month" = ...1) %>%
-#         pivot_longer(cols = -month, names_to = "year", values_to = "cases") %>%
-#         mutate(ageGroup = agegrp)
-#     }
-#     dat <- bind_rows(dat, tt2)
-#     
-#   }
-#   dat <- dat %>%
-#     mutate(caseDef = cdf)
-#   
-#   diseaseData <- rbind(diseaseData, dat)
-# }
-
-
-# # Disease codes
-# diseaseCodes <- c(
-#   "AIDS",  # AIDS
-#   "BOTU",  # Botulisme
-#   "GONO",  # Gonoré
-#   "HEPA",  # Hepatitis A
-#   "HEPB",  # Hepatitis B
-#   "HEPC",  # Hepatitis C
-#   "HIB",   # Hæmophilus influenza meningitis
-#   "HIV",   # HIV infektion
-#   "LEGI",  # Legionella
-#   "LEPT",  # Leptospirosis
-#   "MEAS",  # Mæslinger
-#   "MENAN", # Andre meningitis
-#   "MENI",  # Meningokoksygdom
-#   "MPOX",  # MPOX
-#   "MUMP",  # Fåresyge
-#   "NEBO",  # Neuroborreliose
-#   "ORNI",  # Ornitose
-#   "PERT",  # Kighoste
-#   "PNEU",  # Pneumokik meningitis
-#   "RUBE",  # Røde hunde
-#   "SHIG",  # Shigella
-#   "SYPH",  # Syfilis
-#   "TETA",  # Stivkrampe
-#   "TUBE",  # Tubercolosis
-#   "TYPH",  # Tyfus / paratyfus
-#   "VTEC"   # Shigatoxin producerende / veratoxin producerende E. coli.
-# )
-
-# for (cdf in diseaseCodes){
-#   dat <- tibble()
-#   # dat <- data.table()
-#   print(cdf)
-#   for (ldel in 1:12){
-#     for (agegrp in 1:12){
-#       # tt <- read.table(file=paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",age_group,"&landsdelkode=",ldel,"&sygdomskode=",casedef,"&xaxis=Aar&yaxis=Maaned&aar=1994|2023&show=Table&lang=DA"), sep=";", header=TRUE)
-#       tt <- read_csv2(file = paste0("https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?aldersgruppe=",agegrp,"&landsdelkode=",ldel,"&sygdomskode=",cdf,"&xaxis=Aar&yaxis=Maaned&aar=1994|2022&show=Table&lang=DA"))
-#       # setDT(tt)
-#       print(c(ldel, agegrp, dim(tt)))
-#       # Check if there have been any registered cases in the group
-#       # -- There is a bug in the API where it returns only a single year for a group, if
-#       # -- there havent been any cases.
-#       if(dim(tt)[2] == 2){
-#         tt2 <- expand_grid(month = c("Januar", "Februar", "Marts", "April", "Maj", "Juni",
-#                                      "Juli", "August", "September", "Oktober", "November", "December", "Uoplyst"),
-#                            year = as.character(1994:2022),
-#                            cases = 0,
-#                            landsdel = ldel,
-#                            ageGroup = agegrp)
-#       }else{
-#       tt2 <- tt %>%
-#         rename("month" = ...1) %>%
-#         pivot_longer(cols = -month, names_to = "year", values_to = "cases") %>%
-#         mutate(landsdel = ldel, ageGroup = agegrp)
-#       }
-#       dat <- bind_rows(dat, tt2)
-#       
-#       # tt2 <- melt(tt, id.vars = 1, variable.name = "year")
-#       # tt2[, landsdel := ldel][, age_group := age_group]
-#       # dat <- rbind(dat, tt2)
-#     }
-#   }
-#   
-#   dat <- dat %>%
-#     mutate(caseDef = cdf)
-# 
-#   diseaseData <- rbind(diseaseData, dat)
-#   
-# }
-
-# setnames(dat, "X", "maaned")
-# dat[, year := as.integer(substr(year, 2,5))]
-
-# Så mangler vi bare de rigtige landsdelsnavne og aldersgrupper
+# Så mangler vi bare de rigtige køn og aldersgrupper
 tt <-read_csv2(file = "https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?sygdomskode=SALM&xaxis=Landsdelkode&yaxis=Aldersgruppe&aar=1994|2023&show=Table&lang=DA", locale=locale(encoding="latin1"))
-# diseaseData <- diseaseData %>%
-#   mutate(ageGroup = tt$...1[ageGroup],
-#          landsdel = colnames(tt)[-1][landsdel])
+# tt3 <- read_csv2(file = "https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?sygdomskode=SHIL&xaxis=Aar&yaxis=Kon&aar=2001|2023&show=Table&lang=DA", locale=locale(encoding="latin1"))
+
+
 diseaseData <- diseaseData %>%
   mutate(ageGroup = tt$...1[ageGroup])
 
-# tt <- fread(input = "https://statistik.ssi.dk/api/ssi/surveillance/DiseaseCsv?sygdomskode=SYPH&xaxis=Landsdelkode&yaxis=Aldersgruppe&aar=1994|2023&show=Table&lang=DA", encoding = "Latin-1")
-# dat[data.table(age_group=1:12, age_label = tt$V1), on = "age_group", age_label := i.age_label]
-# dat[data.table(landsdel=1:12, landsdel_navn = names(tt)[-1]), on = "landsdel", landsdel_navn := i.landsdel_navn]
-# dat[, casedef := casedef]
+# diseaseData <- diseaseData %>%
+#   unnest(data) %>%
+#   mutate(ageGroup = tt$...1[ageGroup],
+#          sex = tt3$...1[sex+1]
+#          ) %>%
+#   nest()
 
-# Convert into tibble, to allow for easy management in the tidyverse
-write.xlsx(diseaseData, file="../../data/raw/disease_data_raw.xlsx")
+write_rds(x = diseaseData, file = "../../data/raw/disease_data_raw_new.Rds")
 
 # Population data -------------------------------------------------------------------
 
@@ -221,13 +117,6 @@ muniIdx <- grep(pattern = c("All|Region"),
 
 # Find all municipality IDs
 muniId <- as.integer(fullResult$variables$values[[1]]$id[muniIdx])
-
-variables <- list(
-  list(code = "område", values = muniId),
-  list(code = "køn", values = "TOT"),
-  list(code = "alder", values = 0:125),
-  list(code = "tid", values = list("*"))
-)
 
 # Define agegroups
 agegroups <- c("sum(<1 year=0)",
@@ -274,6 +163,31 @@ for(age in agegroups){
 
 # Save FOLK1A data
 write_csv2(x = FOLK1A, file = "../../data/raw/FOLK1A.csv")
+
+variables <- list(
+  list(code = "område", values = "000"),
+  list(code = "køn", values = 1:2),
+  list(code = "alder", values = paste0("sum(All=0",paste(0:125,collapse = ";"),")")),
+  list(code = "tid", values = list("*"))
+)
+
+# Define query for metadata
+callBodyData <- list(
+  table = tableId,
+  lang = language,
+  format = "CSV",
+  variables = variables
+)
+# GET data 
+result <- POST(url = dataEndpoint,
+               body = callBodyData,
+               encode = "json")
+
+# Read CSV file
+FOLK1Akon <- read_csv2(content(result, type = "text", encoding = "UTF-8"))
+
+# Save FOLK1A data
+write_csv2(x = FOLK1Akon, file = "../../data/raw/FOLK1Akon.csv")
 
 # Download CSV containing specification of 'landsdele' and 'kommuner'
 urlNutsV12007 <- "https://www.dst.dk/klassifikationsbilag/5d18d1e0-400b-4505-92ad-6782915980a3csv_da"
