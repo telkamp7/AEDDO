@@ -1,11 +1,11 @@
 # A tibble: 5 × 3
   caseDef meanCases medianCases
   <fct>       <dbl>       <dbl>
-1 STEC        33.2           21
-2 SHIL        10.9           11
-3 VTEC        22.2           17
-4 LIST         4.91           5
-5 SALM       108.            86
+1 STEC        32.5           21
+2 SHIL        11.1           11
+3 VTEC        22.0           17
+4 LIST         4.96           5
+5 SALM       109.            86
 k= 39 
  [1] 0 1 2 2 0 2 2 1 1 2 0 1 1 1 2
 k= 40 
