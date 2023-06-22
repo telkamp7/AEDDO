@@ -94,7 +94,11 @@ FPR <- results %>%
                                     "Poisson Normal", 
                                     "Poisson Gamma")),
          scenario = factor(scenario, levels = 1:28,
-                           labels = 1:28)) %>%
+                           labels = 1:28)) 
+
+write_rds(x = FPR, file = "FPR.Rds")
+
+FPRPlot <- FPR %>%
   ggplot(mapping = aes(x = scenario, y = FPR, group = scenario, fill = Method)) +
   geom_boxplot(fatten = 3, alpha = 0.7) +
   facet_wrap(facets = vars(Method)) +
@@ -102,8 +106,8 @@ FPR <- results %>%
   scale_fill_manual(values = dtuPalette[c(7,9:11,5)]) +
   guides(fill = "none") +
   theme(axis.text.x = element_text(size = 18))
-ggsave(filename = "FPR.png",
-       plot = FPR,
+ggsave(filename = "FPRPlot.png",
+       plot = FPRPlot,
        path = "../../figures/",
        device = png,
        width = 16,
@@ -135,7 +139,7 @@ badPerformanceScenarios <- results %>%
   filter(badScenario)
 
 # Probability of detection
-PropDetect <- results %>%
+POD <- results %>%
   arrange(scenario) %>%
   select(sim, scenario, data) %>%
   unnest(data) %>% 
@@ -154,7 +158,10 @@ PropDetect <- results %>%
                                                   labels = c("Farrington",
                                                              "Noufaily", 
                                                              "'Poisson Normal'", 
-                                                             "'Poisson Gamma'"))) %>%
+                                                             "'Poisson Gamma'")))
+write_rds(x = POD, file = "POD.Rds")
+
+PropDetect <- POD %>% 
   ggplot(mapping = aes(x = k, colour = Method)) +
   geom_line(mapping = aes(y = POD, group = scenario), alpha = 0.6) +
   geom_line(mapping = aes(y = medianPOD), linewidth=1.2) +
@@ -172,7 +179,25 @@ ggsave(filename = "PropDetect.png",
        units = "in",
        dpi = "print")
 
-
+results %>%
+  select(sim, scenario, data) %>%
+  unnest(cols = c(data)) %>%
+  filter(t %in% 576:624) %>%
+  pivot_longer(cols = alarm_Farrington:alarm_PoisG, names_to = "Method", values_to = "Alarms") %>%
+  group_by(sim, scenario, Method, k) %>%
+  reframe(Detected = any(outbreakTF == TRUE & Alarms == TRUE)) %>% 
+  group_by(scenario, Method, k) %>%
+  reframe(POD = mean(Detected)) %>%
+  group_by(Method, k) %>%
+  mutate(medianPOD = median(POD), Method = factor(Method,
+                                                  levels = c("alarm_Farrington",
+                                                             "alarm_Noufaily",
+                                                             "alarm_PoisN",
+                                                             "alarm_PoisG"),
+                                                  labels = c("Farrington",
+                                                             "Noufaily", 
+                                                             "'Poisson Normal'", 
+                                                             "'Poisson Gamma'")))
 
 results %>%
   arrange(scenario) %>%

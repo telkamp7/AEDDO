@@ -37,6 +37,9 @@ list(bold = FALSE, italic = FALSE)
 
 dat <- read_rds(file = "../data/processed/dat2.rds")
 
+FPR <- read_rds(file = "../src/simulation/FPR.Rds")
+POD <- read_rds(file = "../src/simulation/POD.Rds")
+
 datePeriod <- dat %>%
   filter(row_number() == 1 | row_number() == n()) %>%
   select(Date)

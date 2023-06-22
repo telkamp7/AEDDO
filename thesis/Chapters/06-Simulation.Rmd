@@ -26,7 +26,7 @@ To cover a wide range of data sets encountered in practical applications, 28 dif
 
 scenarios %>%
   mutate(Scenario = row_number()) %>%
-  select(Scenario, theta, beta, gamma1, gamma2, phi, m, trend) %>%
+  select(Scenario, theta, phi, beta, gamma1, gamma2, m, trend) %>%
   rename(`$\\theta$` = theta, `$\\beta$` = beta, `$m$` = m, `$\\phi$` = phi, `$\\gamma_1$` = gamma1, `$\\gamma_2$` = gamma2, Trend = trend) %>%
   kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "Parameters and criteria utilized to generate the 28 scenarios.",
       linesep = c(rep("", 3), "\\addlinespace")) %>%
@@ -116,13 +116,9 @@ In general, one obtains relatively higher FPRs when using the Farrington method 
 
 ```{r FPR, echo=FALSE, out.width="100%", fig.cap="(ref:FPR)", fig.pos = "H", fig.show = "hold"}
 
-knitr::include_graphics("../figures/FPR.png")
+knitr::include_graphics("../figures/FPRPlot.png")
 
 ```
-
-
-
-
 
 
 The PODs for the 28 scenarios and eac
@@ -138,6 +134,33 @@ knitr::include_graphics("../figures/PropDetect.png")
 ```
 
 Interestingly, some scenarios produce unusual low power curves. Specifically, this is seen in the Noufaily method for scenario 5, 7, and 15. Here, these scenarios leads to less than 60% of the outbreaks detected with this method, when the outbreak size is $k=10$ times the standard deviation. In general, scenario 7 leads to the lowest power curve across all methods, with none of the outbreaks being detected by the Noufaily method.
+
+It is important to remember, that the outbreak of size $n$ is distributed randomly in time according to a log-normal distribution with mean $0$ and a standard deviation of $0.5$. Thus, the simulated outbreaks is not observed in a single time point, but rather in several concurrent time points. 
+
+In general, this means that an outbreak generated from a Poisson distribution with mean equal to $k$ times the standard deviation of the baseline series is observed to be relatively smaller, than what it initially perceived from the simulation setup, i.e. an outbreak of size $k=4$ times the standard deviation may only be perceived as an outbreak of size $2$ times the standard deviation in an individual time point.
+
+
+```{r FPRTbl, echo=FALSE}
+FPR %>%
+  group_by(Method) %>%
+  reframe(min(FPR), max(FPR), mean(FPR), median(FPR), sd(FPR)) %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", caption = "Placeholder") %>%
+  kable_paper(latex_option = c("HOLD_position"))
+```
+
+
+```{r PODTbl, echo=FALSE}
+POD %>%
+  filter(k %in% c(2,4,6,8,10)) %>%
+  reframe(min(POD), max(POD), mean(POD), median(POD), sd(POD)) %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "Placeholder", linesep = c(rep("", 4), "\\addlinespace")) %>%
+  kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
+  collapse_rows(columns = 1, 
+                latex_hline = "custom",
+                valign = "middle",
+                custom_latex_hline = 1)
+```
+
 
 
 \cleardoublepage
