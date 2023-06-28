@@ -1,12 +1,10 @@
 \chapter{Case studies}
 
-This chapter presents the findings obtained from applying both the state-of-the-art outbreak detection algorithm and the novel outbreak detection algorithm to the subset of diseases examined in this master's thesis. To demonstrate the practical application of these algorithms, a comprehensive case study focused on STEC will be presented as the primary focus. The results of the remaining case studies will be presented in a more concise manner to maintain reader engagement. For a complete collection of figures and tables related to the case studies, please refer to Appendix \@ref(FigAndTabCaseStudy).
+This chapter presents the findings obtained from applying both the state-of-the-art and novel outbreak detection algorithms to the subset of diseases examined in this master's thesis. To demonstrate the practical application of these algorithms, a comprehensive case study focused on STEC will be presented. The results of the remaining case studies will be presented in a more concise manner to maintain reader engagement. For a complete collection of figures and tables related to the case studies, please refer to Appendix \@ref(FigAndTabCaseStudy).
 
 It is widely recognized that effective monitoring of a surveillance time series necessitates accurate modeling of the time series prior to assessing aberrations. Therefore, the performance of these algorithms in identifying outbreaks within the selected diseases will be thoroughly discussed and analyzed. Both the state-of-the-art and the novel algorithms take into account trends and seasonality, which will be addressed in the analysis. Additionally, a comparison of the two modeling frameworks used in the novel algorithm will be presented, providing valuable insights into the strengths and limitations of generalized mixed effects models and hierarchical generalized linear models.
 
-Moreover, some of the challenges related to statistical outbreak detection are outlined in this chapter and showcased using real case studies of diseases in the mandatory notification system, including LIST, SHIL and STEC. Among other thins, the role of overdispersion in statistical outbreak detection, the impact of context and observational bias, and how diseases with many alarms are handled will be discussed.
-
-At last, a comprehensive comparative analysis will be conducted to provide valuable insights into the strengths and limitation of both the state-of-the-art and, more importantly, the novel algorithms.
+Moreover, this chapter outlines some of the challenges encountered during the process of conducting this master's thesis, specifically related to statistical outbreak detection. These challenges are showcased using real case studies of diseases in the mandatory notification system, including LIST, SHIL and SALM. Among other thins, the role of overdispersion in statistical outbreak detection, the impact of context and observational bias, and how diseases with many alarms are handled will be discussed. At last, a comprehensive comparative analysis will be conducted.
 
 For a detailed presentation of the data used to generate these results, please refer to Chapter \@ref(Dataset).
 
@@ -14,11 +12,11 @@ For a detailed presentation of the data used to generate these results, please r
 
 The initial analysis focuses on STEC. The data set comprises monthly counts of Danish STEC cases, denoted as $y_{it}$, where $i=1,\dots,6$ represents the six age groups and $t=1,\dots,T$ represents the time period of $T=180$ months starting in 2008. The first step involves applying the state-of-the-art outbreak detection algorithms to identify potential outbreaks in the time series.
 
-Following that, the novel outbreak algorithm is utilized, and different models for the fixed effects are proposed. Both the hierarchical Poisson Normal model and the hierarchical Poisson Gamma model is considered for the modeling framework. The performance of the fixed effects models is compared using the average logarithmic score, $\bar{S}(G,y)$, in each of the modeling framework to determine the most appropriate models for further analysis.
+Following that, the novel algorithm is utilized, and different models for the fixed effects are proposed. Both the hierarchical Poisson Normal model and the hierarchical Poisson Gamma model is considered for the modeling framework. To determine the most appropriate models for further analysis, the performance of the different fixed effects models is compared using the average logarithmic score, denoted as $\bar{S}(G,y)$, within each of the modeling frameworks. The average logarithmic score provides a measure of how well the models fit the observed data and allows for objective comparison between different models.
 
 \subsection{Applying the state-of-the-art outbreak detection algorithm to STEC}
 
-To investigate outbreak detection, the Farrington method by @Farrington_1996 and the subsequently improved Noufaily method by @Noufaily_2013 are initially explored. These methods can be implemented using the `farringtonFlexible` function, which is available in the R package called \textbf{surveillance} [@Salmon_2016]. The methods are controled using specific `control` arguments. The specific arguments used in this master´s thesis can be found in Appendix \@ref(controlsStateOfTheArt).
+To investigate outbreak detection, the Farrington method and the subsequently improved Noufaily method are initially explored. These methods can be implemented using the `farringtonFlexible` function, which is available in the R package called \textbf{surveillance}. The methods are controlled using specific `control` arguments. The specific arguments used in this master´s thesis can be found in Appendix \@ref(controlsStateOfTheArt).
 
 For the analysis of STEC, the reference values are based on data collected from January 2008 to February 2011. Subsequently, surveillance is performed using the data spanning from March 2011 to December 2022. The resulting time series and alarms are visualized in Figure \@ref(fig:CompareStateOfTheArtSTEC).
 
@@ -28,17 +26,17 @@ For the analysis of STEC, the reference values are based on data collected from 
 knitr::include_graphics("../figures/Compare_stateOfTheArt_STEC.png")
 ```
 
-Multiple alarms are displayed in Figure \@ref(fig:CompareStateOfTheArtSTEC) for both the Farrington method and the Noufaily method. The Farrington method generates a total of `r STEC_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces a significantly lower count of `r STEC_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms. It is not surprising that the Farrington method generates more alarms, as it is known for its high sensitivity. This means that the method is able to detect very small aberrations in the time series, but it also leads to a significant number of "false positive" alarms.
+Multiple alarms are displayed in Figure \@ref(fig:CompareStateOfTheArtSTEC) for both the Farrington and Noufaily method. The Farrington method generates a total of `r STEC_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces a significantly lower count of `r STEC_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms. It is not surprising that the Farrington method generates more alarms, as it is known for its high sensitivity. This means that the method is able to detect very small aberrations in the time series, but it also leads to a significant number of "false positive" alarms.
 
-However, the substantial number of alarms generated by both methods raises valid concerns. The sheer volume of alarms can overwhelm epidemiologist, posing challenges in effectively prioritizing and investigating potential outbreaks. It is crucial to avoid reacting solely to individual alarms and instead consider the overall disease outbreak picture.
+The substantial number of alarms generated by both methods raises valid concerns regarding their practical utility. The sheer volume of alarms can overwhelm epidemiologists and pose challenges in effectively prioritizing and investigating potential outbreaks. It is essential to consider the overall disease picture and avoid overly burdening epidemiologists with verification tasks. Striking a balance between sensitivity and specificity is crucial to ensure that the generated alarms are meaningful and actionable, leading to efficient outbreak detection and response.
 
 As a general rule, alarms that are triggered simultaneously in multiple age groups or during concurrent time points are of particular importance. Such patterns indicate potential outbreaks that warrant further attention and investigation by epidemiologist. By analyzing and interpreting the alarms in context, epidemiologist can gain a more comprehensive understanding of the outbreak situation and make informed decision about resource allocation and intervention strategies.
 
-When comparing the Farrington and Noufaily methods, it is interesting to note that the thresholds are inflated towards the end of the series. Specifically, the Noufaily method exhibits a higher threshold compared to the Farrington method. This behavior is expected sine the Noufaily method employs a less drastic approach in weighting prior outbreaks, allowing more information to be transmitted from previous outbreaks. As a results, the Noufaily method allows for a greater variation in the series and may detect fewer outbreaks. This characteristic hightlight the different sensitivities of the two methods.
+When comparing the Farrington and Noufaily methods, it is interesting to note that the thresholds are inflated towards the end of the series. Specifically, the Noufaily method exhibits a higher threshold compared to the Farrington method. This behavior is expected since the Noufaily method employs a less drastic approach in weighting prior outbreaks, allowing more information to be transmitted from previous outbreaks. As a result, the Noufaily method allows for a greater variation in the series and may generate fewer alarms. This characteristic highlight the different sensitivities of the two methods.
 
 \subsection{Applying the novel outbreak detection algorithm to STEC}
 
-The subsequent investigation focuses on the application of the novel outbreak detection algorithm to monitor STEC for potential outbreaks. In this analysis, a rolling window with a width of $k=36$ months is selected for the parameter estimation. The reference values are established using monthly data collected from January 2008 to December 2010. Hereafter, the time series is monitored for outbreaks using data from January 2011 to December 2022.
+The subsequent investigation focuses on the application of the novel outbreak detection algorithm to monitor STEC for potential outbreaks. In this analysis, a rolling window with a width of $k=36$ months is selected for the parameter estimation. Thus, the reference values are established using monthly data collected from January 2008 to December 2010. Hereafter, the time series is recursively monitored for outbreaks by moving the rolling window one month at a time using data from January 2011 to December 2022.
 
 To identify outbreaks, an observation is classified as such if the one-step ahead random effect $u_{i{t_1}}$ for the specific age group exceeds the upper bound $U_{t_0}$. In this case study, the upper bound is determined as the 90\% quantile of the distribution of random effects obtained from the second stage model. This threshold helps identify significant deviations in the outbreak intensity.
 
@@ -80,8 +78,7 @@ In addition to the models described earlier, a final model is proposed that comb
 
 The proposed models above are subsequently implemented and estimated in two different modeling frameworks: the hierarchical Poisson Normal model and the hierarchical Poisson Gamma model. The performance of these models is evaluated using the average logarithmic score, $\bar{S}(G,y)$. 
 
-
-In Table \@ref(tab:STECNovelTbl), an excerpt of these results, namely for the models that minimizes the logarithmic score, $\bar S(G,y)$, for bothe modeling framework, are summarized. For the full table of results, refer to Table \@ref(tab:STECNovelTblAppendix).
+In Table \@ref(tab:STECNovelTbl), an excerpt of these results, namely for the models that minimizes the average logarithmic score, $\bar S(G,y)$, for both modeling framework, are summarized. For the full table of results, refer to Table \@ref(tab:STECNovelTblAppendix).
 
 
 ```{r STECNovelTbl, echo=FALSE}
@@ -95,21 +92,21 @@ STEC_novel_tbl %>%
          Formula = gsub(pattern = "PoisN_|PoisG_", replacement = "", x = method),
          avgLogS = paste0("$\\bar{S}(G,y)=", round(avgLogS,2),"$"),
          Parameter = case_when(
-           Parameter == "ageGroup<1 year" ~ "$\\beta_{<1 year}$",
-           Parameter == "ageGroup1-4 years" ~ "$\\beta_{1-4 years}$",
-           Parameter == "ageGroup5-14 years" ~ "$\\beta_{5-14 years}$",
-           Parameter == "ageGroup15-24 years" ~ "$\\beta_{15-24 years}$",
-           Parameter == "ageGroup25-64 years" ~ "$\\beta_{25-64 years}$",
-           Parameter == "ageGroup<65 years" ~ "$\\beta_{<65 years}$",
-           Parameter == "ageGroup65+ years" ~ "$\\beta_{65+ years}$",
-           Parameter == "t" ~ "$\\beta_{trend}$",
-           Parameter == "log_sigma" ~ "$\\log(\\sigma)$",
-           Parameter == "log_phi" ~ "$\\log(\\phi)$",
-           Parameter == "sin(pi/6 * monthInYear)" ~ "$\\beta_{\\sin}$",
-           Parameter == "cos(pi/6 * monthInYear)" ~ "$\\beta_{\\cos}$"
+           Parameter == "ageGroup<1 year" ~ "$\\hat{\\beta}_{<1 year}$",
+           Parameter == "ageGroup1-4 years" ~ "$\\hat{\\beta}_{1-4 years}$",
+           Parameter == "ageGroup5-14 years" ~ "$\\hat{\\beta}_{5-14 years}$",
+           Parameter == "ageGroup15-24 years" ~ "$\\hat{\\beta}_{15-24 years}$",
+           Parameter == "ageGroup25-64 years" ~ "$\\hat{\\beta}_{25-64 years}$",
+           Parameter == "ageGroup<65 years" ~ "$\\hat{\\beta}_{<65 years}$",
+           Parameter == "ageGroup65+ years" ~ "$\\hat{\\beta}_{65+ years}$",
+           Parameter == "t" ~ "$\\hat{\\beta}_{trend}$",
+           Parameter == "log_sigma" ~ "$\\log(\\hat{\\sigma})$",
+           Parameter == "log_phi" ~ "$\\log(\\hat{\\phi})$",
+           Parameter == "sin(pi/6 * periodInYear)" ~ "$\\hat{\\beta}_{\\sin}$",
+           Parameter == "cos(pi/6 * periodInYear)" ~ "$\\hat{\\beta}_{\\cos}$"
          )) %>%
   select(Model, ` ` = avgLogS, Parameter, Estimate = theta, `95\\% CI`) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "An excerpt of the STEC modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$ are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "An excerpt of the STEC modeling results, namely for the models that minimizes the average logarithmic score, $\\bar S(G,y)$. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   column_spec(1, bold = T) %>%
   collapse_rows(columns = 1:2, 
@@ -124,9 +121,11 @@ It can be shown, that the combined models for the fixed effects minimizes the lo
 
 Additionally, it is worth noting that the parameter estimates and confidence intervals for the fixed effects are consistent across the two modeling frameworks, despite the differences in assumptions about the distribution of random effects. This suggests that the choice of modeling framework does not have a substantial impact on the estimation of the fixed effects in this analysis.
 
+It is noteworthy that all parameter estimates, except one, are statistically significant at $t_0$. The only parameter estimate that is not significant is $\hat{\beta}_{cos}$, as its 95% confidence interval overlaps with zero in both modeling frameworks.
+
 A slight, yet consistent, increase in the contribution from the age group to the overall intensity of STEC cases is observed in Figure \@ref(fig:STECnovelparageGroup) over the analyzed period, with only one instance of a decrease in intensity immediately after the 2020 Covid-19 lockdown.
 
-It is worth noting that in the hierarchical Poisson Gamma model, the maximum likelihood estimate for $\hat\beta(ageGroup_i)$ directly represents the contribution of the age group to the disease intensity. This is possible due to the properties of the expected value described in Equation \eqref{eq:meanNB}. However, this direct interpretation does not hold for the parameter estimates obtained in the hierarchical Poisson Normal model. Nevertheless, it can be observed that both sets of parameter estimates are similar throughout the entire time period, indicating that this discrepancy is not significant.
+It is worth mentioning that in the hierarchical Poisson Gamma model, the maximum likelihood estimate for $\hat\beta(ageGroup_i)$ directly represents the contribution of the age group to the disease intensity. This is possible due to the properties of the expected value described in Equation \eqref{eq:meanNB}. However, this direct interpretation does not hold for the parameter estimates obtained in the hierarchical Poisson Normal model. Nevertheless, it can be observed that both sets of parameter estimates are similar throughout the entire time period, indicating that this discrepancy is not significant.
 
 (ref:STECnovelparageGroup) Considering STEC in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\beta(ageGroup_i)$ for the models given in Equation \eqref{eq:AgegroupTrendSeasonality} estimated using the rolling window with a width of $k=36$ months. 
 
@@ -161,11 +160,11 @@ knitr::include_graphics("../figures/STEC_novel_par_dispersion.png")
 ```
 
 
-It should be noted that the inability of the second stage model parameters ($\sigma$ or $\phi$) to converge during certain time periods does not affect the performance of the novel outbreak detection algorithm. These periods typically coincide with time periods with relatively few reported cases, i.e. periods with no outbreaks. Generally, these periods occur when the data show no overdispersion. In such cases, the time series can be adequately modeled by a Poisson distribution, and therefore the second stage model is not informed. Specifically, this becomes relevant in the case study of LIST, where the example of missing overdispersion is very explicit. This will be discussed in Section \@ref(ChallengesOD).
+It should be noted that the inability of the second stage model parameters ($\sigma$ or $\phi$) to converge during certain time periods does not affect the performance of the novel outbreak detection algorithm. These periods typically coincide with time periods with relatively few reported cases, i.e. periods with no outbreaks. Generally, these periods occur when the data show no overdispersion. In such cases, the time series can be adequately modeled by a Poisson distribution, and therefore the second stage model is not informed. Specifically, this becomes relevant in the case study of LIST, where the example of missing overdispersion is very explicit. The role of overdispersion in the disease data will be discussed in Section \@ref(ChallengesOD).
 
 \subsubsection{Visualization of estimated one-step ahead random effects and upper bounds}
 
-The estimated one-step ahead random effects $\hat u_{i{t_1}}$ for each age group and are depicted in Figure \@ref(fig:CompareNovelSTEC) along with their corresponding upper bounds $U_{t_0}$ for both modeling framework, respectively.
+Figure \@ref(fig:CompareNovelSTEC) illustrates the estimated one-step ahead random effects $\hat u_{i{t_1}}$ for each age group, along with their corresponding upper bounds $U_{t_0}$, in both modeling frameworks.
 
 The random effects $u_{i{t_1}}$ represent the deviations from the expected outbreak intensity in the subsequent time period for each age group. These random effects provide information on whether there is an unusual or unexpected increase or decrease in the outbreak intensity compared to the expected values.
 
@@ -179,37 +178,40 @@ By visualizing the one-step ahead random effects and the upper bounds together, 
 knitr::include_graphics("../figures/Compare_novel_STEC.png")
 ```
 
+
+From Figure \@ref(fig:CompareNovelSTEC), it is evident that the estimated one-step ahead random effects $u_{i{t_0}}$ surpass the threshold $U_{t_0}$ on multiple occasions. Specifically, a total of `r sum(STEC_alarms_PoisN$alarm)` alarms are generated using the hierarchical Poisson Normal framework, while `r sum(STEC_alarms_PoisG$alarm)` alarms are generated in the hierarchical Poisson Gamma framework. Notably, during the period from March 2021 to March 2022, a significant number of alarms are triggered in multiple age groups in both modeling frameworks.
+
 \section{Outbreak detection in other case studies}
 
-In this section, the results of applying the state-of-the-art and novel outbreak detection algorithms to the other case studies, including LIST, SHIL, and SALM, are presented. 
+In this section, the results of applying the state-of-the-art and novel outbreak detection algorithms to the other case studies, including LIST, SHIL, and SALM, are presented.
+
+For these investigations, the reference data used in the state-of-the-art outbreak detection algorithms is based on monthly data from January 2008 to February 2011. Subsequent surveillance is conducted using data from March 2011 to December 2022. In the novel outbreak detection algorithm, a rolling window of width $k=36$ is used. Thus, the reference data is established using monthly data collected from January 2008 to December 2010. The time series is then monitored for outbreaks using data from January 2011 to December 2022. Additionally, it is important to note that different age groupings are employed in each of the case studies.
 
 \subsection{Analysis of outbreak detection in LIST}
 
-The data set used in this case study consists of monthly counts of Danish LIST cases, denoted as $y_{it}$. The subscript $i$ distinguishes between two age groups, with $i=1$ representing the age group below 65 years and $i=2$ representing the age group above 65 years. The subscript $t$ represents the time period, ranging from $t=1,\cdots,T$, where $T=180$ corresponds to the total number of months starting in 2008.
+Intuitively, it is not common to employ statistical methods for monitoring and detecting outbreaks of LIST. The current state-of-the-art approach for detecting outbreaks of this disease relies heavily on laboratory-based methods, specifically WGS. WGS enables epidemiologists to link cases that have occurred over an extended period, even months or years apart, and identify them as part of a continuous-source outbreak. Statistical method may face challenges in detecting such outbreaks due to their complex and prolonged nature. However, it is crucial to include this case study in the master's thesis to highlight both the strengths and limitations of the novel and state-of-the-art methods.
+
+The data used in this case study consist of Danish LIST case counts from the laboratory notification system. These counts are denoted as $y_{it}$. Here, the subscript $i$ distinguishes between two age groups, with $i=1$ representing the age group below 65 years and $i=2$ representing the age group above 65 years. The subscript $t$ represents the time period, ranging from $t=1,\cdots,T$, where $T=180$ corresponds to the total number of months starting in 2008.
 
 \subsubsection{Applying the state-of-the-art outbreak detection algorithms to LIST}
 
-Firstly, outbreak detection using the Farrington method and the Noufaily method is investigated. For this analysis, the reference values for the analysis are based on data from January 2008 to February 2011. Subsequently, surveillance is conducted using the data from March 2011 to December 2022. 
+The Farrington and Noufaily methods are both investigated on their ability to detect outbreaks of LIST. The resulting series is visualized in Figure \@ref(fig:CompareStateOfTheArtLIST) together with the alarms triggered by each of the methods.
 
-The resulting series is visualized in Figure \@ref(fig:CompareStateOfTheArtLIST). 
-
-(ref:CompareStateOfTheArtLIST) Estimated one-step ahead random effects $\hat u_{t_1}$ (circles) given the model described in \eqref{eq:Agegroup} for LIST in Denmark, 2011-2022. Poisson Normal model (right) and Poisson Gamma model (left) monitor the disease. Alarm raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).
+(ref:CompareStateOfTheArtLIST) Monthly LIST incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations time points outside reference data. Alarm triggered (dark color) if observations exceeds threshold. 
 
 ```{r CompareStateOfTheArtLIST, echo=FALSE, out.width="100%", fig.cap="(ref:CompareStateOfTheArtLIST)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_stateOfTheArt_LIST.png")
 ```
 
-In Figure \@ref(fig:CompareStateOfTheArtLIST), multiple alarms can be observed for both the Farrington method and the Noufaily method. The Farrington method triggers a total of `r LIST_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces slightly fewer alarms, specifically `r LIST_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms.
+In Figure \@ref(fig:CompareStateOfTheArtLIST), multiple alarms can be observed for both the Farrington Noufaily methods. The Farrington method triggers a total of `r LIST_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces slightly fewer alarms, specifically `r LIST_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms.
 
-Interestingly, both the Farrington method and the Noufaily method demonstrate the ability to correctly raise alarms during ongoing outbreak investigations by SSI. One notable example is the outbreak investigated by SSI, which involved 41 cases and resulted in 17 deaths. The Farrington method successfully flags this event in September 2013, with alarms occurring sporadically in the subsequent period. The Noufaily method also identifies this outbreak, although it does so one month later in October 2013.
+Interestingly, both methods demonstrate the ability to correctly raise alarms during ongoing outbreak investigations by SSI. One notable example is the outbreak investigated by SSI, which involved 41 cases and resulted in 17 deaths. The Farrington method successfully flags this event in September 2013, with alarms occurring sporadically in the subsequent period. The Noufaily method also identifies this outbreak, although it does so one month later in October 2013.
 
-It is worth noting that the other observations flagged by the methods may be related to some of the numerous other long-spanned outbreaks that occurred concurrently in the period from 2016 to 2021. However, it is out of scope for this master's thesis, to directly link individual alarms to specific outbreaks. For a full list over the observations flagged by the state-of-the-art outbreak detection algorithms see Table \@ref(tab:LISTStateOfTheArtTbl).
+It is worth noting that the other observations flagged by the methods may be related to some of the numerous other long-spanned outbreaks that occurred concurrently in the period from 2016 to 2021. However, it is out of scope for this master's thesis, to directly link individual alarms to specific outbreaks. For a full list over the alarms raised by the methods see Table \@ref(tab:LISTStateOfTheArtTbl).
 
 \subsubsection{Applying the novel outbreak detection algorithm to LIST}
 
-For LIST, it is found that the constant age group model for the fixed effects yields the lowest average logarithmic score, $\bar S(G.y)$. Therefore, it is not recommended to include trends, seasonalities, or both in the modeling of this disease.
-
-The one-step ahead random effects $\hat u_{i{t_1}}$ for the disease are depicted in Figure \@ref(fig:CompareNovelLIST). It is evident that the models struggle to accurately capture the underlying process of the disease. There are prolonged periods where the random effects collapse, indicating that there is insufficient information in the data to inform the second stage model. This is particularly noticeable in the hierarchical Poisson Normal model, where the estimate of the variance parameter $\hat\sigma$ approaches zero.
+For the LIST data, it is found that only the constant age group model for the fixed effects is able to converge. However, even the constant fixed effects models struggle to accurately capture the underlying process of the disease. Figure \@ref(fig:CompareNovelLIST) provides a visual representation of this, showing the estimated one-step ahead random effects $\hat u_{i{t_1}}$ and the calculated thresholds $U_{t_0}$. It can be observed that the estimated random effects and the calculated thresholds collapse for prolonged periods, indicating that there is insufficient information in the data to inform the second stage model. This is particularly evident in the hierarchical Poisson Normal model, where the estimate of the variance parameter $\hat\sigma$ approaches zero. The role of overdispersion in the disease data will be further discussed in Section \@ref(ChallengesOD).
 
 (ref:CompareNovelLIST) Estimate one-step ahead random effects $\hat u_{t_1}$ (circles) given the model described in \eqref{eq:Agegroup} of LIST in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).
 
@@ -217,31 +219,15 @@ The one-step ahead random effects $\hat u_{i{t_1}}$ for the disease are depicted
 knitr::include_graphics("../figures/Compare_novel_LIST.png")
 ```
 
-Additionally, it is worth noting that both modeling frameworks identify the same observations as outbreaks, all of which coincide with one or more concurrent outbreaks investigated by SSI. The first two observations characterized as outbreaks occur in August and September 2014. The third outbreak is in January 2017, and the last two outbreaks are in June and November 2022.
+Nevertheless, it is worth noting that both modeling framework identifies the same observations as outbreaks, all of which coincide with one or more concurrent outbreaks investigated by SSI. The first two observations characterized as outbreaks occur in August and September 2014. The third outbreak is in January 2017, and the last two outbreaks are in June and November 2022.
 
 \subsection{Analysis of outbreak detection in SHIL}
 
-In this case study, both the state-of-the-art and novel outbreak detection algorithms are applied to the SHIL data set. The data set comprises monthly counts of Danish SHIL cases, denoted as $y_{it}$. The subscript $i$ distinguishes between two age groups, namely $i=1$ representing the age group below 25 years and $i=2$ representing the age group above 25 years. The subscript $t$ represents the time period, ranging from $t=1,\cdots,T$, where $T=180$ corresponds to the total number of months starting in 2008.
-
-\subsubsection{Applying the novel outbreak detection algorithm to \textit{Shigellosis}}
-
-For this disease, it is found that including a trend in the model results in the lowest logarithmic score $\bar S(G,y)$ for both modeling frameworks. Therefore, the analysis is continued using the formula described in \eqref{eq:Trend}.
-
-The one-step ahead random effects $u_{i{t_1}}$ are depicted in Figure \@ref(fig:CompareNovelSHIL). It is observed that the hierarchical Poisson Normal model generates two additional alarms in the age group below 25 years compared to the hierarchical Poisson Gamma model. However, it can be seen that the corresponding random effects in the latter model are borderline significant.
-
-(ref:CompareNovelSHIL) One-step ahead random effects $\hat u_{t_1}$ of SHIL in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).
-
-```{r CompareNovelSHIL, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelSHIL)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/Compare_novel_SHIL.png")
-```
-
-It is worth noting that the novel outbreak detection algorithms identify significantly fewer alarms compared to the state-of-the-art outbreak detection algorithm. However, they still detect some alarms in the same time periods.
+The SHIL data set consists of Danish SHIL case counts categorized into two age groups. These counts are represented as $y_{it}$, where the subscript $i=1$ corresponds to the age group below 25 years, and $i=2$ corresponds to the age group above 25 years. It should be noted that the selection of these age groups was not based on clear epidemiological reasoning. In retrospect, it would have been more informative to differentiate between sexes rather than age groups, as men who have sex with men have a higher risk of contracting and spreading the disease. However, this information was received towards the end of writing the master's thesis and was therefore not given priority.
 
 \subsubsection{Applying the state-of-the-art outbreak detection algorithm to \textit{Shigellosis}}
 
-Outbreak detection utilizing the state-of-the-art outbreak algorithms are performed on the data set. The reference values for the analysis are based on data ranging the period from January 2008 to February 2011. Hereafter, surveillance is conducted using the data from March 2011 to December 2022.
-
-In Figure \@ref(fig:CompareStateOfTheArtSHIL), a significant number of alarms are observed sporadically in the time series for both methods. For the Farrington method, the number of alarms is `r SHIL_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm`, while for the Noufaily method, the number of alarms is `r SHIL_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm`.
+In Figure \@ref(fig:CompareStateOfTheArtSHIL), a significant number of alarms are observed sporadically in the time series for both of the state-of-the-art methods. For the Farrington method, the number of alarms is `r SHIL_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm`, while for the Noufaily method, the number of alarms is `r SHIL_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm`.
 
 (ref:CompareStateOfTheArtSHIL) Monthly SHIL incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations time points outside reference data. Alarm triggered (full opacity) if observations exceeds threshold. 
 
@@ -249,29 +235,29 @@ In Figure \@ref(fig:CompareStateOfTheArtSHIL), a significant number of alarms ar
 knitr::include_graphics("../figures/Compare_stateOfTheArt_SHIL.png")
 ```
 
-It is worth noting that some of these alarms occur in clusters over a specific time period and are raised simultaneously in both age groups. This clustering is particularly evident in the period from July 2015 to August 2016, where multiple alarms are observed. However, it is important to consider that the threshold for detection during this period is relatively low due to the very few cases reported up to that point. Therefore, these alarms may be an artifact of the method used rather than indicative of true outbreaks. Atleast, no outbreaks were investigated by SSI in the same period. 
+It is noteworthy that some of the alarms occur in clusters over specific time periods and are raised simultaneously in both age groups. These clustering patterns are particularly evident during periods with multiple alarms, such as from July 2015 to April 2016, from July 2018 to October 2019, and from November 2021 to December 2022. Surprisingly, none of these periods coincide with outbreaks investigated by SSI, and all methods fail to identify the outbreak investigated in August and September 2020.
 
-Another cluster is forming towards the end of the series.
+However, it is important to recognize the significant challenge faced by statistical algorithms in detecting the outbreak during the summer of 2020. This difficulty arises due to the concurrent Covid-19-related lockdown, which results in different disease dynamics and a relatively low number of SHIL cases compared to similar periods in other years. This highlights the importance of considering the context in which the statistical outbreak detection algorithm is applied. Further discussion on this topic can be found in Section \@ref(ChallengesOD).
+
+\subsubsection{Applying the novel outbreak detection algorithm to \textit{Shigellosis}}
+
+For SHIL it was found that the trend model for the fixed effects minimizes the average logarithmic score, $\bar S(G,y)$, in both modeling frameworks. Thus, the estimated one-step ahead random effects $\hat u_{i{t_1}}$ and thresholds $U_{t_0}$ visualized in Figure \@ref(fig:CompareNovelSHIL) is calculated using this model. 
+
+(ref:CompareNovelSHIL) Estimated one-step ahead random effects $\hat u_{t_1}$ of SHIL in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).
+
+```{r CompareNovelSHIL, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelSHIL)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_novel_SHIL.png")
+```
+
+It is noteworthy that the 20 alarms generated by both modeling frameworks coincide, indicating consistency in their detection. Additionally, it is observed that the novel outbreak detection algorithms identify significantly fewer alarms compared to the state-of-the-art algorithms. However, it is important to highlight that both algorithms detect outbreaks during certain overlapping time periods, demonstrating their ability to capture similar patterns of disease occurrence.
 
 \subsection{Analysis of outbreak detection in SALM}
 
-The data set utilized in this case study comprises monthly counts of Danish salmonella cases, denoted as $y_{it}$. The subscript $i$ differentiates between the six age groups $i=1,\dots,6$. The subscript $t$ represents the time period, ranging from $t = 1,\cdots, T$, where $T = 180$ corresponds to the total number of months starting in 2008.
-
-Both the state-of-the-art outbreak detection algorithm and the novel outbreak detection algorithm are applied to this data set.
-
-\subsubsection{Applying the novel outbreak detection algorithm to \textit{Salmonellosis}}
-
-WRITE HERE
-
-(ref:CompareNovelSALM) Estimated one-step ahead random effects $\hat u_{t_1}$ of SALM in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).
-
-```{r ref:CompareNovelSALM, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelSALM)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/Compare_novel_SALM.png")
-```
+Historically, SALM is associated with frequent disease outbreaks. This is no different during the time period investigated here. The data set consist of monthly counts of Danish SALM cases, denoted as $y_{it}$. Here, the subscript $i$ differentiates between the six age groups $i=1,\cdots,6$. The subscript $t$ represents time.
 
 \subsubsection{Applying the state-of-the-art outbreak detection algorithm to \textit{Salmonellosis}}
 
-WRITE HERE
+From Figure \@ref(fig:CompareStateOfTheArtSALM), it is evident that both of the state-of-the-art methods generate an overwhelming number of alarms across all six age groups. The Farrington method produces `r SALM_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm`alarms, while the Noufaily method produces `r SALM_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms. Although these methods exhibit high sensitivity, the excessive number of alarms undermines their usefulness and practicality.
 
 (ref:CompareStateOfTheArtSALM) Monthly SALM incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations time points outside reference data. Alarm triggered (full opacity) if observations exceeds threshold. 
 
@@ -279,40 +265,68 @@ WRITE HERE
 knitr::include_graphics("../figures/Compare_stateOfTheArt_SALM.png")
 ```
 
+\subsubsection{Applying the novel outbreak detection algorithm to \textit{Salmonellosis}}
+
+In Figure \@ref(fig:CompareNovelSALM) the estimated one-step ahead random effects $\hat u_{i{t_1}}$ are visualized together with the calculated threshold $U_{t_0}$.
+
+(ref:CompareNovelSALM) Estimated one-step ahead random effects $\hat u_{t_1}$ of SALM in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).
+
+```{r CompareNovelSALM, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelSALM)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_novel_SALM.png")
+```
+
+In total, the hierarchical Poisson Normal framework generates `r sum(SALM_alarms_PoisN$alarm)` alarms, while the hierarchical Poisson Gamma framework generates `r sum(SALM_alarms_PoisG$alarm)` alarms. This demonstrates that the novel outbreak detection algorithm has significantly lower sensitivity compared to the state-of-the-art algorithms.
+
+However, the large number of alarms raises valid concerns about how to handle them effectively. In the novel algorithm, observations that trigger an alarm are identified and excluded from future parameter estimation to prevent inflating the parameter estimates. This approach aims to mitigate the impact of false alarms and maintain the accuracy of the modeling process. However, as the alarms accumulate, the effective sample window for parameter estimation diminishes, reducing the amount of available data for estimating reliable parameters. This challenge is expanded upon in Section \@ref(ChallengesOD).
 
 \section{Challenges in statistical outbreak detection}\label{ChallengesOD}
 
-In this section, some of the challenges regarding statistical outbreak detection is outlined.
 
-When deciding on a statistical outbreak detection algorithm, it is very important to take into consideration...
+In this section, the challenges encountered in this master's thesis regarding statistical outbreak detection are outlined. These challenges encompass specific issues related to the use of hierarchical modeling as well as more generalized challenges that are relevant to statistical modeling in general.
 
-These challenges are explored in more detail in two separate case studies...
+The discussion will focus on the role of overdispersion in statistical outbreak detection, the impact of context and bias, and the handling of a large number of alarms.
 
 \subsection{Investigating the role of overdispersion in statisical outbreak detection for LIST}
 
-Intuitively, it is not common to employ statistical methods for monitoring and detecting outbreaks of LIST. The current state-of-the-art approach for detecting outbreaks of this disease relies on laboratory-based methods, specifically WGS. WGS enables epidemiologists to link cases that have occurred over an extended period, even months or years apart, and identify them as part of a continuous-source outbreak. Statistical methods may face challenges in detecting such outbreaks due to their complex and prolonged nature. However, it is crucial to include this case study in the master's thesis to highlight both the strengths and limitations of the proposed method.
+Convergence issues were observed in the hierarchical models during the case studies, particularly in the LIST case study. Only the constant fixed effects models were able to converge, indicating challenges with the other models. The low incidence rate in the LIST data and the absence of overdispersion are likely factors contributing to these convergence difficulties.
 
-However, as mentioned earlier, the periods during which the model parameters ($\hat\sigma$ or $\hat\phi$) fail to converge coincide with periods where it is not feasible to obtain statistical evidence for an ongoing outbreak. This is because these periods are characterized by a relatively low number of cases, but more importantly, the absence of overdispersion in the data.
+To further investigate the lack of convergence, the empirical mean and variance of the LIST data series in the two age groups are visualized in Figure \@ref(fig:LISTmeanAndStandardDeviation) using a rolling window approach. The rolling window width was set to match the parameter estimation window, which was 36 months. This visualization provides a closer examination of the patterns in the data and helps to identify potential factors affecting convergence.
 
-To further investigate the lack of convergence in the model, the mean and variance of the series are visualized in Figure \@ref(fig:LISTmeanAndStandardDeviation) using a rolling window approach. The width of the rolling window is set to be the same as the parameter estimation window, which is 36 months in this case.
-
-(ref:LISTmeanAndStandardDeviation) Placeholder caption
+(ref:LISTmeanAndStandardDeviation) Empirical mean and variance of the LIST data in two age groups.
 
 ```{r LISTmeanAndStandardDeviation, echo=FALSE, out.width="100%", fig.cap="(ref:LISTmeanAndStandardDeviation)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/LIST_meanAndStandardDeviation.png")
 ```
 
-It is evident that there are prolonged periods in the sample window where overdispersion is absent. The range of the window with overdispersion is directly influenced by the chosen window size, and even a small number of observations can introduce significant overdispersion into the data, thereby informing the second stage model.
+The figure clearly shows prolonged periods in the sample window where there is no overdispersion, as indicated by the similarity between the empirical mean and variance. The duration of the window with overdispersion is directly influenced by the chosen window size, and even a small number of observations can introduce significant overdispersion.
 
-It is important to emphasize that the periods with overdispersion are of particular interest in this master's thesis and in disease outbreak detection. These periods are where outbreaks are expected to be observed, as they are directly defined by their aberrant counts, and can not be modeled adequately by a Poisson distribution alone.
+It is worth noting that the periods where the estimated second stage model parameters ($\hat\sigma$ or $\hat\phi$) fail to converge align with periods where statistical evidence for an ongoing outbreak is not feasible. These periods are characterized by a low number of cases and, more importantly for the hierarchical models, the absence of overdispersion in the sample window.
+
+As the number of cases are very low, it is also unlikely that an outbreak is occurring. Regardless, it is not possible for statistical models to detect these outbreaks.
+
+In the case of the novel outbreak detection algorithm, particular attention is given to periods with overdispersion. This is because the modeling frameworks assume that the distribution of random "noise" can be modeled by a Gaussian distribution, viz. hierarchical Poisson Normal model, or an exponential dispersion family, viz. hierarchical Poisson Gamma model. In the absence of overdispersion, count data can be adequately modeled by a Poisson distribution alone, making an approach based on generalized linear models more suitable.
+
+Further investigation into modeling periods without overdispersion using hierarchical models are required but out of scope of this master's thesis.
 
 \subsection{The impact of context and observational bias}
 
-Deploying an outbreak detection algorithm blindly without considering the context and potential changes in observational bias can lead to unreliable results. This is particulary evident in the case study of SHIL. As mentioned earlier, an outbreak investigated by SSI occurred in August and September 2020, affecting a total of 44 patients. However, this outbreak occurred shortly after the Covid-19-related lockdown, which resulted in a significant decrease in the number of reported cases for various disease, including SHIL. Consequently, the challenge arises when determining whether the number of cases during the outbreak is considered aberrant compared to similar periods in other years, the sudden decrease in reported cases makes this outbreak a cause of concert. Therefore, it is crucial to carefully consider the specific circumstances and potential changes in observational bias when interpreting outbreak detection results.
+Deploying an outbreak detection algorithm blindly, without considering the context and potential changes in observational bias, can lead to unreliable results. It is essential to closely monitor the algorithms and critically assess the model inputs and the specific context in which it operates. This is evident in the case study of SHIL, where an outbreak investigated by SSI in August and September 2020 was challenging to detect using statistical methods due to the concurrent Covid-19-related lockdown and the resulting decrease in reported cases.
+
+Considering the specific circumstances and potential changes in observational bias is crucial when interpreting outbreak detection results. It is important to determine whether the number of cases during an outbreak is considered aberrant compared to similar periods in other years. However, in situations where there is a sudden decrease in reported cases, such as during a lockdown, detecting outbreaks using statistical methods becomes more challenging.
+
+An important potential extension of automated statistical outbreak detection algorithms is the incorporation of data drift monitoring. This involves detecting changes in the underlying data distribution and adapting the model accordingly to maintain its predictive performance. Specifically, detecting sudden decreases in case counts can be considered a form of data drift. 
+
+Indeed, sudden decreases in case counts can be treated similarly to sudden increases in case counts, and detecting such data drift can be incorporated into hierarchical models using the unobserved one-step ahead random effects $u_{i{t_0}}$. One approach is to define a lower threshold by selecting an appropriate quantile of the random effects distribution obtained from the second stage model, such as the 5% or 10% quantile.
+
+However, the implementation of automated data drift monitoring requires further investigation and is beyond the scope of this master's thesis. It is an area that calls for future research and development to enhance the robustness and adaptability of statistical outbreak detection algorithms. The inclusion of data drift monitoring can improve the algorithms' ability to adapt to changing outbreak patterns and contextual factors, leading to more reliable and accurate detection outcomes.
 
 \subsection{How do we handle many alarms?}
 
-Generally, many individual outbreaks with SALM occurs on a frequent basis...
+Dealing with diseases that generate frequent alarms presents a challenge in statistical outbreak detection. The novel outbreak detection algorithm addresses this challenge by excluding flagged observations from future parameter estimation. This exclusion reduces the sample window for parameter estimation and results in a loss of information and reduced variation in the data. The purpose of this exclusion is to prevent inflated parameter estimates.
+
+On the other hand, the state-of-the-art detection algorithm employs a re-weighting scheme using Anscombe residuals. It has been observed that the Farrington method's correction for past outbreaks is too drastic, and a higher re-weighting threshold of 2.58 rather than 1 is recommended in the Noufaily method to improve specificity [@Noufaily_2013].
+
+Effectively handling previous outbreaks in statistical outbreak detection requires domain-specific knowledge from epidemiologists to determine the most appropriate approach. While the novel method completely excludes past outbreaks, this may not be the optimal practice as it significantly reduces the sample window. If the method is employed in an automated setting, it is essential to report the size of the sampling window to the epidemiologists so they can interpret the results appropriately. Further research in this area is necessary, but it is beyond the scope of this master's thesis.
 
 \section{Performance comparison of novel methods}
 

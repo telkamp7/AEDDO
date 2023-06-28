@@ -62,7 +62,7 @@ First, the algorithm optionally performs a power transformation to correct for s
 
 Next, the significance of the time trend is checked. The time trend is included in the model only if it is statistically significant at a chosen significance level, there are more than three years of reference data, and there is no over-extrapolation due to the time trend.
 
-Finally, past outbreaks are reweighted based on their Anscombe residuals. If the Anscombe residual of a count exceeds a certain weight threshold, it is reweighted in a second fitting of the GLM. In the original method by @Farrington_1996, a reweighting threshold of 1 was used. However, @Noufaily_2013 suggests using a value of 2.56 for the weight threshold to make the reweighting procedure less drastic, as it also reduces the variance of the observations.
+Finally, past outbreaks are reweighted based on their Anscombe residuals. If the Anscombe residual of a count exceeds a certain weight threshold, it is re-weighted in a second fitting of the GLM. In the original method by @Farrington_1996, a re-weighting threshold of 1 was used. However, @Noufaily_2013 suggests using a value of 2.56 for the weight threshold to make the re-weighting procedure less drastic, as it also reduces the variance of the observations. For a more detailed description of the re-weighting scheme employed in the Farrington and Noufaily method, refer to Section 3.6 in @Farrington_1996 and Section 2.1 in @Noufaily_2013, respectively.
 
 \section{Novel outbreak detection algorithm}\label{Novel}
 
@@ -403,7 +403,33 @@ Overall, the Gamma distribution is selected due to its alignment with the mean-v
 
 In this section, the parameter estimation and implementation of the models used in the novel outbreak detection algorithm are presented. These model are implemented in R using the open-source R package \textbf{TMB} (Template Model Builder) developed by @Kristensen_2016. This package facilitates efficient maximum likelihood estimation and uncertainty calculations for the parameter set $\boldsymbol \theta=(\boldsymbol{\beta, \Psi})$ and random effects $\boldsymbol u$. The presentation of the parameter estimation conducted in \textbf{TMB} is strongly inspired by Chapter 2 in @Kristensen_2016 and Section 5.10 in @Madsen_2010.
 
-\textbf{TMB} maximizes a user-provided objective function in the form of a C++ template, to estimate the maximum likelihood for the parameter set $\boldsymbol \theta = (\boldsymbol{\beta, \Psi})$. Refer to \@ref(cpp) to access the C++ template files used in this master's thesis. The objective function maximizes the marginal log-likelihood function, which integrates out the random effects $\boldsymbol u$
+\textbf{TMB} maximizes a user-provided objective function in the form of a C++ template, to estimate the maximum likelihood for the parameter set $\boldsymbol \theta = (\boldsymbol{\beta, \Psi})$. In the following code chunk, the C++ template for the hierarchical Poisson normal model specified in \eqref{eq:PoisN}, is shown:
+
+```{Rcpp, eval=FALSE}
+#include <TMB.hpp>
+template<class Type>
+Type objective_function<Type>::operator() ()
+{
+  // R input data
+  DATA_VECTOR(y);                               // Count data
+  DATA_VECTOR(x);                               // Population size
+  DATA_MATRIX(X);                               // Design matrix
+  PARAMETER_VECTOR(u);                          // Random effects
+  // Parameters
+  PARAMETER_VECTOR(beta);                       // Fixed effects parameters
+  PARAMETER(log_sigma_u);                       // Model parameter
+  vector<Type> lambda  = exp(X*beta-log(x)+u);  // Construct 'lambda'
+  Type sigma_u = exp(log_sigma_u);              // And the model parameters
+  Type mean_ran = Type(0);
+  // Objective function
+  Type f = 0;                                   // Declare the objective
+  f -= sum(dnorm(u,mean_ran,sigma_u,true));     // Calculate the objective
+  f -= sum(dpois(y,lambda,true));               // Calculate the objective
+  return f;
+}
+```
+
+Refer to \@ref(cpp) to access the C++ template for the hierarchical Poisson Gamma model. The objective function maximizes the marginal log-likelihood function, which integrates out the random effects $\boldsymbol u$
 
 \begin{equation}
   \ell_{M}(\boldsymbol{\theta; y})=\int_{\mathbb{R}^{q}} \ell (\boldsymbol{\theta;u,y}) d\boldsymbol{u}
@@ -526,7 +552,7 @@ Similarly, the logarithmic scores for the other observations can be calculated u
 
 ```{r tabLogS, echo=FALSE}
 
-t(tibble(`$i$` = paste(1:10), `$\\bar{S}(f,y_i)$` = round(LogSf,2), `$\\bar{S}(g,y_i)$` = round(LogSg,2))) %>%
+t(tibble(`$i$` = paste(1:10), `$S(f,y_i)$` = round(LogSf,2), `$S(g,y_i)$` = round(LogSg,2))) %>%
   kbl(booktabs = TRUE, escape = FALSE, caption = "Logarithmic scores of the two different Gamma models w.r.t. the 10 individual observations.") %>%
   kable_paper(full_width = TRUE, latex_options = "HOLD_position")
 

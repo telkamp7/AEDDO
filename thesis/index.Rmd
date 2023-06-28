@@ -35,7 +35,9 @@ list(bold = FALSE, italic = FALSE)
 
 ```{r dataLoadResults, echo=FALSE, warning=FALSE}
 
-dat <- read_rds(file = "../data/processed/dat2.rds")
+dat <- read_rds(file = "../data/processed/dat2.rds") %>%
+  filter(caseDef %in% c("LIST", "SHIL", "STEC", "SALM")) %>%
+  mutate(caseDef = fct_drop(caseDef))
 
 FPR <- read_rds(file = "../src/simulation/FPR.Rds")
 POD <- read_rds(file = "../src/simulation/POD.Rds")
@@ -95,6 +97,33 @@ SHIL_alarms_Noufaily <- SHIL_alarms_StateOfTheArt %>% filter(method == "Noufaily
 SALM_alarms_Noufaily <- SALM_alarms_StateOfTheArt %>% filter(method == "Noufaily") 
 
 LIST_alarms <- Compare_novel_dat %>% filter(alarm) %>% summarize(alarms=unique(Date))
+
+STEC_novel <- read_rds(file = "../src/cases/STEC_novel.rds")
+SHIL_novel <- read_rds(file = "../src/cases/SHIL_novel.rds")
+SALM_novel <- read_rds(file = "../src/cases/SALM_novel.rds")
+
+STEC_alarms_PoisN <- STEC_novel %>%
+  select(Date, ageGroup, alarm = `alarm_Poisson Normal`) %>%
+  filter(alarm)
+STEC_alarms_PoisG <- STEC_novel %>%
+  select(Date, ageGroup, alarm = `alarm_Poisson Gamma`) %>%
+  filter(alarm)
+SHIL_alarms_PoisN <- SHIL_novel %>%
+  select(Date, ageGroup, alarm = `alarm_Poisson Normal`) %>%
+  filter(alarm)
+SHIL_alarms_PoisG <- SHIL_novel %>%
+  select(Date, ageGroup, alarm = `alarm_Poisson Gamma`) %>%
+  filter(alarm)
+SALM_alarms_PoisN <- SALM_novel %>%
+  select(Date, ageGroup, alarm = `alarm_Poisson Normal`) %>%
+  filter(alarm)
+SALM_alarms_PoisG <- SALM_novel %>%
+  select(Date, ageGroup, alarm = `alarm_Poisson Gamma`) %>%
+  filter(alarm)
+
+SSI_FUD <- read_rds(file = "../src/cases/SSI_FUD.rds")
+n_SSI_FUD <- SSI_FUD %>%
+  reframe(n=n())
 
 
 # View(LIST_alarms_StateOfTheArt %>% filter(alarm) %>% select(-n, -dateOfAlarm))

@@ -6,7 +6,7 @@ The chapter begins by describing the method used to simulate the baseline data. 
 
 The evaluation measures used to assess the performance of the outbreak detection algorithms are then presented. These measures are designed to capture relevant quantities in the context of outbreak detection.
 
-Finally, the chapter presents the results of applying both the state-of-the-art outbreak detection algorithms and the novel outbreak detection algorithm to the simulated data. The performance of each algorithm is evaluated based on the simulation results.
+Finally, the chapter presents the results of applying both the state-of-the-art and the novel outbreak detection algorithms to the simulated data. The performance of both algorithms is evaluated based on the simulation results.
 
 \section{The simulated baseline data}
 
@@ -37,7 +37,7 @@ scenarios %>%
 
 To simulate the baseline data without outbreaks, 100 replicates are generated for each of the 28 parameter scenarios. Each replicate consist of a time series of size $T=624$ weeks. 
 
-The 624 weeks are divided into three periods: 1-313 are used as training weeks for the adaptive re-weighting schemes, weeks 313-575 are considered as baseline weeks, and weeks 576-624 are designated as the "current" weeks for evaluation. 
+The 624 weeks are divided into three periods: weeks 1-313 are used for training, weeks 313-575 are considered as baseline weeks, and weeks 576-624 are designated as the "current" weeks for evaluation
 
 The simulation results are based on the "current" weeks of all the replicates, totaling $100\times 49=4900$ replicates, for each of the 28 data scenarios and each method investigated.
 
