@@ -86,29 +86,18 @@ It is important to note that the FPR is a rate per week, while the POD is a rate
 
 \section{Results of the simulations}
 
-In this section, the results regarding the simulation study is presented. Both the state-of-the-art and novel outbreak detection algorithms are applied to the same simulated data. 
+In this section, the results of the simulation study are presented. Both the state-of-the-art and novel outbreak detection algorithms are applied to the same simulated data, allowing for the evaluation of their performance in a setting where the true parameters and process are known.
 
-As the simulated data comprises weekly counts
-
-
+The simulated data consists of weekly counts of a simulated disease, denoted as $y_t$, where $t=1,\cdots,T$ represents the time period of $T=624$ weeks. 
 
 
 
-The `control` arguments for the Farrington and Noufaily method can be found in Appendix \@ref(controlStateOfTheArt).
+Notably, it is decided to include 3 years of reference data to both methods, corresponding to a total of `r 3*52` weeks.
 
 
+The first step involves applying the state-of-the-art outbreak detection algorithm, with specific control arguments determined for the Farrington and Noufaily methods. The details of these control arguments can be found in Appendix \@ref(controlsStateOfTheArt). 
 
-
-
-
-
-For both of the state-of-the-art outbreak detection algorithms 
-
-
-In all of the methods, a 
-
-
-The model for the fixed effects in each of the modeling frameworks respectively, is defined as:
+Hereafter, the novel outbreak detection algorithm is applied. For this purpose, the model for the fixed effects in each of the modeling frameworks respectively, is defined as:
 
 \begin{equation}
   \log(\lambda_{t}) = \beta_{intercept} + \beta_{trend} t + \sin \big(\frac{2\pi\cdot \tau_t}{52}\big) \beta_{\sin} + \cos \big(\frac{2\pi\cdot \tau_t}{52}\big)\beta_{\cos}
@@ -117,11 +106,11 @@ The model for the fixed effects in each of the modeling frameworks respectively,
 
 
 
-in each of the modeling frameworks
+
+
 
 
 In general, one obtains relatively higher FPRs when using the Farrington method compared to the other methods. This is to no surprise, as this method is known for being overly sensitive, and thus producing more false alarms.
-
 
 (ref:FPR) FPRs obtained in each of the 28 scenarios for each of the methods applied. Thresholds are based on the $0.95$ quantile
 
