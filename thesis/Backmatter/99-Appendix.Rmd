@@ -58,6 +58,10 @@ Type objective_function<Type>::operator() ()
 
 In the function `farringtonFlexible`, users can select either the original Farrington method or the improved method by Noufaily by specifying the appropriate `control` arguments. The choice of algorithm variant is determined by the contents of the `control` slot. In the example provided, `con.farrington` indicates the use of the original method, while `con.noufaily` represents the options for the improved method.
 
+\subsection{Case studies}
+
+Here, the specific `control` arguments used in the case studies is provided.
+
 ```{r ControlsLIST, eval=FALSE}
 
 con.farrington <- list(
@@ -86,6 +90,38 @@ con.noufaily <- list(
 
 ```
 
+\subsection{Simulation study}
+
+Here, the specific `control` arguments used in the simulation studies is provided.
+
+```{r ControlsLISTSim, eval=FALSE}
+
+con.farrington <- list(
+  range = NULL, b = 5, w = 3,
+  reweight = TRUE, weightsThreshold = 1,
+  verbose = TRUE, glmWarnings = TRUE,
+  alpha = refPar$alphaStateOfTheArt, trend = TRUE, pThresholdTrend = 0.05,
+  limit54 = c(0,4), powertrans = "2/3",
+  fitFun = "algo.farrington.fitGLM.flexible",
+  populationOffset = TRUE,
+  noPeriods = 1, pastWeeksNotIncluded  = NULL,
+  thersholdMethod = "delta"
+)
+
+con.noufaily <- list(
+  range = NULL, b = 5, w = 3,
+  reweight = TRUE, weightsThreshold = 2.58,
+  verbose = TRUE, glmWarnings = TRUE,
+  alpha = refPar$alphaStateOfTheArt, trend = TRUE, pThresholdTrend = 0.05,
+  limit54 = c(0,4), powertrans = "2/3",
+  fitFun = "algo.farrington.fitGLM.flexible",
+  populationOffset = TRUE,
+  noPeriods = 1, pastWeeksNotIncluded  = NULL,
+  thersholdMethod = "nbPlugin"
+)
+
+```
+
 \chapter{Outbreak data}\label{FUDData}
 
 ```{r FUD, echo=FALSE}
@@ -94,7 +130,7 @@ SSI_FUD %>%
   kbl(booktabs = TRUE,
       longtable = TRUE,
       escape = FALSE,
-      caption = paste0("Food- and waterborne disease outbreaks reported in the Food- and waterborne Outbreak Database (FUD) (n=",n_SSI_FUD$n,"), 2008-2022."),
+      caption = paste0("Food- and waterborne disease outbreaks of LIST, SHIL, STEC, and SALM reported in the Food- and waterborne Outbreak Database (FUD) (n=",n_SSI_FUD$n,"), 2008-2022."),
       linesep = "") %>%
   kable_paper(full_width = TRUE, latex_options = c("repeat_header", "HOLD_position")) %>%
   column_spec(1, width = "4.5cm") %>%

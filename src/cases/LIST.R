@@ -867,6 +867,7 @@ write_rds(x = LIST_compare, file = "LIST_compare.rds")
 # LIST_compare <- read_rds(file = "LIST_compare.rds")
 
 Compare_alarms <- LIST_compare %>%
+  filter(Date >= as.Date("2011-01-01")) %>%
   ggplot(mapping = aes(x = alarmDate, y = method, colour = method)) +
   geom_point(shape = 17, size = 4) +
   scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +

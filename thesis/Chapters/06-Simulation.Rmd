@@ -51,7 +51,7 @@ knitr::include_graphics("../figures/Realizations.png")
 
 \section{The simulated outbreaks}
 
-The outbreaks starting in week $t$ are simulated using the following procedure. First, a constant value $k$ is chosen. The size of the outbreak, denoted as $n$, is then generated randomly from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline count at time $t$.
+The outbreaks starting in week $t$ are simulated using the following procedure. First, a constant value $k$ is chosen at random. The size of the outbreak, denoted as $n$, is then generated randomly from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline count at time $t$.
 
 Next, the outbreak is distributed randomly in time according to a log-normal distribution with a mean of 0 and a standard deviation of 0.5, represented as $Z \sim \LN(0,0.5^2)$. This is achieved by drawing $n$ random numbers from the log-normal distribution, which correspond to the outbreak size, and then rounding down these numbers to the nearest integer, denoted as $\lfloor \boldsymbol{z} \rfloor$.
 
@@ -65,7 +65,7 @@ knitr::include_graphics("../figures/PDFLogNormal.png")
 
 ```
 
-Typically, outbreak durations of 2-8 weeks are observed when values of $k$ are in the range of 2-10. To simulate the outbreaks, the outbreak cases are added to the baseline count in week $t+z_i$, where $t$ represents the start time of the outbreak and $z_i$ represents the number of weeks after the start of the outbreak. The start and end times of the outbreaks are recorded for evaluating the performance of the methods.
+Typically, outbreak durations of 2-4 weeks are observed when values of $k$ are in the range of 2-10. To simulate the outbreaks, the outbreak cases are added to the baseline count in week $t+z_i$, where $t$ represents the start time of the outbreak and $z_i$ represents the number of weeks after the start of the outbreak. The start and end times of the outbreaks are recorded for evaluating the performance of the methods.
 
 To simulate outbreaks, the following procedure is followed:
 
@@ -78,7 +78,7 @@ To simulate outbreaks, the following procedure is followed:
 
 To evaluate the performance of the outbreak detection system, several measures are employed to assess its effectiveness in detecting current outbreaks. These measures are specifically designed to capture relevant quantities in the given context.
 
-One of the primary measures used is the False Positive Rate (FPR), which is calculated for each of the 28 scenarios and methods. The FPR is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold, even though there are no actual outbreaks during those weeks.
+One of the primary measures used is the False Positive Rate (FPR), which is calculated for each of the 28 scenarios and methods. The FPR is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold. Effectively, the number of weeks where it is possible to give a false positive is closer to 47, depending on how many weeks the simulated outbreak occupies. 
 
 Another measure is the probability of detecting and outbreak (POD), also known as power. Likewise, this is calculated for each of the 28 scenarios. The algorithm is applied iteratively for the 49 current weeks, and an outbreak is considered detected if the observed value exceeds the threshold at least one within the start and end times of the outbreak. The POD is then determined as the proportion of outbreaks detected out of the 100 runs.
 
@@ -86,9 +86,20 @@ It is important to note that the FPR is a rate per week, while the POD is a rate
 
 \section{Results of the simulations}
 
-In this section, the results regarding the simulation study is presented. Both the state-of-the-art outbreak detection algorithm and the novel outbreak detection algorithm are applied to the simulated data. 
+In this section, the results regarding the simulation study is presented. Both the state-of-the-art and novel outbreak detection algorithms are applied to the same simulated data. 
 
-The `control` arguements for the Farrington and Noufaily method respectively can be found in Appendix \@ref(controlsStateOfTheArt).
+As the simulated data comprises weekly counts
+
+
+
+
+
+The `control` arguments for the Farrington and Noufaily method can be found in Appendix \@ref(controlStateOfTheArt).
+
+
+
+
+
 
 
 For both of the state-of-the-art outbreak detection algorithms 

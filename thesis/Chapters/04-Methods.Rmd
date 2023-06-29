@@ -429,7 +429,7 @@ Type objective_function<Type>::operator() ()
 }
 ```
 
-Refer to \@ref(cpp) to access the C++ template for the hierarchical Poisson Gamma model. The objective function maximizes the marginal log-likelihood function, which integrates out the random effects $\boldsymbol u$
+Refer to Appendix \@ref(cpp) to access the C++ template for the hierarchical Poisson Gamma model. The objective function maximizes the marginal log-likelihood function, which integrates out the random effects $\boldsymbol u$
 
 \begin{equation}
   \ell_{M}(\boldsymbol{\theta; y})=\int_{\mathbb{R}^{q}} \ell (\boldsymbol{\theta;u,y}) d\boldsymbol{u}

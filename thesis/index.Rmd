@@ -7,7 +7,7 @@ site: bookdown::bookdown_site
 options(digits = 4)
 
 # Install the packages needed by this book
-lapply(c("ggplot2", "readr", "dplyr", "tidyr", "forcats", "tibble","kableExtra", "psych", "knitr"), function(pkg) {
+lapply(c("ggplot2", "readr", "dplyr", "tidyr", "forcats", "tibble","kableExtra", "psych", "knitr", "stringr"), function(pkg) {
   if(system.file(package = pkg) == "") install.packages(pkg)
 })
 
@@ -21,6 +21,7 @@ library(forcats)
 library(kableExtra)
 library(psych)
 library(ggplot2)
+library(stringr)
 
 Sys.setlocale("LC_ALL","English")
 
