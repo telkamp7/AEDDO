@@ -95,6 +95,7 @@ caseDefLabels <- c("STEC",
 
 # Finalize 'dat'
 dat <- datTmp %>%
+  filter(Date <= as.Date("2022-12-31")) %>%
   mutate(ageGroup = factor(x = ageGroup, levels = ageGroupLevels),
          caseDef = factor(x = caseDef, level = caseDefLevels, labels = caseDefLabels),
          cases = as.integer(cases),
