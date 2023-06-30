@@ -1,6 +1,6 @@
 \chapter{Surveillance data in Denmark}\label{Dataset}
 
-This chapter delves into the data collection methods and quality assurance procedures within the Danish surveillance system. Moreover, it introduces the case studies selected for this master's thesis, which include \textit{Listeriosis}, \textit{Shigellosis}, Shiga toxin (verotoxin)-producing \textit{Escherichia coli}, and \textit{Salmonellosis}. These diseases will be referred to using either their full name or their related case definition:
+This chapter delves into the data collection methods and quality assurance procedures within the Danish surveillance system. Moreover, it introduces the case studies selected for this master thesis, which include \textit{Listeriosis}, \textit{Shigellosis}, Shiga toxin (verotoxin)-producing \textit{Escherichia coli}, and \textit{Salmonellosis}. These diseases will be referred to using either their full name or their related case definition:
 
 \begin{itemize}
   \item LIST: \textit{Listeriosis}
@@ -16,14 +16,13 @@ In Denmark, the surveillance of infectious diseases is conducted by Statens Seru
 
 The quality of the Danish surveillance registers is maintained at a high standard, thanks to The National Board of Health Statutory Order on Physicians' Notification of Infectious Diseases (\href{https://www.retsinformation.dk/eli/lta/2000/277}{https://www.retsinformation.dk/eli/lta/2000/277}). This order specifies that several diseases\footnote{For a full list of diseases see \href{https://www.ssi.dk/sygdomme-beredskab-og-forskning/anmeldelse-af-sygdomme/lovpligtige-meldesystemer/individ_anmeldelses_sygdomme}{\nolinkurl{https://www.ssi.dk/sygdomme-beredskab-og-forskning/anmeldelse-af-sygdomme/lovpligtige-meldesystemer/individ_anmeldelses_sygdomme}}} are individually notifiable by physicians and general practitioners. Notifications consist of essential patient information and are submitted in paper form to both the Ministry of Health and to SSI. This rigorous notification process ensures accurate and comprehensive data collection for disease surveillance purposes in Denmark. 
 
-In addition to the individually notifiable diseases, SSI has implemented a laboratory notification system for numerous microorganisms. Clinical-microbiological laboratories are obligated to report the identification of specific microorganisms, along with relevant patient information. These data are then stored in the Danish Microbiology Database (MiBa), which was established by SSI in 2010. MiBa is a nationwide and automatically updated database specifically designed to collect and store microbiological test results. In order to utilize the data from MiBa, the information in the test results needs to have a standardized structure with common codes and terminology. MiBa employs national standards to harmonize the data, which initially may be structured in diverse formats. The standards currently used are XRPT05, which is widely employed for the exchange of microbiological test results in the healthcare system, and a specific standard called XRPT06. These standards are regularly revised and exist in various versions\footnote{Information on national standards and codes within the healthcare domain can be found on MedCom's website (\href{https://medcom.dk/}{https://medcom.dk/}).}. The national surveillance system focuses on diseases of a severe nature, those that are highly contagious, and the majority of vaccine-preventable diseases. 
-
+In addition to the individually notifiable diseases, SSI has implemented a laboratory notification system for numerous microorganisms. Clinical-microbiological laboratories are obligated to report the identification of specific microorganisms, along with relevant patient information. These data are then stored in the Danish Microbiology Database (MiBa), which was established by SSI in 2010 [@Voldstedlund_2014]. MiBa is a nationwide and automatically updated database specifically designed to collect and store microbiological test results. In order to utilize the data from MiBa, the information in the test results needs to have a standardized structure with common codes and terminology. MiBa employs national standards to harmonize the data, which initially may be structured in diverse formats. The standards currently used are XRPT05, which is widely employed for the exchange of microbiological test results in the healthcare system, and a specific standard called XRPT06. These standards are regularly revised and exist in various versions\footnote{Information on national standards and codes within the healthcare domain can be found on MedCom's website (\href{https://medcom.dk/}{https://medcom.dk/}).}. The national surveillance system focuses on diseases of a severe nature, those that are highly contagious, and the majority of vaccine-preventable diseases. 
 
 \section{Introducing the case studies}
 
-For the scope of this master's thesis, only a specific subset of diseases from the mandatory notification system will be considered. This subset consists of \textit{Listeriosis}, \textit{Shigellosis}, Shiga toxin (verotoxin)-producing \textit{Escherichia coli}, and \textit{Salmonellosis}. These diseases have been chosen for analysis and investigation based on various factors, such as seasonality, incidence, and severity. Additionally, these diseases have been associated with documented outbreaks investigated by SSI in the past decade, which adds to their relevance for the study. 
+For the scope of this master thesis, only a specific subset of diseases from the mandatory notification system will be considered. This subset consists of \textit{Listeriosis}, \textit{Shigellosis}, Shiga toxin (verotoxin)-producing \textit{Escherichia coli}, and \textit{Salmonellosis}. These diseases have been chosen for analysis and investigation based on various factors, such as seasonality, incidence, and severity. Additionally, these diseases have been associated with documented outbreaks investigated by SSI in the past decade, which adds to their relevance for the study. For a full overview over the food- and waterborne disease outbreaks reported in the Food- and waterborne Outbreak Database (FUD), refer to Table \@ref(tab:FUD).
 
-The count observations are observed in the period from `r format(datePeriod$Date[1], "%B %Y")` to `r format(datePeriod$Date[2], "%B %Y")`. An epidemic curve graph for an excerpt of the data for each of the diseases considered in this master's thesis is shown in Figure \ref{fig:EpiPlot}.
+The count observations are observed in the period from `r format(datePeriod$Date[1], "%B %Y")` to `r format(datePeriod$Date[2], "%B %Y")`. An epidemic curve graph for an excerpt of the data for each of the diseases considered in this thesis is shown in Figure \ref{fig:EpiPlot}.
 
 (ref:EpiPlot) Epidemic curve showing the incidence per 100,000 in Denmark, 2012-2022, for the subset of diseases considered in this master thesis. \textbf{(a)} LIST, \textbf{(b)} SHIL, \textbf{(c)} STEC, and \textbf{(d)} SALM.
 
@@ -35,8 +34,8 @@ knitr::include_graphics("../figures/EpiPlot.png")
 Evidently, the subset of diseases in Figure \@ref(fig:EpiPlot) exhibits varying incidences and different levels of seasonal patterns on an annual basis. It is interesting to note that the incidences peak in August, which can be attributed to several factors, including:
 
 \begin{itemize}
-\item Increased travel activity: Especially when individuals travel to countries with unsafe drinking water, poor sanitation, and insufficient hygiene practices.
-\item Large social gatherings: Events such as weddings, large festivals, or other gatherings where a significant number of people consume potentially contaminated food or drinking water.
+\item \textbf{Increased travel activity:} Especially when individuals travel to countries with unsafe drinking water, poor sanitation, and insufficient hygiene practices.
+\item \textbf{Large social gatherings:} Events such as weddings, large festivals, or other gatherings where a significant number of people consume potentially contaminated food or drinking water.
 \end{itemize}
 
 Moreover, one could hypothesize that the warmer climate during the summer could potentially directly influence the proliferation of bacteria, which in turn may have an impact on the transmission and spread of these diseases.
@@ -49,9 +48,9 @@ In Figure \@ref(fig:EpiPlot)b, the incidence of the SHIL exhibits a consistent p
 
 Furthermore, in Figure \@ref(fig:EpiPlot)c, a significant increase in the amplitude of the seasonal variation in STEC can be observed starting from 2018, with incidences doubling compared to the preceding years. At a first glance, this increase in the incidences might be recognized as a serious, reoccurring outbreak of the disease, but a more reasonable explanation can be found. Up to 2018, most departments of clinical microbiology used culture-based methods as a diagnostic test for bacterial pathogens and the process of changing the test method to polymerase chain reaction (PCR) methods was ongoing [@Svendsen_2023]. In general, PCR resulted in higher incidences compared to other test methods, which is to no surprise as higher sensitivity is well documented for PCR [@Buss_2015; @Knabl_2016].
 
-Overall, the highest incidences among the diseases considered in this master's thesis are observed for SALM in Figure \@ref(fig:EpiPlot)d. SALM exhibits a notable pattern of high incidence throughout the observed period. However, there is a significant drop in incidences observed in 2020, which is consistent with the impact of the COVID-19 pandemic on disease surveillance and reporting. Additionally, 2021 shows generally lower incidences compared to previous years.
+Overall, the highest incidences among the diseases considered in this thesis are observed for SALM in Figure \@ref(fig:EpiPlot)d. SALM exhibits a notable pattern of high incidence throughout the observed period. However, there is a significant drop in incidences observed in 2020, which is consistent with the impact of the COVID-19 pandemic on disease surveillance and reporting. Additionally, 2021 shows generally lower incidences compared to previous years.
 
-Some summary statistics for each of the diseases considered in this master's thesis are gathered in Table \@ref(tab:summaryStat).
+Some summary statistics for each of the diseases considered in this master thesis are gathered in Table \@ref(tab:summaryStat).
 
 ```{r summaryStat, echo=FALSE}
 
@@ -64,7 +63,7 @@ caseDef_stat <- nCasesXCaseDef %>%
 inline_plot <- tibble(`Case definition` = caseDef_stat$caseDef, Min = caseDef_stat$`min(y)`, Max = caseDef_stat$`max(y)`, Mean = caseDef_stat$`mean(y)`, Median = caseDef_stat$`median(y)`, `Std. Deviation` = caseDef_stat$`sd(y)`, Boxplot = "", `Time series` = "")
 
 inline_plot %>%
-  kbl(booktabs = TRUE, escape = FALSE, caption = "Summary statistics of the monthly count observations for the subset of diseases considered in this master's thesis. Boxplot: median (red line), IQR (grey box), whiskers (1.5 IQR), outliers (points).  Time series: normalized observations (0-1), first time points minimum and maximum count (red)") %>%
+  kbl(booktabs = TRUE, escape = FALSE, caption = "Summary statistics of the monthly count observations for the subset of diseases considered in this master thesis. Boxplot: median (red line), IQR (grey box), whiskers (1.5 IQR), outliers (points).  Time series: normalized observations (0-1), first time points minimum and maximum count (red)") %>%
   kable_paper(full_width = FALSE, latex_options = c("scale_down", "HOLD_position"))  %>%
   column_spec(7, image = spec_boxplot(caseDef_list)) %>%
   column_spec(8, image = spec_plot(caseDef_list, same_lim = FALSE))
@@ -77,7 +76,9 @@ From an epidemiological perspective, all the diseases within the selected subset
 
 \subsection{\textit{Listeriosis}}
 
-LIST is a foodborne illness that is caused by consuming food contaminated with \textit{Listeria monocytogenes}. This disease primarily affects pregnant women, unborn or newborn babies, the elderly, and individuals with weakened immune systems. The disease is associated with high mortality [@Goulet_2012] and manifests in three ways: sepsis, meningitis, and mother-to-child transmission. Pregnancy-associated LIST can can have severe consequences for the fetus or newborn, including miscarriage, stillbirth, neonatal sepsis, and meningitis [@Awofisayo_2015]. LIST is uncommon among individuals in other demographic groups. The bacteria is ubiquitous in the environment, found in moist environments, soil, water, decaying vegetation, and animals. Furthermore, it can survive and even grow under refrigeration and other food preservation measures.
+LIST is a foodborne illness that is caused by consuming food contaminated with \textit{Listeria monocytogenes}. The bacteria is ubiquitous in the environment, found in moist environments, soil, water, decaying vegetation, and animals. Furthermore, it can survive and even grow under refrigeration and other food preservation measures.
+
+This disease primarily affects pregnant women, unborn or newborn babies, the elderly, and individuals with weakened immune systems. The disease is associated with high mortality [@Goulet_2012] and manifests in three ways: sepsis, meningitis, and mother-to-child transmission. Pregnancy-associated listeria can have severe consequences for the fetus or newborn, including miscarriage, stillbirth, neonatal sepsis, and meningitis [@Awofisayo_2015]. \textit{Listeriosis} is uncommon among individuals in other demographic groups.
 
 (ref:LISTLongPlot) A stacked bar graph illustrating the number of LIST cases observed in the period from 2008 to 2022 for the age groups below and above 65 years.
 
@@ -85,11 +86,11 @@ LIST is a foodborne illness that is caused by consuming food contaminated with \
 knitr::include_graphics("../figures/LIST_long_plot.png")
 ```
 
-In general, SSI employs whole-genome sequencing (WGS) as the state-of-the-art method to detect disease outbreaks caused by \textit{Listeria monocytogenes}. This method involves mapping the entire DNA of the bacteria and enables SSI to identify cases where patients are infected with identical Listeria bacteria. However, it is important to note that for this master's thesis, the DNA typing data is unavailable for use.
-
 The first notified outbreak in the 20th century occurred in 2009 [@Smith_2011]. This outbreak affected 8 people, of which two died. The patient samples were isolated between the 6th and 11th of May and it was believed that the cause was infected beef meat from a meals-on-wheels delivery.
 
-Another notable outbreak investigated by SSI occurred between September 2013 and October 2014 [@Kvistholm_2016]. This LIST outbreak involved a total of 41 cases, resulting in 17 deaths. Deli meat products from a specific company were identified as the source of the outbreak. The high mortality rate may be attributed to the consumption of these products in nursing homes and hospitals, where patients are more vulnerable. Following the discovery of Listeria at the facility, the Danish Veterinary and Food Administration recalled all products from the company.
+In 2014, Whole Genome Sequencing (WGS) was employed by SSI as the routine testing of \textit{Listeria} isolates in Denmark [@Wingstrand_2015]. This method involves mapping the entire DNA of the bacteria and enables SSI to identify cases where patients are infected with identical Listeria bacteria. However, it is important to note that for this thesis, the DNA typing data is unavailable for use.
+
+A notable outbreak investigated by SSI occurred between September 2013 and October 2014 [@Kvistholm_2016]. This LIST outbreak involved a total of 41 cases, resulting in 17 deaths. Deli meat products from a specific company were identified as the source of the outbreak. The high mortality rate may be attributed to the consumption of these products in nursing homes and hospitals, where patients are more vulnerable. Following the discovery of Listeria at the facility, the Danish Veterinary and Food Administration recalled all products from the company. Following the outbreak, a series of control activities and research project were initiated to improve the control and management of \textit{Listeria} in the food production [@Takeuchi_2023].
 
 In another LIST outbreak investigated by SSI, the source was traced back to cold-smoked and cured salmon products [@Schjorring_2017]. A total of 5 related cases were identified, with 4 of them occurring in August 2017, and the fifth case in May 2017. 
 
@@ -97,7 +98,7 @@ In some cases, despite extensive investigations, the source of contamination in 
 
 Early identification of outbreaks caused by \textit{Listeria monocytogenes} is crucial to implement timely interventions and mitigate the impact of the disease. Otherwise, these outbreaks can persist over an extended period. SSI has successfully resolved several long-spanned outbreaks in the last decade. For example, one investigation revealed that a single outbreak was actually two simultaneous outbreaks caused by the consumption of smoked fish. Each outbreak consisted of ten cases and spanned from May 2013 to July 2015 [@Gillesberg_2016]. 
 
-Other documented long-spanned outbreaks investigated by SSI include: 
+Other documented [@Helwigh_2018; @Helwigh_2020; @Lassen_2023] long-spanned outbreaks investigated by SSI include: 
 
 \begin{itemize}
   \item A cold-smoked fish outbreak with 9 cases spanning from December 2016 to February 2019.
@@ -108,9 +109,9 @@ Other documented long-spanned outbreaks investigated by SSI include:
 
 The use of WGS in these outbreaks provided the ability to link cases that occurred over a period of years and revealed that they were, in fact, continuous-source outbreaks.
 
-In a recent outbreak investigated by SSI, the Danish Veterinary and Food Administration, and the National Food Institute at the Technical University of Denmark, fish patties were identified as the source of contamination. This outbreak occurred from August 2022 to December 2022 and affected a total of 11 cases.
+In a recent outbreak investigated by SSI, the Danish Veterinary and Food Administration, and the National Food Institute at the Technical University of Denmark, fish patties were identified as the source of contamination. This outbreak occurred from August 2022 to December 2022 and affected a total of 11 cases [@Lassen_2023].
 
-(ref:LISTSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of LIST by SSI and possible collaborators.
+(ref:LISTSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of LIST by SSI and possible collaborators. Time of detection (circle) is indicated when the information is available.
 
 ```{r LISTSSIoutbreaks, echo=FALSE, out.width="100%", fig.cap="(ref:LISTSSIoutbreaks)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/LIST_SSI_outbreaks.png")
@@ -118,7 +119,7 @@ knitr::include_graphics("../figures/LIST_SSI_outbreaks.png")
 
 \subsection{\textit{Shiggellosis}}
 
-SHIL is a diarrheal illness that is caused by a group of bacteria called \textit{Shigella}. There are four types of \textit{Shigella} bacteria, namely: \textit{Shigella dysenteriae}, \textit{Shigella boydii}, \textit{Shigella flexneri}, and \textit{Shigella sonnei}. The latter is the most common species in Denmark. For surveillance purposes, it is generally preferred to consider data from the laboratory notification systems, as it includes information about the specific type of \textit{Shigella} bacteria. However, for the purpose of this master's thesis, all four types of \textit{Shigella} bacteria are analyzed collectively, regardless of the availability of type-specific information in the data.
+SHIL is a diarrheal illness that is caused by a group of bacteria called \textit{Shigella}. There are four types of \textit{Shigella} bacteria, namely: \textit{Shigella dysenteriae}, \textit{Shigella boydii}, \textit{Shigella flexneri}, and \textit{Shigella sonnei}. The latter is the most common species in Denmark. For surveillance purposes, it is generally preferred to consider data from the laboratory notification systems, as it includes information about the specific type of \textit{Shigella} bacteria. However, for the purpose of this thesis, all four types of \textit{Shigella} bacteria are analyzed collectively, regardless of the availability of type-specific information in the data.
 
 The bacteria are highly contagious and can be transmitted through direct person-to-person contact, consumption of contaminated food, or ingestion of water contaminated with human feces. SHIL infections are most commonly observed in children under the age of 5, individuals traveling to regions with poor sanitation and unsafe water and food practices, as well as gay, bisexual, and other men who have sex with men. 
 
@@ -130,7 +131,7 @@ knitr::include_graphics("../figures/SHIG_long_plot.png")
 
 In Denmark, another significant cause of SHIL outbreaks is the importation of contaminated vegetables. This was evident in several incidents, including a 2007 outbreak where 215 individuals fell ill after consuming imported contaminated baby corn [@Lewis_2009], a smaller outbreak in 2009 linked to sugar snap peas from Kenya [@Muller_2009], and a 2020 outbreak associated with fresh mint as the source of infection. 
 
-The 2020 outbreak is indeed a significant focus of this study, as it serves as a benchmark for evaluating the effectiveness of outbreak detection algorithms. It took place from the 22th of August to the 9th of September and was investigated by SSI in collaboration with the Danish Veterinary and Food Administration and the National Food Institute at the Technical University of Denmark. The outbreak affected 44 patients, mainly concentrated in the Capital Region of Denmark. During the investigation, at least five events were identified where individuals subsequently developed \textit{Shigellosis}.
+The 2020 outbreak is indeed a significant focus of this study, as it serves as a benchmark for evaluating the effectiveness of outbreak detection algorithms. It took place from the 22nd of August to the 9th of September and was investigated by SSI in collaboration with the Danish Veterinary and Food Administration and the National Food Institute at the Technical University of Denmark. The outbreak affected 44 patients, mainly concentrated in the Capital Region of Denmark. The investigation identified at least five events where individuals subsequently developed \textit{Shigellosis}. 
 
 (ref:SHIGSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of SHIL by SSI and possible collaborators.
 

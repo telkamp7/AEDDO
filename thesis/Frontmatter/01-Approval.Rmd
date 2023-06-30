@@ -1,0 +1,15 @@
+\section*{Approval}
+\addcontentsline{toc}{section}{Preface}
+This thesis has been prepared over six months at the \sectiondescriber, \departmentdescriber, at the \universitydescriber, DTU, in collaboration with Epidemiologisk Forskning / Modelgruppen at Statens Serum Institut, SSI, in partial fulfilment for the degree Master of Science in Engineering, MSc Eng., Quantitative Biology and Disease Modelling. 
+
+It is assumed that the reader has a basic knowledge in the areas of statistics. 
+
+\vfill
+
+\begin{center}
+\namesigdate{\thesisauthor~-~\studentnumber}
+\end{center}
+
+\vfill
+
+\clearpage 

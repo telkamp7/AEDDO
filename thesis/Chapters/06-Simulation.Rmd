@@ -1,12 +1,12 @@
 \chapter{Simulation study}
 
-In this chapter, a comprehensive simulation study is conducted to evaluate the performance of the novel outbreak detection algorithm compared to state-of-the-art algorithms. The simulations cover various scenarios, adapted from the study by @Noufaily_2013. However, for the purpose of this master's thesis, the focus is not on diseases with bi-annual seasonality. Therefore, the scenarios involving bi-annual seasonality are excluded from the simulation study.
+In this chapter, a comprehensive simulation study is conducted to evaluate the performance of the novel outbreak detection algorithm compared to state-of-the-art algorithms. The simulations cover various scenarios, adapted from the study by @Noufaily_2013. However, for the purpose of this master thesis, the focus is not on diseases with bi-annual seasonality. Therefore, the scenarios involving bi-annual seasonality are excluded from the simulation study.
 
 The chapter begins by describing the method used to simulate the baseline data. These data are generated using a negative binomial model with a time-dependent mean $\mu(t)$. Next, the assumptions regarding the simulated outbreaks are outlined, including the outbreak size and distribution in time.
 
 The evaluation measures used to assess the performance of the outbreak detection algorithms are then presented. These measures are designed to capture relevant quantities in the context of outbreak detection.
 
-Finally, the chapter presents the results of applying both the state-of-the-art outbreak detection algorithms and the novel outbreak detection algorithm to the simulated data. The performance of each algorithm is evaluated based on the simulation results.
+Finally, the chapter presents the results of applying both the state-of-the-art and the novel outbreak detection algorithms to the simulated data. The performance of both algorithms is evaluated based on the simulation results.
 
 \section{The simulated baseline data}
 
@@ -26,7 +26,7 @@ To cover a wide range of data sets encountered in practical applications, 28 dif
 
 scenarios %>%
   mutate(Scenario = row_number()) %>%
-  select(Scenario, theta, beta, gamma1, gamma2, phi, m, trend) %>%
+  select(Scenario, theta, phi, beta, gamma1, gamma2, m, trend) %>%
   rename(`$\\theta$` = theta, `$\\beta$` = beta, `$m$` = m, `$\\phi$` = phi, `$\\gamma_1$` = gamma1, `$\\gamma_2$` = gamma2, Trend = trend) %>%
   kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "Parameters and criteria utilized to generate the 28 scenarios.",
       linesep = c(rep("", 3), "\\addlinespace")) %>%
@@ -37,7 +37,7 @@ scenarios %>%
 
 To simulate the baseline data without outbreaks, 100 replicates are generated for each of the 28 parameter scenarios. Each replicate consist of a time series of size $T=624$ weeks. 
 
-The 624 weeks are divided into three periods: 1-313 are used as training weeks for the adaptive re-weighting schemes, weeks 313-575 are considered as baseline weeks, and weeks 576-624 are designated as the "current" weeks for evaluation. 
+The 624 weeks are divided into three periods: weeks 1-313 are used for training, weeks 313-575 are considered as baseline weeks, and weeks 576-624 are designated as the "current" weeks for evaluation
 
 The simulation results are based on the "current" weeks of all the replicates, totaling $100\times 49=4900$ replicates, for each of the 28 data scenarios and each method investigated.
 
@@ -51,7 +51,7 @@ knitr::include_graphics("../figures/Realizations.png")
 
 \section{The simulated outbreaks}
 
-The outbreaks starting in week $t$ are simulated using the following procedure. First, a constant value $k$ is chosen. The size of the outbreak, denoted as $n$, is then generated randomly from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline count at time $t$.
+The outbreaks starting in week $t$ are simulated using the following procedure. First, a constant value $k$ is chosen at random. The size of the outbreak, denoted as $n$, is then generated randomly from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline count at time $t$.
 
 Next, the outbreak is distributed randomly in time according to a log-normal distribution with a mean of 0 and a standard deviation of 0.5, represented as $Z \sim \LN(0,0.5^2)$. This is achieved by drawing $n$ random numbers from the log-normal distribution, which correspond to the outbreak size, and then rounding down these numbers to the nearest integer, denoted as $\lfloor \boldsymbol{z} \rfloor$.
 
@@ -65,7 +65,7 @@ knitr::include_graphics("../figures/PDFLogNormal.png")
 
 ```
 
-Typically, outbreak durations of 2-8 weeks are observed when values of $k$ are in the range of 2-10. To simulate the outbreaks, the outbreak cases are added to the baseline count in week $t+z_i$, where $t$ represents the start time of the outbreak and $z_i$ represents the number of weeks after the start of the outbreak. The start and end times of the outbreaks are recorded for evaluating the performance of the methods.
+Typically, outbreak durations of 2-4 weeks are observed when values of $k$ are in the range of 2-10. To simulate the outbreaks, the outbreak cases are added to the baseline count in week $t+z_i$, where $t$ represents the start time of the outbreak and $z_i$ represents the number of weeks after the start of the outbreak. The start and end times of the outbreaks are recorded for evaluating the performance of the methods.
 
 To simulate outbreaks, the following procedure is followed:
 
@@ -78,7 +78,7 @@ To simulate outbreaks, the following procedure is followed:
 
 To evaluate the performance of the outbreak detection system, several measures are employed to assess its effectiveness in detecting current outbreaks. These measures are specifically designed to capture relevant quantities in the given context.
 
-One of the primary measures used is the False Positive Rate (FPR), which is calculated for each of the 28 scenarios and methods. The FPR is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold, even though there are no actual outbreaks during those weeks.
+One of the primary measures used is the False Positive Rate (FPR), which is calculated for each of the 28 scenarios and methods. The FPR is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold. Effectively, the number of weeks where it is possible to give a false positive is closer to 47, depending on how many weeks the simulated outbreak occupies. 
 
 Another measure is the probability of detecting and outbreak (POD), also known as power. Likewise, this is calculated for each of the 28 scenarios. The algorithm is applied iteratively for the 49 current weeks, and an outbreak is considered detected if the observed value exceeds the threshold at least one within the start and end times of the outbreak. The POD is then determined as the proportion of outbreaks detected out of the 100 runs.
 
@@ -86,18 +86,18 @@ It is important to note that the FPR is a rate per week, while the POD is a rate
 
 \section{Results of the simulations}
 
-In this section, the results regarding the simulation study is presented. Both the state-of-the-art outbreak detection algorithm and the novel outbreak detection algorithm are applied to the simulated data. 
+In this section, the results of the simulation study are presented. Both the state-of-the-art and novel outbreak detection algorithms are applied to the same simulated data, allowing for the evaluation of their performance in a setting where the true parameters and process are known. 
 
-The `control` arguements for the Farrington and Noufaily method respectively can be found in Appendix \@ref(controlsStateOfTheArt).
-
-
-For both of the state-of-the-art outbreak detection algorithms 
+The data consists of weekly counts of a simulated disease, denoted as $y_t$, where $t=1,\cdots,T$ represents the time period of $T=624$ weeks. 
 
 
-In all of the methods, a 
+
+Notably, it is decided to include 3 years of reference data to both methods, corresponding to a total of `r 3*52` weeks.
 
 
-The model for the fixed effects in each of the modeling frameworks respectively, is defined as:
+The first step involves applying the state-of-the-art outbreak detection algorithm, with specific control arguments determined for the Farrington and Noufaily methods. The details of these control arguments can be found in Appendix \@ref(controlsStateOfTheArt). 
+
+Hereafter, the novel outbreak detection algorithm is applied. For this purpose, the model for the fixed effects in each of the modeling frameworks respectively, is defined as:
 
 \begin{equation}
   \log(\lambda_{t}) = \beta_{intercept} + \beta_{trend} t + \sin \big(\frac{2\pi\cdot \tau_t}{52}\big) \beta_{\sin} + \cos \big(\frac{2\pi\cdot \tau_t}{52}\big)\beta_{\cos}
@@ -106,23 +106,19 @@ The model for the fixed effects in each of the modeling frameworks respectively,
 
 
 
-in each of the modeling frameworks
+
+
 
 
 In general, one obtains relatively higher FPRs when using the Farrington method compared to the other methods. This is to no surprise, as this method is known for being overly sensitive, and thus producing more false alarms.
-
 
 (ref:FPR) FPRs obtained in each of the 28 scenarios for each of the methods applied. Thresholds are based on the $0.95$ quantile
 
 ```{r FPR, echo=FALSE, out.width="100%", fig.cap="(ref:FPR)", fig.pos = "H", fig.show = "hold"}
 
-knitr::include_graphics("../figures/FPR.png")
+knitr::include_graphics("../figures/FPRPlot.png")
 
 ```
-
-
-
-
 
 
 The PODs for the 28 scenarios and eac
@@ -138,6 +134,33 @@ knitr::include_graphics("../figures/PropDetect.png")
 ```
 
 Interestingly, some scenarios produce unusual low power curves. Specifically, this is seen in the Noufaily method for scenario 5, 7, and 15. Here, these scenarios leads to less than 60% of the outbreaks detected with this method, when the outbreak size is $k=10$ times the standard deviation. In general, scenario 7 leads to the lowest power curve across all methods, with none of the outbreaks being detected by the Noufaily method.
+
+It is important to remember, that the outbreak of size $n$ is distributed randomly in time according to a log-normal distribution with mean $0$ and a standard deviation of $0.5$. Thus, the simulated outbreaks is not observed in a single time point, but rather in several concurrent time points. 
+
+In general, this means that an outbreak generated from a Poisson distribution with mean equal to $k$ times the standard deviation of the baseline series is observed to be relatively smaller, than what it initially perceived from the simulation setup, i.e. an outbreak of size $k=4$ times the standard deviation may only be perceived as an outbreak of size $2$ times the standard deviation in an individual time point.
+
+
+```{r FPRTbl, echo=FALSE}
+FPR %>%
+  group_by(Method) %>%
+  reframe(min(FPR), max(FPR), mean(FPR), median(FPR), sd(FPR)) %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", caption = "Placeholder") %>%
+  kable_paper(latex_option = c("HOLD_position"))
+```
+
+
+```{r PODTbl, echo=FALSE}
+POD %>%
+  filter(k %in% c(2,4,6,8,10)) %>%
+  reframe(min(POD), max(POD), mean(POD), median(POD), sd(POD)) %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "Placeholder", linesep = c(rep("", 4), "\\addlinespace")) %>%
+  kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
+  collapse_rows(columns = 1, 
+                latex_hline = "custom",
+                valign = "middle",
+                custom_latex_hline = 1)
+```
+
 
 
 \cleardoublepage

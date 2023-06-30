@@ -302,6 +302,11 @@ STEC_PoisN_ageGroup_unnested %>%
   scale_shape_manual(values = c(1,19)) +
   guides(shape = "none")
 
+STEC_PoisN_ageGroup_par <- STEC_PoisN_ageGroup  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Normal")
+
 STEC_PoisN_ageGroup_trend_unnested <- STEC_PoisN_ageGroup_trend %>% 
   select(ran.ef) %>%
   unnest(ran.ef) %>%
@@ -318,6 +323,16 @@ STEC_PoisN_ageGroup_trend_unnested %>%
   scale_colour_manual(values = dtuPalette) +
   scale_shape_manual(values = c(1,19)) +
   guides(shape = "none")
+
+STEC_PoisN_ageGroup_trend_par <- STEC_PoisN_ageGroup_trend  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Normal")
+
+STEC_PoisN_ageGroup_seasonality_par <- STEC_PoisN_ageGroup_seasonality  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Normal")
 
 STEC_PoisN_ageGroup_trend_seasonality_unnested <- STEC_PoisN_ageGroup_trend_seasonality %>% 
   select(ran.ef) %>%
@@ -426,6 +441,21 @@ STEC_PoisG_ageGroup_trend_seasonality_unnested <- STEC_PoisG_ageGroup_trend_seas
   mutate(threshold = qgamma(p = 0.9, shape = 1/phi, scale = phi)) %>%
   select(Date = ref.date, ageGroup, `u_Poisson Gamma` = u, `alarm_Poisson Gamma` = alarm, `threshold_Poisson Gamma` = threshold)
 
+STEC_PoisG_ageGroup_par <- STEC_PoisG_ageGroup %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Gamma")
+
+STEC_PoisG_ageGroup_trend_par <- STEC_PoisG_ageGroup_trend  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Gamma")
+
+STEC_PoisG_ageGroup_seasonality_par <- STEC_PoisG_ageGroup_seasonality  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Gamma")
+
 STEC_PoisG_ageGroup_trend_seasonality_par <- STEC_PoisG_ageGroup_trend_seasonality  %>% 
   select(ref.date, par) %>%
   unnest(par) %>% 
@@ -526,6 +556,7 @@ write_rds(STEC_novel_tbl, file = "STEC_novel_tbl.rds")
 STEC_novel <- full_join(STEC_PoisN_ageGroup_trend_seasonality_unnested,
                         STEC_PoisG_ageGroup_trend_seasonality_unnested,
                         by = join_by(Date, ageGroup))
+write_rds(x = STEC_novel, file = "STEC_novel.rds")
 
 Compare_novel <- STEC_novel %>%
   pivot_longer(cols = c(`u_Poisson Normal`, `u_Poisson Gamma`), names_to = "method", names_prefix = "u_", values_to = "u") %>%
@@ -538,7 +569,7 @@ Compare_novel <- STEC_novel %>%
   geom_point(mapping = aes(y = u, shape = alarm), size = 2) +
   geom_line(mapping = aes(y = threshold, group = method), lty = "dashed") +
   facet_grid(rows = vars(ageGroup), cols = vars(method), scales = "free_y") +
-  scale_y_continuous(name = expression(u[t[1]])) +
+  scale_y_continuous(name = expression(widehat(u)[t[1]])) +
   scale_x_date(name = "Date") +
   scale_colour_manual(values = dtuPalette) +
   scale_shape_manual(values = c(1,19)) +
@@ -558,11 +589,48 @@ custom_labeller <- as_labeller(
     `ageGroup5-14 years`="beta[5-14~years]",`ageGroup15-24 years`="beta[15-24~years]",
     `ageGroup25-64 years`="beta[25-64~years]", `ageGroup65+ years`="beta[65+~years]",
     `t`="beta[trend]", `sin(pi/6 * periodInYear)` ="beta[sin]",
-    `cos(pi/6 * periodInYear)`="beta[cos]", `log_phi`="phi", `log_sigma`="sigma"),
+    `cos(pi/6 * periodInYear)`="beta[cos]", `log_phi`="phi", `log_sigma`="sigma",
+    `Constant`="Constant", `Trend`="Trend", `Seasonality`="Seasonality", `Combined`="Combined"),
   default = label_parsed
 )
 
-STEC_novel_par <- bind_rows(STEC_PoisG_ageGroup_trend_seasonality_par, STEC_PoisN_ageGroup_trend_seasonality_par) 
+STEC_novel_par <- bind_rows(
+  STEC_PoisN_ageGroup_par %>% mutate(Model = "Constant"),
+  STEC_PoisG_ageGroup_par %>% mutate(Model = "Constant"),
+  STEC_PoisN_ageGroup_trend_par %>% mutate(Model = "Trend"),
+  STEC_PoisG_ageGroup_trend_par %>% mutate(Model = "Trend"),
+  STEC_PoisN_ageGroup_seasonality_par %>% mutate(Model = "Seasonality"),
+  STEC_PoisG_ageGroup_seasonality_par %>% mutate(Model = "Seasonality"),
+  STEC_PoisN_ageGroup_trend_seasonality_par %>% mutate(Model = "Combined"),
+  STEC_PoisG_ageGroup_trend_seasonality_par %>% mutate(Model = "Combined")) %>%
+  mutate(Model = factor(Model, levels = c("Constant", "Trend", "Seasonality", "Combined")),
+         Parameter = factor(Parameter, levels = c("ageGroup<1 year", "ageGroup1-4 years",
+                                                  "ageGroup5-14 years", "ageGroup15-24 years",
+                                                  "ageGroup25-64 years", "ageGroup65+ years",
+                                                  "t","sin(pi/6 * periodInYear)",
+                                                  "cos(pi/6 * periodInYear)", "log_sigma", "log_phi")))
+
+
+STEC_novel_par_plot <- STEC_novel_par %>%
+  mutate_at(vars(theta:CI.upr), list(~case_when(Parameter == "log_sigma" ~ exp(.),
+                                                Parameter == "log_phi" ~ exp(.),
+                                                TRUE ~ .))) %>%
+  ggplot(mapping = aes(x = ref.date)) +
+  geom_line(mapping = aes(y = theta, colour = Method), linewidth = 1) +
+  geom_line(mapping = aes(y = CI.lwr, colour = Method), lty = "dashed") +
+  geom_line(mapping = aes(y = CI.upr, colour = Method), lty = "dashed") +
+  facet_grid(rows = vars(Parameter), cols = vars(Model), scales = "free_y", labeller = custom_labeller) +
+  scale_color_manual(values = dtuPalette) +
+  scale_y_continuous(name = expression(widehat(theta))) +
+  scale_x_date(name = "Month")
+ggsave(filename = "STEC_novel_par_plot.png",
+       plot = STEC_novel_par_plot,
+       path = "../../figures/",
+       device = png,
+       width =22,
+       height = 28,
+       units = "in",
+       dpi = "print")  
 
 
 STEC_novel_par_ageGroup <- STEC_novel_par %>%
@@ -573,7 +641,7 @@ STEC_novel_par_ageGroup <- STEC_novel_par %>%
   geom_line(mapping = aes(y = CI.upr, colour = Method), lty = "dashed") +
   facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
   scale_color_manual(values = dtuPalette) +
-  scale_y_continuous(name = expression(beta[i])) +
+  scale_y_continuous(name = expression(widehat(beta)[i])) +
   scale_x_date(name = "Month")
 ggsave(filename = "STEC_novel_par_ageGroup.png",
        plot = STEC_novel_par_ageGroup,
@@ -592,7 +660,7 @@ STEC_novel_par_trend <- STEC_novel_par %>%
   geom_line(mapping = aes(y = CI.upr, colour = Method), lty = "dashed") +
   facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
   scale_color_manual(values = dtuPalette) +
-  scale_y_continuous(name = expression(beta[i])) +
+  scale_y_continuous(name = expression(widehat(beta)[i])) +
   scale_x_date(name = "Month")
 ggsave(filename = "STEC_novel_par_trend.png",
        plot = STEC_novel_par_trend,
@@ -611,7 +679,7 @@ STEC_novel_par_seasonality <- STEC_novel_par %>%
   geom_line(mapping = aes(y = CI.upr, colour = Method), lty = "dashed") +
   facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
   scale_color_manual(values = dtuPalette) +
-  scale_y_continuous(name = expression(beta[i])) +
+  scale_y_continuous(name = expression(widehat(beta)[i])) +
   scale_x_date(name = "Month")
 ggsave(filename = "STEC_novel_par_seasonality.png",
        plot = STEC_novel_par_seasonality,
@@ -631,7 +699,7 @@ STEC_novel_par_dispersion <- STEC_novel_par %>%
   geom_line(mapping = aes(y = exp(CI.upr), colour = Method), lty = "dashed") +
   facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
   scale_color_manual(values = dtuPalette) +
-  scale_y_continuous(name = expression(Psi)) +
+  scale_y_continuous(name = expression(widehat(Psi))) +
   scale_x_date(name = "Month")
 ggsave(filename = "STEC_novel_par_dispersion.png",
        plot = STEC_novel_par_dispersion,
@@ -688,6 +756,7 @@ STEC_compare <- STEC_novel %>%
 write_rds(x = STEC_compare, file = "STEC_compare.rds")
 
 Compare_alarms <- STEC_compare %>%
+  filter(Date >= as.Date("2011-01-01")) %>%
   ggplot(mapping = aes(x = alarmDate, y = method, colour = method)) +
   geom_point(shape = 17, size = 4) +
   scale_color_manual(values = dtuPalette[c(7,9:11,6)]) +

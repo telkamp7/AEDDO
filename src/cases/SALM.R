@@ -477,6 +477,7 @@ SALM_PoisG_ageGroup_trend_seasonality_unnested <- SALM_PoisG_ageGroup_trend_seas
 SALM_novel <- full_join(SALM_PoisN_ageGroup_trend_seasonality_unnested,
                         SALM_PoisG_ageGroup_trend_seasonality_unnested,
                         by = join_by(Date, ageGroup))
+write_rds(x = SALM_novel, file = "SALM_novel.rds")
 
 Compare_novel <- SALM_novel %>%
   pivot_longer(cols = c(`u_Poisson Normal`, `u_Poisson Gamma`), names_to = "method", names_prefix = "u_", values_to = "u") %>%
@@ -504,26 +505,108 @@ ggsave(filename = "Compare_novel_SALM.png",
        dpi = "print")  
 
 
-custom_labeller <- as_labeller(
-  c(`ageGroup<1 year`="beta[1~year]", `ageGroup1-4 years`="beta[1-4~years]",
-    `ageGroup5-14 years`="beta[5-14~years]",`ageGroup15-24 years`="beta[15-24~years]",
-    `ageGroup25-64 years`="beta[25-64~years]", `ageGroup65+ years`="beta[65+~years]",
-    `t`="beta[trend]", `sin(pi/6 * periodInYear)` ="beta[sin]",
-    `cos(pi/6 * periodInYear)`="beta[cos]", `log_phi`="phi", `log_sigma`="sigma"),
-  default = label_parsed
-)
-
-SALM_PoisG_ageGroup_trend_seasonality_par <- SALM_PoisG_ageGroup_trend_seasonality  %>% 
+SALM_PoisN_ageGroup_par <- SALM_PoisN_ageGroup  %>% 
   select(ref.date, par) %>%
   unnest(par) %>% 
-  mutate(Method = "Poisson Gamma")
+  mutate(Method = "Poisson Normal")
+
+SALM_PoisN_ageGroup_trend_par <- SALM_PoisN_ageGroup_trend  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Normal")
+
+SALM_PoisN_ageGroup_seasonality_par <- SALM_PoisN_ageGroup_seasonality  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Normal")
 
 SALM_PoisN_ageGroup_trend_seasonality_par <- SALM_PoisN_ageGroup_trend_seasonality  %>% 
   select(ref.date, par) %>%
   unnest(par) %>% 
   mutate(Method = "Poisson Normal")
 
-SALM_novel_par <- bind_rows(SALM_PoisG_ageGroup_trend_seasonality_par, SALM_PoisN_ageGroup_trend_seasonality_par) 
+SALM_PoisG_ageGroup_par <- SALM_PoisG_ageGroup  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Gamma")
+
+SALM_PoisG_ageGroup_trend_par <- SALM_PoisG_ageGroup_trend  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Gamma")
+
+SALM_PoisG_ageGroup_seasonality_par <- SALM_PoisG_ageGroup_seasonality  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Gamma")
+
+SALM_PoisG_ageGroup_trend_seasonality_par <- SALM_PoisG_ageGroup_trend_seasonality  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Gamma")
+
+SALM_novel_par <- bind_rows(
+  SALM_PoisN_ageGroup_par %>% mutate(Model = "Constant"),
+  SALM_PoisG_ageGroup_par %>% mutate(Model = "Constant"),
+  SALM_PoisN_ageGroup_trend_par %>% mutate(Model = "Trend"),
+  SALM_PoisG_ageGroup_trend_par %>% mutate(Model = "Trend"),
+  SALM_PoisN_ageGroup_seasonality_par %>% mutate(Model = "Seasonality"),
+  SALM_PoisG_ageGroup_seasonality_par %>% mutate(Model = "Seasonality"),
+  SALM_PoisN_ageGroup_trend_seasonality_par %>% mutate(Model = "Combined"),
+  SALM_PoisG_ageGroup_trend_seasonality_par %>% mutate(Model = "Combined")) %>%
+  mutate(Model = factor(Model, levels = c("Constant", "Trend", "Seasonality", "Combined")),
+         Parameter = factor(Parameter, levels = c("ageGroup<25 years", "ageGroup25+ years","t",
+                                                  "sin(pi/6 * periodInYear)","cos(pi/6 * periodInYear)",
+                                                  "log_sigma", "log_phi")))
+
+custom_labeller <- as_labeller(
+  c(`ageGroup<1 year`="beta[1~year]", `ageGroup1-4 years`="beta[1-4~years]",
+    `ageGroup5-14 years`="beta[5-14~years]",`ageGroup15-24 years`="beta[15-24~years]",
+    `ageGroup25-64 years`="beta[25-64~years]", `ageGroup65+ years`="beta[65+~years]",
+    `t`="beta[trend]", `sin(pi/6 * periodInYear)` ="beta[sin]",
+    `cos(pi/6 * periodInYear)`="beta[cos]", `log_phi`="phi", `log_sigma`="sigma",
+    `Constant`="Constant", `Trend`="Trend", `Seasonality`="Seasonality", `Combined`="Combined"),
+  default = label_parsed
+)
+
+SALM_novel_par <- bind_rows(
+  SALM_PoisN_ageGroup_par %>% mutate(Model = "Constant"),
+  SALM_PoisG_ageGroup_par %>% mutate(Model = "Constant"),
+  SALM_PoisN_ageGroup_trend_par %>% mutate(Model = "Trend"),
+  SALM_PoisG_ageGroup_trend_par %>% mutate(Model = "Trend"),
+  SALM_PoisN_ageGroup_seasonality_par %>% mutate(Model = "Seasonality"),
+  SALM_PoisG_ageGroup_seasonality_par %>% mutate(Model = "Seasonality"),
+  SALM_PoisN_ageGroup_trend_seasonality_par %>% mutate(Model = "Combined"),
+  SALM_PoisG_ageGroup_trend_seasonality_par %>% mutate(Model = "Combined")) %>%
+  mutate(Model = factor(Model, levels = c("Constant", "Trend", "Seasonality", "Combined")),
+         Parameter = factor(Parameter, levels = c("ageGroup<1 year", "ageGroup1-4 years",
+                                                  "ageGroup5-14 years", "ageGroup15-24 years",
+                                                  "ageGroup25-64 years", "ageGroup65+ years",
+                                                  "t","sin(pi/6 * periodInYear)",
+                                                  "cos(pi/6 * periodInYear)", "log_sigma", "log_phi")))
+
+
+SALM_novel_par_plot <- SALM_novel_par %>%
+  mutate_at(vars(theta:CI.upr), list(~case_when(Parameter == "log_sigma" ~ exp(.),
+                                                Parameter == "log_phi" ~ exp(.),
+                                                TRUE ~ .))) %>%
+  ggplot(mapping = aes(x = ref.date)) +
+  geom_line(mapping = aes(y = theta, colour = Method), linewidth = 1) +
+  geom_line(mapping = aes(y = CI.lwr, colour = Method), lty = "dashed") +
+  geom_line(mapping = aes(y = CI.upr, colour = Method), lty = "dashed") +
+  facet_grid(rows = vars(Parameter), cols = vars(Model), scales = "free_y", labeller = custom_labeller) +
+  scale_color_manual(values = dtuPalette) +
+  scale_y_continuous(name = expression(widehat(theta))) +
+  scale_x_date(name = "Month")
+ggsave(filename = "SALM_novel_par_plot.png",
+       plot = SALM_novel_par_plot,
+       path = "../../figures/",
+       device = png,
+       width =22,
+       height = 28,
+       units = "in",
+       dpi = "print")  
+
 
 
 SALM_novel_par_ageGroup <- SALM_novel_par %>%

@@ -38,7 +38,7 @@ source(file = "../models/aeddo.R")
 # Load in the data
 dat <- read_rds(file = "../../data/processed/dat2.rds")
 
-# Only consider the STEC cases
+# Only consider the SHIL cases
 SHIL <- dat %>%
   filter(caseDef == "SHIL") %>%
   mutate(ageGroup = fct_collapse(ageGroup, `<25 years` = c("<1 year", "1-4 years","5-14 years","15-24 years")),
@@ -476,6 +476,9 @@ SHIL_PoisG_ageGroup_trend_unnested <- SHIL_PoisG_ageGroup_trend %>%
 SHIL_novel <- full_join(SHIL_PoisN_ageGroup_trend_unnested,
                         SHIL_PoisG_ageGroup_trend_unnested,
                         by = join_by(Date, ageGroup))
+write_rds(x = SHIL_novel, file = "SHIL_novel.rds")
+
+
 
 Compare_novel <- SHIL_novel %>%
   pivot_longer(cols = c(`u_Poisson Normal`, `u_Poisson Gamma`), names_to = "method", names_prefix = "u_", values_to = "u") %>%
@@ -503,25 +506,92 @@ ggsave(filename = "Compare_novel_SHIL.png",
        dpi = "print")  
 
 
-custom_labeller <- as_labeller(
-  c(`ageGroup<1 year`="beta[1~year]", `ageGroup1-4 years`="beta[1-4~years]",
-    `ageGroup5-14 years`="beta[5-14~years]",`ageGroup15-24 years`="beta[15-24~years]",
-    `ageGroup25-64 years`="beta[25-64~years]", `ageGroup65+ years`="beta[65+~years]",
-    `ageGroup<25 years`="beta['<25~years']",`ageGroup25+ years`="beta[25+~years]",
-    `t`="beta[trend]", `sin(pi/6 * periodInYear)` ="beta[sin]",
-    `cos(pi/6 * periodInYear)`="beta[cos]", `log_phi`="phi", `log_sigma`="sigma"),
-  default = label_parsed
-)
+
+SHIL_PoisN_ageGroup_par <- SHIL_PoisN_ageGroup  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Normal")
+
+SHIL_PoisN_ageGroup_trend_par <- SHIL_PoisN_ageGroup_trend  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Normal")
+
+SHIL_PoisN_ageGroup_seasonality_par <- SHIL_PoisN_ageGroup_seasonality  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Normal")
+
+SHIL_PoisN_ageGroup_trend_seasonality_par <- SHIL_PoisN_ageGroup_trend_seasonality  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Normal")
+
+SHIL_PoisG_ageGroup_par <- SHIL_PoisG_ageGroup  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Gamma")
 
 SHIL_PoisG_ageGroup_trend_par <- SHIL_PoisG_ageGroup_trend  %>% 
   select(ref.date, par) %>%
   unnest(par) %>% 
   mutate(Method = "Poisson Gamma")
 
-SHIL_PoisN_ageGroup_trend_par <- SHIL_PoisN_ageGroup_trend  %>% 
+SHIL_PoisG_ageGroup_seasonality_par <- SHIL_PoisG_ageGroup_seasonality  %>% 
   select(ref.date, par) %>%
   unnest(par) %>% 
-  mutate(Method = "Poisson Normal")
+  mutate(Method = "Poisson Gamma")
+
+SHIL_PoisG_ageGroup_trend_seasonality_par <- SHIL_PoisG_ageGroup_trend_seasonality  %>% 
+  select(ref.date, par) %>%
+  unnest(par) %>% 
+  mutate(Method = "Poisson Gamma")
+
+custom_labeller <- as_labeller(
+  c(`ageGroup<25 years`="beta['<25~years']",`ageGroup25+ years`="beta[25+~years]",
+    `t`="beta[trend]", `sin(pi/6 * periodInYear)` ="beta[sin]",
+    `cos(pi/6 * periodInYear)`="beta[cos]", `log_phi`="phi", `log_sigma`="sigma",
+    `Constant`="Constant", `Trend`="Trend", `Seasonality`="Seasonality", `Combined`="Combined"),
+  default = label_parsed
+)
+
+SHIL_novel_par <- bind_rows(
+  SHIL_PoisN_ageGroup_par %>% mutate(Model = "Constant"),
+  SHIL_PoisG_ageGroup_par %>% mutate(Model = "Constant"),
+  SHIL_PoisN_ageGroup_trend_par %>% mutate(Model = "Trend"),
+  SHIL_PoisG_ageGroup_trend_par %>% mutate(Model = "Trend"),
+  SHIL_PoisN_ageGroup_seasonality_par %>% mutate(Model = "Seasonality"),
+  SHIL_PoisG_ageGroup_seasonality_par %>% mutate(Model = "Seasonality"),
+  SHIL_PoisN_ageGroup_trend_seasonality_par %>% mutate(Model = "Combined"),
+  SHIL_PoisG_ageGroup_trend_seasonality_par %>% mutate(Model = "Combined")) %>%
+  mutate(Model = factor(Model, levels = c("Constant", "Trend", "Seasonality", "Combined")),
+         Parameter = factor(Parameter, levels = c("ageGroup<25 years", "ageGroup25+ years","t",
+                                                  "sin(pi/6 * periodInYear)","cos(pi/6 * periodInYear)",
+                                                  "log_sigma", "log_phi")))
+
+
+SHIL_novel_par_plot <- SHIL_novel_par %>%
+  mutate_at(vars(theta:CI.upr), list(~case_when(Parameter == "log_sigma" ~ exp(.),
+                                                Parameter == "log_phi" ~ exp(.),
+                                                TRUE ~ .))) %>%
+  ggplot(mapping = aes(x = ref.date)) +
+  geom_line(mapping = aes(y = theta, colour = Method), linewidth = 1) +
+  geom_line(mapping = aes(y = CI.lwr, colour = Method), lty = "dashed") +
+  geom_line(mapping = aes(y = CI.upr, colour = Method), lty = "dashed") +
+  facet_grid(rows = vars(Parameter), cols = vars(Model), scales = "free_y", labeller = custom_labeller) +
+  scale_color_manual(values = dtuPalette) +
+  scale_y_continuous(name = expression(widehat(theta))) +
+  scale_x_date(name = "Month")
+ggsave(filename = "SHIL_novel_par_plot.png",
+       plot = SHIL_novel_par_plot,
+       path = "../../figures/",
+       device = png,
+       width =22,
+       height = 28,
+       units = "in",
+       dpi = "print")  
+
+
 
 SHIL_novel_par <- bind_rows(SHIL_PoisG_ageGroup_trend_par, SHIL_PoisN_ageGroup_trend_par) 
 

@@ -123,7 +123,7 @@ LIST.sts <- sts(
 # Farrington ------------------------------------------------------------------------
 
 con.farrington <- list(
-  range = NULL, b = 3, w = 2,
+  range = NULL, b = 3, w = 3,
   reweight = TRUE, weightsThreshold = 1,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
@@ -153,14 +153,14 @@ alarm_Farrington <- as_tibble(LIST_Farrington@alarm) %>%
 # Noufaily --------------------------------------------------------------------------
 
 con.noufaily <- list(
-  range = NULL, b = 3, w = 2,
+  range = NULL, b = 3, w = 3,
   reweight = TRUE, weightsThreshold = 2.58,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = 0.05, trend = TRUE, pThresholdTrend = 1,
   limit54 = c(0,4), powertrans = "2/3",
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
-  noPeriods = 1, pastWeeksNotIncluded = NULL,
+  noPeriods = 10, pastWeeksNotIncluded = NULL,
   thersholdMethod = "nbPlugin"
 )
 
@@ -657,6 +657,35 @@ ggsave(filename = "Compare_novel_LIST.png",
 
 
 LIST_novel_par <- bind_rows(LIST_PoisN_ageGroup_par, LIST_PoisG_ageGroup_par)
+
+custom_labeller <- as_labeller(
+  c(`ageGroup<65 years`="beta['<65 years']",
+    `ageGroup65+ years`="beta[65+~years]",
+    `log_phi`="phi", `log_sigma`="sigma"),
+  default = label_parsed
+)
+
+LIST_novel_par_plot <- LIST_novel_par %>%
+  mutate_at(vars(theta:CI.upr), list(~case_when(Parameter == "log_sigma" ~ exp(.),
+                                               Parameter == "log_phi" ~ exp(.),
+                                               TRUE ~ .))) %>%
+  ggplot(mapping = aes(x = ref.date)) +
+  geom_line(mapping = aes(y = theta, colour = Method), linewidth = 1) +
+  geom_line(mapping = aes(y = CI.lwr, colour = Method), lty = "dashed") +
+  geom_line(mapping = aes(y = CI.upr, colour = Method), lty = "dashed") +
+  facet_wrap(facets = vars(Parameter), scales = "free_y", labeller = custom_labeller) +
+  scale_color_manual(values = dtuPalette) +
+  scale_y_continuous(name = expression(widehat(theta))) +
+  scale_x_date(name = "Month")
+ggsave(filename = "LIST_novel_par_plot.png",
+       plot = LIST_novel_par_plot,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")  
+
 LIST_novel_par_ageGroup <- LIST_novel_par %>%
   filter(grepl(x = Parameter, pattern = "ageGroup")) %>%
   ggplot(mapping = aes(x = ref.date)) +
@@ -726,15 +755,85 @@ ggsave(filename = "Compare_novel.png",
 
 # Outbreaks invstigated by SSI ------------------------------------------------------
 
-SSI_outbreaks <- tibble(Start = as.Date(x = c("2009-05-06","2013-09-01", "2017-05-01", "2016-12-01", "2016-01-01", "2018-12-01", "2020-10-01", "2021-10-01", "2022-05-13", "2022-08-15")),
+SSI_caseDistribution <- tribble(
+  ~FUD, ~Date, ~y,
+  "FUD1373", as.Date("2014-03-31"), 1,
+  "FUD1373", as.Date("2014-05-26"), 1,
+  "FUD1373", as.Date("2014-06-02"), 1,
+  "FUD1373", as.Date("2014-06-16"), 2,
+  "FUD1373", as.Date("2014-07-07"), 2,
+  "FUD1373", as.Date("2014-07-14"), 2,
+  "FUD1373", as.Date("2014-07-21"), 4,
+  "FUD1373", as.Date("2014-07-28"), 4,
+  "FUD1373", as.Date("2014-08-04"), 5,
+  "FUD1373", as.Date("2014-08-11"), 4,
+  "FUD1373", as.Date("2014-08-18"), 7,
+  "FUD1373", as.Date("2014-08-25"), 1,
+  "FUD1373", as.Date("2014-09-15"), 1,
+  "FUD1373", as.Date("2014-09-22"), 1,
+  "FUD1373", as.Date("2014-10-06"), 1,
+  "FUD2080", as.Date("2022-05-09"), 2,
+  "FUD2080", as.Date("2022-05-16"), 3,
+  "FUD2080", as.Date("2022-05-23"), 3,
+  "FUD2080", as.Date("2022-06-06"), 1,
+  "FUD2074", as.Date("2022-10-01"), 1,
+  "FUD2074", as.Date("2022-04-01"), 2,
+  "FUD2074", as.Date("2022-05-01"), 1,
+  "FUD2074", as.Date("2022-06-01"), 4,
+  "FUD2127", as.Date("2022-08-15"), 1,
+  "FUD2127", as.Date("2022-09-19"), 2,
+  "FUD2127", as.Date("2022-09-26"), 1,
+  "FUD2127", as.Date("2022-10-10"), 1,
+  "FUD2127", as.Date("2022-10-24"), 3,
+  "FUD2127", as.Date("2022-10-31"), 2,
+  "FUD2127", as.Date("2022-11-21"), 1,
+  "FUD887", as.Date("2009-04-06"), 7,
+  "FUD887", as.Date("2009-05-11"), 1,
+  "FUD1939", as.Date("2020-10-01"), 1,
+  "FUD1939", as.Date("2020-11-01"), 1,
+  "FUD1939", as.Date("2021-02-01"), 1,
+  "FUD1939", as.Date("2021-04-01"), 1,
+  "FUD1939", as.Date("2021-05-01"), 1,
+  "FUD1939", as.Date("2021-06-01"), 1,
+  "FUD1939", as.Date("2021-07-01"), 2,
+  "FUD1939", as.Date("2021-08-01"), 1,
+  "FUD1939", as.Date("2021-12-01"), 1,
+  "FUD1939", as.Date("2022-06-01"), 1,
+  "FUD1559", as.Date("2016-12-01"), 1,
+  "FUD1559", as.Date("2017-01-01"), 2,
+  "FUD1559", as.Date("2017-04-01"), 1,
+  "FUD1559", as.Date("2017-05-01"), 1,
+  "FUD1559", as.Date("2017-11-01"), 1,
+  "FUD1559", as.Date("2018-11-01"), 1,
+  "FUD1559", as.Date("2019-01-01"), 1,
+  "FUD1559", as.Date("2019-02-01"), 1,
+  "FUD1597", as.Date("2017-05-01"), 1,
+  "FUD1597", as.Date("2017-08-01"), 4)
+
+SSI_caseDistribution %>%
+  ggplot(mapping = aes(x = Date, y = y)) +
+  geom_col() +
+  facet_wrap(facets = vars(FUD), ncol = 1)
+
+
+SSI_outbreaks <- tibble(FUD = c("FUD887", "FUD1373", "FUD1597", "FUD1559",NA_character_, "FUD1970","FUD1939","FUD2074","FUD2080","FUD2127"),
+                        Start = as.Date(x = c("2009-05-06","2013-09-01", "2017-05-01", "2016-12-01", "2016-01-01", "2018-12-01", "2020-10-01", "2021-10-01", "2022-05-13", "2022-08-15")),
+                        Detected = as.Date(x = c(NA_character_, "2014-06-26", "2017-08-23", rep(NA_character_, 7))),
                         End = as.Date(x = c("2009-05-11","2014-10-01", "2017-09-01", "2019-02-01", "2019-09-20", "2021-11-01", "2022-05-01", "2022-06-01", "2022-06-06", "2022-11-27")))
+
+
+tmp <- full_join(SSI_caseDistribution, SSI_outbreaks, by = join_by(FUD)) %>%
+  print(n=25)
+
+
 
 LIST_SSI_outbreaks <- SSI_outbreaks %>%
   arrange(desc(Start)) %>%
   mutate(outbreak_no = row_number()) %>%
   ggplot() +
-  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), size = 1.2, colour = dtuPalette[2]) +
+  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), linewidth = 1.2, colour = dtuPalette[2]) +
   geom_point(mapping = aes(x = Start, y = outbreak_no), pch = 17, size = 3,colour = dtuPalette[2]) +
+  geom_point(mapping = aes(x = Detected, y = outbreak_no), pch = 19, size = 3, colour = dtuPalette[2]) +
   scale_x_date(name = "Date", limits = c(as.Date(c("2008-01-01", "2022-12-01")))) +
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank(),
@@ -765,8 +864,10 @@ LIST_compare <- LIST_novel %>%
   mutate(alarmDate = if_else(alarm, Date, NA), method = factor(method), disease = "LIST")
 
 write_rds(x = LIST_compare, file = "LIST_compare.rds")
+# LIST_compare <- read_rds(file = "LIST_compare.rds")
 
 Compare_alarms <- LIST_compare %>%
+  filter(Date >= as.Date("2011-01-01")) %>%
   ggplot(mapping = aes(x = alarmDate, y = method, colour = method)) +
   geom_point(shape = 17, size = 4) +
   scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +

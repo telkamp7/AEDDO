@@ -1,0 +1,11 @@
+\section*{Notation}
+\addcontentsline{toc}{section}{Notation}
+
+The mathematical notation in this master's thesis is adapted from \cite{Madsen_2010}. All vectors are column vectors. Vectors and matrices are emphasized using a bold font. Lowercase letters are used for vectors and uppercase letters letters are used for matrices. Transposing is denoted with the upper index $^T$. Random variables are always written using uppercase letters. Thus, it is not possible to distinguish between a multivariate random variable and a matrix. However, variables and random variables are assigned to letters from the last part of the alphabet $(X, Y, Z, U, V, \dots)$, while constants are assigned to letters from the first part of the alphabet $(A, B, C, D, \dots)$. From the context it should be possible to distinguish between a matrix and a random vector.
+
+
+\cleardoublepage 
+\tableofcontents
+\cleardoublepage 
+
+\pagenumbering{arabic}
