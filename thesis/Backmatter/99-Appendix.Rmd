@@ -65,27 +65,27 @@ Here, the specific `control` arguments used in the case studies is provided.
 ```{r ControlsLIST, eval=FALSE}
 
 con.farrington <- list(
-  range = NULL, b = 3, w = 2,
+  range = NULL, b = 3, w = 3,
   reweight = TRUE, weightsThreshold = 1,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
   limit54 = c(0,4), powertrans = "2/3",
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
-  noPeriods = 1, pastWooksNotIncluded = NULL,
+  noPeriods = 1, pastWeeksNotIncluded = NULL,
   thersholdMethod = "delta"
 )
 
 con.noufaily <- list(
-  range = NULL, b = 3, w = 2,
+  range = NULL, b = 3, w = 3,
   reweight = TRUE, weightsThreshold = 2.58,
   verbose = TRUE, glmWarnings = TRUE,
-  alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
+  alpha = 0.05, trend = TRUE, pThresholdTrend = 1,
   limit54 = c(0,4), powertrans = "2/3",
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
-  noPeriods = 1, pastWooksNotIncluded = NULL,
-  thersholdMethod = "Noufaily"
+  noPeriods = 10, pastWeeksNotIncluded = NULL,
+  thersholdMethod = "nbPlugin"
 )
 
 ```
@@ -100,11 +100,11 @@ con.farrington <- list(
   range = NULL, b = 5, w = 3,
   reweight = TRUE, weightsThreshold = 1,
   verbose = TRUE, glmWarnings = TRUE,
-  alpha = 0.005, trend = TRUE, pThresholdTrend = 0.05,
+  alpha = refPar$alphaStateOfTheArt, trend = TRUE, pThresholdTrend = 0.05,
   limit54 = c(0,4), powertrans = "2/3",
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
-  noPeriods = 1, pastWeeksNotIncluded  = NULL,
+  noPeriods = 1, pastWeeksNotIncluded  = 3,
   thersholdMethod = "delta"
 )
 
@@ -112,14 +112,13 @@ con.noufaily <- list(
   range = NULL, b = 5, w = 3,
   reweight = TRUE, weightsThreshold = 2.58,
   verbose = TRUE, glmWarnings = TRUE,
-  alpha = 0.005, trend = TRUE, pThresholdTrend = 0.05,
+  alpha = refPar$alphaStateOfTheArt, trend = TRUE, pThresholdTrend = 0.05,
   limit54 = c(0,4), powertrans = "2/3",
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
-  noPeriods = 1, pastWeeksNotIncluded  = NULL,
+  noPeriods = 10, pastWeeksNotIncluded  = 26,
   thersholdMethod = "nbPlugin"
 )
-
 ```
 
 \chapter{Outbreak data}\label{FUDData}

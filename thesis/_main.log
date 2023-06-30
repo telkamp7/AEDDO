@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.6.28)  29 JUN 2023 12:55
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.6.28)  30 JUN 2023 13:15
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1422,6 +1422,11 @@ Chapter 2.
 ]
 Chapter 3.
 
+Overfull \hbox (13.4336pt too wide) in paragraph at lines 180--181
+\TU/Arial(0)/m/n/10.95 for this master thesis, which include \TU/Arial(0)/m/it/10.95 Listeriosis\TU/Arial(0)/m/n/10.95 , \TU/Arial(0)/m/it/10.95 Shigellosis\TU/Arial(0)/m/n/10.95 , Shiga toxin (verotoxin)-producing
+ []
+
+
 Underfull \hbox (badness 1365) in paragraph at lines 193--193
 [][][]\TU/Arial(0)/m/n/9 For a full list of diseases see []$[][][][][] [] [] [] [][][] [] [][][] [] [][] [] [][][][][][][][] [][] [][][][][][][][][] [][] [][] [][] [][][][][][][][][] [] [][][][][][][][][][] [][] [][] [][]
  []
@@ -1432,22 +1437,22 @@ Underfull \hbox (badness 1365) in paragraph at lines 193--193
 File: ../figures/EpiPlot.png Graphic file (type bmp)
 <../figures/EpiPlot.png>
 [6]
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_4d785cb38f4.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_4d785cb38f4.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_4d785d596d2b.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_4d785d596d2b.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_4d783e221f2.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_4d783e221f2.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_4d786d0d1fb6.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_4d786d0d1fb6.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_4d78308e382b.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_4d78308e382b.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_4d7878c829ec.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_4d7878c829ec.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_4d784e24558a.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_4d784e24558a.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_4d782243417f.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_4d782243417f.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_32b030b6107a.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_32b030b6107a.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_32b052b7472e.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_32b052b7472e.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_32b03ec610af.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_32b03ec610af.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_32b041583105.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_32b041583105.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_32b02d3774c6.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_32b02d3774c6.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_32b024ab740c.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_32b024ab740c.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_32b038c51905.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/boxplot_32b038c51905.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_32b0335ba91.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_32b0335ba91.pdf>
 [7]
 File: ../figures/LIST_long_plot.png Graphic file (type bmp)
 <../figures/LIST_long_plot.png>
@@ -3068,10 +3073,10 @@ Package logreq Info: Writing requests to '_main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 53235 strings out of 478374
- 1255159 string characters out of 5839113
- 2345699 words of memory out of 5000000
- 72857 multiletter control sequences out of 15000+600000
+ 53237 strings out of 478374
+ 1255192 string characters out of 5839113
+ 2345707 words of memory out of 5000000
+ 72859 multiletter control sequences out of 15000+600000
  528321 words of font info for 130 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  107i,18n,110p,2092b,5439s stack positions out of 10000i,1000n,20000p,200000b,200000s
