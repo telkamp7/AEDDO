@@ -73,7 +73,7 @@ con.farrington <- list(
   limit54 = c(0,4), powertrans = "2/3",
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
-  noPeriods = 1, pastWeeksNotIncluded  = NULL,
+  noPeriods = 1, pastWeeksNotIncluded  = 3,
   thersholdMethod = "delta"
 )
 
@@ -85,7 +85,7 @@ con.noufaily <- list(
   limit54 = c(0,4), powertrans = "2/3",
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
-  noPeriods = 1, pastWeeksNotIncluded  = NULL,
+  noPeriods = 10, pastWeeksNotIncluded  = 26,
   thersholdMethod = "nbPlugin"
 )
 
@@ -135,110 +135,151 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
     mutate(realization = map(baselineData, .f = function(x) simOutbreak(baselineData = x))) %>%
     ungroup()
   
-  ans <- tibble()
+  j <- outbreaks$scenario
   
-  for(j in outbreaks$scenario){
-    
-    scenarioUnpack <- outbreaks %>%
-      filter(scenario == j) %>%
-      unnest_wider(realization)
-    
-    k <- scenarioUnpack %>%
-      select(k)
-    
-    series <- scenarioUnpack %>%
-      unnest(realization) %>%
-      select(Date, t, y = realization, n, ageGroup)
-    
-    disease.sts <- sts(observed = series$y, frequency = 52, epoch = series$Date, )
-    
-    farrington <- farringtonFlexible(sts = disease.sts, control = con.farrington)
-    
-    noufaily <- farringtonFlexible(sts = disease.sts, control = con.noufaily)
+  scenarioUnpack <- outbreaks %>%
+    filter(scenario == j) %>%
+    unnest_wider(realization)
+  
+  k <- scenarioUnpack %>%
+    select(k)
+  
+  # Calculate baselines FPR
+  baseline <- scenarioUnpack %>%
+    select(scenario, baselineData) %>%
+    unnest(baselineData) %>%
+    select(Date, t, y = realization, n, ageGroup)
+  
+  baseline.sts <- sts(observed = baseline$y, frequency = 52, epoch = baseline$Date, )
+  
+  farrington_base <- farringtonFlexible(sts = baseline.sts, control = con.farrington)
+  noufaily_base <- farringtonFlexible(sts = baseline.sts, control = con.noufaily)
+  
+  PoisN_base <- aeddo(data = baseline,
+                 formula = refPar$formula,
+                 trend = TRUE,
+                 seasonality = TRUE,
+                 theta = c(rep(0, 5)),
+                 method = "BFGS",
+                 model = "PoissonNormal", 
+                 k = 52*3, 
+                 sig.level = 0.95,
+                 cpp.dir = "../models/",
+                 period = "week",
+                 excludePastOutbreaks = TRUE)
+  
+  PoisG_base <- aeddo(data = baseline,
+                 formula = refPar$formula,
+                 trend = TRUE,
+                 seasonality = TRUE,
+                 theta = c(rep(0, 5)),
+                 method = "BFGS",
+                 model = "PoissonGamma", 
+                 k = 52*3, 
+                 sig.level = 0.95,
+                 cpp.dir = "../models/",
+                 period = "week",
+                 excludePastOutbreaks = TRUE)
+  
+  
+  alarm_Farrington_base <- as_tibble(farrington_base@alarm) %>%
+    mutate(Date = as.Date(x = farrington_base@epoch, origin = "1970-01-01")) %>%
+    rename(alarm_Farrington = observed1)
+  
+  alarm_Noufaily_base <- as_tibble(noufaily_base@alarm) %>%
+    mutate(Date = as.Date(x = noufaily_base@epoch, origin = "1970-01-01")) %>%
+    rename(alarm_Noufaily = observed1)
+  
+  alarm_PoisN_base <- PoisN_base %>%
+    select(ran.ef) %>% 
+    unnest(ran.ef) %>%
+    select(Date = ref.date, alarm_PoisN = alarm)
+  
+  alarm_PoisG_base <- PoisG_base %>%
+    select(ran.ef) %>% 
+    unnest(ran.ef) %>%
+    select(Date = ref.date, alarm_PoisG = alarm)
+  
+  baselineAndFPR <- scenarioUnpack %>%
+    select(scenario, baselineData) %>%
+    unnest(baselineData) %>%
+    select(Date, t, y = realization, n, ageGroup) %>%
+    full_join(y = alarm_Farrington_base, by = join_by("Date")) %>%
+    full_join(y = alarm_Noufaily_base, by = join_by("Date")) %>%
+    full_join(y = alarm_PoisN_base, by = join_by("Date")) %>%
+    full_join(y = alarm_PoisG_base, by = join_by("Date")) %>%
+    nest() %>%
+    rename(baseline = data)
+  
+  # Calculate outbreaks POD
+  series <- scenarioUnpack %>%
+    unnest(realization) %>%
+    select(Date, t, y = realization, n, ageGroup)
+  
+  outbreak.sts <- sts(observed = series$y, frequency = 52, epoch = series$Date, )
+  
+  farrington <- farringtonFlexible(sts = outbreak.sts, control = con.farrington)
+  noufaily <- farringtonFlexible(sts = outbreak.sts, control = con.noufaily)
 
-    PoisN <- aeddo(data = series,
-                   formula = refPar$formula,
-                   trend = TRUE,
-                   seasonality = TRUE,
-                   theta = c(rep(0, 5)),
-                   method = "BFGS",
-                   model = "PoissonNormal", 
-                   k = 52*3, 
-                   sig.level = 0.95,
-                   cpp.dir = "../models/",
-                   period = "week",
-                   excludePastOutbreaks = TRUE)
-    
-    PoisG <- aeddo(data = series,
-                   formula = refPar$formula,
-                   trend = TRUE,
-                   seasonality = TRUE,
-                   theta = c(rep(0, 5)),
-                   method = "BFGS",
-                   model = "PoissonGamma", 
-                   k = 52*3, 
-                   sig.level = 0.95,
-                   cpp.dir = "../models/",
-                   period = "week",
-                   excludePastOutbreaks = TRUE)
-    
-    
-    alarm_Farrington <- as_tibble(farrington@alarm) %>%
-      mutate(Date = as.Date(x = noufaily@epoch, origin = "1970-01-01")) %>%
-      rename(alarm_Farrington = observed1)
-    
-    alarm_Noufaily <- as_tibble(noufaily@alarm) %>%
-      mutate(Date = as.Date(x = noufaily@epoch, origin = "1970-01-01")) %>%
-      rename(alarm_Noufaily = observed1)
-    
-    alarm_PoisN <- PoisN %>%
-      select(ran.ef) %>% 
-      unnest(ran.ef) %>%
-      select(Date = ref.date, alarm_PoisN = alarm)
-    
-    alarm_PoisG <- PoisN %>%
-      select(ran.ef) %>% 
-      unnest(ran.ef) %>%
-      select(Date = ref.date, alarm_PoisG = alarm)
-    
-    outbreaksAndAlarms <- scenarioUnpack %>%
-      unnest(realization) %>%
-      select(Date, t, y = realization, n, ageGroup, outbreak, k) %>%
-      full_join(y = alarm_Farrington, by = join_by("Date")) %>%
-      full_join(y = alarm_Noufaily, by = join_by("Date")) %>%
-      full_join(y = alarm_PoisN, by = join_by("Date")) %>%
-      full_join(y = alarm_PoisG, by = join_by("Date")) %>%
-      mutate(outbreakTF = outbreak > 0) %>% 
-      nest()
-    
-    tmp <- outbreaksAndAlarms %>%
-      unnest(data) %>%
-      slice_tail(n = 49) %>%
-      reframe(sim = sim,
-              scenario = j,
-              TP_Farrington =  sum(alarm_Farrington == TRUE & outbreakTF == TRUE),
-              TN_Farrington =  sum(alarm_Farrington == FALSE & outbreakTF == FALSE),
-              FP_Farrington =  sum(alarm_Farrington == TRUE & outbreakTF == FALSE),
-              FN_Farrington =  sum(alarm_Farrington == FALSE & outbreakTF == TRUE),
-              TP_Noufaily =  sum(alarm_Noufaily == TRUE & outbreakTF == TRUE),
-              TN_Noufaily =  sum(alarm_Noufaily == FALSE & outbreakTF == FALSE),
-              FP_Noufaily =  sum(alarm_Noufaily == TRUE & outbreakTF == FALSE),
-              FN_Noufaily =  sum(alarm_Noufaily == FALSE & outbreakTF == TRUE),
-              TP_PoisN =  sum(alarm_PoisN == TRUE & outbreakTF == TRUE),
-              TN_PoisN =  sum(alarm_PoisN == FALSE & outbreakTF == FALSE),
-              FP_PoisN =  sum(alarm_PoisN == TRUE & outbreakTF == FALSE),
-              FN_PoisN =  sum(alarm_PoisN == FALSE & outbreakTF == TRUE),
-              TP_PoisG =  sum(alarm_PoisG == TRUE & outbreakTF == TRUE),
-              TN_PoisG =  sum(alarm_PoisG == FALSE & outbreakTF == FALSE),
-              FP_PoisG =  sum(alarm_PoisG == TRUE & outbreakTF == FALSE),
-              FN_PoisG =  sum(alarm_PoisG == FALSE & outbreakTF == TRUE))
-    
-    ans <- ans %>%
-      bind_rows(tmp) %>%
-      bind_cols(outbreaksAndAlarms)
-    
-  }
+  PoisN <- aeddo(data = series,
+                 formula = refPar$formula,
+                 trend = TRUE,
+                 seasonality = TRUE,
+                 theta = c(rep(0, 5)),
+                 method = "BFGS",
+                 model = "PoissonNormal", 
+                 k = 52*3, 
+                 sig.level = 0.95,
+                 cpp.dir = "../models/",
+                 period = "week",
+                 excludePastOutbreaks = TRUE)
   
+  PoisG <- aeddo(data = series,
+                 formula = refPar$formula,
+                 trend = TRUE,
+                 seasonality = TRUE,
+                 theta = c(rep(0, 5)),
+                 method = "BFGS",
+                 model = "PoissonGamma", 
+                 k = 52*3, 
+                 sig.level = 0.95,
+                 cpp.dir = "../models/",
+                 period = "week",
+                 excludePastOutbreaks = TRUE)
+  
+  
+  alarm_Farrington <- as_tibble(farrington@alarm) %>%
+    mutate(Date = as.Date(x = farrington@epoch, origin = "1970-01-01")) %>%
+    rename(alarm_Farrington = observed1)
+  
+  alarm_Noufaily <- as_tibble(noufaily@alarm) %>%
+    mutate(Date = as.Date(x = noufaily@epoch, origin = "1970-01-01")) %>%
+    rename(alarm_Noufaily = observed1)
+  
+  alarm_PoisN <- PoisN %>%
+    select(ran.ef) %>% 
+    unnest(ran.ef) %>%
+    select(Date = ref.date, alarm_PoisN = alarm)
+  
+  alarm_PoisG <- PoisN %>%
+    select(ran.ef) %>% 
+    unnest(ran.ef) %>%
+    select(Date = ref.date, alarm_PoisG = alarm)
+  
+  outbreaksAndAlarms <- scenarioUnpack %>%
+    unnest(realization) %>%
+    select(Date, t, y = realization, n, ageGroup, outbreak, k) %>%
+    full_join(y = alarm_Farrington, by = join_by("Date")) %>%
+    full_join(y = alarm_Noufaily, by = join_by("Date")) %>%
+    full_join(y = alarm_PoisN, by = join_by("Date")) %>%
+    full_join(y = alarm_PoisG, by = join_by("Date")) %>%
+    mutate(outbreakTF = outbreak > 0) %>% 
+    nest() %>%
+    rename(outbreaks = data)
+
+  ans <- tibble(baselineAndFPR) %>% 
+    bind_cols(outbreaksAndAlarms)
+      
   list(ans)
   
 }
