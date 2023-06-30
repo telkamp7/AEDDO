@@ -1,10 +1,10 @@
 \chapter{Case studies}
 
-This chapter presents the findings obtained from applying both the state-of-the-art and novel outbreak detection algorithms to the subset of diseases examined in this master's thesis. To demonstrate the practical application of these algorithms, a comprehensive case study focused on STEC will be presented. The results of the remaining case studies will be presented in a more concise manner to maintain reader engagement. For a complete collection of figures and tables related to the case studies, please refer to Appendix \@ref(FigAndTabCaseStudy).
+This chapter presents the findings obtained from applying both the state-of-the-art and novel outbreak detection algorithms to the subset of diseases examined in this master thesis. To demonstrate the practical application of these algorithms, a comprehensive case study focused on STEC will be presented. The results of the remaining case studies will be summarized more concisely, highlighting the differences observed. For a complete collection of figures and tables related to the case studies, please refer to Appendix \@ref(FigAndTabCaseStudy).
 
 It is widely recognized that effective monitoring of a surveillance time series necessitates accurate modeling of the time series prior to assessing aberrations. Therefore, the performance of these algorithms in identifying outbreaks within the selected diseases will be thoroughly discussed and analyzed. Both the state-of-the-art and the novel algorithms take into account trends and seasonality, which will be addressed in the analysis. Additionally, a comparison of the two modeling frameworks used in the novel algorithm will be presented, providing valuable insights into the strengths and limitations of generalized mixed effects models and hierarchical generalized linear models.
 
-Moreover, this chapter outlines some of the challenges encountered during the process of conducting this master's thesis, specifically related to statistical outbreak detection. These challenges are showcased using real case studies of diseases in the mandatory notification system, including LIST, SHIL and SALM. Among other thins, the role of overdispersion in statistical outbreak detection, the impact of context and observational bias, and how diseases with many alarms are handled will be discussed. At last, a comprehensive comparative analysis will be conducted.
+Moreover, this chapter outlines some of the challenges encountered during the process of conducting this thesis, specifically related to statistical outbreak detection. These challenges are showcased using real case studies of diseases in the mandatory notification system, including LIST, SHIL and SALM. Among other thins, the role of overdispersion in statistical outbreak detection, the impact of context and observational bias, and how diseases with many alarms are handled will be discussed. At last, a comparative analysis will be conducted.
 
 For a detailed presentation of the data used to generate these results, please refer to Chapter \@ref(Dataset).
 
@@ -16,7 +16,7 @@ Following that, the novel algorithm is utilized, and different models for the fi
 
 \subsection{Applying the state-of-the-art outbreak detection algorithm to STEC}
 
-To investigate outbreak detection, the Farrington method and the subsequently improved Noufaily method are initially explored. These methods can be implemented using the `farringtonFlexible` function, which is available in the R package called \textbf{surveillance}. The methods are controlled using specific `control` arguments. The specific arguments used in this master´s thesis can be found in Appendix \@ref(controlsStateOfTheArt).
+To investigate outbreak detection, the method by @Farrington_1996 and the subsequently improved method by @Noufaily_2013 are initially explored. These methods can be used using the `farringtonFlexible` function, which is available in the R package called \textbf{surveillance}. The methods are controlled using specific `control` arguments. Here, a period of $b=3$ years is chosen for reference data. Also, the threshold calculation is based on a significance level of $\alpha=0.05$. To access the other specific `contol` arguments used in this thesis, refer to Appendix \@ref(controlsStateOfTheArt).
 
 For the analysis of STEC, the reference values are based on data collected from January 2008 to February 2011. Subsequently, surveillance is performed using the data spanning from March 2011 to December 2022. The resulting time series and alarms are visualized in Figure \@ref(fig:CompareStateOfTheArtSTEC).
 
@@ -26,7 +26,7 @@ For the analysis of STEC, the reference values are based on data collected from 
 knitr::include_graphics("../figures/Compare_stateOfTheArt_STEC.png")
 ```
 
-Multiple alarms are displayed in Figure \@ref(fig:CompareStateOfTheArtSTEC) for both the Farrington and Noufaily method. The Farrington method generates a total of `r STEC_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces a significantly lower count of `r STEC_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms. It is not surprising that the Farrington method generates more alarms, as it is known for its high sensitivity. This means that the method is able to detect very small aberrations in the time series, but it also leads to a significant number of "false positive" alarms.
+Multiple alarms are displayed in Figure \@ref(fig:CompareStateOfTheArtSTEC) for both the Farrington and Noufaily method. The Farrington method generates a total of `r STEC_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces a notably lower count of `r STEC_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms. It is not surprising that the Farrington method generates more alarms, as it is known for its high sensitivity. This means that the method is able to detect very small aberrations in the time series, but it also leads to a significant number of "false positive" alarms.
 
 The substantial number of alarms generated by both methods raises valid concerns regarding their practical utility. The sheer volume of alarms can overwhelm epidemiologists and pose challenges in effectively prioritizing and investigating potential outbreaks. It is essential to consider the overall disease picture and avoid overly burdening epidemiologists with verification tasks. Striking a balance between sensitivity and specificity is crucial to ensure that the generated alarms are meaningful and actionable, leading to efficient outbreak detection and response.
 
@@ -42,7 +42,7 @@ To identify outbreaks, an observation is classified as such if the one-step ahea
 
 \subsubsection{Introducing the fixed effects models}
 
-To ensure effective monitoring, a series of models for the fixed effects are proposed, with each model building upon the previous one. These models aim to capture different aspects of the disease dynamics and improve the accuracy of outbreak detection.
+To ensure effective monitoring, a series of models for the fixed effects are proposed. These models aim to capture different aspects of the disease dynamics and improve the accuracy of outbreak detection.
 
 In the initial model, the intensity $\lambda_{it}$ is assumed to be solely dependent on the age group and the population size $n_{it}$. The model is formulated as:
 
@@ -189,7 +189,7 @@ For these investigations, the reference data used in the state-of-the-art outbre
 
 \subsection{Analysis of outbreak detection in LIST}
 
-Intuitively, it is not common to employ statistical methods for monitoring and detecting outbreaks of LIST. The current state-of-the-art approach for detecting outbreaks of this disease relies heavily on laboratory-based methods, specifically WGS. WGS enables epidemiologists to link cases that have occurred over an extended period, even months or years apart, and identify them as part of a continuous-source outbreak. Statistical method may face challenges in detecting such outbreaks due to their complex and prolonged nature. However, it is crucial to include this case study in the master's thesis to highlight both the strengths and limitations of the novel and state-of-the-art methods.
+Intuitively, it is not common to employ statistical methods for monitoring and detecting outbreaks of LIST. The current state-of-the-art approach for detecting outbreaks of this disease relies heavily on laboratory-based methods, specifically WGS. WGS enables epidemiologists to link cases that have occurred over an extended period, even months or years apart, and identify them as part of a continuous-source outbreak. Statistical method may face challenges in detecting such outbreaks due to their complex and prolonged nature. However, it is crucial to include this case study in the thesis to highlight both the strengths and limitations of the novel and state-of-the-art methods.
 
 The data used in this case study consist of Danish LIST case counts from the laboratory notification system. These counts are denoted as $y_{it}$. Here, the subscript $i$ distinguishes between two age groups, with $i=1$ representing the age group below 65 years and $i=2$ representing the age group above 65 years. The subscript $t$ represents the time period, ranging from $t=1,\cdots,T$, where $T=180$ corresponds to the total number of months starting in 2008.
 
@@ -207,7 +207,7 @@ In Figure \@ref(fig:CompareStateOfTheArtLIST), multiple alarms can be observed f
 
 Interestingly, both methods demonstrate the ability to correctly raise alarms during ongoing outbreak investigations by SSI. One notable example is the outbreak investigated by SSI, which involved 41 cases and resulted in 17 deaths. The Farrington method successfully flags this event in September 2013, with alarms occurring sporadically in the subsequent period. The Noufaily method also identifies this outbreak, although it does so one month later in October 2013.
 
-It is worth noting that the other observations flagged by the methods may be related to some of the numerous other long-spanned outbreaks that occurred concurrently in the period from 2016 to 2021. However, it is out of scope for this master's thesis, to directly link individual alarms to specific outbreaks. For a full list over the alarms raised by the methods see Table \@ref(tab:LISTStateOfTheArtTbl).
+It is worth noting that the other observations flagged by the methods may be related to some of the numerous other long-spanned outbreaks that occurred concurrently in the period from 2016 to 2021. However, it is out of scope for this thesis, to directly link individual alarms to specific outbreaks. For a full list over the alarms raised by the methods see Table \@ref(tab:LISTStateOfTheArtTbl).
 
 \subsubsection{Applying the novel outbreak detection algorithm to LIST}
 
@@ -223,7 +223,7 @@ Nevertheless, it is worth noting that both modeling framework identifies the sam
 
 \subsection{Analysis of outbreak detection in SHIL}
 
-The SHIL data set consists of Danish SHIL case counts categorized into two age groups. These counts are represented as $y_{it}$, where the subscript $i=1$ corresponds to the age group below 25 years, and $i=2$ corresponds to the age group above 25 years. It should be noted that the selection of these age groups was not based on clear epidemiological reasoning. In retrospect, it would have been more informative to differentiate between sexes rather than age groups, as men who have sex with men have a higher risk of contracting and spreading the disease. However, this information was received towards the end of writing the master's thesis and was therefore not given priority.
+The SHIL data set consists of Danish SHIL case counts categorized into two age groups. These counts are represented as $y_{it}$, where the subscript $i=1$ corresponds to the age group below 25 years, and $i=2$ corresponds to the age group above 25 years. It should be noted that the selection of these age groups was not based on clear epidemiological reasoning. In retrospect, it would have been more informative to differentiate between sexes rather than age groups, as men who have sex with men have a higher risk of contracting and spreading the disease. However, this information was received towards the end of writing the thesis and was therefore not given priority.
 
 \subsubsection{Applying the state-of-the-art outbreak detection algorithm to \textit{Shigellosis}}
 
@@ -249,7 +249,7 @@ For SHIL it was found that the trend model for the fixed effects minimizes the a
 knitr::include_graphics("../figures/Compare_novel_SHIL.png")
 ```
 
-It is noteworthy that the 20 alarms generated by both modeling frameworks coincide, indicating consistency in their detection. Additionally, it is observed that the novel outbreak detection algorithms identify significantly fewer alarms compared to the state-of-the-art algorithms. However, it is important to highlight that both algorithms detect outbreaks during certain overlapping time periods, demonstrating their ability to capture similar patterns of disease occurrence.
+It is noteworthy that the 20 alarms generated by both modeling frameworks coincide, indicating consistency in their detection. Additionally, it is observed that the novel outbreak detection algorithms identify fewer alarms compared to the state-of-the-art algorithms. However, it is important to highlight that both algorithms detect outbreaks during certain overlapping time periods, demonstrating their ability to capture similar patterns of disease occurrence.
 
 \subsection{Analysis of outbreak detection in SALM}
 
@@ -275,14 +275,13 @@ In Figure \@ref(fig:CompareNovelSALM) the estimated one-step ahead random effect
 knitr::include_graphics("../figures/Compare_novel_SALM.png")
 ```
 
-In total, the hierarchical Poisson Normal framework generates `r sum(SALM_alarms_PoisN$alarm)` alarms, while the hierarchical Poisson Gamma framework generates `r sum(SALM_alarms_PoisG$alarm)` alarms. This demonstrates that the novel outbreak detection algorithm has significantly lower sensitivity compared to the state-of-the-art algorithms.
+In total, the hierarchical Poisson Normal framework generates `r sum(SALM_alarms_PoisN$alarm)` alarms, while the hierarchical Poisson Gamma framework generates `r sum(SALM_alarms_PoisG$alarm)` alarms. This demonstrates that the novel outbreak detection algorithm has lower sensitivity compared to the state-of-the-art algorithms.
 
 However, the large number of alarms raises valid concerns about how to handle them effectively. In the novel algorithm, observations that trigger an alarm are identified and excluded from future parameter estimation to prevent inflating the parameter estimates. This approach aims to mitigate the impact of false alarms and maintain the accuracy of the modeling process. However, as the alarms accumulate, the effective sample window for parameter estimation diminishes, reducing the amount of available data for estimating reliable parameters. This challenge is expanded upon in Section \@ref(ChallengesOD).
 
 \section{Challenges in statistical outbreak detection}\label{ChallengesOD}
 
-
-In this section, the challenges encountered in this master's thesis regarding statistical outbreak detection are outlined. These challenges encompass specific issues related to the use of hierarchical modeling as well as more generalized challenges that are relevant to statistical modeling in general.
+In this section, the challenges encountered in this master thesis regarding statistical outbreak detection are outlined. These challenges encompass specific issues related to the use of hierarchical modeling as well as more generalized challenges that are relevant to statistical modeling in general.
 
 The discussion will focus on the role of overdispersion in statistical outbreak detection, the impact of context and bias, and the handling of a large number of alarms.
 
@@ -306,7 +305,7 @@ As the number of cases are very low, it is also unlikely that an outbreak is occ
 
 In the case of the novel outbreak detection algorithm, particular attention is given to periods with overdispersion. This is because the modeling frameworks assume that the distribution of random "noise" can be modeled by a Gaussian distribution, viz. hierarchical Poisson Normal model, or an exponential dispersion family, viz. hierarchical Poisson Gamma model. In the absence of overdispersion, count data can be adequately modeled by a Poisson distribution alone, making an approach based on generalized linear models more suitable.
 
-Further investigation into modeling periods without overdispersion using hierarchical models are required but out of scope of this master's thesis.
+Further investigation into modeling periods without overdispersion using hierarchical models are required but out of scope of this thesis.
 
 \subsection{The impact of context and observational bias}
 
@@ -318,7 +317,7 @@ An important potential extension of automated statistical outbreak detection alg
 
 Indeed, sudden decreases in case counts can be treated similarly to sudden increases in case counts, and detecting such data drift can be incorporated into hierarchical models using the unobserved one-step ahead random effects $u_{i{t_0}}$. One approach is to define a lower threshold by selecting an appropriate quantile of the random effects distribution obtained from the second stage model, such as the 5% or 10% quantile.
 
-However, the implementation of automated data drift monitoring requires further investigation and is beyond the scope of this master's thesis. It is an area that calls for future research and development to enhance the robustness and adaptability of statistical outbreak detection algorithms. The inclusion of data drift monitoring can improve the algorithms' ability to adapt to changing outbreak patterns and contextual factors, leading to more reliable and accurate detection outcomes.
+However, the implementation of automated data drift monitoring requires further investigation and is beyond the scope of this thesis. It is an area that calls for future research and development to enhance the robustness and adaptability of statistical outbreak detection algorithms. The inclusion of data drift monitoring can improve the algorithms' ability to adapt to changing outbreak patterns and contextual factors, leading to more reliable and accurate detection outcomes.
 
 \subsection{How do we handle many alarms?}
 
@@ -326,7 +325,7 @@ Dealing with diseases that generate frequent alarms presents a challenge in stat
 
 On the other hand, the state-of-the-art detection algorithm employs a re-weighting scheme using Anscombe residuals. It has been observed that the Farrington method's correction for past outbreaks is too drastic, and a higher re-weighting threshold of 2.58 rather than 1 is recommended in the Noufaily method to improve specificity [@Noufaily_2013].
 
-Effectively handling previous outbreaks in statistical outbreak detection requires domain-specific knowledge from epidemiologists to determine the most appropriate approach. While the novel method completely excludes past outbreaks, this may not be the optimal practice as it significantly reduces the sample window. If the method is employed in an automated setting, it is essential to report the size of the sampling window to the epidemiologists so they can interpret the results appropriately. Further research in this area is necessary, but it is beyond the scope of this master's thesis.
+Effectively handling previous outbreaks in statistical outbreak detection requires domain-specific knowledge from epidemiologists to determine the most appropriate approach. While the novel method completely excludes past outbreaks, this may not be the optimal practice as it reduces the sample window. If the method is employed in an automated setting, it is essential to report the size of the sampling window to the epidemiologists so they can interpret the results appropriately. Further research in this area is necessary, but it is beyond the scope of this thesis.
 
 \section{Performance of statistical outbreak detection algorithms}
  
@@ -334,7 +333,7 @@ In this section, the performance of both the state-of-the-art and novel outbreak
 
 Additionally, a brief overview of the advantages and disadvantages are provided for each method. 
 
-Figure \@ref(fig:CompareAlarmsLIST) demonstrates that the state-of-the-art outbreak detection algorithms, especially the Farrington method, raise a significantly higher number of alarms compared to the novel algorithms in the LIST case study.
+Figure \@ref(fig:CompareAlarmsLIST) demonstrates that the state-of-the-art outbreak detection algorithms, especially the Farrington method, raise a higher number of alarms compared to the novel algorithms in the LIST case study.
 
 (ref:CompareAlarmsLIST) Alarm plot displaying alarms for LIST time series using four different algorithms, along with outbreaks investigated by SSI.
 
@@ -358,7 +357,7 @@ Additionally, it is worth noting that none of the algorithms were able to identi
 knitr::include_graphics("../figures/Compare_alarms_SHIL.png")
 ```
 
-Furthermore, it is interesting to mention that a total of `r SSI_FUD %>% filter(str_detect(string = Pathogen, pattern = "Shigella")) %>% reframe(n=n()) %>% .$n` outbreaks with SHIL have been reported to the Food- and Waterborne Outbreak Database (FUD) between 2008 and 2022. Unfortunately, due to the limitations of this master's thesis, it was not possible to retrieve the necessary information to provide a detailed description of these outbreaks. Therefore, with the available information, it is not possible to reject the possibility that some of the alarms raised by the algorithms coincided with concurrent outbreak investigations.
+Furthermore, it is interesting to mention that a total of `r SSI_FUD %>% filter(str_detect(string = Pathogen, pattern = "Shigella")) %>% reframe(n=n()) %>% .$n` outbreaks with SHIL have been reported to the Food- and Waterborne Outbreak Database (FUD) between 2008 and 2022. Unfortunately, due to the limitations of this thesis, it was not possible to retrieve the necessary information to provide a detailed description of these outbreaks. Therefore, with the available information, it is not possible to reject the possibility that some of the alarms raised by the algorithms coincided with concurrent outbreak investigations.
 
 When examining the STEC data, the substantial difference in sensitivity between the state-of-the-art and novel outbreak detection methods becomes evident. Figure \@ref(fig:CompareAlarmsSTEC) clearly demonstrates that both state-of-the-art methods generate a significant number of alarms. This excessive number of alarms raises concerns about the practicality and feasibility of these methods in real-world applications.
 

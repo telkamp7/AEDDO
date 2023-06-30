@@ -1,6 +1,6 @@
 \chapter{Simulation study}
 
-In this chapter, a comprehensive simulation study is conducted to evaluate the performance of the novel outbreak detection algorithm compared to state-of-the-art algorithms. The simulations cover various scenarios, adapted from the study by @Noufaily_2013. However, for the purpose of this master's thesis, the focus is not on diseases with bi-annual seasonality. Therefore, the scenarios involving bi-annual seasonality are excluded from the simulation study.
+In this chapter, a comprehensive simulation study is conducted to evaluate the performance of the novel outbreak detection algorithm compared to state-of-the-art algorithms. The simulations cover various scenarios, adapted from the study by @Noufaily_2013. However, for the purpose of this master thesis, the focus is not on diseases with bi-annual seasonality. Therefore, the scenarios involving bi-annual seasonality are excluded from the simulation study.
 
 The chapter begins by describing the method used to simulate the baseline data. These data are generated using a negative binomial model with a time-dependent mean $\mu(t)$. Next, the assumptions regarding the simulated outbreaks are outlined, including the outbreak size and distribution in time.
 
@@ -86,9 +86,9 @@ It is important to note that the FPR is a rate per week, while the POD is a rate
 
 \section{Results of the simulations}
 
-In this section, the results of the simulation study are presented. Both the state-of-the-art and novel outbreak detection algorithms are applied to the same simulated data, allowing for the evaluation of their performance in a setting where the true parameters and process are known.
+In this section, the results of the simulation study are presented. Both the state-of-the-art and novel outbreak detection algorithms are applied to the same simulated data, allowing for the evaluation of their performance in a setting where the true parameters and process are known. 
 
-The simulated data consists of weekly counts of a simulated disease, denoted as $y_t$, where $t=1,\cdots,T$ represents the time period of $T=624$ weeks. 
+The data consists of weekly counts of a simulated disease, denoted as $y_t$, where $t=1,\cdots,T$ represents the time period of $T=624$ weeks. 
 
 
 

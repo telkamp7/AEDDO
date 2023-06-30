@@ -1,12 +1,12 @@
 \chapter{Methods}
 
-In this chapter, the current state-of-the-art methods for disease outbreak detection will be outlined. Furthermore, the novel outbreak detection algorithm will be introduced, along with the theory related to generalized mixed effects models and hierarchical generalized linear models. These modeling frameworks are utilized in this master's thesis to analyze the count observations denoted as $\boldsymbol{y}$, but more importantly they play a crucial role in assessing the unobserved random variables or random effects represented by $\boldsymbol{u}$, which are directly employed in the detection algorithm for characterizing outbreaks.
+In this chapter, the current state-of-the-art methods for disease outbreak detection will be outlined. Furthermore, the novel outbreak detection algorithm will be introduced, along with the theory related to generalized mixed effects models and hierarchical generalized linear models. These modeling frameworks are utilized in this master thesis to analyze the count observations denoted as $\boldsymbol{y}$, but more importantly they play a crucial role in assessing the unobserved random variables or random effects represented by $\boldsymbol{u}$, which are directly employed in the detection algorithm for characterizing outbreaks.
 
 Due to the complexity of generalized mixed effects models, obtaining closed-form solutions is generally not feasible. Therefore, an overview of the Laplace approximation technique will be provided in this chapter, which allows for approximating the likelihood function in these models. Additionally, the implementation of these models in the R programming language will be presented.
 
 \section{State-of-the-art outbreak detection algorithm}\label{StateOfTheArt}
 
-In this section, the Farrington method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will be outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this master's thesis. Both of the aforementioned methods have been implemented in the R package called \textbf{surveillance} by @Salmon_2016, which can be accessed from the Comprehensive R Archive Network (CRAN) at \href{https://cran.r-project.org/web/packages/surveillance/index.html}{\nolinkurl{https://cran.r-project.org/web/packages/surveillance/index.html}}. The presentation of these methods are strongly inspired by @Salmon_2016.
+In this section, the method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will bes outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this thesis. Both of the aforementioned methods have been implemented in the R package called \textbf{surveillance} by @Salmon_2016, which can be accessed from the Comprehensive R Archive Network (CRAN) at \href{https://cran.r-project.org/web/packages/surveillance/index.html}{\nolinkurl{https://cran.r-project.org/web/packages/surveillance/index.html}}. The presentation of these methods are strongly inspired by @Salmon_2016.
 
 Both methods follow the same steps in the algorithm. The first step involves fitting an over-dispersed Poisson generalized linear model (GLM) with a log link to the reference data. In this model, the baseline count $y_t$ corresponding to the baseline time point $t$ is assumed to have an expected value $\lambda_t$ and a variance $\phi\lambda_t$, where $\phi\geq1$ is ensured to account for over-dispersion. The systematic component of the model includes only a linear time trend in the frequency of reports. Therefore, the systematic component can be expressed as
 
@@ -66,7 +66,7 @@ Finally, past outbreaks are reweighted based on their Anscombe residuals. If the
 
 \section{Novel outbreak detection algorithm}\label{Novel}
 
-In this section, the novel algorithm for the prospective detection of disease outbreaks proposed in this master's thesis is outlined. The algorithm utilizes a generalized mixed effects model or a hierarchical generalized linear model as a modeling framework to model the count observations $\boldsymbol y$ and assess the unobserved random effects $\boldsymbol u$. These random effects are used directly in the detection algorithm to characterize an outbreak. The theoretical foundations of these models will be further discussed in Section \ref{GLMM} and Section \ref{HLMM}.
+In this section, the novel algorithm for the prospective detection of disease outbreaks proposed in this thesis is outlined. The algorithm utilizes a generalized mixed effects model or a hierarchical generalized linear model as a modeling framework to model the count observations $\boldsymbol y$ and assess the unobserved random effects $\boldsymbol u$. These random effects are used directly in the detection algorithm to characterize an outbreak. The theoretical foundations of these models will be further discussed in Section \ref{GLMM} and Section \ref{HLMM}.
 
 The first step involves fitting either a hierarchical Poisson Normal or Poisson Gamma model with a log link to the reference data. Here, it is possible for the user to include an arbitrary number of covariates by supplying a model formula. In order to account for structural changes in the time series, e.g. an improved and more sensitive diagnostic method or a new screening strategy at hospitals, a rolling window with width $k$ is used to estimate the time-varying model parameters. Also, it is assumed that the count is proportional to the population size $\boldsymbol n$. Hence, in terms of the canonical link the model for the fixed effects is
 
@@ -147,7 +147,7 @@ which implies that the Laplace approximation becomes
 
 \subsection{Formulation of the generalized mixed effects model}
 
-The generalized mixed effects model utilized in this master's thesis to model the count observations $\boldsymbol y$ and assess the random effects $\boldsymbol u$ is presented in Theorem \@ref(thm:poisnTheorem), along with the joint likelihood function for the first and second stage models.
+The generalized mixed effects model utilized in this thesis to model the count observations $\boldsymbol y$ and assess the random effects $\boldsymbol u$ is presented in Theorem \@ref(thm:poisnTheorem), along with the joint likelihood function for the first and second stage models.
 
 ::: {.theorem #poisnTheorem name="Hierarchical Poisson Normal model"}
 In order to simplify the notation, the probability density functions are presented for a specific observation and hence the subscripts indicating the group and time are omitted. The conditional distribution of the count observations is assumed to be a Poisson distribution with intensities $\boldsymbol \lambda$
@@ -240,9 +240,9 @@ LIST %>%
 
 ```
 
-Take, for example, the monthly cases of LIST analyzed in this master's thesis. Table \@ref(tab:PoisGexampleTbl) presents the distribution of these cases from 2008 to 2022, along with the expected numbers from both the Poisson and Negative binomial distributions. The distribution of cases over time is visualized in Figure \@ref(fig:PoisGexampleFig).
+Take, for example, the monthly cases of LIST analyzed in this thesis. Table \@ref(tab:PoisGexampleTbl) presents the distribution of these cases from 2008 to 2022, along with the expected numbers from both the Poisson and Negative binomial distributions. The distribution of cases over time is visualized in Figure \@ref(fig:PoisGexampleFig).
 
-As observed, the actual distribution has significantly heavier tails compared to the Poisson distribution. Additionally, the mean of the Poisson distribution for the monthly LIST cases is $\hat{\lambda}=\bar{y}=`r meanYExample`$, while the empirical variance is $s^2=`r varYExample`$, which is considerably larger than the mean. These findings indicate overdispersion, suggesting that a Negative binomial model would be more appropriate for modeling the data.
+As observed, the actual distribution has notably heavier tails compared to the Poisson distribution. Additionally, the mean of the Poisson distribution for the monthly LIST cases is $\hat{\lambda}=\bar{y}=`r meanYExample`$, while the empirical variance is $s^2=`r varYExample`$, which is considerably larger than the mean. These findings indicate overdispersion, suggesting that a Negative binomial model would be more appropriate for modeling the data.
 
 (ref:PoisGexampleFig) Distribution of monthly cases of LIST together with the expected numbers from both the Poisson and Negative binomial distributions
 
@@ -279,7 +279,7 @@ LIST %>%
 
 \subsection{Formulation of the hierarchical model}
 
-The hierarchical model used in this master's thesis to model the count observations $\boldsymbol y$ and assess the random effects $\boldsymbol u$ is presented in Theorem \@ref(thm:poisgTheorem), along with the derivation of the marginal distribution of $Y$ and the joint likelihood function.
+The hierarchical model used in this thesis to model the count observations $\boldsymbol y$ and assess the random effects $\boldsymbol u$ is presented in Theorem \@ref(thm:poisgTheorem), along with the derivation of the marginal distribution of $Y$ and the joint likelihood function.
 
 ::: {.theorem #poisgTheorem name="Compound Poisson Gamma model"}
 In the compound Poisson Gamma model the conditional distribution of the count observations are assumed to be a Poisson distribution with intensities $\boldsymbol \lambda$
@@ -477,7 +477,7 @@ In this section, the scoring rule used to evaluate the overall score of the mode
 \bar{S}(G,y)=\frac{1}{N} \sum_{t=1}^{N}S(G_t,y_t)
 \end{equation}
 
-One commonly used scoring rule is the \textit{logarithmic score} derived from likelihood theory, which is defined as $S(G,y)=-\log\big(f(y)\big)$ [@Good_1992; @Tilmann_2007]. This scoring rule is based on the probability density function and is equivalent to the log-likelihood of the forecast model. It has desirable properties as it captures all possible information about the observed data in relation to the model. However, it has a potential drawback in that it heavily penalizes unlikely observations. Consequently, even small changes in the tails of a density forecast can lead to significant changes in the \textit{logarithmic score}, even when the overall shape of the density remains unchanged.
+One commonly used scoring rule is the \textit{logarithmic score} derived from likelihood theory, which is defined as $S(G,y)=-\log\big(G(y)\big)$ [@Good_1992; @Tilmann_2007]. In this thesis, this scoring rule is based on the probability mass function and is equivalent tot he log-likelihood of the forecast model. It has desirable properties as it captures all possible information about the observed data in relation to the model. However, it has a potential drawback in that it heavily penalizes unlikely observations. Consequently, even small changes in the tails of a density forecast can lead to significant changes in the \textit{logarithmic score}, even when the overall shape of the mass remains unchanged.
 
 The calculation of the logarithmic score is shown in Example \@ref(exm:logs), which is adapted from @Blicher_2021.
 
@@ -489,7 +489,7 @@ The Gamma distribution is used to represent the probabilistic forecast in this e
 f(y) = \frac{1}{\Gamma(\alpha)\beta}\left(\frac{y}{\beta}\right)^{\alpha-1}\exp\left(-\frac{y}{\beta}\right)
 \end{equation}
 
-In this example, the parameters of the true model, denoted as $f$, is chosen to be $(\alpha,\beta)=(3,3)$. We simulate 10 observations, denoted as $y_1,y_2,\dots,y_{10}$, which are shown in Table \@ref(tab:LogSExample). The true model $f$ is compared to a competing model, denoted as $g$, which is a Gamma distribution with parameters $(\alpha,\beta)=(3,8)$. The true model $f$, the competing model $g$, and the observations $\boldsymbol y$ are illustrated in Figure \@ref(fig:LogSExamplePlot).
+In this example, the parameters of the true model, denoted as $f$, is chosen to be $(\alpha,\beta)=(3,3)$. 10 observations are simulated, denoted as $y_1,y_2,\dots,y_{10}$, which are shown in Table \@ref(tab:LogSExample). The true model $f$ is compared to a competing model, denoted as $g$, which is a Gamma distribution with parameters $(\alpha,\beta)=(3,8)$. The true model $f$, the competing model $g$, and the observations $\boldsymbol y$ are illustrated in Figure \@ref(fig:LogSExamplePlot).
 
 ```{r LogSExample, echo=FALSE}
 
@@ -502,7 +502,6 @@ t(tibble(`$i$` = paste(1:10), `$y_i$` = y)) %>%
   kable_paper(full_width = TRUE, latex_options = "HOLD_position")
 
 ```
-
 
 (ref:LogSExamplePlot) Observations (green dots) were simulated from a $\G(3,3)$-distribution. The true model $f$ (blue) is shown, along with the PDF for the competing model $g$, which follows a $G(3,8)$-distribution.
 
