@@ -593,3 +593,25 @@ ggsave(filename = "Compare_alarms_STEC.png",
        units = "in",
        dpi = "print")  
 
+
+
+
+
+
+STEC_novel_par %>%
+  filter(Model == "Combined" & grepl(pattern = "sin|cos", x = Parameter)) %>%
+  pivot_wider(names_from = Parameter, values_from = theta:CI.upr) %>%
+  mutate(Amplitude = sqrt(`theta_sin(pi/6 * periodInYear)`^2 + `theta_cos(pi/6 * periodInYear)`^2)) %>%
+  ggplot(mapping = aes(x = ref.date, y = Amplitude, colour = Method)) +
+  geom_line(linewidth = 1) +
+  scale_color_manual(values = dtuPalette) +
+  scale_x_date(name = "Month")
+  
+STEC_novel_par %>%
+  filter(Model == "Combined" & grepl(pattern = "sin|cos", x = Parameter)) %>%
+  pivot_wider(names_from = Parameter, values_from = theta:CI.upr) %>%
+  mutate(Phase = -atan(`theta_cos(pi/6 * periodInYear)`/`theta_sin(pi/6 * periodInYear)`)) %>%
+  ggplot(mapping = aes(x = ref.date, y = Phase, colour = Method)) +
+  geom_line(linewidth = 1) +
+  scale_color_manual(values = dtuPalette) +
+  scale_x_date(name = "Month")

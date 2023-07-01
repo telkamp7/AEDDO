@@ -33,7 +33,6 @@ list(bold = FALSE, italic = FALSE)
 ```
 
 
-
 ```{r dataLoadResults, echo=FALSE, warning=FALSE}
 
 dat <- read_rds(file = "../data/processed/dat2.rds") %>%
