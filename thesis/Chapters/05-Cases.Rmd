@@ -36,7 +36,7 @@ When comparing the Farrington and Noufaily methods, it is interesting to note th
 
 \subsection{Applying the novel outbreak detection algorithm to STEC}
 
-The subsequent investigation focuses on the application of the novel outbreak detection algorithm to monitor STEC for potential outbreaks. In this analysis, a rolling window with a width of $k=36$ months is selected for the parameter estimation. Thus, the reference values are established using monthly data collected from January 2008 to December 2010. Hereafter, the time series is recursively monitored for outbreaks by moving the rolling window one month at a time using data from January 2011 to December 2022.
+The subsequent investigation focuses on the application of the novel outbreak detection algorithm to monitor STEC for potential outbreaks. In this analysis, a rolling window with a width of $k=36$ months is selected for the parameter estimation. Thus, the reference values are established using monthly data collected from January 2008 to December 2010. Similar to when applying the state-of-the-art algorithms, the time series is recursively monitored for outbreaks by moving the rolling window one month at a time using data from January 2011 to December 2022.
 
 To identify outbreaks, an observation is classified as such if the one-step ahead random effect $u_{i{t_1}}$ for the specific age group exceeds the upper bound $U_{t_0}$. In this case study, the upper bound is determined as the 90\% quantile of the distribution of random effects obtained from the second stage model. This threshold helps identify significant deviations in the outbreak intensity.
 
@@ -60,7 +60,7 @@ In the first extension of the constant model, the trend over time across all age
 
 In this model, $\beta_{trend}$ quantifies the rate of change in the outbreak intensity over time. By including this parameter, the model accounts for the overall trend in the outbreak intensity across all age groups, allowing for a more comprehensive analysis of the outbreak dynamics.
 
-In addition to the models described earlier, another model is proposed, which incorporates seasonality into the analysis. This model builds upon the constant model and assumes an annual seasonality pattern. This model is termed the \textit{seasonality} model. The intensity $\lambda_{it}$ is modeled as follows:
+In addition to the models described earlier, another model is proposed, which incorporates a seasonality component represented by Fourier terms into the analysis. This model builds upon the constant model and assumes an annual seasonality pattern. This model is termed the \textit{seasonality} model. The intensity $\lambda_{it}$ is modeled as follows:
 
 \begin{equation}\label{eq:Seasonality}
 \log(\lambda_{it})=\beta(ageGroup_{i})+ \sin \big(\frac{2\pi\cdot \tau_t}{12}\big) \beta_{\sin} + \cos \big(2\frac{\pi\cdot \tau_t}{12}\big) \beta_{\cos} + \log(n_{it})
@@ -172,7 +172,7 @@ The upper bounds $U_{t_0}$ are calculated based on the 90% quantile of the distr
 
 By visualizing the one-step ahead random effects and the upper bounds together, epidemiologists can easily identify periods or age groups where the random effects surpass the upper bounds, highlighting potential outbreaks that require further investigation and monitoring.
 
-(ref:CompareNovelSTEC) Estimated one-step ahead random effects $\hat u_{t_1}$ (circles) given the model described in \eqref{eq:AgegroupTrendSeasonality} for STEC in Denmark, 2011-2022. Poisson Normal model (right) and Poisson Gamma model (left) monitor the disease. Alarm raised (solid circle) if $\hat u_{i{t_1}}$ exceeds the threshold $U_{t_0}$ (dashed line).
+(ref:CompareNovelSTEC) Estimated one-step ahead random effects $\hat u_{i{t_0}}$ (circles) for STECS in Denmark, 2011-2022, are shown for the combined fixed effects model described in \eqref{eq:AgegroupTrendSeasonality}. An alarm is raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line). In the hierarchical Poisson Normal model (left), the random effects are exponentiated to $\exp(\hat u_{it_0})$ to transform them into the same domain as the hierarchical Poisson Gamma model (right).
 
 ```{r CompareNovelSTEC, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelSTEC)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_novel_STEC.png")
@@ -185,13 +185,15 @@ From Figure \@ref(fig:CompareNovelSTEC), it is evident that the estimated one-st
 
 In this section, the results of applying the state-of-the-art and novel outbreak detection algorithms to the other case studies, including LIST, SHIL, and SALM, are presented.
 
-For these investigations, the reference data used in the state-of-the-art outbreak detection algorithms is based on monthly data from January 2008 to February 2011. Subsequent surveillance is conducted using data from March 2011 to December 2022. In the novel outbreak detection algorithm, a rolling window of width $k=36$ is used. Thus, the reference data is established using monthly data collected from January 2008 to December 2010. The time series is then monitored for outbreaks using data from January 2011 to December 2022. Additionally, it is important to note that different age groupings are employed in each of the case studies.
+As for the STEC case study, the reference data used in the state-of-the-art outbreak detection algorithms is based on monthly data from January 2008 to February 2011. Subsequent surveillance is conducted using data from March 2011 to December 2022. In the novel outbreak detection algorithm, a rolling window of width $k=36$ is used. Thus, the reference data is established using monthly data collected from January 2008 to December 2010. The time series is then monitored for outbreaks using data from January 2011 to December 2022.
+
+It is also important to mention that different age groupings are utilized in each of the case studies. The criteria for determining the age groupings are elaborated upon in the presentation of each specific case study.
 
 \subsection{Analysis of outbreak detection in LIST}
 
 Intuitively, it is not common to employ statistical methods for monitoring and detecting outbreaks of LIST. The current state-of-the-art approach for detecting outbreaks of this disease relies heavily on laboratory-based methods, specifically WGS. WGS enables epidemiologists to link cases that have occurred over an extended period, even months or years apart, and identify them as part of a continuous-source outbreak. Statistical method may face challenges in detecting such outbreaks due to their complex and prolonged nature. However, it is crucial to include this case study in the thesis to highlight both the strengths and limitations of the novel and state-of-the-art methods.
 
-The data used in this case study consist of Danish LIST case counts from the laboratory notification system. These counts are denoted as $y_{it}$. Here, the subscript $i$ distinguishes between two age groups, with $i=1$ representing the age group below 65 years and $i=2$ representing the age group above 65 years. The subscript $t$ represents the time period, ranging from $t=1,\cdots,T$, where $T=180$ corresponds to the total number of months starting in 2008.
+The data used in this case study consist of Danish LIST case counts from the laboratory notification system. These counts are denoted as $y_{it}$. Here, the subscript $i$ distinguishes between two age groups, with $i=1$ representing the age group below 65 years and $i=2$ representing the age group above 65 years. As in the STEC case study, the subscript $t$ denotes the time.
 
 \subsubsection{Applying the state-of-the-art outbreak detection algorithms to LIST}
 
@@ -213,7 +215,7 @@ It is worth noting that the other observations flagged by the methods may be rel
 
 For the LIST data, it is found that only the constant age group model for the fixed effects is able to converge. However, even the constant fixed effects models struggle to accurately capture the underlying process of the disease. Figure \@ref(fig:CompareNovelLIST) provides a visual representation of this, showing the estimated one-step ahead random effects $\hat u_{i{t_1}}$ and the calculated thresholds $U_{t_0}$. It can be observed that the estimated random effects and the calculated thresholds collapse for prolonged periods, indicating that there is insufficient information in the data to inform the second stage model. This is particularly evident in the hierarchical Poisson Normal model, where the estimate of the variance parameter $\hat\sigma$ approaches zero. The role of overdispersion in the disease data will be further discussed in Section \@ref(ChallengesOD).
 
-(ref:CompareNovelLIST) Estimate one-step ahead random effects $\hat u_{t_1}$ (circles) given the model described in \eqref{eq:Agegroup} of LIST in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).
+(ref:CompareNovelLIST) Estimated one-step ahead random effects $\hat u_{i{t_0}}$ (circles) for LIST in Denmark, 2011-2022, are shown for the constant fixed effects model described in \eqref{eq:Agegroup}. An alarm is raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line). In the hierarchical Poisson Normal model (left), the random effects are exponentiated to $\exp(\hat u_{it_0})$ to transform them into the same domain as the hierarchical Poisson Gamma model (right).
 
 ```{r CompareNovelLIST, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelLIST)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_novel_LIST.png")
@@ -243,7 +245,7 @@ However, it is important to recognize the significant challenge faced by statist
 
 For SHIL it was found that the trend model for the fixed effects minimizes the average logarithmic score, $\bar S(G,y)$, in both modeling frameworks. Thus, the estimated one-step ahead random effects $\hat u_{i{t_1}}$ and thresholds $U_{t_0}$ visualized in Figure \@ref(fig:CompareNovelSHIL) is calculated using this model. 
 
-(ref:CompareNovelSHIL) Estimated one-step ahead random effects $\hat u_{t_1}$ of SHIL in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).
+(ref:CompareNovelSHIL) Estimated one-step ahead random effects $\hat u_{i{t_0}}$ (circles) for SHIL in Denmark, 2011-2022, are shown for the trend fixed effects model described in \eqref{eq:Trend}. An alarm is raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line). In the hierarchical Poisson Normal model (left), the random effects are exponentiated to $\exp(\hat u_{it_0})$ to transform them into the same domain as the hierarchical Poisson Gamma model (right).
 
 ```{r CompareNovelSHIL, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelSHIL)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_novel_SHIL.png")
@@ -269,7 +271,7 @@ knitr::include_graphics("../figures/Compare_stateOfTheArt_SALM.png")
 
 In Figure \@ref(fig:CompareNovelSALM) the estimated one-step ahead random effects $\hat u_{i{t_1}}$ are visualized together with the calculated threshold $U_{t_0}$.
 
-(ref:CompareNovelSALM) Estimated one-step ahead random effects $\hat u_{t_1}$ of SALM in Denmark, 2011-2022, as circles. Poisson Normal model (top) and Poisson Gamma model (bottom) monitor the disease. Alarm raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line).
+(ref:CompareNovelSALM) Estimated one-step ahead random effects $\hat u_{i{t_0}}$ (circles) for SALM in Denmark, 2011-2022, are shown for the combined fixed effects model described in \eqref{eq:AgegroupTrendSeasonality}. An alarm is raised (solid circle) if $\hat u_{t_1}$ exceeds the threshold $U_{t_0}$ (dashed line). In the hierarchical Poisson Normal model (left), the random effects are exponentiated to $\exp(\hat u_{it_0})$ to transform them into the same domain as the hierarchical Poisson Gamma model (right).
 
 ```{r CompareNovelSALM, echo=FALSE, out.width="100%", fig.cap="(ref:CompareNovelSALM)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_novel_SALM.png")
@@ -315,7 +317,15 @@ Considering the specific circumstances and potential changes in observational bi
 
 An important potential extension of automated statistical outbreak detection algorithms is the incorporation of data drift monitoring. This involves detecting changes in the underlying data distribution and adapting the model accordingly to maintain its predictive performance. Specifically, detecting sudden decreases in case counts can be considered a form of data drift. 
 
-Indeed, sudden decreases in case counts can be treated similarly to sudden increases in case counts, and detecting such data drift can be incorporated into hierarchical models using the unobserved one-step ahead random effects $u_{i{t_0}}$. One approach is to define a lower threshold by selecting an appropriate quantile of the random effects distribution obtained from the second stage model, such as the 5% or 10% quantile.
+Indeed, sudden decreases in case counts can be treated similarly to sudden increases in case counts, and detecting such data drift can be incorporated into hierarchical models using the unobserved one-step ahead random effects $u_{i{t_0}}$. One approach is to define a lower threshold $L_{t_0}$ by selecting an appropriate quantile of the random effects distribution obtained from the second stage model, such as the 5% or 10% quantile.
+
+As a proof of concept, Figure \@ref(fig:ComparenovellowerSHIL) presents the visualization of the estimated one-step ahead random effects for the SHIL data, accompanied by a lower bound defined as the 10% quantile in the random effects distribution. The extension to the novel method demonstrates potential, with a total of 5 and 6 data drift alarms raised in the hierarchical Poisson Normal model and Poisson Gamma model, respectively. When a data drift alarm occurs, it should be of concern to the epidemiologist, prompting further investigation into the reasons behind the abnormally low numbers. It is crucial to critically assess the input data and the fixed effects model employed recursively to ensure optimal performance of the automated procedure.
+
+(ref:ComparenovellowerSHIL) Estimated one-step ahead random effects $\hat u_{i{t_0}}$ (circles) for SHIL in Denmark, 2011-2022, are shown for the trend fixed effects model described in \eqref{eq:Trend}. An alarm is raised (solid circle) if $\hat u_{t_1}$ transcend the lower threshold $L_{t_0}$ (dashed line). In the hierarchical Poisson Normal model (left), the random effects are exponentiated to $\exp(\hat u_{it_0})$ to transform them into the same domain as the hierarchical Poisson Gamma model (right).
+
+```{r ComparenovellowerSHIL, echo=FALSE, out.width="100%", fig.cap="(ref:ComparenovellowerSHIL)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_novel_lower_SHIL.png")
+```
 
 However, the implementation of automated data drift monitoring requires further investigation and is beyond the scope of this thesis. It is an area that calls for future research and development to enhance the robustness and adaptability of statistical outbreak detection algorithms. The inclusion of data drift monitoring can improve the algorithms' ability to adapt to changing outbreak patterns and contextual factors, leading to more reliable and accurate detection outcomes.
 
