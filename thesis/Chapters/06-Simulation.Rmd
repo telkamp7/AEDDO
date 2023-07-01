@@ -78,11 +78,11 @@ To simulate outbreaks, the following procedure is followed:
 
 To evaluate the performance of the outbreak detection system, several measures are employed to assess its effectiveness in detecting current outbreaks. These measures are specifically designed to capture relevant quantities in the given context.
 
-One of the primary measures used is the False Positive Rate (FPR), which is calculated for each of the 28 scenarios and methods. The FPR is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold. Effectively, the number of weeks where it is possible to give a false positive is closer to 47, depending on how many weeks the simulated outbreak occupies. 
+One of the primary measures used is the \gls{FPR}, which is calculated for each of the 28 scenarios and methods. The \gls{FPR} is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold. Effectively, the number of weeks where it is possible to give a false positive is closer to 47, depending on how many weeks the simulated outbreak occupies. 
 
-Another measure is the probability of detecting and outbreak (POD), also known as power. Likewise, this is calculated for each of the 28 scenarios. The algorithm is applied iteratively for the 49 current weeks, and an outbreak is considered detected if the observed value exceeds the threshold at least once within the start and end times of the outbreak. The POD is then determined as the proportion of outbreaks detected out of the 100 runs.
+Another measure is the \gls{POD} an outbreak, also known as power. Likewise, this is calculated for each of the 28 scenarios. The algorithm is applied iteratively for the 49 current weeks, and an outbreak is considered detected if the observed value exceeds the threshold at least once within the start and end times of the outbreak. The \gls{POD} is then determined as the proportion of outbreaks detected out of the 100 runs.
 
-It is important to note that the FPR is a rate per week, while the POD is a rate per realization. These evaluation measures are chosen because they provide insights into the performance of the detection system on individual time series.
+It is important to note that the \gls{FPR} is a rate per week, while the \gls{POD} is a rate per realization. These evaluation measures are chosen because they provide insights into the performance of the detection system on individual time series.
 
 \section{Results of the simulations}
 
@@ -92,7 +92,7 @@ The data consists of weekly counts of a simulated disease, denoted as $y_t$, whe
 
 
 
-Notably, it is decided to include 3 years of reference data to both methods, corresponding to a total of `r 3*52` weeks.
+Notably, it is decided to include 5 years of reference data to in both algorithms, corresponding to a total of `r 5*52` weeks.
 
 
 The first step involves applying the state-of-the-art outbreak detection algorithm, with specific control arguments determined for the Farrington and Noufaily methods. The details of these control arguments can be found in Appendix \@ref(controlsStateOfTheArt). 
@@ -110,9 +110,9 @@ Hereafter, the novel outbreak detection algorithm is applied. For this purpose, 
 
 
 
-In general, one obtains relatively higher FPRs when using the Farrington method compared to the other methods. This is to no surprise, as this method is known for being overly sensitive, and thus producing more false alarms.
+In general, one obtains relatively higher \glspl{FPR} when using the Farrington method compared to the other methods. This is to no surprise, as this method is known for being overly sensitive, and thus producing more false alarms.
 
-(ref:FPR) FPRs obtained in each of the 28 scenarios for each of the methods applied. Thresholds are based on the $0.95$ quantile
+(ref:FPR) \glspl{FPR} obtained in each of the 28 scenarios for each of the methods applied. Thresholds are based on the $0.95$ quantile
 
 ```{r FPR, echo=FALSE, out.width="100%", fig.cap="(ref:FPR)", fig.pos = "H", fig.show = "hold"}
 
@@ -121,7 +121,7 @@ knitr::include_graphics("../figures/FPRPlot.png")
 ```
 
 
-The PODs for the 28 scenarios and eac
+The \glspl{POD} for the 28 scenarios and eac
 
 To no surprise, the PODs increase with size of $k$. Intuitively, the larger the outbreak size is, the more likely it is that the outbreak is detected.
 

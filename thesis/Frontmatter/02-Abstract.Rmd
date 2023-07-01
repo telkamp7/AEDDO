@@ -1,3 +1,4 @@
+\phantomsection
 \section*{Abstract}
 \addcontentsline{toc}{section}{Abstract}
 
