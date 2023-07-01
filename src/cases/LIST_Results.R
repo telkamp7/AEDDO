@@ -173,6 +173,7 @@ Compare_stateOfTheArt_LIST_dat <- LIST %>%
 write_rds(x = Compare_stateOfTheArt_LIST_dat, file = "Compare_stateOfTheArt_LIST_dat.rds")
 
 Compare_stateOfTheArt_LIST <- Compare_stateOfTheArt_LIST_dat %>%
+  mutate(alarm = if_else(is.na(alarm), FALSE, alarm)) %>%
   ggplot(mapping = aes(x = Date, fill = ageGroup)) +
   geom_col(mapping = aes(y = y/n*1e5, alpha = alarm), linewidth = 0.4) +
   geom_line(mapping = aes(x = Date, y = threshold/n*1e5), lty = "dashed", linewidth = 0.4, inherit.aes = FALSE) +
@@ -184,7 +185,8 @@ Compare_stateOfTheArt_LIST <- Compare_stateOfTheArt_LIST_dat %>%
   guides(fill = "none", alpha = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
         # axis.ticks.x = element_blank(),
-        axis.text.x = element_text(vjust = -1.2)) +
+        axis.text.x = element_text(vjust = -1.2),
+        strip.text = element_text(size = 20)) +
   annotate(geom = "rect", xmin = as.Date("2008-01-01")-10, xmax = as.Date("2011-03-01"), ymin = -Inf, ymax = Inf, alpha = 0.2)
 ggsave(filename = "Compare_stateOfTheArt_LIST.png",
        plot = Compare_stateOfTheArt_LIST,
@@ -299,16 +301,19 @@ Compare_novel_dat <- LIST_novel %>%
 write_rds(x = Compare_novel_dat, file = "Compare_novel_dat.rds")
 
 Compare_novel_LIST <- Compare_novel_dat %>%
+  mutate_at(vars(c(u,threshold)), list(~case_when(method == "Poisson Normal" ~ exp(.),
+                                                  TRUE ~ .))) %>%
   ggplot(mapping = aes(x = Date, colour = ageGroup)) +
   geom_line(mapping = aes(y = u), linewidth = 0.4) +
   geom_point(mapping = aes(y = u, shape = alarm), size = 2) +
   geom_line(mapping = aes(y = threshold, group = method), lty = "dashed") +
-  facet_grid(rows = vars(method), cols = vars(ageGroup), scales = "free_y") +
-  scale_y_continuous(name = expression(u[t[1]])) +
+  facet_grid(rows = vars(ageGroup), cols = vars(method), scales = "free_y") +
+  scale_y_continuous(name = "Estimated one-step ahead random effects") +
   scale_x_date(name = "Month") +
   scale_colour_manual(values = dtuPalette) +
   scale_shape_manual(values = c(1,19)) +
-  guides(colour = "none", shape = "none")
+  guides(colour = "none", shape = "none") +
+  theme(strip.text = element_text(size = 20))
 ggsave(filename = "Compare_novel_LIST.png",
        plot = Compare_novel_LIST,
        path = "../../figures/",

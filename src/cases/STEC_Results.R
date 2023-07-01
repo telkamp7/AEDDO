@@ -142,6 +142,7 @@ Compare_stateOfTheArt_STEC_dat <- STEC %>%
 write_rds(x = Compare_stateOfTheArt_STEC_dat, file = "Compare_stateOfTheArt_STEC_dat.rds")
 
 Compare_stateOfTheArt_STEC <- Compare_stateOfTheArt_STEC_dat %>%
+  mutate(alarm = if_else(is.na(alarm), FALSE, alarm)) %>%
   ggplot(mapping = aes(x = Date, fill = ageGroup)) +
   geom_col(mapping = aes(y = y/n*1e5, alpha = alarm), linewidth = 0.4) +
   geom_line(mapping = aes(x = Date, y = threshold/n*1e5), lty = "dashed", linewidth = 0.4, inherit.aes = FALSE) +
@@ -153,14 +154,15 @@ Compare_stateOfTheArt_STEC <- Compare_stateOfTheArt_STEC_dat %>%
   guides(fill = "none", alpha = "none") +
   theme(panel.spacing.y = unit(1, "lines"), 
         # axis.ticks.x = element_blank(),
-        axis.text.x = element_text(vjust = -1.2)) +
+        axis.text.x = element_text(vjust = -1.2),
+        strip.text = element_text(size = 20)) +
   annotate(geom = "rect", xmin = as.Date("2008-01-01")-10, xmax = as.Date("2011-03-01"), ymin = -Inf, ymax = Inf, alpha = 0.2)
 ggsave(filename = "Compare_stateOfTheArt_STEC.png",
        plot = Compare_stateOfTheArt_STEC,
        path = "../../figures/",
        device = png,
        width = 16,
-       height = 8,
+       height = 12,
        units = "in",
        dpi = "print")
 
@@ -379,22 +381,26 @@ Compare_novel <- STEC_novel %>%
   pivot_longer(cols = c(`threshold_Poisson Normal`, `threshold_Poisson Gamma`), names_to = "method3", names_prefix = "threshold_", values_to = "threshold") %>%
   filter(method == method2 & method == method3) %>%
   select(-method2, -method3) %>%
+  mutate_at(vars(c(u,threshold)), list(~case_when(method == "Poisson Normal" ~ exp(.),
+                                                  TRUE ~ .))) %>%
+  mutate(method = factor(method, levels = c("Poisson Normal", "Poisson Gamma"))) %>%
   ggplot(mapping = aes(x = Date, colour = ageGroup)) +
   geom_line(mapping = aes(y = u), linewidth = 0.4) +
   geom_point(mapping = aes(y = u, shape = alarm), size = 2) +
   geom_line(mapping = aes(y = threshold, group = method), lty = "dashed") +
   facet_grid(rows = vars(ageGroup), cols = vars(method), scales = "free_y") +
-  scale_y_continuous(name = expression(widehat(u)[t[1]])) +
+  scale_y_continuous(name = "Estimated one-step ahead random effects") +
   scale_x_date(name = "Date") +
   scale_colour_manual(values = dtuPalette) +
   scale_shape_manual(values = c(1,19)) +
-  guides(colour = "none", shape = "none")
+  guides(colour = "none", shape = "none") +
+  theme(strip.text = element_text(size = 20))
 ggsave(filename = "Compare_novel_STEC.png",
        plot = Compare_novel,
        path = "../../figures/",
        device = png,
        width = 16,
-       height = 8,
+       height = 12,
        units = "in",
        dpi = "print")  
 
@@ -449,7 +455,7 @@ ggsave(filename = "STEC_novel_par_plot.png",
 
 
 STEC_novel_par_ageGroup <- STEC_novel_par %>%
-  filter(grepl(x = Parameter, pattern = "ageGroup")) %>%
+  filter(grepl(x = Parameter, pattern = "ageGroup") & Model == "Combined") %>%
   ggplot(mapping = aes(x = ref.date)) +
   geom_line(mapping = aes(y = theta, colour = Method), linewidth = 1) +
   geom_line(mapping = aes(y = CI.lwr, colour = Method), lty = "dashed") +
@@ -468,7 +474,7 @@ ggsave(filename = "STEC_novel_par_ageGroup.png",
        dpi = "print") 
 
 STEC_novel_par_trend <- STEC_novel_par %>%
-  filter(Parameter == "t") %>%
+  filter(Parameter == "t" & Model == "Combined") %>%
   ggplot(mapping = aes(x = ref.date)) +
   geom_line(mapping = aes(y = theta, colour = Method), linewidth = 1) +
   geom_line(mapping = aes(y = CI.lwr, colour = Method), lty = "dashed") +
@@ -487,7 +493,7 @@ ggsave(filename = "STEC_novel_par_trend.png",
        dpi = "print") 
 
 STEC_novel_par_seasonality <- STEC_novel_par %>%
-  filter(grepl(x = Parameter, pattern = "cos|sin")) %>%
+  filter(grepl(x = Parameter, pattern = "cos|sin")& Model == "Combined") %>%
   ggplot(mapping = aes(x = ref.date)) +
   geom_line(mapping = aes(y = theta, colour = Method), linewidth = 1) +
   geom_line(mapping = aes(y = CI.lwr, colour = Method), lty = "dashed") +
@@ -507,7 +513,7 @@ ggsave(filename = "STEC_novel_par_seasonality.png",
 
 
 STEC_novel_par_dispersion <- STEC_novel_par %>%
-  filter(grepl(x = Parameter, pattern = "log_sigma|log_phi")) %>%
+  filter(grepl(x = Parameter, pattern = "log_sigma|log_phi")& Model == "Combined") %>%
   ggplot(mapping = aes(x = ref.date)) +
   geom_line(mapping = aes(y = exp(theta), colour = Method), linewidth = 1) +
   geom_line(mapping = aes(y = exp(CI.lwr), colour = Method), lty = "dashed") +
@@ -524,8 +530,6 @@ ggsave(filename = "STEC_novel_par_dispersion.png",
        height = 8,
        units = "in",
        dpi = "print")  
-
-
 
 # Outbreaks invstigated by SSI ------------------------------------------------------
 

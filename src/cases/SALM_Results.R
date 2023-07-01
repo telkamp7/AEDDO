@@ -146,6 +146,7 @@ Compare_stateOfTheArt_SALM_dat <- SALM %>%
 write_rds(x = Compare_stateOfTheArt_SALM_dat, file = "Compare_stateOfTheArt_SALM_dat.rds")
 
 Compare_stateOfTheArt_SALM <- Compare_stateOfTheArt_SALM_dat %>%
+  mutate(alarm = if_else(is.na(alarm), FALSE, alarm)) %>%
   ggplot(mapping = aes(x = Date, fill = ageGroup)) +
   geom_col(mapping = aes(y = y/n*1e5, alpha = alarm), linewidth = 0.4) +
   geom_line(mapping = aes(x = Date, y = threshold/n*1e5), lty = "dashed", linewidth = 0.4, inherit.aes = FALSE) +
@@ -164,7 +165,7 @@ ggsave(filename = "Compare_stateOfTheArt_SALM.png",
        path = "../../figures/",
        device = png,
        width = 16,
-       height = 8,
+       height = 12,
        units = "in",
        dpi = "print")
 
@@ -316,22 +317,26 @@ Compare_novel <- SALM_novel %>%
   pivot_longer(cols = c(`threshold_Poisson Normal`, `threshold_Poisson Gamma`), names_to = "method3", names_prefix = "threshold_", values_to = "threshold") %>%
   filter(method == method2 & method == method3) %>%
   select(-method2, -method3) %>%
+  mutate_at(vars(c(u,threshold)), list(~case_when(method == "Poisson Normal" ~ exp(.),
+                                                                                TRUE ~ .))) %>%
+  mutate(method = factor(method, levels = c("Poisson Normal", "Poisson Gamma"))) %>%
   ggplot(mapping = aes(x = Date, colour = ageGroup)) +
   geom_line(mapping = aes(y = u), linewidth = 0.4) +
   geom_point(mapping = aes(y = u, shape = alarm), size = 2) +
   geom_line(mapping = aes(y = threshold, group = method), lty = "dashed") +
   facet_grid(rows = vars(ageGroup), cols = vars(method), scales = "free_y") +
-  scale_y_continuous(name = expression(u[t[1]])) +
+  scale_y_continuous(name = "Estimated one-step ahead random effects") +
   scale_x_date(name = "Date") +
   scale_colour_manual(values = dtuPalette) +
   scale_shape_manual(values = c(1,19)) +
-  guides(colour = "none", shape = "none")
+  guides(colour = "none", shape = "none") +
+  theme(strip.text = element_text(size = 20))
 ggsave(filename = "Compare_novel_SALM.png",
        plot = Compare_novel,
        path = "../../figures/",
        device = png,
        width = 16,
-       height = 8,
+       height = 12,
        units = "in",
        dpi = "print")  
 
