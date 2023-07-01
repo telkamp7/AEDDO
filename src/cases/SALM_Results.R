@@ -554,6 +554,39 @@ ggsave(filename = "Compare_alarms_SALM.png",
        dpi = "print")  
 
 
+handleAlarmsPoisN <- SALM_PoisN_ageGroup_trend_seasonality %>%
+  select(ran.ef) %>% 
+  unnest(ran.ef) %>%
+  filter(alarm) %>%
+  select(Date = ref.date, ageGroup) %>%
+  mutate(flag = TRUE)
 
 
+
+handle_alarms <- SALM_PoisN_ageGroup_trend_seasonality %>%
+  mutate(timepoint = row_number()) %>%
+  select(timepoint, window.data) %>%
+  unnest(window.data) %>%
+  full_join(y = handleAlarmsPoisN, by = join_by(Date, ageGroup)) %>%
+  filter(is.na(flag)) %>%
+  group_by(timepoint, ageGroup) %>%
+  reframe(n = n(), Date = Date[1]) %>%
+  ggplot(mapping = aes(x = Date, y = n, colour = ageGroup)) +
+  geom_line(linewidth = 2) +
+  facet_wrap(facets = vars(ageGroup), ncol = 1) +
+  scale_color_manual(values = dtuPalette) +
+  scale_y_continuous(name = "Effective number of observations") +
+  guides(colour = "none") +
+  theme(strip.text = element_text(size = 20))
+ggsave(filename = "handle_alarms.png",
+       plot = handle_alarms,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 12,
+       units = "in",
+       dpi = "print")  
+
+
+  
 

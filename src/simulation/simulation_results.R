@@ -40,22 +40,26 @@ scenarioFiles <- scenarioFiles[scenarioFiles!="scenarios.Rds"]
 # Load in simulation files and unpack
 results <- tibble()
 for(i in 1:length(scenarioFiles)){
+  scenario_no <- parse_number(scenarioFiles[i])
   iterData <- read_rds(file = scenarioFiles[i])
   for(j in 1:length(iterData$Data)){
     
-    unpackData <- iterData$Data[[j]][[1]]
+    unpackData <- iterData$Data[[j]][[1]] %>%
+      mutate(scenario = scenario_no, sim = j)
     
     results <- bind_rows(results,
-                         unpackData)
+                         unpackData) 
   }
 }
 
 Realizations <- results %>%
-  filter(scenario %in% c(5, 7,  12, 28) & sim == 1) %>%
-  select(scenario, data) %>%
-  unnest(data) %>%
+  filter(scenario %in% c(5,7,12,28) & sim == 1) %>%
+  select(scenario, outbreaks) %>%
+  unnest(outbreaks) %>%
+  mutate(outbreakDate = if_else(outbreakTF, t, NA_integer_)) %>%
   ggplot(mapping = aes(x = t, y = y)) +
-  geom_line() +
+  geom_line(alpha = 0.5) +
+  geom_point(mapping = aes(x = outbreakDate)) +
   facet_wrap(facets = vars(scenario), scales = "free_y") +
   scale_x_continuous(name = "week") +
   scale_y_continuous(name = "count")
@@ -75,9 +79,18 @@ results %>%
 # False positive rate
 FPR <- results %>%
   arrange(scenario) %>%
-  select(sim, scenario,
-         FP_Farrington, FP_Noufaily, FP_PoisN, FP_PoisG,
-         TN_Farrington, TN_Noufaily, TN_PoisN, TN_PoisG) %>%
+  select(sim, scenario, outbreaks) %>%
+  unnest(outbreaks) %>%
+  group_by(sim, scenario) %>%
+  slice_tail(n = 49) %>%
+  reframe(FP_Farrington = sum(alarm_Farrington == TRUE  & outbreakTF == FALSE),
+          TN_Farrington = sum(alarm_Farrington == FALSE & outbreakTF == FALSE),
+          FP_Noufaily   = sum(alarm_Noufaily == TRUE    & outbreakTF == FALSE),
+          TN_Noufaily   = sum(alarm_Noufaily == FALSE   & outbreakTF == FALSE),
+          FP_PoisN      = sum(alarm_PoisN == TRUE       & outbreakTF == FALSE),
+          TN_PoisN      = sum(alarm_PoisN == FALSE      & outbreakTF == FALSE),
+          FP_PoisG      = sum(alarm_PoisG == TRUE       & outbreakTF == FALSE),
+          TN_PoisG      = sum(alarm_PoisG == FALSE      & outbreakTF == FALSE)) %>%
   pivot_longer(cols = FP_Farrington:TN_PoisG,
                names_to = c("Statistic", "Method"),
                names_pattern = "(\\w+)_(\\w+)",
@@ -95,7 +108,6 @@ FPR <- results %>%
                                     "Poisson Gamma")),
          scenario = factor(scenario, levels = 1:28,
                            labels = 1:28)) 
-
 write_rds(x = FPR, file = "FPR.Rds")
 
 FPRPlot <- FPR %>%
@@ -117,8 +129,8 @@ ggsave(filename = "FPRPlot.png",
 
 badPerformanceScenarios <- results %>%
   arrange(scenario) %>%
-  select(sim, scenario, data) %>%
-  unnest(data) %>% 
+  select(sim, scenario, outbreaks) %>%
+  unnest(outbreaks) %>% 
   filter(t %in% 576:624 & k == 10) %>%
   pivot_longer(cols = alarm_Farrington:alarm_PoisG, names_to = "Method", values_to = "Alarms") %>%
   mutate(Method = factor(Method,
@@ -141,8 +153,8 @@ badPerformanceScenarios <- results %>%
 # Probability of detection
 POD <- results %>%
   arrange(scenario) %>%
-  select(sim, scenario, data) %>%
-  unnest(data) %>% 
+  select(sim, scenario, outbreaks) %>%
+  unnest(outbreaks) %>% 
   filter(t %in% 576:624) %>%
   pivot_longer(cols = alarm_Farrington:alarm_PoisG, names_to = "Method", values_to = "Alarms") %>%
   group_by(sim, scenario, Method, k) %>%
@@ -164,8 +176,8 @@ write_rds(x = POD, file = "POD.Rds")
 PropDetect <- POD %>% 
   ggplot(mapping = aes(x = k, colour = Method)) +
   geom_line(mapping = aes(y = POD, group = scenario), alpha = 0.6) +
-  geom_line(mapping = aes(y = medianPOD), linewidth=1.2) +
-  geom_text(data = badPerformanceScenarios, mapping = aes(x = k, y = POD, label = scenario), inherit.aes = FALSE) +
+  geom_line(mapping = aes(y = medianPOD), linewidth=2) +
+  # geom_text(data = badPerformanceScenarios, mapping = aes(x = k, y = POD, label = scenario), inherit.aes = FALSE) +
   facet_wrap(facets = vars(Method), labeller = label_parsed) +
   scale_x_continuous(breaks = 1:10) +
   scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
@@ -179,93 +191,23 @@ ggsave(filename = "PropDetect.png",
        units = "in",
        dpi = "print")
 
-results %>%
-  select(sim, scenario, data) %>%
-  unnest(cols = c(data)) %>%
-  filter(t %in% 576:624) %>%
-  pivot_longer(cols = alarm_Farrington:alarm_PoisG, names_to = "Method", values_to = "Alarms") %>%
-  group_by(sim, scenario, Method, k) %>%
-  reframe(Detected = any(outbreakTF == TRUE & Alarms == TRUE)) %>% 
-  group_by(scenario, Method, k) %>%
-  reframe(POD = mean(Detected)) %>%
-  group_by(Method, k) %>%
-  mutate(medianPOD = median(POD), Method = factor(Method,
-                                                  levels = c("alarm_Farrington",
-                                                             "alarm_Noufaily",
-                                                             "alarm_PoisN",
-                                                             "alarm_PoisG"),
-                                                  labels = c("Farrington",
-                                                             "Noufaily", 
-                                                             "'Poisson Normal'", 
-                                                             "'Poisson Gamma'")))
 
-results %>%
-  arrange(scenario) %>%
-  select(sim, scenario, data) %>%
-  unnest(data) %>% 
-  filter(t %in% 576:624) %>%
-  pivot_longer(cols = alarm_Farrington:alarm_PoisG, names_to = "Method", values_to = "Alarms") %>%
-  group_by(sim, scenario, Method, k) %>%
-  reframe(Detected = any(outbreakTF == TRUE & Alarms == TRUE)) %>% 
-  group_by(scenario, Method, k) %>%
-  reframe(POD = mean(Detected)) %>%
-  filter(Method == "alarm_Noufaily" & k == 10) %>%
-  print(n = 28)
 
-results %>%
-  arrange(scenario) %>%
-  select(sim, scenario, data) %>%
-  unnest(data) %>% 
-  filter(t %in% 576:624) %>%
-  pivot_longer(cols = alarm_Farrington:alarm_PoisG, names_to = "Method", values_to = "Alarms") %>%
-  group_by(sim, scenario, Method, k) %>%
-  reframe(Detected = any(outbreakTF == TRUE & Alarms == TRUE)) %>% 
-  group_by(scenario, Method, k) %>%
-  reframe(POD = mean(Detected)) %>%
-  filter(scenario == 7 & k == 10)
+POD %>% 
+  filter(scenario %in% 13:16) %>%
+  ggplot(mapping = aes(x = k, colour = Method)) +
+  geom_line(mapping = aes(y = POD, group = scenario), alpha = 0.6) +
+  # geom_line(mapping = aes(y = medianPOD), linewidth=2) +
+  # geom_text(data = badPerformanceScenarios, mapping = aes(x = k, y = POD, label = scenario), inherit.aes = FALSE) +
+  facet_wrap(facets = vars(Method), labeller = label_parsed) +
+  scale_x_continuous(breaks = 1:10) +
+  scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
+  guides(color = "none") 
 
-results %>%
-  filter(scenario == 7) %>%
-  unnest(data) %>%
-  filter(t %in% 576:624) %>% 
-  select(sim, t, y) %>%
-  ggplot(mapping = aes(x = t, y = y)) + 
-  stat_summary(geom="ribbon", fun.min = function(x) quantile(x, 0.05), fun.max = function(x) quantile(x, 0.95),alpha = 0.1, fill ="#2F3EEA") + 
-  stat_summary(geom="ribbon", fun.min = function(x) quantile(x, 0.1), fun.max = function(x) quantile(x, 0.9), alpha = 0.15, fill ="#2F3EEA") +
-  stat_summary(geom="ribbon", fun.min = function(x) quantile(x, 0.15), fun.max = function(x) quantile(x, 0.85), alpha = 0.2, fill ="#2F3EEA") +
-  stat_summary(geom="ribbon", fun.min = function(x) quantile(x, 0.2), fun.max = function(x) quantile(x, 0.8), alpha = 0.25, fill ="#2F3EEA") +
-  stat_summary(geom="ribbon", fun.min = function(x) quantile(x, 0.25), fun.max = function(x) quantile(x, 0.75), alpha = 0.3, fill ="#2F3EEA") + 
-  stat_summary(geom="ribbon", fun.min = function(x) quantile(x, 0.3), fun.max = function(x) quantile(x, 0.7), alpha = 0.35, fill ="#2F3EEA") + 
-  stat_summary(geom="ribbon", fun.min = function(x) quantile(x, 0.35), fun.max = function(x) quantile(x, 0.65), alpha = 0.4, fill ="#2F3EEA") + 
-  stat_summary(geom="ribbon", fun.min = function(x) quantile(x, 0.4), fun.max = function(x) quantile(x, 0.6), alpha = 0.45, fill ="#2F3EEA") + 
-  stat_summary(geom="ribbon", fun.min = function(x) quantile(x, 0.45), fun.max = function(x) quantile(x, 0.55), alpha = 0.5, fill ="#2F3EEA") + 
-  stat_summary(geom="line", fun=median, linewidth=1.2, colour = "#030F4F")
 
-results %>%
-  filter(scenario == 7) %>%
-  unnest(data) %>%
-  filter(t %in% 576:624) %>% 
-  select(sim, t, y) %>%
-  ggplot(mapping = aes(x = t, y = y)) +
-  geom_bin2d(binwidth = c(1,1))
 
-results %>%
-  filter(scenario == 7) %>%
-  unnest(data) %>%
-  filter(t %in% 576:624) %>% 
-  select(sim, t, y) %>%
-  ggplot(mapping = aes(x = y, y = after_stat(density))) +
-  geom_density(alpha = 0.25)
 
-results %>%
-  arrange(scenario) %>%
-  select(sim, scenario, data) %>%
-  unnest(data) %>% 
-  filter(t %in% 576:624) %>%
-  pivot_longer(cols = alarm_Farrington:alarm_PoisG, names_to = "Method", values_to = "Alarms") %>%
-  group_by(sim, scenario, Method, k) %>%
-  reframe(Detected = outbreakTF == TRUE & Alarms == TRUE) %>%
-  mutate(POD = Detected / (Detected + Undetected)) %>%
-  ggplot(mapping = aes(x = k, y = POD, group = sim)) +
-  geom_line() +
-  facet_wrap(facets = vars(Method))
+
+
+
+

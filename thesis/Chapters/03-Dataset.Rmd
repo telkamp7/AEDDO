@@ -74,9 +74,9 @@ In Table \@ref(tab:summaryStat), it is readily seen that the diseases exhibit di
 
 From an epidemiological perspective, all the diseases within the selected subset pose a significant risk of infection and can vary in terms of severity for affected individuals. Therefore, early identification of disease outbreaks is of utmost importance in order to promptly implement necessary interventions. Timely detection allows for swift and targeted actions to control the spread of these diseases and mitigate their impact on public health.
 
-\subsection{\textit{Listeriosis}}
+\subsection{Epidemiological background and notable outbreaks of \textit{Listeriosis}}
 
-LIST is a foodborne illness that is caused by consuming food contaminated with \textit{Listeria monocytogenes}. The bacteria is ubiquitous in the environment, found in moist environments, soil, water, decaying vegetation, and animals. Furthermore, it can survive and even grow under refrigeration and other food preservation measures.
+\textit{Listeriosis} (LIST) is a foodborne illness that is caused by consuming food contaminated with \textit{Listeria monocytogenes}. The bacteria is ubiquitous in the environment, found in moist environments, soil, water, decaying vegetation, and animals. Furthermore, it can survive and even grow under refrigeration and other food preservation measures.
 
 This disease primarily affects pregnant women, unborn or newborn babies, the elderly, and individuals with weakened immune systems. The disease is associated with high mortality [@Goulet_2012] and manifests in three ways: sepsis, meningitis, and mother-to-child transmission. Pregnancy-associated listeria can have severe consequences for the fetus or newborn, including miscarriage, stillbirth, neonatal sepsis, and meningitis [@Awofisayo_2015]. \textit{Listeriosis} is uncommon among individuals in other demographic groups.
 
@@ -117,9 +117,9 @@ In a recent outbreak investigated by SSI, the Danish Veterinary and Food Adminis
 knitr::include_graphics("../figures/LIST_SSI_outbreaks.png")
 ```
 
-\subsection{\textit{Shiggellosis}}
+\subsection{Epidemiological background and notable outbreaks of \textit{Shiggellosis}}
 
-SHIL is a diarrheal illness that is caused by a group of bacteria called \textit{Shigella}. There are four types of \textit{Shigella} bacteria, namely: \textit{Shigella dysenteriae}, \textit{Shigella boydii}, \textit{Shigella flexneri}, and \textit{Shigella sonnei}. The latter is the most common species in Denmark. For surveillance purposes, it is generally preferred to consider data from the laboratory notification systems, as it includes information about the specific type of \textit{Shigella} bacteria. However, for the purpose of this thesis, all four types of \textit{Shigella} bacteria are analyzed collectively, regardless of the availability of type-specific information in the data.
+\textit{Shiggellosis} (SHIL) is a diarrheal illness that is caused by a group of bacteria called \textit{Shigella}. There are four types of \textit{Shigella} bacteria, namely: \textit{Shigella dysenteriae}, \textit{Shigella boydii}, \textit{Shigella flexneri}, and \textit{Shigella sonnei}. The latter is the most common species in Denmark. For surveillance purposes, it is generally preferred to consider data from the laboratory notification systems, as it includes information about the specific type of \textit{Shigella} bacteria. However, for the purpose of this thesis, all four types of \textit{Shigella} bacteria are analyzed collectively, regardless of the availability of type-specific information in the data.
 
 The bacteria are highly contagious and can be transmitted through direct person-to-person contact, consumption of contaminated food, or ingestion of water contaminated with human feces. SHIL infections are most commonly observed in children under the age of 5, individuals traveling to regions with poor sanitation and unsafe water and food practices, as well as gay, bisexual, and other men who have sex with men. 
 
@@ -131,7 +131,7 @@ knitr::include_graphics("../figures/SHIG_long_plot.png")
 
 In Denmark, another significant cause of SHIL outbreaks is the importation of contaminated vegetables. This was evident in several incidents, including a 2007 outbreak where 215 individuals fell ill after consuming imported contaminated baby corn [@Lewis_2009], a smaller outbreak in 2009 linked to sugar snap peas from Kenya [@Muller_2009], and a 2020 outbreak associated with fresh mint as the source of infection. 
 
-The 2020 outbreak is indeed a significant focus of this study, as it serves as a benchmark for evaluating the effectiveness of outbreak detection algorithms. It took place from the 22nd of August to the 9th of September and was investigated by SSI in collaboration with the Danish Veterinary and Food Administration and the National Food Institute at the Technical University of Denmark. The outbreak affected 44 patients, mainly concentrated in the Capital Region of Denmark. The investigation identified at least five events where individuals subsequently developed \textit{Shigellosis}. 
+The 2020 outbreak is indeed a significant focus of this study, as it serves as a benchmark for evaluating the effectiveness of outbreak detection algorithms. It took place from the 22nd of August to the 9th of September and was investigated by SSI in collaboration with the Danish Veterinary and Food Administration and the National Food Institute at the Technical University of Denmark. The outbreak affected 44 patients, mainly concentrated in the Capital Region of Denmark. The investigation identified at least five events where individuals subsequently developed SHIL. 
 
 (ref:SHIGSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of SHIL by SSI and possible collaborators.
 
@@ -139,9 +139,9 @@ The 2020 outbreak is indeed a significant focus of this study, as it serves as a
 knitr::include_graphics("../figures/SHIG_SSI_outbreaks.png")
 ```
 
-\subsection{Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
+\subsection{Epidemiological background and notable outbreaks of Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
 
-STEC primarily spreads through contaminated food. Less common sources of infection include contaminated drinking and bathing water, as well as direct or indirect contact with infected animals. Cattle and other ruminants are primary reservoirs for STEC serotypes that are frequently associated with human disease [@Menge_2020]. Therefore, in Denmark, the source of infection is often products derived from beef, non-heat-treated dairy products, or other foods such as ready-to-eat vegetables, leafy greens, vegetable sprouts, and berries contaminated with feces from cows. \textit{Hemolytic uremic syndrome} (HUS) is a severe complication that, in some cases, particularly in children, can develop following an infection with STEC.
+Shiga toxin (verotoxin)-producing \textit{Escherichia coli} (STEC) primarily spreads through contaminated food. Less common sources of infection include contaminated drinking and bathing water, as well as direct or indirect contact with infected animals. Cattle and other ruminants are primary reservoirs for STEC serotypes that are frequently associated with human disease [@Menge_2020]. Therefore, in Denmark, the source of infection is often products derived from beef, non-heat-treated dairy products, or other foods such as ready-to-eat vegetables, leafy greens, vegetable sprouts, and berries contaminated with feces from cows. \textit{Hemolytic uremic syndrome} (HUS) is a severe complication that, in some cases, particularly in children, can develop following an infection with STEC.
 
 (ref:STECLongPlot) A stacked bar graph illustrating the number of STEC cases observed in the period from 2008 to 2022 for the six age groups.
 
@@ -166,9 +166,9 @@ More recent outbreaks include a 38-case outbreak from September to November 2018
 knitr::include_graphics("../figures/STEC_SSI_outbreaks.png")
 ```
 
-\subsection{\textit{Salmonellosis}}
+\subsection{Epidemiological background and notable outbreaks of \textit{Salmonellosis}}
 
-SALM is a bacterial disease that primarily affects the intestinal tracts of humans. The \textit{Salmonella} bacteria are commonly found in the intestines of animals and humans and are excreted in feces. Human infection typically occurs through the consumption of contaminated food or water. Salmonella infections are often associated with the consumption of raw or under cooked meat, poultry, eggs or egg products, as well as unpasteurized milk.  
+\textit{Salmonellosis} (SALM) is a bacterial disease that primarily affects the intestinal tracts of humans. The \textit{Salmonella} bacteria are commonly found in the intestines of animals and humans and are excreted in feces. Human infection typically occurs through the consumption of contaminated food or water. Salmonella infections are often associated with the consumption of raw or under cooked meat, poultry, eggs or egg products, as well as unpasteurized milk.  
 
 (ref:SALMLongPlot) A stacked bar graph illustrating the number of SALM cases observed in the period from 2008 to 2022 for the six age groups.
 
