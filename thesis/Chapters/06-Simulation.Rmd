@@ -37,7 +37,7 @@ scenarios %>%
 
 To simulate the baseline data without outbreaks, 100 replicates are generated for each of the 28 parameter scenarios. Each replicate consist of a time series of size $T=624$ weeks. 
 
-The 624 weeks are divided into three periods: weeks 1-313 are used for training, weeks 313-575 are considered as baseline weeks, and weeks 576-624 are designated as the test weeks for evaluation
+The 624 weeks are divided into three periods: weeks 1-313 are used for training, weeks 313-575 are considered as baseline weeks, and weeks 576-624 are designated as the test weeks for evaluation. In Figure \@ref(fig:Realizations), one randomly selected realization for scenario 5, 7, 12, and 28 are visualized.
 
 The simulation results are based on the test weeks of all the replicates, totaling $100\times 49=4900$ replicates, for each of the 28 data scenarios and each method investigated.
 
@@ -57,7 +57,7 @@ Next, the outbreak is distributed randomly in time according to a log-normal dis
 
 The probability density function for the log-normal distribution is visualized in Figure \@ref(fig:PDFLogNormal).
 
-(ref:PDFLogNormal) Probaility density function for the log-normal distribution with a mean of 0 and a standard deviation of 0.5, i.e. $Z \sim \LN(0,0.5^2)$.
+(ref:PDFLogNormal) Stairstep plot of the probability mass function for the discretized log-normal distribution with a mean of 0 and a standard deviation of 0.5, i.e. $Z \sim \LN(0,0.5^2)$.
 
 ```{r PDFLogNormal, echo=FALSE, out.width="100%", fig.cap="(ref:PDFLogNormal)", fig.pos = "H", fig.show = "hold"}
 
@@ -76,11 +76,11 @@ To simulate outbreaks, the following procedure is followed:
 
 \section{Evaluation measures}
 
-To evaluate the performance of the outbreak detection system, several measures are employed to assess its effectiveness in detecting current outbreaks. These measures are specifically designed to capture relevant quantities in the given context.
+To evaluate the performance of the outbreak detection system in the absence and presence of outbreaks, several measures are employed to assess its effectiveness. These measures are specifically designed to capture relevant quantities in the given context.
 
-One of the primary measures used is the \gls{FPR}, which is calculated for each of the 28 scenarios and methods. The \gls{FPR} is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold. Effectively, the number of weeks where it is possible to give a false positive is closer to 47, depending on how many weeks the simulated outbreak occupies. 
+In the absence of outbreaks in the data, one of the primary measures used is the \gls{FPR}. This is calculated for each of the 28 scenarios, before the addition of the simulated outbreaks to the baseline data. The \gls{FPR} is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold in the absence of any simulated outbreaks.
 
-Another measure is the \gls{POD} an outbreak, also known as power. Likewise, this is calculated for each of the 28 scenarios. The algorithm is applied iteratively for the 49 current weeks, and an outbreak is considered detected if the observed value exceeds the threshold at least once within the start and end times of the outbreak. The \gls{POD} is then determined as the proportion of outbreaks detected out of the 100 runs.
+Another measure is the \gls{POD} of an outbreak, also known as power. Likewise, this is calculated for each of the 28 scenarios, but this time it is in the presence of the simulated outbreaks. The algorithm is applied iteratively for the 49 current weeks, and an outbreak is considered detected if the observed value exceeds the threshold at least once within the start and end times of the outbreak. The \gls{POD} of an outbreak is then determined as the proportion of outbreaks detected out of the 100 runs.
 
 It is important to note that the \gls{FPR} is a rate per week, while the \gls{POD} is a rate per realization. These evaluation measures are chosen because they provide insights into the performance of the detection system on individual time series.
 
@@ -88,21 +88,17 @@ It is important to note that the \gls{FPR} is a rate per week, while the \gls{PO
 
 In this section, the results of the simulation study are presented. Both the state-of-the-art and novel outbreak detection algorithms are applied to the same simulated data, allowing for the evaluation of their performance in a setting where the true parameters and process are known. 
 
-The data consists of weekly counts of a simulated disease, denoted as $y_t$, where $t=1,\cdots,T$ represents the time period of $T=624$ weeks. 
+The data used consists of weekly counts of a simulated disease, denoted as $y_t$, where $t=1,\cdots,T$ represents the time period of $T=624$ weeks. In order to evaluate the state-of-the-art and novel outbreak detection algorithms, it is decided to include 5 years of reference data, corresponding to a total of `r 5*52` weeks.
 
+The first step involves applying the state-of-the-art outbreak detection algorithms, with specific control arguments determined for the Farrington and Noufaily methods. These control arguments for the algorithms are specified exactly as in @Noufaily_2013, in order to reproduce the same results. Notably, the thresholds calculated in the state-of-the-art algorithms are based on the $99.5\%$ quantiles. Also, in the Noufaily method, it is decided to exclude the last 26 weeks before the current week to avoid adaption of the model to emerging outbreaks, which would reduce its sensitivity. In the Farrington method, only 3 weeks are excluded before the current week. To access the full configuration of the state-of-the-art methods, refer to Appendix \@ref(controlsStateOfTheArt). 
 
-
-Notably, it is decided to include 5 years of reference data to in both algorithms, corresponding to a total of `r 5*52` weeks.
-
-
-The first step involves applying the state-of-the-art outbreak detection algorithm, with specific control arguments determined for the Farrington and Noufaily methods. The details of these control arguments can be found in Appendix \@ref(controlsStateOfTheArt). 
-
-Hereafter, the novel outbreak detection algorithm is applied. For this purpose, the model for the fixed effects in each of the modeling frameworks respectively, is defined as:
+Hereafter, the novel outbreak detection algorithm is applied. For this purpose, the model for the fixed effects in each of the modeling frameworks is defined as
 
 \begin{equation}
   \log(\lambda_{t}) = \beta_{intercept} + \beta_{trend} t + \sin \big(\frac{2\pi\cdot \tau_t}{52}\big) \beta_{\sin} + \cos \big(\frac{2\pi\cdot \tau_t}{52}\big)\beta_{\cos}
 \end{equation}
 
+Unlike the state-of-the-art algorithms, the thresholds in the novel algorithm are based on the 95% quantiles of the second stage model.
 
 
 
@@ -123,7 +119,7 @@ knitr::include_graphics("../figures/FPRPlot.png")
 
 The \glspl{POD} for the 28 scenarios and eac
 
-To no surprise, the PODs increase with size of $k$. Intuitively, the larger the outbreak size is, the more likely it is that the outbreak is detected.
+To no surprise, the \glspl{POD} increase with size of $k$. Intuitively, the larger the outbreak size is, the more likely it is that the outbreak is detected.
 
 (ref:PropDetect) PODs of $k$ standard deviations, along with the median curves (bold), corresponding to the 28 scenarios for each of the methods applied.
 

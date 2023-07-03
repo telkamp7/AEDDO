@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.1)  1 JUL 2023 20:05
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.1)  3 JUL 2023 10:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1538,14 +1538,14 @@ Underfull \hbox (badness 1365) in paragraph at lines 284--284
 File: ../figures/EpiPlot.png Graphic file (type bmp)
 <../figures/EpiPlot.png>
 [6]
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_1d147912aed.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_1d147912aed.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_1d1442f6dc4.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_1d1442f6dc4.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_1d1453568f2.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_1d1453568f2.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_1d146ba64eb4.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_1d146ba64eb4.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_12f4208637ac.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_12f4208637ac.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_12f41b8cf20.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_12f41b8cf20.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_12f465032a7.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_12f465032a7.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_12f4762334aa.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_12f4762334aa.pdf>
 [7]
 File: ../figures/LIST_long_plot.png Graphic file (type bmp)
 <../figures/LIST_long_plot.png>
@@ -1556,6 +1556,11 @@ File: ../figures/LIST_SSI_outbreaks.png Graphic file (type bmp)
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [9]
+Overfull \hbox (0.50363pt too wide) in paragraph at lines 387--388
+[][]\TU/Arial(0)/m/it/10.95 Shigellosis \TU/Arial(0)/m/n/10.95 (SHIL)[] is a diarrheal illness that is caused by a group of bacteria called \TU/Arial(0)/m/it/10.95 Shigella\TU/Arial(0)/m/n/10.95 .
+ []
+
+
 Overfull \hbox (0.31036pt too wide) in paragraph at lines 389--390
 []\TU/Arial(0)/m/n/10.95 The bacteria are highly contagious and can be transmitted through direct person-to-person
  []
@@ -1565,19 +1570,21 @@ File: ../figures/SHIG_long_plot.png Graphic file (type bmp)
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[10] [11]
-Overfull \hbox (1.31061pt too wide) in paragraph at lines 409--410
-[]\TU/Arial(0)/m/n/10.95 One of the earliest documented []STEC[] outbreaks occurred in 2007, involving 18 laboratory-
- []
-
-File: ../figures/STEC_SSI_outbreaks.png Graphic file (type bmp)
-<../figures/STEC_SSI_outbreaks.png>
-File: ../figures/SALM_long_plot.png Graphic file (type bmp)
-<../figures/SALM_long_plot.png>
+[10]
+File: ../figures/STEC_long_plot.png Graphic file (type bmp)
+<../figures/STEC_long_plot.png>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
-[12] [13]
+[11]
+Overfull \hbox (1.31061pt too wide) in paragraph at lines 415--416
+[]\TU/Arial(0)/m/n/10.95 One of the earliest documented []STEC[] outbreaks occurred in 2007, involving 18 laboratory-
+ []
+
+[12]
+File: ../figures/SALM_long_plot.png Graphic file (type bmp)
+<../figures/SALM_long_plot.png>
+[13]
 File: ../figures/SALM_SSI_outbreaks.png Graphic file (type bmp)
 <../figures/SALM_SSI_outbreaks.png>
 [14]
@@ -3105,8 +3112,8 @@ File: ../figures/SHIL_novel_par_plot.png Graphic file (type bmp)
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
 [85]
-File: ../figures/STEC_long_plot.png Graphic file (type bmp)
-<../figures/STEC_long_plot.png>
+File: ../figures/STEC_SSI_outbreaks.png Graphic file (type bmp)
+<../figures/STEC_SSI_outbreaks.png>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -3171,7 +3178,7 @@ Package logreq Info: Writing requests to '_main.run.xml'.
  ) 
 Here is how much of TeX's memory you used:
  62146 strings out of 477888
- 1434027 string characters out of 5821823
+ 1434036 string characters out of 5821823
  2623104 words of memory out of 5000000
  82155 multiletter control sequences out of 15000+600000
  573003 words of font info for 132 fonts, out of 8000000 for 9000

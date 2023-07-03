@@ -463,7 +463,8 @@ STEC_novel_par_ageGroup <- STEC_novel_par %>%
   facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(beta)[i])) +
-  scale_x_date(name = "Month")
+  scale_x_date(name = "Month") +
+  theme(strip.text = element_text(size = 20))
 ggsave(filename = "STEC_novel_par_ageGroup.png",
        plot = STEC_novel_par_ageGroup,
        path = "../../figures/",
@@ -482,7 +483,8 @@ STEC_novel_par_trend <- STEC_novel_par %>%
   facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(beta)[i])) +
-  scale_x_date(name = "Month")
+  scale_x_date(name = "Month") +
+  theme(strip.text = element_text(size = 20))
 ggsave(filename = "STEC_novel_par_trend.png",
        plot = STEC_novel_par_trend,
        path = "../../figures/",
@@ -501,7 +503,8 @@ STEC_novel_par_seasonality <- STEC_novel_par %>%
   facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(beta)[i])) +
-  scale_x_date(name = "Month")
+  scale_x_date(name = "Month") +
+  theme(strip.text = element_text(size = 20))
 ggsave(filename = "STEC_novel_par_seasonality.png",
        plot = STEC_novel_par_seasonality,
        path = "../../figures/",
@@ -521,7 +524,8 @@ STEC_novel_par_dispersion <- STEC_novel_par %>%
   facet_wrap(facets = vars(Parameter), labeller = custom_labeller) +
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(Psi))) +
-  scale_x_date(name = "Month")
+  scale_x_date(name = "Month") +
+  theme(strip.text = element_text(size = 20))
 ggsave(filename = "STEC_novel_par_dispersion.png",
        plot = STEC_novel_par_dispersion,
        path = "../../figures/",

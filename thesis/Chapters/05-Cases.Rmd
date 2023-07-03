@@ -10,7 +10,7 @@ For a detailed presentation of the data used to generate these results, please r
 
 \section{Outbreak detection in Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
 
-The initial analysis focuses on \gls{STEC}. The data set comprises monthly counts of Danish \gls{STEC} cases, denoted as $y_{it}$, where $i=1,\dots,6$ represents the six age groups and $t=1,\dots,T$ represents the time period of $T=180$ months starting in 2008. The first step involves applying the state-of-the-art outbreak detection algorithms to identify potential outbreaks in the time series.
+The initial analysis focuses on \glsfirst{STEC}. The data set comprises monthly counts of Danish \gls{STEC} cases, denoted as $y_{it}$, where $i=1,\dots,6$ represents the six age groups and $t=1,\dots,T$ represents the time period of $T=180$ months starting in 2008. The first step involves applying the state-of-the-art outbreak detection algorithms to identify potential outbreaks in the time series.
 
 Following that, the novel algorithm is utilized, and different models for the fixed effects are proposed. Both the hierarchical Poisson Normal model and the hierarchical Poisson Gamma model is considered for the modeling framework. To determine the most appropriate models for further analysis, the performance of the different fixed effects models is compared using the average logarithmic score, denoted as $\bar{S}(G,y)$, within each of the modeling frameworks. The average logarithmic score provides a measure of how well the models fit the observed data and allows for objective comparison between different models.
 
@@ -183,7 +183,7 @@ From Figure \@ref(fig:CompareNovelSTEC), it is evident that the estimated one-st
 
 \section{Outbreak detection in other case studies}
 
-In this section, the results of applying the state-of-the-art and novel outbreak detection algorithms to the other case studies, including \gls{LIST}, \gls{SHIL}, and \gls{SALM}, are presented.
+In this section, the results of applying the state-of-the-art and novel outbreak detection algorithms to the other case studies, including \glsfirst{LIST}, \glsfirst{SHIL}, and \glsfirst{SALM}, are presented.
 
 As for the \gls{STEC} case study, the reference data used in the state-of-the-art outbreak detection algorithms is based on monthly data from January 2008 to February 2011. Subsequent surveillance is conducted using data from March 2011 to December 2022. In the novel outbreak detection algorithm, a rolling window of width $k=36$ is used. Thus, the reference data is established using monthly data collected from January 2008 to December 2010. The time series is then monitored for outbreaks using data from January 2011 to December 2022.
 

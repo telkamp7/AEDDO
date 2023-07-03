@@ -41,12 +41,31 @@ dtuPalette <- c("#990000",
                 "#79238E")
                 
 
+tibble(z = seq(0,5,length.out = 101)) %>%
+  mutate(density = dlnorm(z, meanlog = 0, sdlog = 0.5)) %>%
+  mutate(discreteDensity = case_when(z < 1 ~ cumsum(z),
+                                     z > 1 & z < 2 ~ cumsum(z))) %>% 
+  print(n = 101)
 
-PDFLogNormal <- ggplot(data = data.frame(z = c(0,3)), aes(z)) +
-  stat_function(fun = dlnorm, n = 101, args = list(mean = 0, sd = 0.5), colour = "#1FD082", linewidth = 1.2) +
-  scale_y_continuous(name = "PDF", breaks = c(0,0.2,0.4,0.6,0.8,1), limits = c(0,1)) +
-  scale_x_continuous(name = )
+plot(diff(cumsum(dlnorm(x = seq(0, 5, length.out = 101), meanlog = 0, sdlog = 0.5))))
+
+PDFLogNormal <- tibble(z = c(0:4),
+       density = c(
+  integrate(f = dlnorm, lower = 0, upper = 1, meanlog = 0, sdlog = 0.5)$value,
+  integrate(f = dlnorm, lower = 1, upper = 2, meanlog = 0, sdlog = 0.5)$value,
+  integrate(f = dlnorm, lower = 2, upper = 3, meanlog = 0, sdlog = 0.5)$value,
+  integrate(f = dlnorm, lower = 3, upper = 4, meanlog = 0, sdlog = 0.5)$value,
+  integrate(f = dlnorm, lower = 4, upper = 5, meanlog = 0, sdlog = 0.5)$value)) %>%
+  ggplot(mapping = aes(x = z, y = density)) +
+  geom_step(colour = "#1FD082", linewidth = 2) +
+  scale_y_continuous(name = "PMF")
 ggsave(filename = "PDFLogNormal.png", plot = PDFLogNormal, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+# 
+# PDFLogNormal <- ggplot(data = data.frame(z = c(0,3)), aes(z)) +
+#   stat_function(fun = dlnorm, n = 101, args = list(mean = 0, sd = 0.5), colour = "#1FD082", linewidth = 1.2) +
+#   scale_y_continuous(name = "PDF", breaks = c(0,0.2,0.4,0.6,0.8,1), limits = c(0,1)) +
+#   scale_x_continuous(name = )
+# ggsave(filename = "PDFLogNormal.png", plot = PDFLogNormal, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 
 
 # Load data

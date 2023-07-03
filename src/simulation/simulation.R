@@ -44,6 +44,7 @@ refPar <- list(
   scenario = 1:28,
   nRep = 100, # Assign the number of replicates
   n = 624, # ... and the size of each scenario (in weeks)
+  b = 5,
   trainWeeks = 1:312, # Now we assign the weeks used for training the adaptive re-weighting schemes
   baselineWeeks = 313:575, # ... and the weeks for baseline
   curWeeks = 576:624, # ... and the curWeeks
@@ -66,7 +67,7 @@ if(length(listArgs) > 0){
 }
 
 con.farrington <- list(
-  range = NULL, b = 5, w = 3,
+  range = NULL, b = refPar$b, w = 3,
   reweight = TRUE, weightsThreshold = 1,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = refPar$alphaStateOfTheArt, trend = TRUE, pThresholdTrend = 0.05,
@@ -78,7 +79,7 @@ con.farrington <- list(
 )
 
 con.noufaily <- list(
-  range = NULL, b = 5, w = 3,
+  range = NULL, b = refPar$b, w = 3,
   reweight = TRUE, weightsThreshold = 2.58,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = refPar$alphaStateOfTheArt, trend = TRUE, pThresholdTrend = 0.05,
@@ -162,7 +163,7 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
                  theta = c(rep(0, 5)),
                  method = "BFGS",
                  model = "PoissonNormal", 
-                 k = 52*3, 
+                 k = refPar$b*52, 
                  sig.level = 0.95,
                  cpp.dir = "../models/",
                  period = "week",
@@ -175,7 +176,7 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
                  theta = c(rep(0, 5)),
                  method = "BFGS",
                  model = "PoissonGamma", 
-                 k = 52*3, 
+                 k = refPar$b*52, 
                  sig.level = 0.95,
                  cpp.dir = "../models/",
                  period = "week",
