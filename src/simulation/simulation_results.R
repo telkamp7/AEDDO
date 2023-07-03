@@ -62,7 +62,7 @@ Realizations <- results %>%
   geom_point(mapping = aes(x = outbreakDate)) +
   facet_wrap(facets = vars(scenario), scales = "free_y") +
   scale_x_continuous(name = "week") +
-  scale_y_continuous(name = "count")
+  scale_y_continuous(name = "Number of cases")
 ggsave(filename = "Realizations.png",
        plot = Realizations,
        path = "../../figures/",

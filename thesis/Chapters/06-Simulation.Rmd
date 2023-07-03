@@ -51,13 +51,13 @@ knitr::include_graphics("../figures/Realizations.png")
 
 \section{The simulated outbreaks}
 
-The outbreaks starting in week $t$ are simulated using the following procedure. First, a constant value $k$ is chosen at random. The size of the outbreak, denoted as $n$, is then generated randomly from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline count at time $t$.
+The outbreaks starting in week $t_i$ are simulated using the following procedure. First, a constant value $k$ is chosen at random. The size of the outbreak, denoted as $n$, is then generated randomly from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline count in that scenario.
 
-Next, the outbreak is distributed randomly in time according to a log-normal distribution with a mean of 0 and a standard deviation of 0.5, represented as $Z \sim \LN(0,0.5^2)$. This is achieved by drawing $n$ random numbers from the log-normal distribution, which correspond to the outbreak size, and then rounding down these numbers to the nearest integer, denoted as $\lfloor \boldsymbol{z} \rfloor$.
+Next, the outbreak is distributed randomly in time according to a discretized log-normal distribution with a mean of $0$ and a standard deviation of $0.5$, represented as $Z \sim \lfloor \LN(0,0.5^2)\rfloor$. This is achieved by drawing $n$ random numbers, which correspond to the outbreak size, from the specified log-normal distribution and then rounding down these numbers to the nearest integer.
 
-The probability density function for the log-normal distribution is visualized in Figure \@ref(fig:PDFLogNormal).
+The probability mass function for the discretized log-normal distribution is visualized in Figure \@ref(fig:PDFLogNormal).
 
-(ref:PDFLogNormal) Stairstep plot of the probability mass function for the discretized log-normal distribution with a mean of 0 and a standard deviation of 0.5, i.e. $Z \sim \LN(0,0.5^2)$.
+(ref:PDFLogNormal) Stairstep plot of the probability mass function for the discretized log-normal distribution with a mean of 0 and a standard deviation of 0.5, i.e. $Z \sim \lfloor \LN(0,0.5^2)\rfloor$.
 
 ```{r PDFLogNormal, echo=FALSE, out.width="100%", fig.cap="(ref:PDFLogNormal)", fig.pos = "H", fig.show = "hold"}
 
@@ -65,7 +65,7 @@ knitr::include_graphics("../figures/PDFLogNormal.png")
 
 ```
 
-Typically, outbreak durations of 2-4 weeks are observed when values of $k$ are in the range of 2-10. To simulate the outbreaks, the outbreak cases are added to the baseline count in week $t+z_i$, where $t$ represents the start time of the outbreak and $z_i$ represents the number of weeks after the start of the outbreak. The start and end times of the outbreaks are recorded for evaluating the performance of the methods.
+Typically, outbreak durations of 2-4 weeks are observed when values of $k$ are in the range of 2-10. To simulate the outbreaks, the outbreak cases are added to the baseline count in week $t_i+z_i$, where $t_i$ represents the start time of the outbreak and $z_i$ represents the number of weeks after the start of the outbreak. The start and end times of the outbreaks are recorded for evaluating the performance of the methods.
 
 To simulate outbreaks, the following procedure is followed:
 
@@ -100,10 +100,7 @@ Hereafter, the novel outbreak detection algorithm is applied. For this purpose, 
 
 Unlike the state-of-the-art algorithms, the thresholds in the novel algorithm are based on the 95% quantiles of the second stage model.
 
-
-
-
-
+\subsubsection{False Positive Rates}
 
 
 In general, one obtains relatively higher \glspl{FPR} when using the Farrington method compared to the other methods. This is to no surprise, as this method is known for being overly sensitive, and thus producing more false alarms.
@@ -116,6 +113,15 @@ knitr::include_graphics("../figures/FPRPlot.png")
 
 ```
 
+```{r FPRTbl, echo=FALSE}
+FPR %>%
+  group_by(Method) %>%
+  reframe(min(FPR), max(FPR), mean(FPR), median(FPR), sd(FPR)) %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", caption = "Placeholder") %>%
+  kable_paper(latex_option = c("HOLD_position"))
+```
+
+\subsubsection{Probability an outbreak is detected}
 
 The \glspl{POD} for the 28 scenarios and eac
 
@@ -131,18 +137,6 @@ knitr::include_graphics("../figures/PropDetect.png")
 
 Interestingly, some scenarios produce unusual low power curves. Specifically, this is seen in the Noufaily method for scenario 5, 7, and 15. Here, these scenarios leads to less than 60% of the outbreaks detected with this method, when the outbreak size is $k=10$ times the standard deviation. In general, scenario 7 leads to the lowest power curve across all methods, with none of the outbreaks being detected by the Noufaily method.
 
-It is important to remember, that the outbreak of size $n$ is distributed randomly in time according to a log-normal distribution with mean $0$ and a standard deviation of $0.5$. Thus, the simulated outbreaks is not observed in a single time point, but rather in several concurrent time points. 
-
-In general, this means that an outbreak generated from a Poisson distribution with mean equal to $k$ times the standard deviation of the baseline series is observed to be relatively smaller, than what it initially perceived from the simulation setup, i.e. an outbreak of size $k=4$ times the standard deviation may only be perceived as an outbreak of size $2$ times the standard deviation in an individual time point.
-
-
-```{r FPRTbl, echo=FALSE}
-FPR %>%
-  group_by(Method) %>%
-  reframe(min(FPR), max(FPR), mean(FPR), median(FPR), sd(FPR)) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", caption = "Placeholder") %>%
-  kable_paper(latex_option = c("HOLD_position"))
-```
 
 
 ```{r PODTbl, echo=FALSE}
@@ -158,5 +152,9 @@ POD %>%
 ```
 
 
+
+It is important to bear in mind that an outbreak of size $n$ is randomly distributed in time according to a discretized log-normal distribution with a mean of $0$ and a standard deviation of $0.5$, denoted as $Z \sim \lfloor \LN(0,0.5^2)\rfloor$. The probability mass function of $Z$ is shown in Figure \@ref(fig:PDFLogNormal). From the figure, it can be observed that $50\%$ of the outbreak cases are added to the same week as the outbreak starts, $42\%$ are added to the following week, and only $7\%$ are added two weeks after the start. Therefore, the simulated outbreak cases are not observed in a single week only but rather in several concurrent weeks.
+
+Consequently, this means that an outbreak of size $n$ generated from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline series is perceived to be relatively smaller than initially perceived in the simulation setup. For example, an outbreak of size $k=4$ times the standard deviation may only be perceived as an outbreak of size $2$ times the standard deviation in an individual week.
 
 \cleardoublepage
