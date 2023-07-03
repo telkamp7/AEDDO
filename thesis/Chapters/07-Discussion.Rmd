@@ -4,23 +4,22 @@
 
 \section{Harnessing the potential of MiBa}
 
-In the future, the utilization of MiBa-based surveillance has immense potential for disease surveillance. It has already demonstrated its value in various surveillance systems, such as the Healthcare-Associated Infections Database (HAIBA) for monitoring hospital-acquired infections and the COVID-19 surveillance system.
+In the future, the utilization of \gls{MiBa}-based surveillance has immense potential for disease surveillance. It has already demonstrated its value in various surveillance systems, such as \gls{HAIBA} for monitoring hospital-acquired infections [@Condell_2016; @Gubbels_2017] and the \gls{COVID-19} surveillance system [@Schonning_2021].
 
-HAIBA, launched in 2015, was the first fully automated surveillance system built on MiBa data. It provides monitoring capabilities for hospital-acquired infections, enabling healthcare professionals to track and manage these infections more effectively. Similarly, the COVID-19 surveillance system, developed during 2020 and 2021, utilizes MiBa data to monitor and respond to the COVID-19 pandemic.
+\gls{HAIBA}, launched in 2015, was the first fully automated surveillance system built on \gls{MiBa} data. It provides monitoring capabilities for hospital-acquired infections, enabling healthcare professionals to track and manage these infections more effectively. Similarly, the \gls{COVID-19} surveillance system, developed during 2020 and 2021, utilizes \gls{MiBa} data to monitor and respond to the \gls{COVID-19} pandemic.
 
-In addition to these systems, MiBa-based surveillance includes monitoring respiratory infections (such as influenza, pertussis, Mycoplasma pneumonia, and respiratory syncytial virus) and sexually transmitted diseases like chlamydia. While these surveillance systems currently have partial automation in data processing, there are plans to fully automate them in the near future.
+In addition to these systems, \gls{MiBa}-based surveillance includes monitoring respiratory infections (such as influenza, pertussis, Mycoplasma pneumonia, and respiratory syncytial virus) and sexually transmitted diseases like chlamydia. While these surveillance systems currently have partial automation in data processing, there are plans to fully automate them in the near future.
 
-Expanding on the field of automated disease outbreak detection is crucial to fully harness the potential of MiBa. By developing advanced algorithms and methodologies, it becomes possible to automatically analyze MiBa data and detect disease outbreaks in a timely manner. This can lead to early identification of outbreaks, allowing for prompt interventions and preventive measures.
+Expanding on the field of automated disease outbreak detection is crucial to fully harness the potential of \gls{MiBa}. By developing advanced algorithms and methodologies, it becomes possible to automatically analyze \gls{MiBa} data and detect disease outbreaks in a timely manner. This can lead to early identification of outbreaks, allowing for prompt interventions and preventive measures.
 
-Further research and development in automated disease outbreak detection, specifically tailored to leverage MiBa data, can significantly enhance our ability to detect and respond to infectious disease outbreaks more proactively and efficiently. By maximizing the potential of MiBa-based surveillance and continuously improving automated detection methods, we can strengthen our overall disease surveillance efforts and better protect public health.
-
+Certainly, this master's thesis serves as a proof of concept and can serve as a catalyst for future research and development in automated disease outbreak detection. The focus should be on customizing methods to effectively utilize the valuable \gls{MiBa} data, as this has the potential to greatly improve the efficiency of detecting and responding to infectious disease outbreaks. By fully leveraging the capabilities of \gls{MiBa}-based surveillance and continuously improving automated detection methods, the overall disease surveillance efforts can be strengthened, leading to better protection of public health.
 
 
 \section{Potential extensions of the novel algorithm}
 
 One potential extension of the novel outbreak detection method proposed in this master's thesis is the incorporation of correlation, either in time or between groups. 
 
-(ref:ACF) Maybe include an ACF plot of one of the disease investigated in this masters thesis, to highlight the correlation in time.
+(ref:ACF) Maybe include an \gls{ACF} plot of one of the disease investigated in this masters thesis, to highlight the correlation in time.
 
 ```{r ACF, echo=FALSE, out.width="100%", fig.cap="(ref:ACF)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Placeholder.png")

@@ -41,13 +41,6 @@ dtuPalette <- c("#990000",
                 "#79238E")
                 
 
-tibble(z = seq(0,5,length.out = 101)) %>%
-  mutate(density = dlnorm(z, meanlog = 0, sdlog = 0.5)) %>%
-  mutate(discreteDensity = case_when(z < 1 ~ cumsum(z),
-                                     z > 1 & z < 2 ~ cumsum(z))) %>% 
-  print(n = 101)
-
-plot(diff(cumsum(dlnorm(x = seq(0, 5, length.out = 101), meanlog = 0, sdlog = 0.5))))
 
 PDFLogNormal <- tibble(z = c(0:4),
        density = c(
@@ -58,7 +51,7 @@ PDFLogNormal <- tibble(z = c(0:4),
   integrate(f = dlnorm, lower = 4, upper = 5, meanlog = 0, sdlog = 0.5)$value)) %>%
   ggplot(mapping = aes(x = z, y = density)) +
   geom_step(colour = "#1FD082", linewidth = 2) +
-  scale_y_continuous(name = "PMF")
+  scale_y_continuous(name = "Density")
 ggsave(filename = "PDFLogNormal.png", plot = PDFLogNormal, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 # 
 # PDFLogNormal <- ggplot(data = data.frame(z = c(0,3)), aes(z)) +

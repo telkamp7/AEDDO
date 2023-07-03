@@ -6,7 +6,7 @@ Due to the complexity of generalized mixed effects models, obtaining closed-form
 
 \section{State-of-the-art outbreak detection algorithm}\label{StateOfTheArt}
 
-In this section, the method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will bes outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this thesis. Both of the aforementioned methods have been implemented in the R package called \textbf{surveillance} by @Salmon_2016, which can be accessed from the Comprehensive R Archive Network (CRAN) at \href{https://cran.r-project.org/web/packages/surveillance/index.html}{\nolinkurl{https://cran.r-project.org/web/packages/surveillance/index.html}}. The presentation of these methods are strongly inspired by @Salmon_2016.
+In this section, the method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will be outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this thesis. Both of the aforementioned methods have been implemented in the R package called \textbf{surveillance} by @Salmon_2016, which can be accessed from the Comprehensive R Archive Network (CRAN) at \href{https://cran.r-project.org/web/packages/surveillance/index.html}{\nolinkurl{https://cran.r-project.org/web/packages/surveillance/index.html}}. The presentation of these methods are strongly inspired by @Salmon_2016.
 
 Both methods follow the same steps in the algorithm. The first step involves fitting an over-dispersed Poisson \gls{GLM} with a log link to the reference data. In this model, the baseline count $y_t$ corresponding to the baseline time point $t$ is assumed to have an expected value $\lambda_t$ and a variance $\phi\lambda_t$, where $\phi\geq1$ is ensured to account for over-dispersion. The systematic component of the model includes only a linear time trend in the frequency of reports. Therefore, the systematic component can be expressed as
 
@@ -14,7 +14,7 @@ Both methods follow the same steps in the algorithm. The first step involves fit
   \log(\lambda_t)=\alpha+\beta t
 \end{equation}
 
-The original method incorporated seasonal effects by considering counts from comparable periods in past years for threshold calculation. This approach is similar to the one used by @Stroup_1989. The baseline weeks, which are used as reference, are determined by two integers: $b$ represents the number of years back, and $w$ represents the window half-width. For a given current week $x$ of year $h$, only data from weeks $x-w$ to $x+w$ of years $h-b$ to $h-1$ are considered, resulting in a total of $n=b(2w+1)$ baseline weeks. The default values are $b=5$ and $w=3$, resulting in a total of $n=35$ baseline values. 
+The original method incorporated seasonal effects by considering counts from comparable periods in past years for threshold calculation. This approach is similar to the one used by @Stroup_1989. The baseline weeks, which are used as reference, are determined by two integers: $b$ the number of years back, and $w$ the window half-width. For a given current week $x$ of year $h$, only data from weeks $x-w$ to $x+w$ of years $h-b$ to $h-1$ are considered, resulting in a total of $n=b(2w+1)$ baseline weeks. The default values are $b=5$ and $w=3$, resulting in a total of $n=35$ baseline values. 
 
 However, @Noufaily_2013 demonstrated that the algorithm performs better when utilizing more historical data without disregarding seasonality. To achieve this, the author introduced a 10-level factor with a 7-week reference period and nine additional 5-week periods in each year. As a result, the systematic component of the model is modified as follows
 
@@ -45,13 +45,13 @@ y_{t_0} - \hat{\lambda}_{t_0} \sim \N(0, \V(y_{t_0}-\hat{\lambda}_{t_0}))
 The upper bound of the prediction interval is then calculated based on this distribution. The variance of the prediction error is given by
 
 \begin{equation}
-\V(y_{t_0}-\hat{\lambda}_{t_0}) = \V(\hat{y}_{t_0}) + \V(\hat{\lambda}_{t_0}) = \phi\lambda_{t_0}
+\V(y_{t_0}-\hat{\lambda}_{t_0}) = \V(y_{t_0}) + \V(\hat{\lambda}_{t_0}) = \phi\lambda_{t_0} + \V(\hat{\lambda}_{t_0})
 \end{equation}
 
 Here, $\V(\hat{y}_{t_0})$ represents the variance of an observation, and $V(\hat{\lambda}_{t_0})$ represents the variance of the estimate. The threshold, defined as the upper bound of a one-sided $(1-\alpha)\cdot100\%$ prediction interval, is calculated as
 
 \begin{equation}
-U_{t_0} = \hat{\lambda}_{0} + z_{1-\alpha}\hat{V}(y_{t_0}-\hat{\lambda}_{t_0})
+U_{t_0} = \hat{\lambda}_{0} + z_{1-\alpha}\hat{\V}(\sqrt{y_{t_0}-\hat{\lambda}_{t_0}})
 \end{equation}
 
 However, this method's weakness lies in the assumption of normality itself. Therefore, an alternative assumption was presented in @Noufaily_2013. This approach assumes that $y_{t_0}$ follows a negative binomial distribution, denoted as $\text{NB}(\lambda_{t_0}, \nu)$, where $\lambda_{t_0}$ represents the mean and $\nu = \frac{\lambda_{t_0}}{\phi-1}$ represents the over-dispersion parameter. In this parameterization, the expected value of $y_t$ remains $\lambda_t$, and the variance of $y_t$ is $\phi\lambda_t$, with $\phi > 1$. If $\phi \leq 1$, a Poisson distribution is assumed for the observed count. The threshold is defined as a quantile of the negative binomial distribution using the plug-in estimates $\hat{\lambda}_{t_0}$ and $\hat{\phi}$.
@@ -147,10 +147,10 @@ which implies that the Laplace approximation becomes
 
 \subsection{Formulation of the generalized mixed effects model}
 
-The generalized mixed effects model utilized in this thesis to model the count observations $\boldsymbol y$ and assess the random effects $\boldsymbol u$ is presented in Theorem \@ref(thm:poisnTheorem), along with the joint likelihood function for the first and second stage models.
+The generalized mixed effects model utilized in this thesis to model the count observations $\boldsymbol y$ and assess the random effects $\boldsymbol u$ is presented in Definition \@ref(def:poisnTheorem), along with the joint likelihood function for the first and second stage models.
 
-::: {.theorem #poisnTheorem name="Hierarchical Poisson Normal model"}
-In order to simplify the notation, the probability density functions are presented for a specific observation and hence the subscripts indicating the group and time are omitted. The conditional distribution of the count observations is assumed to be a Poisson distribution with intensities $\boldsymbol \lambda$
+::: {.definition #poisnTheorem name="Hierarchical Poisson Normal model"}
+In order to simplify the notation, the probability density functions are presented for a specific observation. Hence, the subscripts indicating the group and time are omitted. The conditional distribution of the count observations is assumed to be a Poisson distribution with intensities $\boldsymbol \lambda$
 
 \begin{equation}
   f_{Y|u}(y; u, \boldsymbol{\beta})=\frac{\lambda\exp(u)^{y}}{y!}\exp\big(-\lambda\exp(u)\big)
@@ -192,12 +192,12 @@ The joint likelihood for the count observations $\boldsymbol y$ and the random e
 In this section selected theory related to hierarchical generalized linear models is presented. The model class was initially formulated by @Lee_1996 as a natural generalization of the generalized linear models to also incorporate random effects. A starting point in hierarchical modelling is an assumption that the distribution of random effects may be modeled by an exponential dispersion family. This family of models were first introduced by @Fisher_1922, and has proven to play an important role in mathematical statistics because of their simple inferential properties. The exponential dispersion family considers a family of distributions, which can be written on the form
 
 \begin{equation}\label{eq:expDispFam}
-  f_Y(y;\theta)=c(y,\lambda)\exp\big(\lambda \{\theta y-\kappa(\theta) \}\big)
+  f_Y(y;\theta)=c(y,\phi)\exp\big(\phi \{\theta y-\kappa(\theta) \}\big)
 \end{equation}
 
-Here the parameter $\lambda>0$ is called the \textit{precision parameter}, which in some cases represents a known shape parameter as for the Gamma distribution. In other cases the precision parameter represents an over-dispersion that is not related to the mean. These distributions combine with the so-called \textit{standard conjugate distributions} in a simple way, and lead to marginal distributions that may be expressed in a closed form suited for likelihood calculations. For an introduction to the concept of \textit{standard conjugate distributions} and the definition of a hierarchical generalized linear model, refer to Section 6.3 and Section 6.5 of @Madsen_2010, respectively.
+Here the parameter $\phi>0$ is called the \textit{precision parameter}, which in some cases represents a shape parameter as for the Gamma distribution. In other cases the precision parameter represents an over-dispersion that is not related to the mean. These distributions combine with the so-called \textit{standard conjugate distributions} in a simple way, and lead to marginal distributions that may be expressed in a closed form suited for likelihood calculations. For an introduction to the concept of \textit{standard conjugate distributions} and the definition of a hierarchical generalized linear model, refer to Section 6.3 and Section 6.5 of @Madsen_2010, respectively.
 
-In general, when the conditional distribution of $Y|u$ is a Poisson distribution, and the the conjugate distribution is assumed to be a Gamma distribution with mean value 1, it follows that the distribution of $Y$ is a negative binomial distribution.
+In general, when the conditional distribution of $Y|u$ is a Poisson distribution, and the conjugate distribution is assumed to be a Gamma distribution with mean value 1, it follows that the distribution of $Y$ is a negative binomial distribution.
 
 To further motivate this choice of distribution for the second stage model, an illustrative example is presented.
 
@@ -279,16 +279,16 @@ LIST %>%
 
 \subsection{Formulation of the hierarchical model}
 
-The hierarchical model used in this thesis to model the count observations $\boldsymbol y$ and assess the random effects $\boldsymbol u$ is presented in Theorem \@ref(thm:poisgTheorem), along with the derivation of the marginal distribution of $Y$ and the joint likelihood function.
+The hierarchical model used in this thesis to model the count observations $\boldsymbol y$ and assess the random effects $\boldsymbol u$ is presented in Definition \@ref(def:poisgTheorem), along with the derivation of the marginal distribution of $Y$ and the joint likelihood function.
 
-::: {.theorem #poisgTheorem name="Compound Poisson Gamma model"}
-In the compound Poisson Gamma model the conditional distribution of the count observations are assumed to be a Poisson distribution with intensities $\boldsymbol \lambda$
+::: {.definition #poisgTheorem name="Compound Poisson Gamma model"}
+In the compound Poisson Gamma model the conditional distribution of the count observations are assumed to be a Poisson distribution with intensities $\lambda$
 
 \begin{equation}\label{eq:pdfPois}
   f_{Y|u}(y;u,\boldsymbol{\beta})=\frac{(\lambda u)^{y}}{y!}\exp(-\lambda u)
 \end{equation}
 
-The probability density function for the random effects $\boldsymbol u$ are assumed to follow a reparametrized Gamma distribution with mean $\boldsymbol 1$, $\boldsymbol u \sim \G(\boldsymbol 1/\phi,\phi)$ that is
+The probability density function for the random effects $\boldsymbol u$ are assumed to follow a reparametrized Gamma distribution with mean $1$, $u \sim \G(1/\phi,\phi)$ that is
 
 \begin{equation} \label{eq:pdfGamma}
   f_{u}(u;\phi)=\frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)
@@ -319,7 +319,7 @@ In \eqref{eq:marMix} it is noted that the integrand is the kernel in the probabi
   \int_{u=0}^\infty  u^{ y+ 1/\phi-1} \exp \bigg(- u/\Big(\phi/( \lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{ y+ 1/\phi}\Gamma( y+\boldsymbol 1/\phi)}{( \lambda \phi + 1)^{y+1/\phi}}
 \end{equation}
 
-Therefore, it can be shown that the marginal distribution of $Y$ is a negative binomial distribution, $Y\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)$. The probability function for $Y$ is 
+Therefore, it is shown that the marginal distribution of $Y$ is a negative binomial distribution, $Y\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)$. The probability function for $Y$ is 
 
 \begin{equation} \label{eq:pdfMix}
   \begin{aligned}
@@ -353,7 +353,7 @@ The joint likelihood function for estimating $(\boldsymbol \beta,\phi)$ is
 
 Consider the compound Poisson Gamma model in \eqref{eq:PoisGam}, and assume that a value $Y=y$ has been observed.
 
-Then the conditional distribution of $u$ for given $Y=y$ is found using Bayes Theorem. In order to simplify the notation, the subscript indicating the group and time are omitted. 
+The conditional distribution of $u$ for given $Y=y$ is found using Bayes Theorem. In order to simplify the notation, the subscript indicating the group and time are omitted. 
 
 \begin{equation}
   \begin{aligned}
@@ -456,10 +456,10 @@ The Laplace approximation for the marginal log-likelihood $\ell_M(\boldsymbol \t
 Our estimate of $\theta$ minimizes the negative log of the Laplace approximation, i.e.,
 
 \begin{equation}
-  -\ell_{M,LA}(\boldsymbol{\theta, y}) = - \ell(\boldsymbol{\theta, u, y}) + \frac{1}{2} \log \Big|\frac{H(\hat{\boldsymbol u}_{\boldsymbol \theta})}{2\pi} \Big|
+  \hat{\boldsymbol\theta}=\argmin_{\boldsymbol\theta} - \ell_{M, LA}(\boldsymbol\theta, \boldsymbol y)
 \end{equation}
 
-The maximization of the Laplace approximation for the marginal likelihood is then performed using conventional R optimization routines (e.g., BFGS) to optimize the objective and obtain our estimate $\hat{\boldsymbol \theta}$. Uncertainty of the estimate $\hat{\boldsymbol \theta}$, or any differentiable function of the estimate $\phi(\hat{\boldsymbol \theta})$, is obtained by the $\delta$-method:
+The minimization of the Laplace approximation for the marginal likelihood is then performed using conventional R optimization routines (e.g., BFGS) to optimize the objective and obtain our estimate $\hat{\boldsymbol \theta}$. Uncertainty of the estimate $\hat{\boldsymbol \theta}$, or any differentiable function of the estimate $\phi(\hat{\boldsymbol \theta})$, is obtained by the $\delta$-method:
 
 \begin{equation}
   \V\big(\phi(\hat{\boldsymbol \theta})\big)=-\phi_{\boldsymbol \theta}'(\hat{\boldsymbol \theta})\Big(\Delta^2 \ell_{M,LA}(\boldsymbol{\hat{\theta}, y})\Big)^{-1} \phi_{\boldsymbol \theta}'(\hat{\boldsymbol \theta})^T

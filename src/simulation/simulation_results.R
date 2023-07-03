@@ -53,7 +53,7 @@ for(i in 1:length(scenarioFiles)){
 }
 
 Realizations <- results %>%
-  filter(scenario %in% c(5,7,12,28) & sim == 1) %>%
+  filter(scenario %in% c(8,12,13,20) & sim == 1) %>%
   select(scenario, outbreaks) %>%
   unnest(outbreaks) %>%
   mutate(outbreakDate = if_else(outbreakTF, t, NA_integer_)) %>%
@@ -61,8 +61,9 @@ Realizations <- results %>%
   geom_line(alpha = 0.5) +
   geom_point(mapping = aes(x = outbreakDate)) +
   facet_wrap(facets = vars(scenario), scales = "free_y") +
-  scale_x_continuous(name = "week") +
-  scale_y_continuous(name = "Number of cases")
+  scale_x_continuous(name = "Week") +
+  scale_y_continuous(name = "Number of cases") +
+  annotate(geom = "rect", xmin = 575, xmax = Inf, ymin = -Inf, ymax = Inf, alpha = 0.2)
 ggsave(filename = "Realizations.png",
        plot = Realizations,
        path = "../../figures/",
@@ -117,7 +118,7 @@ FPRPlot <- FPR %>%
   scale_x_discrete(name = "Scenario") +
   scale_fill_manual(values = dtuPalette[c(7,9:11,5)]) +
   guides(fill = "none") +
-  theme(axis.text.x = element_text(size = 18))
+  theme(axis.text.x = element_text(size = 16))
 ggsave(filename = "FPRPlot.png",
        plot = FPRPlot,
        path = "../../figures/",
@@ -140,8 +141,8 @@ badPerformanceScenarios <- results %>%
                                      "alarm_PoisG"),
                           labels = c("Farrington",
                                      "Noufaily", 
-                                     "'Poisson Normal'", 
-                                     "'Poisson Gamma'"))) %>%
+                                     "Poisson Normal", 
+                                     "Poisson Gamma"))) %>%
   group_by(sim, scenario, Method, k) %>%
   reframe(Detected = any(outbreakTF == TRUE & Alarms == TRUE)) %>% 
   group_by(scenario, Method, k) %>%
@@ -169,8 +170,8 @@ POD <- results %>%
                                                              "alarm_PoisG"),
                                                   labels = c("Farrington",
                                                              "Noufaily", 
-                                                             "'Poisson Normal'", 
-                                                             "'Poisson Gamma'")))
+                                                             "Poisson Normal", 
+                                                             "Poisson Gamma")))
 write_rds(x = POD, file = "POD.Rds")
 
 PropDetect <- POD %>% 
@@ -178,7 +179,7 @@ PropDetect <- POD %>%
   geom_line(mapping = aes(y = POD, group = scenario), alpha = 0.6) +
   geom_line(mapping = aes(y = medianPOD), linewidth=2) +
   # geom_text(data = badPerformanceScenarios, mapping = aes(x = k, y = POD, label = scenario), inherit.aes = FALSE) +
-  facet_wrap(facets = vars(Method), labeller = label_parsed) +
+  facet_wrap(facets = vars(Method)) +
   scale_x_continuous(breaks = 1:10) +
   scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
   guides(color = "none") 

@@ -123,7 +123,7 @@ Additionally, it is worth noting that the parameter estimates and confidence int
 
 It is noteworthy that all parameter estimates, except one, are statistically significant at $t_0$. The only parameter estimate that is not significant is $\hat{\beta}_{cos}$, as its 95% confidence interval overlaps with zero in both modeling frameworks.
 
-A slight, yet consistent, increase in the contribution from the age group to the overall intensity of \gls{STEC} cases is observed in Figure \@ref(fig:STECnovelparageGroup) over the analyzed period, with only one instance of a decrease in intensity immediately after the 2020 Covid-19 lockdown.
+A slight, yet consistent, increase in the contribution from the age group to the overall intensity of \gls{STEC} cases is observed in Figure \@ref(fig:STECnovelparageGroup) over the analyzed period, with only one instance of a decrease in intensity immediately after the 2020 \gls{COVID-19} lockdown.
 
 It is worth mentioning that in the hierarchical Poisson Gamma model, the maximum likelihood estimate for $\hat\beta(ageGroup_i)$ directly represents the contribution of the age group to the disease intensity. This is possible due to the properties of the expected value described in Equation \eqref{eq:meanNB}. However, this direct interpretation does not hold for the parameter estimates obtained in the hierarchical Poisson Normal model. Nevertheless, it can be observed that both sets of parameter estimates are similar throughout the entire time period, indicating that this discrepancy is not significant.
 
@@ -135,7 +135,7 @@ knitr::include_graphics("../figures/STEC_novel_par_ageGroup.png")
 
 For the most, the maximum likelihood estimate for $\hat\beta_{trend}$ indicates a positive trend during the observed period (See Figure \@ref(fig:STECnovelpartrend)). However, it is important to note that the trend is not consistently statistically significant. The first significant positive trend is observed in the mid-2014, lasting until 2016. Another significant positive trend is observed in 2018, coinciding with the transition from a culture-based diagnostic method to a PCR method in most departments of clinical microbiology [@Svendsen_2023].
 
-Notably, a significant drop in the trend is observed in the mid-2020, immediately after the Covid-19 lockdown, lasting until the mid-2021. Since then, the trend has been steadily increasing and is currently at an all-time high.
+Notably, a significant drop in the trend is observed in the mid-2020, immediately after the \gls{COVID-19} lockdown, lasting until the mid-2021. Since then, the trend has been steadily increasing and is currently at an all-time high.
 
 (ref:STECnovelpartrend) Disease trend in \gls{STEC} in the time period between January 2011 and December 2022. Recursive estimates (solid line) and 95% profile likelihood confidence intervals (dashed line) of $\hat\beta_{trend}$ for the combined model. Estimates are obtained using a rolling window with a width of $k=36$ months and discarding observations that are characterized as alarms.
 
@@ -239,7 +239,7 @@ knitr::include_graphics("../figures/Compare_stateOfTheArt_SHIL.png")
 
 It is noteworthy that some of the alarms occur in clusters over specific time periods and are raised simultaneously in both age groups. These clustering patterns are particularly evident during periods with multiple alarms, such as from July 2015 to April 2016, from July 2018 to October 2019, and from November 2021 to December 2022. Surprisingly, none of these periods coincide with outbreaks investigated by SSI, and all methods fail to identify the outbreak investigated in August and September 2020.
 
-However, it is important to recognize the significant challenge faced by statistical algorithms in detecting the outbreak during the summer of 2020. This difficulty arises due to the concurrent Covid-19-related lockdown, which results in different disease dynamics and a relatively low number of \gls{SHIL} cases compared to similar periods in other years. This highlights the importance of considering the context in which the statistical outbreak detection algorithm is applied. Further discussion on this topic can be found in Section \@ref(ChallengesOD).
+However, it is important to recognize the significant challenge faced by statistical algorithms in detecting the outbreak during the summer of 2020. This difficulty arises due to the concurrent \gls{COVID-19}-related lockdown, which results in different disease dynamics and a relatively low number of \gls{SHIL} cases compared to similar periods in other years. This highlights the importance of considering the context in which the statistical outbreak detection algorithm is applied. Further discussion on this topic can be found in Section \@ref(ChallengesOD).
 
 \subsubsection{Applying the novel outbreak detection algorithm to \textit{Shigellosis}}
 
@@ -313,7 +313,7 @@ Further investigation into modeling periods without overdispersion using hierarc
 
 \subsection{The impact of context and observational bias}
 
-Deploying an outbreak detection algorithm blindly, without considering the context and potential changes in observational bias, can lead to unreliable results. It is essential to closely monitor the algorithms and critically assess the model inputs and the specific context in which it operates. This is evident in the case study of \gls{SHIL}, where an outbreak investigated by SSI in August and September 2020 was challenging to detect using statistical methods due to the concurrent Covid-19-related lockdown and the resulting decrease in reported cases.
+Deploying an outbreak detection algorithm blindly, without considering the context and potential changes in observational bias, can lead to unreliable results. It is essential to closely monitor the algorithms and critically assess the model inputs and the specific context in which it operates. This is evident in the case study of \gls{SHIL}, where an outbreak investigated by SSI in August and September 2020 was challenging to detect using statistical methods due to the concurrent \gls{COVID-19}-related lockdown and the resulting decrease in reported cases.
 
 Considering the specific circumstances and potential changes in observational bias is crucial when interpreting outbreak detection results. It is important to determine whether the number of cases during an outbreak is considered aberrant compared to similar periods in other years. However, in situations where there is a sudden decrease in reported cases, such as during a lockdown, detecting outbreaks using statistical methods becomes more challenging.
 
@@ -369,7 +369,7 @@ However, it is worth noting that the novel outbreak detection algorithms success
 
 In the \gls{SHIL} case study, the incidence of cases is slightly higher, resulting in a relatively higher number of alarms generated by both the state-of-the-art and novel outbreak detection methods. This can be observed in Figure \@ref(fig:CompareAlarmsSHIL). It is important to note that only one well-documented outbreak of \gls{SHIL} was investigated by SSI and collaborating organizations. As a result, the number of alarms generated by the methods may be overestimated in terms of the priority given to investigating outbreaks in this specific disease.
 
-Additionally, it is worth noting that none of the algorithms were able to identify this outbreak, as it occurred during the Covid-19-related lockdown period when there were very few reported cases. This highlights the challenge of detecting outbreaks in periods of low incidence or during exceptional circumstances such as a lockdown.
+Additionally, it is worth noting that none of the algorithms were able to identify this outbreak, as it occurred during the \gls{COVID-19}-related lockdown period when there were very few reported cases. This highlights the challenge of detecting outbreaks in periods of low incidence or during exceptional circumstances such as a lockdown.
 
 (ref:CompareAlarmsSHIL) Alarm plot displaying alarms for \gls{SHIL} time series using four different algorithms, along with outbreaks investigated by SSI.
 
