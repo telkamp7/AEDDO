@@ -5,6 +5,9 @@ library(tidyr)
 library(forcats)
 library(surveillance)
 library(ggplot2)
+library(forecast)
+library(cowplot)
+library(ggcorrplot)
 
 # DTU colours
 dtuPalette <- c("#990000",
@@ -171,8 +174,8 @@ ggsave(filename = "Compare_stateOfTheArt_SALM.png",
 
 # Outbreaks invstigated by SSI ------------------------------------------------------
 
-SSI_outbreaks <- tibble(Start = as.Date(x = c("2010-03-01","2018-10-15", "2015-03-01", "2015-06-01", "2015-11-01", "2019-05-31", "2020-06-08", "2020-11-12", "2021-03-26", "2021-09-15", "2022-04-01", "2022-03-31", "2022-08-15")),
-                        End = as.Date(x = c("2010-09-01","2019-01-15", "2015-04-01", "2016-01-01", "2015-12-01", "2019-08-16", "2020-07-19", "2021-04-29", "2021-06-27", "2021-11-08", "2022-04-30", "2022-09-28", "2022-09-27")))
+SSI_outbreaks <- tibble(Start = as.Date(x = c("2010-03-01","2018-10-15", "2015-03-01", "2015-06-01", "2015-11-01", "2019-05-31", "2020-05-26", "2020-06-08", "2020-11-12", "2021-03-26", "2021-09-15", "2022-04-01", "2022-03-31", "2022-08-15")),
+                        End = as.Date(x = c("2010-09-01","2019-01-15", "2015-04-01", "2016-01-01", "2015-12-01", "2019-08-16", "2020-08-29", "2020-07-19", "2021-04-29", "2021-06-27", "2021-11-08", "2022-04-30", "2022-09-28", "2022-09-27")))
 
 SALM_SSI_outbreaks <- SSI_outbreaks %>%
   filter(Start > as.Date("2008-01-01")) %>%
@@ -588,5 +591,98 @@ ggsave(filename = "handle_alarms.png",
        dpi = "print")  
 
 
-  
+plot1 <- SALM_novel %>%
+  select(Date, ageGroup, u = `u_Poisson Normal`) %>%
+  pivot_wider(names_from = ageGroup, values_from = u) %>%
+  select(`<1 year`) %>%
+  ggAcf(lag.max = 12) +
+  ggtitle(label = "") +
+  scale_x_continuous(breaks = 1:12)
 
+plot2 <- SALM_novel %>%
+  select(Date, ageGroup, u = `u_Poisson Normal`) %>%
+  pivot_wider(names_from = ageGroup, values_from = u) %>%
+  select(`1-4 years`) %>%
+  ggAcf(lag.max = 12) +
+  ggtitle(label = "") +
+  scale_x_continuous(breaks = 1:12)
+
+plot3 <- SALM_novel %>%
+  select(Date, ageGroup, u = `u_Poisson Normal`) %>%
+  pivot_wider(names_from = ageGroup, values_from = u) %>%
+  select(`5-14 years`) %>%
+  ggAcf(lag.max = 12) +
+  ggtitle(label = "") +
+  scale_x_continuous(breaks = 1:12)
+
+plot4 <- SALM_novel %>%
+  select(Date, ageGroup, u = `u_Poisson Normal`) %>%
+  pivot_wider(names_from = ageGroup, values_from = u) %>%
+  select(`15-24 years`) %>%
+  ggAcf(lag.max = 12) +
+  ggtitle(label = "") +
+  scale_x_continuous(breaks = 1:12)
+
+plot5 <- SALM_novel %>%
+  select(Date, ageGroup, u = `u_Poisson Normal`) %>%
+  pivot_wider(names_from = ageGroup, values_from = u) %>%
+  select(`25-64 years`) %>%
+  ggAcf(lag.max = 12) +
+  ggtitle(label = "") +
+  scale_x_continuous(breaks = 1:12)
+
+plot6 <- SALM_novel %>%
+  select(Date, ageGroup, u = `u_Poisson Normal`) %>%
+  pivot_wider(names_from = ageGroup, values_from = u) %>%
+  select(`65+ years`) %>%
+  ggAcf(lag.max = 12) +
+  ggtitle(label = "") +
+  scale_x_continuous(breaks = 1:12)
+
+ACFplot <- plot_grid(plot1, plot2, plot3, plot4, plot5, plot6,
+                     ncol = 2,
+                     labels = c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)"),
+                     label_size = 18,
+                     align = "hv") +
+  theme()
+save_plot(filename = "../../figures/ACFplot.png",
+          plot = ACFplot, base_height = 12, base_width = 16)
+
+
+
+
+# ggsave(filename = "ACFplot.png",
+#        plot = ACFplot,
+#        path = "../../figures/",
+#        device = png,
+#        width = 16,
+#        height = 8,
+#        units = "in",
+#        dpi = "print")  
+
+
+
+corr <- SALM_novel %>%
+  select(Date, ageGroup, u = `u_Poisson Normal`) %>%
+  pivot_wider(names_from = ageGroup, values_from = u) %>%
+  select(-Date) %>%
+  cor()
+
+p_mat <- SALM_novel %>%
+  select(Date, ageGroup, u = `u_Poisson Normal`) %>%
+  pivot_wider(names_from = ageGroup, values_from = u) %>%
+  select(-Date) %>%
+  cor_pmat()
+
+corrPlot <- ggcorrplot(corr = corr, lab = TRUE, lab_size = 10, tl.cex = 22) +
+  theme(legend.key.size = unit(1, "cm"),
+        legend.title = element_text(size = 24),
+        legend.text = element_text(size = 22))
+ggsave(filename = "corrPlot.png",
+       plot = corrPlot,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print") 

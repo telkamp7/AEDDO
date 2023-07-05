@@ -6,10 +6,12 @@ The mathematical notation in this master's thesis is adapted from \cite{Madsen_2
 
 It is assumed that the reader has a basic knowledge in the areas of statistics. 
 
-\printunsrtglossaries
-
-\cleardoublepage 
+\cleardoublepage
 \tableofcontents
 \cleardoublepage 
+
+\printunsrtglossaries
+
+\clearpage
 
 \pagenumbering{arabic}

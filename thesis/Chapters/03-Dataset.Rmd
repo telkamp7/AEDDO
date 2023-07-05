@@ -1,6 +1,6 @@
 \chapter{Surveillance data in Denmark}\label{Dataset}
 
-This chapter delves into the data collection methods and quality assurance procedures within the Danish surveillance system. Moreover, it introduces the case studies selected for this master thesis, which include \gls{LIST}, \gls{SHIL}, \gls{STEC}, and \gls{SALM}.
+This chapter delves into the data collection methods and quality assurance procedures within the Danish surveillance system. Moreover, it introduces the case studies selected for this master thesis, which include: \gls{LIST}, \gls{SHIL}, \gls{STEC}, and \gls{SALM}. The epidemiological background of the diseases, along with notable outbreaks in the period from 2008 to 2022, is presented
 
 \section{Data collection and data quality}
 
@@ -13,9 +13,9 @@ In addition to the individually notifiable diseases, \gls{SSI} has implemented a
 
 \section{Introducing the case studies}
 
-For the scope of this master thesis, only a specific subset of diseases from the mandatory notification system will be considered. This subset consists of \gls{LIST}, \gls{SHIL}, \gls{STEC}, and \gls{SALM}. These diseases have been chosen for analysis and investigation based on various factors, such as seasonality, incidence, and severity. Additionally, these diseases have been associated with documented outbreaks investigated by \gls{SSI} in the past decade, which adds to their relevance for the study. For a full overview over the food- and waterborne disease outbreaks reported in \gls{FUD}, refer to Table \@ref(tab:FUD).
+For the scope of this master thesis, only a specific subset of diseases from the mandatory notification system is considered. This subset consists of \gls{LIST}, \gls{SHIL}, \gls{STEC}, and \gls{SALM}. These diseases have been chosen for analysis and investigation based on various factors, such as seasonality, incidence, and severity. Additionally, these diseases have been associated with documented outbreaks investigated by \gls{SSI} in the past decade, which adds to their relevance for the study. For a full overview over the food- and waterborne disease outbreaks reported in \gls{FUD}, refer to Table \@ref(tab:FUD).
 
-The count observations are observed in the period from `r format(datePeriod$Date[1], "%B %Y")` to `r format(datePeriod$Date[2], "%B %Y")`. An epidemic curve graph for an excerpt of the data for each of the diseases considered in this thesis is shown in Figure \ref{fig:EpiPlot}.
+The count observations are observed in the period from January 2008 to December 2022. An epidemic curve graph for selection of the data for each of the diseases considered in this thesis is shown in Figure \ref{fig:EpiPlot}.
 
 (ref:EpiPlot) Epidemic curve showing the incidence per 100,000 in Denmark, 2012-2022, for the subset of diseases considered in this master thesis. \textbf{(a)} \gls{LIST}, \textbf{(b)} \gls{SHIL}, \textbf{(c)} \gls{STEC}, and \textbf{(d)} \gls{SALM}
 
@@ -120,7 +120,7 @@ The bacteria are highly contagious and can be transmitted through direct person-
 knitr::include_graphics("../figures/SHIG_long_plot.png")
 ```
 
-In Denmark, another significant cause of \gls{SHIL} outbreaks is the importation of contaminated vegetables. This was evident in several incidents, including a 2007 outbreak where 215 individuals fell ill after consuming imported contaminated baby corn [@Lewis_2009], a smaller outbreak in 2009 linked to sugar snap peas from Kenya [@Muller_2009], and a 2020 outbreak associated with fresh mint as the source of infection. 
+In Denmark, another significant cause of \gls{SHIL} outbreaks is the importation of contaminated vegetables. This was evident in several incidents, including a 2007 outbreak where 215 individuals fell ill after consuming imported contaminated baby corn [@Lewis_2009], a smaller outbreak in 2009 linked to sugar snap peas from Kenya [@Muller_2009], and a 2020 outbreak associated with fresh mint as the source of infection [@Helwigh_2020]. 
 
 The 2020 outbreak is indeed a significant focus of this study, as it serves as a benchmark for evaluating the effectiveness of outbreak detection algorithms. It took place from the 22nd of August to the 9th of September and was investigated by \gls{SSI} in collaboration with the \gls{DVFA} and the National Food Institute at \gls{DTU} The outbreak affected 44 patients, mainly concentrated in the Capital Region of Denmark. The investigation identified at least five events where individuals subsequently developed \gls{SHIL}. 
 
@@ -140,9 +140,9 @@ It is important to note that not all patients are routinely tested for \gls{STEC
 
 One of the earliest documented \gls{STEC} outbreaks occurred in 2007, involving 18 laboratory-confirmed cases over a six-week period. The outbreak primarily affected children in daycare settings, and most patients experienced mild symptoms without bloody diarrhea. Investigations indicated a specific brand of organic beef sausage as the likely source of infection.
 
-In September to October 2012, a \gls{STEC} outbreak with a high risk of \gls{HUS} was observed. Thirteen cases were diagnosed, with eight individuals developing \gls{HUS}. Epidemiological investigations suggested that ground beef was the vehicle of the outbreak [@Soborg_2013].
+In September to October 2012, a \gls{STEC} outbreak with a high risk of \gls{HUS} was observed. Thirteen cases were diagnosed, with eight individuals developing \gls{HUS}. Epidemiological investigations suggested that ground beef was the vehicle of the outbreak [@Soborg_2013;  @Helwigh_2013].
 
-More recent outbreaks include a 38-case outbreak from September to November 2018, with a suspected association with beef sausage as the source of infection. Additionally, there were two unresolved outbreaks with 11 and 14 cases occurring from May to July 2019 and from December 2021 to January 2022, respectively. The latter outbreak included three cases of \gls{HUS}.
+More recent outbreaks include a 38-case outbreak from September to November 2018, with a suspected association with beef sausage as the source of infection [@Helwigh_2019]. Additionally, there were two unresolved outbreaks with 11 and 14 cases occurring from May to July 2019 and from December 2021 to January 2022, respectively. The latter outbreak included three cases of \gls{HUS}.
 
 \subsection{Epidemiological background and notable outbreaks of \textit{Salmonellosis}}
 
@@ -156,7 +156,7 @@ knitr::include_graphics("../figures/SALM_long_plot.png")
 
 It is worth noting that an increasing proportion of infections in Denmark are now observed in connection with international travel, particularly since \textit{Salmonella} has been eliminated from commercial chicken flocks in Denmark, making Danish eggs and poultry meat free from the bacteria. However, imported meat products can still pose a risk of contamination.
 
-Also, numerous clusters of \gls{SALM} is reported to \gls{FUD} every year, and the disease remains a major public health issue. This was also evident in one of the longest lasting outbreaks with \textit{Salmonella}. A total of 172 cases were reported between March and September 2010 [@Kuhn_2013].  
+Also, numerous clusters of \gls{SALM} is reported to \gls{FUD} every year, and the disease remains a major public health issue. This was also evident in one of the longest lasting outbreaks with \textit{Salmonella}. A total of 172 cases were reported between March and September 2010 [@Kuhn_2013; @Helwigh_2010].  
 
 In 2015, three outbreaks of \gls{SALM} with patients in two or more regions were investigated [@Helwigh_2016]:
 
@@ -166,10 +166,11 @@ In 2015, three outbreaks of \gls{SALM} with patients in two or more regions were
   \item An outbreak with 6 patients from November 2015 to January 2016.
 \end{itemize}
 
-Other resolved and well-documented outbreaks include:
+Other resolved and well-documented [@Helwigh_2019; @Petersen_2021; @EFSA_2021] outbreaks include:
 
 \begin{itemize}
   \item An outbreak with 49 cases from October 2018 to January 2019, where Mediterranean sausage was identified as a possible source of contamination.
+  \item An outbreak with 25 cases from May to July 2020. Imported tomatoes were suspected as cause of the outbreak.
   \item An outbreak with 45 cases from November 2020 to April 2021, linked to the consumption of the natural remedy HUSK Psyllium.
   \item An international outbreak from March to July 2021, with more than 300 cases in Europe, including 39 cases in Denmark. Imported melons were suspected as the source of infection.
   \item An outbreak caused by eggs from a Danish producer, resulting in 24 cases registered from September to November 2021.
@@ -184,6 +185,8 @@ There were also outbreaks where it was not possible to identify the source of co
   \item An outbreak with 24 cases in the period from March to September 2022.
   \item An outbreak with 15 cases in the period from August to September 2022.
 \end{itemize}
+
+The number of outbreaks with \gls{SALM} are numerous, and it is not feasible to describe all of them in detail. However, for a full overview over the outbreak reported to \gls{FUD}, refer to Table \@ref(tab:FUD).
 
 (ref:SALMSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of \gls{SALM} by \gls{SSI} and possible collaborators.
 

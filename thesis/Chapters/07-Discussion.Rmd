@@ -1,6 +1,11 @@
 \chapter{Discussion}
 
-\blindtext
+\section{Pros and cons for the different modeling frameworks}
+
+
+
+
+
 
 \section{Harnessing the potential of MiBa}
 
@@ -12,22 +17,37 @@ In addition to these systems, \gls{MiBa}-based surveillance includes monitoring 
 
 Expanding on the field of automated disease outbreak detection is crucial to fully harness the potential of \gls{MiBa}. By developing advanced algorithms and methodologies, it becomes possible to automatically analyze \gls{MiBa} data and detect disease outbreaks in a timely manner. This can lead to early identification of outbreaks, allowing for prompt interventions and preventive measures.
 
-Certainly, this master's thesis serves as a proof of concept and can serve as a catalyst for future research and development in automated disease outbreak detection. The focus should be on customizing methods to effectively utilize the valuable \gls{MiBa} data, as this has the potential to greatly improve the efficiency of detecting and responding to infectious disease outbreaks. By fully leveraging the capabilities of \gls{MiBa}-based surveillance and continuously improving automated detection methods, the overall disease surveillance efforts can be strengthened, leading to better protection of public health.
+This master thesis serves as a proof of concept and can serve as a catalyst for future research and development in automated disease outbreak detection. The focus should be on customizing methods to effectively utilize the valuable \gls{MiBa} data, as this has the potential to greatly improve the efficiency of detecting and responding to infectious disease outbreaks. By fully leveraging the capabilities of \gls{MiBa}-based surveillance and continuously improving automated detection methods, the overall disease surveillance efforts can be strengthened, leading to better protection of public health.
 
 
 \section{Potential extensions of the novel algorithm}
 
-One potential extension of the novel outbreak detection method proposed in this master's thesis is the incorporation of correlation, either in time or between groups. 
 
-(ref:ACF) Maybe include an \gls{ACF} plot of one of the disease investigated in this masters thesis, to highlight the correlation in time.
+An extension of the novel outbreak detection method proposed in this master thesis involves incorporating correlation, either in time or between groups. The \gls{ACF} plot in Figure \@ref(fig:ACF) provides insights into the temporal dependencies and correlations withing the data.
+
+(ref:ACF) \gls{ACF} for the estimated one-step ahead random effects $\hat u_{i{t_0}}$ for the six age groups. The plots are organized in increasing age group, i.e. \textbf{(a)} <1 year, \textbf{(b)} 1-4 years, \textbf{(c)} 5-14 years, \textbf{(d)} 15-24 years, \textbf{(e)} 25-64 years, and \textbf{(f)} 65+ years.
 
 ```{r ACF, echo=FALSE, out.width="100%", fig.cap="(ref:ACF)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/Placeholder.png")
+knitr::include_graphics("../figures/ACFplot.png")
 ```
 
-This extension can be readily implemented within the framework of the hierarchical Poisson Normal model. However, the implementation in the hierarchical Poisson Gamma model is more complex and requires further investigation.
+The \gls{ACF} plot reveals significant autocorrelation at lag 1 across all age groups, indicating a strong temporal dependency. Some age groups, such as 15-24 years, 25-64 years, and 65+ years, exhibit significant autocorrelation at lag 2. Additionally, a notable seasonal autocorrelation is observed at lag 12 in most age groups. These findings suggest the presence of underlying patterns and correlations that can be further explored and leveraged in the development of the outbreak detection method.
 
+The correlation plot in Figure \@ref(fig:corr) provides insights into the intergroup correlation, highlighting potential shared patterns or dependencies across different age groups.
 
+(ref:corr) Correlation of the estimated one-step ahead random effects $\hat u_{i{t_0}}$ for the six age groups.
+
+```{r corr, echo=FALSE, out.width="100%", fig.cap="(ref:corr)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/corrPlot.png")
+```
+
+The plot clearly shows a strong intergroup correlation between the age groups, particularly between 5-14 years, 15-24 years, and 25-64 years. This suggests that these age groups may exhibit similar disease patterns or dynamics.
+
+Analyzing the intergroup correlation can provide valuable information for understanding the dynamics and interactions between different age groups. It can help identify commonalities and differences in disease patterns, enabling targeted intervention strategies and efficient resource allocation.
+
+Further exploration and analysis of the intergroup correlation can enhance our understanding of disease dynamics and improve the accuracy and effectiveness of the outbreak detection method, leading to better public health outcomes.
+
+To incorporate correlation, either in time or between groups, the hierarchical Poisson Normal model can be extended by including a covariance matrix in the second stage model. This extension is relatively straightforward within this framework. However, implementing correlation in the hierarchical Poisson Gamma model is more complex and requires additional investigation and research to fully comprehend its implications and feasibility. Nevertheless, exploring the inclusion of correlation within the outbreak detection method has the potential to enhance its performance and capture additional patterns in the data.
 
 
 

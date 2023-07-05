@@ -2,7 +2,7 @@
 \section*{Approval}
 \addcontentsline{toc}{section}{Approval}
 
-This master thesis has been prepared over six months at the \sectiondescriber, \departmentdescriber, at the \universitydescriber in collaboration with Epidemiologisk Forskning / Modelgruppen at Statens Serum Institut in partial fulfillment for the degree Master of Science in Engineering, MSc Eng., Quantitative Biology and Disease Modelling. 
+This master thesis has been prepared over six months at the \sectiondescriber under the \departmentdescriber at the \universitydescriber, and the Department of Epidemiology Research / Model group at Statens Serum Institut in partial fulfillment for the degree Master of Science in Engineering, MSc Eng., Quantitative Biology and Disease Modelling. 
 
 \vfill
 

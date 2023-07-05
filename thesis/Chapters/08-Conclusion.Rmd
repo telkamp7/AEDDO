@@ -1,5 +1,13 @@
 \chapter{Conclusion}
 
-\blindtext
+In this master thesis, the critical challenge of automated and early detection of disease outbreaks was addressed. The main objective of this research was to develop a novel method for outbreak detection and compare its performance against state-of-the-art methods from the literature, including the method by @Farrington_1996 and the subsequently improved method by @Noufaily_2013. By leveraging generalized linear mixed effects models and hierarchical generalized linear models in an innovative way, significant progress has been made in advancing the field of outbreak detection.
+
+The key findings of this study highlight the great potential of the novel method in automated and early detection of disease outbreaks. Through an evaluation, the developed approach has demonstrated superior performance compared to established methods. It exhibits enhanced sensitivity in detecting outbreaks at their early stages, providing valuable insights for timely intervention and effective disease control. The incorporation of various covariates and random effects within the models has allowed for a more comprehensive understanding of disease dynamics and has supported targeted intervention strategies.
+
+The results of this research have significant implications for public health authorities and decision-makers. The novel method offers an improved tool for detecting outbreaks, enhancing the accuracy and timeliness of surveillance systems. By integrating this method into existing public health frameworks, such as \gls{MiBa}, the preparedness and response capabilities can be enhanced, ultimately leading to improved outcomes in disease prevention and control.
+
+It is important to note that this study represents a significant step forward, but further research and validation on larger data sets and diverse disease scenarios are warranted to fully explore the capabilities and refine the performance of the novel method. Additionally, the inclusion of correlation, either in time or between groups, as a potential extension could further enhance the accuracy and effectiveness of the outbreak detection method.
+
+In conclusion, this master thesis has made substantial contributions to the field of automated and early detection of disease outbreaks. The developed novel method shows great promise and outperforms established methods, providing a valuable tool for public health authorities. The findings from this research can inform and guide decision-making processes, ultimately leading to improved public health outcomes and more effective disease control measures.
 
 \cleardoublepage

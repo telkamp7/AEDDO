@@ -6,7 +6,7 @@ Due to the complexity of generalized mixed effects models, obtaining closed-form
 
 \section{State-of-the-art outbreak detection algorithm}\label{StateOfTheArt}
 
-In this section, the method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will be outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this thesis. Both of the aforementioned methods have been implemented in the R package called \textbf{surveillance} by @Salmon_2016, which can be accessed from the Comprehensive R Archive Network (CRAN) at \href{https://cran.r-project.org/web/packages/surveillance/index.html}{\nolinkurl{https://cran.r-project.org/web/packages/surveillance/index.html}}. The presentation of these methods are strongly inspired by @Salmon_2016.
+In this section, the original method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will be outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this thesis. Both of the aforementioned methods have been implemented in the R package called \textbf{surveillance} by @Salmon_2016, which can be accessed from the \gls{CRAN} at \href{https://cran.r-project.org/web/packages/surveillance/index.html}{\nolinkurl{https://cran.r-project.org/web/packages/surveillance/index.html}}. The presentation of these methods are strongly inspired by @Salmon_2016.
 
 Both methods follow the same steps in the algorithm. The first step involves fitting an over-dispersed Poisson \gls{GLM} with a log link to the reference data. In this model, the baseline count $y_t$ corresponding to the baseline time point $t$ is assumed to have an expected value $\lambda_t$ and a variance $\phi\lambda_t$, where $\phi\geq1$ is ensured to account for over-dispersion. The systematic component of the model includes only a linear time trend in the frequency of reports. Therefore, the systematic component can be expressed as
 
@@ -34,12 +34,12 @@ In this equation, $c(t)$ represents the coefficients of a zero-order spline with
 
 Furthermore, @Noufaily_2013 demonstrated that it is beneficial to exclude the last 26 weeks before $t_0$ from the baseline calculation. This exclusion helps prevent a reduction in sensitivity when an outbreak has recently started before $t_0$.
 
-In the second step, the algorithm predicts the expected number of counts $\lambda_{t_0}$ for the current time point $t_0$ using the fitted generalized linear model. Both methods differ in their assumptions for calculating the upper bound $U_{t_0}$.
+In the second step, the algorithm predicts the expected number of counts $\lambda_{t_0}$ for the current time point $t_0$ using the fitted \gls{GLM}. Both methods differ in their assumptions for calculating the upper bound $U_{t_0}$.
 
 The original method assumes that a transformation of the prediction error, denoted as $g(y_{t_0}-\hat{\lambda}_{t_0})$, follows a normal distribution. For example, when using the identity transformation $g(x)=x$, the assumption becomes
 
 \begin{equation}
-y_{t_0} - \hat{\lambda}_{t_0} \sim \N(0, \V(y_{t_0}-\hat{\lambda}_{t_0}))
+y_{t_0} - \hat{\lambda}_{t_0} \sim \N(0, \V\big(y_{t_0}-\hat{\lambda}_{t_0})\big)
 \end{equation}
 
 The upper bound of the prediction interval is then calculated based on this distribution. The variance of the prediction error is given by
@@ -51,7 +51,7 @@ The upper bound of the prediction interval is then calculated based on this dist
 Here, $\V(\hat{y}_{t_0})$ represents the variance of an observation, and $V(\hat{\lambda}_{t_0})$ represents the variance of the estimate. The threshold, defined as the upper bound of a one-sided $(1-\alpha)\cdot100\%$ prediction interval, is calculated as
 
 \begin{equation}
-U_{t_0} = \hat{\lambda}_{0} + z_{1-\alpha}\hat{\V}(\sqrt{y_{t_0}-\hat{\lambda}_{t_0}})
+U_{t_0} = \hat{\lambda}_{0} + z_{1-\alpha}\hat{\V}\Big(\sqrt{y_{t_0}-\hat{\lambda}_{t_0}}\Big)
 \end{equation}
 
 However, this method's weakness lies in the assumption of normality itself. Therefore, an alternative assumption was presented in @Noufaily_2013. This approach assumes that $y_{t_0}$ follows a negative binomial distribution, denoted as $\text{NB}(\lambda_{t_0}, \nu)$, where $\lambda_{t_0}$ represents the mean and $\nu = \frac{\lambda_{t_0}}{\phi-1}$ represents the over-dispersion parameter. In this parameterization, the expected value of $y_t$ remains $\lambda_t$, and the variance of $y_t$ is $\phi\lambda_t$, with $\phi > 1$. If $\phi \leq 1$, a Poisson distribution is assumed for the observed count. The threshold is defined as a quantile of the negative binomial distribution using the plug-in estimates $\hat{\lambda}_{t_0}$ and $\hat{\phi}$.
@@ -66,7 +66,7 @@ Finally, past outbreaks are reweighted based on their Anscombe residuals. If the
 
 \section{Novel outbreak detection algorithm}\label{Novel}
 
-In this section, the novel algorithm for the prospective detection of disease outbreaks proposed in this thesis is outlined. The algorithm utilizes a generalized mixed effects model or a hierarchical generalized linear model as a modeling framework to model the count observations $\boldsymbol y$ and assess the unobserved random effects $\boldsymbol u$. These random effects are used directly in the detection algorithm to characterize an outbreak. The theoretical foundations of these models will be further discussed in Section \ref{GLMM} and Section \ref{HLMM}.
+In this section, the novel algorithm for the prospective detection of disease outbreaks proposed in this thesis is outlined. The algorithm utilizes a generalized mixed effects model or a hierarchical generalized linear model as a modeling framework to model the count observations $\boldsymbol y$ and assess the unobserved random effects $\boldsymbol u$. These random effects are used directly in the detection algorithm to characterize an outbreak. The theoretical foundations of these models will be further discussed in Sections \ref{GLMM} and \ref{HLMM}.
 
 The first step involves fitting either a hierarchical Poisson Normal or Poisson Gamma model with a log link to the reference data. Here, it is possible for the user to include an arbitrary number of covariates by supplying a model formula. In order to account for structural changes in the time series, e.g. an improved and more sensitive diagnostic method or a new screening strategy at hospitals, a rolling window with width $k$ is used to estimate the time-varying model parameters. Also, it is assumed that the count is proportional to the population size $\boldsymbol n$. Hence, in terms of the canonical link the model for the fixed effects is
 
@@ -76,10 +76,11 @@ The first step involves fitting either a hierarchical Poisson Normal or Poisson 
 
 Here $\boldsymbol x_{it}$ and $\boldsymbol\beta$ are $p$-dimensional vectors of covariates and fixed effects parameters respectively, where $p$ denotes the number of covariates or fixed effects parameters, $m$ denotes the number of groups, and $T$ denotes the length of the period.
 
-
 In the second step of the algorithm, as a new observation becomes available, the algorithm infers the one-step ahead random effect $u_{i{t_1}}$ for each group using the obtained model estimates $\hat{\theta}_{t_0}$. Here, $t_0$ represents the current time point, and $t_1$ represents the one-step ahead time point. The threshold $U_{t_0}$ for detecting outbreaks is defined as a quantile of the distribution of the random effects in the second stage model. This threshold can be calculated based on either a Gaussian distribution using the plug-in estimate $\hat{\sigma}$ or a Gamma distribution using the plug-in estimate $\hat{\phi}$. The choice of distribution depends on the specific modeling framework and assumptions used in the analysis.
 
-In the final step, the inferred random effect $\hat{u}_{i{t}_1}$ is compared to the upper bound $U_{t_0}$, and an alarm is raised if $\hat{u}_{i{t}_1}>U_{t_0}$. If an outbreak is detected, the related observation $y_{i1}$ is omitted from the parameter estimation in the future. Thus, resulting in a smaller sample size for the rolling window until that specific observation is discarded.
+In the final step, the inferred random effect $\hat{u}_{i{t}_1}$ is compared to the upper bound $U_{t_0}$, and an alarm is raised if $\hat{u}_{i{t}_1}>U_{t_0}$. If an outbreak is detected, the related observation $y_{it_1}$ is omitted from the parameter estimation in the future. Thus, resulting in a smaller sample size for the rolling window until that specific observation is discarded.
+
+The above algorithm is implemented in an R function, which can be accessed from the associated GitHub repository at \href{https://github.com/telkamp7/AEDDO/blob/main/src/models/aeddo.R}{src/models/aeddo.R}.
 
 \section{General mixed effects models}\label{GLMM}
 
@@ -465,9 +466,25 @@ The minimization of the Laplace approximation for the marginal likelihood is the
   \V\big(\phi(\hat{\boldsymbol \theta})\big)=-\phi_{\boldsymbol \theta}'(\hat{\boldsymbol \theta})\Big(\Delta^2 \ell_{M,LA}(\boldsymbol{\hat{\theta}, y})\Big)^{-1} \phi_{\boldsymbol \theta}'(\hat{\boldsymbol \theta})^T
 \end{equation}
 
-Additionally, \textbf{TMB} utilizes Automatic Differentiation (AD) techniques [@Griewank_2008] to evaluate first, second, and potentially third-order derivatives. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models. Therefore, even though the random effects are analytically integrated out in \eqref{eq:jnllPoisG}, and the Laplace approximation is not needed, implementing the joint log-likelihood function in \textbf{TMB} can still result in more efficient computations.
+Additionally, \textbf{TMB} utilizes Automatic Differentiation (AD) techniques [@Griewank_2008] to evaluate first, second, and potentially third-order derivatives. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models. Therefore, even though the random effects are analytically integrated out in the hierarchical Poisson Gamma model, and the Laplace approximation is not needed, implementing the joint log-likelihood function in \textbf{TMB} can still result in more efficient computations.
 
 For a comprehensive introduction to the concept of AD, it is recommended to read Section 2.1 and Section 2.2 of @Fournier_2012. 
+
+It is important to note that the implementation of the hierarchical Poisson Normal model requires the use of the Laplace approximation to approximate the likelihood function. To investigate the impact on run time, the optimization of both the hierarchical Poisson Normal and Poisson Gamma models is compared using a simulated data set with $n=1000$. The simulated series $Y=\{y_1,\cdots,y_n\}$ follows a Poisson distribution with a rate of $\lambda=5$, i.e., $Y\sim\Pois(5)$. After generating the series, the following model for the fixed effects is optimized in both modeling frameworks:
+
+\begin{equation}
+  \log(\lambda) = \beta_{\text{Intercept}}
+\end{equation}
+
+Finally, the optimization routines for each of the modeling frameworks is run 100 times and the run time across these iterations are collected using the R package \textbf{microbenchmark}\footnote{This R package can be accessed from the \gls{CRAN} at \href{ https://CRAN.R-project.org/package=microbenchmark}{ \nolinkurl{https://CRAN.R-project.org/package=microbenchmark}}}. The resulting run times are visualized as a violin plot in Figure \@ref(fig:ComparePerformance).
+
+(ref:ComparePerformance) A violin plot [@Jerry_1998] of the 100 run times for the optimization routines in each modeling framework.
+
+```{r ComparePerformance, echo=FALSE, out.width="100%", fig.cap="(ref:ComparePerformance)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Compare_Performance.png")
+```
+
+Figure \@ref(fig:ComparePerformance) shows a violin plot comparing the running times for the optimization routines in each modeling framework. The plot demonstrates that the run time in the hierarchical Poisson Gamma model is remarkably faster, up to a factor of $3\times$, compared to the hierarchical Poisson Normal model. This indicates that the Poisson Gamma model may offer computational advantages in terms of run time efficiency.
 
 \section{Scoring rule}
 

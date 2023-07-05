@@ -2,7 +2,15 @@
 \section*{Abstract}
 \addcontentsline{toc}{section}{Abstract}
 
-\blindtext
+This thesis presents the development of a novel method for automated and early detection of disease outbreaks, with a focus on comparing its performance to state-of-the-art methods from the literature. The main objective of this research is to evaluate the effectiveness of the proposed method and its potential for improving outbreak detection.
+
+The methodology employed in this study centers around the innovative utilization of generalized linear mixed effects models and hierarchical generalized linear models. These models offer a robust framework for capturing the underlying dynamics of disease spread and allow for the incorporation of various covariates and random effects.
+
+Through a comprehensive evaluation, the key findings of this research highlight the promising potential of the novel method. The developed approach demonstrates superior performance in detecting disease outbreaks compared to established methods, including the Farrington method and the subsequently improved Noufaily method. The novel method shows enhanced sensitivity in early detection, providing valuable insights for timely intervention and effective disease control.
+
+The results of this study contribute to the advancement of automated outbreak detection methods, offering a valuable tool for public health authorities and decision-makers. The novel approach not only improves the accuracy and timeliness of outbreak detection but also enhances the understanding of disease dynamics and supports targeted intervention strategies.
+
+In conclusion, the findings presented in this thesis demonstrate the effectiveness and potential of the developed automated outbreak detection method. Further research and validation on larger datasets and diverse disease scenarios are recommended to fully explore its capabilities and further refine its performance. The integration of this novel method into existing surveillance systems can significantly enhance public health preparedness and response, ultimately leading to improved outcomes in disease prevention and control.
 
 \clearpage 
 

@@ -6,20 +6,20 @@ In Denmark, the surveillance of infectious diseases is mainly carried out by \gl
 
 This master thesis proposes a novel method for automated and early detection of disease outbreaks. The method utilizes hierarchical models in an innovative way, offering an alternative to state-of-the-art outbreak detection algorithms. The models are formulated and used to estimate the random effects in a subset of diseases in the mandatory notification system. Subsequently, novel automated procedures for detection of aberrant counts are implemented and compared against the methods currently employed at \gls{SSI} and state-of-the-art method identified in the literature. 
 
-Primarily, the focus is on investigating the effectiveness of these methods in detecting disease outbreak in case studies, particularly in diseases where timely detection allows for feasible interventions. Emphasis is placed on diseases caused by foodborne illnesses, as they are often associated with specific food sources and provide an opportunity for intervention and preventive measures. However, it is important to note that the statistical algorithms discussed in this thesis are not limited to these specific diseases. They can be applied to detect abnormal case counts in any type of disease, enabling early detection and timely response.
+Primarily, the focus is on investigating the effectiveness of these methods in detecting disease outbreaks in case studies, particularly in diseases where timely detection allows for feasible interventions. Emphasis is placed on diseases caused by foodborne illnesses, as they are often associated with specific food sources and provide an opportunity for intervention and preventive measures. However, it is important to note that the statistical algorithms discussed in this thesis are not limited to these specific diseases. They can be applied to detect abnormal case counts in any type of disease, enabling early detection and timely response.
 
 Currently, several approaches are employed at \gls{SSI} to detect outbreaks of foodborne illnesses. These include:
 
 \begin{enumerate}
-  \item Reports from doctors: Physicians may report cases of foodborne illnesses they encounter in their practice to the relevant authorities.
-  \item Citizen reports: Individuals may directly contact food or health authorities to report suspected cases of foodborne illnesses.
-  \item Cluster identification through laboratory surveillance: Clusters of cases can be identified through routine laboratory testing and surveillance of samples from patients with suspected foodborne illnesses.
-  \item Identification of identical "fingerprints": When bacteria or viruses are type-tested, the presence of identical fingerprints among multiple cases can strongly indicate a common source of infection.
+  \item \textbf{Reports from doctors:} Physicians may report cases of foodborne illnesses they encounter in their practice to the relevant authorities.
+  \item \textbf{Citizen reports:} Individuals may directly contact food or health authorities to report suspected cases of foodborne illnesses.
+  \item \textbf{Cluster identification through laboratory surveillance:} Clusters of cases can be identified through routine laboratory testing and surveillance of samples from patients with suspected foodborne illnesses.
+  \item \textbf{Identification of identical "fingerprints":} When bacteria or viruses are type-tested, the presence of identical fingerprints among multiple cases can strongly indicate a common source of infection.
 \end{enumerate}
 
 These approaches contribute to the early detection and investigation of infectious disease outbreaks, including foodborne diseases, enabling timely intervention and prevention measures. However, at the time of writing this thesis, there are no automated procedures in place at \gls{SSI}, and the identification of outbreaks relies on the work of individual epidemiologists. Consequently, there is a significant demand for an automated procedure for the early identification of disease outbreaks. Such a method could effectively guide the work of epidemiologists at \gls{SSI} and other health institutes, enhancing the overall surveillance of infectious diseases at national and international levels.
 
-In addition to the case studies, a comprehensive simulation study is conducted to evaluate the performance of the novel outbreak detection algorithm compared to the state-of-the-art algorithms. The objective is to assess the ability of the automated procedures to timely detect disease outbreaks. By leveraging the potential of hierarchical models, this research seeks to improve the timeliness and accuracy of disease outbreak detection.
+In addition to the case studies, a simulation study is conducted to evaluate the performance of the novel outbreak detection algorithm compared to the state-of-the-art algorithms. The objective is to assess the ability of the automated procedures to timely detect disease outbreaks. By leveraging the potential of hierarchical models, this research seeks to improve the timeliness and accuracy of disease outbreak detection.
 
 The novel outbreak detection algorithm proposed in this master thesis is open-source and can be accessed at \href{https://github.com/telkamp7/AEDDO}{https://github.com/telkamp7/AEDDO}
 

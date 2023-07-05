@@ -8,6 +8,15 @@ $if(highlighting-macros)$
 $highlighting-macros$
 $endif$
 
+$if(csl-refs)$
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{CSLReferences}%
+  {$if(csl-hanging-indent)$\setlength{\parindent}{0pt}%
+  \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces$endif$}%
+  {\par}
+$endif$ 
+
 \setabbreviationstyle{long-short}% glossaries-extra.sty
 
 \newabbreviation % glossaries-extra.sty
@@ -21,6 +30,12 @@ $endif$
  {ACF}% label
  {ACF}% short form
  {autocorrelation function}% long form
+
+\newabbreviation % glossaries-extra.sty
+ [sort=CRAN]
+ {CRAN}% label
+ {CRAN}% short form
+ {Comprehensive R Archive Network}% long form
 
 \newabbreviation % glossaries-extra.sty
  [sort=DVFA]
