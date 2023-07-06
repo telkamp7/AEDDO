@@ -80,7 +80,7 @@ con.noufaily <- list(
   limit54 = c(0,4), powertrans = "2/3",
   fitFun = "algo.farrington.fitGLM.flexible",
   populationOffset = TRUE,
-  noPeriods = 1, pastWeeksNotIncluded = NULL,
+  noPeriods = 10, pastWeeksNotIncluded = NULL,
   thersholdMethod = "nbPlugin"
 )
 
