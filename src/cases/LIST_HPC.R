@@ -60,7 +60,7 @@ LIST.sts <- sts(
 # Farrington ------------------------------------------------------------------------
 
 con.farrington <- list(
-  range = NULL, b = 3, w = 3,
+  range = NULL, b = 3, w = 2,
   reweight = TRUE, weightsThreshold = 1,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
@@ -78,7 +78,7 @@ write_rds(x = LIST_Farrington, file = "LIST_Farrington.rds")
 # Noufaily --------------------------------------------------------------------------
 
 con.noufaily <- list(
-  range = NULL, b = 3, w = 3,
+  range = NULL, b = 3, w = 2,
   reweight = TRUE, weightsThreshold = 2.58,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = 0.05, trend = TRUE, pThresholdTrend = 1,
