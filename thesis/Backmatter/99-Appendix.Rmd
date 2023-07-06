@@ -65,7 +65,7 @@ Here, the specific `control` arguments used in the case studies is provided.
 ```{r ControlsLIST, eval=FALSE}
 
 con.farrington <- list(
-  range = NULL, b = 3, w = 3,
+  range = NULL, b = 3, w = 2,
   reweight = TRUE, weightsThreshold = 1,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = 0.05, trend = TRUE, pThresholdTrend = 0.05,
@@ -77,7 +77,7 @@ con.farrington <- list(
 )
 
 con.noufaily <- list(
-  range = NULL, b = 3, w = 3,
+  range = NULL, b = 3, w = 2,
   reweight = TRUE, weightsThreshold = 2.58,
   verbose = TRUE, glmWarnings = TRUE,
   alpha = 0.05, trend = TRUE, pThresholdTrend = 1,

@@ -539,6 +539,7 @@ SALM_compare <- SALM_novel %>%
 write_rds(x = SALM_compare, file = "SALM_compare.rds")
 
 Compare_alarms <- SALM_compare %>%
+  filter(Date >= as.Date("2011-01-01")) %>%
   ggplot(mapping = aes(x = alarmDate, y = method, colour = method)) +
   geom_point(shape = 17, size = 4) +
   scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +

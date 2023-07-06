@@ -16,7 +16,7 @@ Following that, the novel algorithm is utilized, and different models for the fi
 
 \subsection{Applying the state-of-the-art outbreak detection algorithm to STEC}
 
-To investigate outbreak detection, the method by @Farrington_1996 and the subsequently improved method by @Noufaily_2013 are initially explored. These methods can be employed using the `farringtonFlexible` function, which is available in the R package called \textbf{surveillance}. The methods are controlled using specific `control` arguments. Here, a period of $b=3$ years and a window half-width of $w=3$ is chosen for reference data. Consequently, the number of baseline months used to calculate the thresholds are based on a total of $n=`r 3*(2*3+1)`$ months. Also, the threshold calculation is based on a significance level of $\alpha=0.05$. To access the other specific `control` arguments used in this thesis, refer to Appendix \@ref(controlsStateOfTheArt).
+To investigate outbreak detection, the method by @Farrington_1996 and the subsequently improved method by @Noufaily_2013 are initially explored. These methods can be employed using the `farringtonFlexible` function, which is available in the R package called \textbf{surveillance}. The methods are controlled using specific `control` arguments. Here, a period of $b=3$ years and a window half-width of $w=3$ is chosen for reference data. Consequently, the number of baseline months used to calculate the thresholds are based on a total of $n=`r 3*(2*2+1)`$ months. Also, the threshold calculation is based on a significance level of $\alpha=0.05$. To access the other specific `control` arguments used in this thesis, refer to Appendix \@ref(controlsStateOfTheArt).
 
 For the analysis of \gls{STEC}, the reference values are based on data collected from January 2008 to February 2011. Subsequently, surveillance is performed using the data spanning from March 2011 to December 2022. The resulting time series and alarms are visualized in Figure \@ref(fig:CompareStateOfTheArtSTEC).
 
@@ -38,7 +38,7 @@ When comparing the results from the Farrington and Noufaily methods in Figure \@
 
 The subsequent investigation focuses on the application of the novel outbreak detection algorithm to monitor \gls{STEC} for potential outbreaks. In this analysis, a rolling window with a width of $k=36$ months is selected for the parameter estimation. Thus, the reference values are established using monthly data collected from January 2008 to December 2010. Similar to when applying the state-of-the-art algorithms, the time series is recursively monitored for outbreaks by moving the rolling window one month at a time using data from January 2011 to December 2022.
 
-To identify outbreaks, an observation is classified as such if the one-step ahead random effect $u_{i{t_1}}$ for the specific age group exceeds the upper bound $U_{t_0}$. In this case study, the upper bound is determined as the 90\% quantile of the distribution of random effects obtained from the second stage model. This threshold helps identify significant deviations in the outbreak intensity.
+To identify outbreaks, an observation is classified as such if the one-step ahead random effect $u_{i{t_1}}$ for the specific age group exceeds the upper bound $U_{t_0}$. In this case study, the upper bound is determined as the $90\%$ quantile of the distribution of random effects obtained from the second stage model. This threshold helps identify significant deviations in the outbreak intensity.
 
 \subsubsection{Introducing the fixed effects models}
 
@@ -191,7 +191,7 @@ It is also important to mention that different age groupings are utilized in eac
 
 \subsection{Analysis of outbreak detection in \textit{Listeriosis}}
 
-Intuitively, it is not common to employ statistical methods for monitoring and detecting outbreaks of \gls{LIST}. The current state-of-the-art approach for detecting outbreaks of this disease relies heavily on laboratory-based methods, specifically WGS. WGS enables epidemiologists to link cases that have occurred over an extended period, even months or years apart, and identify them as part of a continuous-source outbreak. Statistical method may face challenges in detecting such outbreaks due to their complex and prolonged nature. However, it is crucial to include this case study in the thesis to highlight both the strengths and limitations of the novel and state-of-the-art methods.
+Intuitively, it is not common to employ statistical methods for monitoring and detecting outbreaks of \glsfirst{LIST}. The current state-of-the-art approach for detecting outbreaks of this disease relies heavily on laboratory-based methods, specifically WGS. WGS enables epidemiologists to link cases that have occurred over an extended period, even months or years apart, and identify them as part of a continuous-source outbreak. Statistical method may face challenges in detecting such outbreaks due to their complex and prolonged nature. However, it is crucial to include this case study in the thesis to highlight both the strengths and limitations of the novel and state-of-the-art methods.
 
 The data used in this case study consist of Danish \gls{LIST} case counts from the laboratory notification system. These counts are denoted as $y_{it}$. Here, the subscript $i$ distinguishes between two age groups, with $i=1$ representing the age group below 65 years and $i=2$ representing the age group above 65 years. As in the \gls{STEC} case study, the subscript $t$ denotes the time.
 
@@ -207,9 +207,9 @@ knitr::include_graphics("../figures/Compare_stateOfTheArt_LIST.png")
 
 In Figure \@ref(fig:CompareStateOfTheArtLIST), multiple alarms can be observed for both the Farrington Noufaily methods. The Farrington method triggers a total of `r LIST_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces slightly fewer alarms, specifically `r LIST_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms.
 
-Interestingly, both methods demonstrate the ability to correctly raise alarms during ongoing outbreak investigations by SSI. One notable example is the outbreak investigated by SSI, which involved 41 cases and resulted in 17 deaths [@Wingstrand_2015]. The Farrington method successfully flags this event in September 2013, with alarms occurring sporadically in the subsequent period. The Noufaily method also identifies this outbreak, although it does so one month later in October 2013.
+Interestingly, both methods demonstrate the ability to correctly raise alarms during ongoing outbreak investigations by SSI. One notable example is the outbreak investigated by SSI, which involved 41 cases and resulted in 17 deaths [@Wingstrand_2015]. The Farrington method successfully flags this event in September 2013, with alarms occurring sporadically in the subsequent period. The Noufaily method also identifies this outbreak, although it first does so in June 2014.
 
-It is worth noting that the other observations flagged by the methods may be related to some of the numerous other long-spanned outbreaks that occurred concurrently in the period from 2016 to 2021. However, it is out of scope for this thesis, to directly link individual alarms to specific outbreaks. For a full list over the alarms raised by the methods see Table \@ref(tab:LISTStateOfTheArtTbl).
+It is worth noting that the other observations flagged by the methods may be related to some of the numerous other long-spanned outbreaks that occurred concurrently in the period from 2016 to 2021. Also, several alarms are raised sporadically in 2022 coinciding with the outbreaks investigated by SSI caused by cold-cut and fish patties, respectively [@Lassen_2023]. For a full list over the alarms raised by the methods see Table \@ref(tab:LISTStateOfTheArtTbl).
 
 \subsubsection{Applying the novel outbreak detection algorithm to \textit{Listeriosis}}
 
@@ -225,7 +225,7 @@ Nevertheless, it is worth noting that both modeling framework identifies the sam
 
 \subsection{Analysis of outbreak detection in \textit{Shigellosis}}
 
-The \gls{SHIL} data set consists of Danish \gls{SHIL} case counts categorized into two age groups. These counts are represented as $y_{it}$, where the subscript $i=1$ corresponds to the age group below 25 years, and $i=2$ corresponds to the age group above 25 years. It should be noted that the selection of these age groups was not based on clear epidemiological reasoning. In retrospect, it would have been more informative to differentiate between sexes rather than age groups, as men who have sex with men have a higher risk of contracting and spreading the disease. However, this information was received towards the end of writing the thesis and was therefore not given priority.
+The \glsfirst{SHIL} data set consists of Danish \gls{SHIL} case counts categorized into two age groups. These counts are represented as $y_{it}$, where the subscript $i=1$ corresponds to the age group below 25 years, and $i=2$ corresponds to the age group above 25 years. It should be noted that the selection of these age groups was not based on clear epidemiological reasoning. In retrospect, it would have been more informative to differentiate between sexes rather than age groups, as men who have sex with men have a higher risk of contracting and spreading the disease. However, this information was received towards the end of writing the thesis and was therefore not given priority.
 
 \subsubsection{Applying the state-of-the-art outbreak detection algorithm to \textit{Shigellosis}}
 
@@ -257,11 +257,11 @@ However, it is also noted that the novel algorithm failed to identify the outbre
 
 \subsection{Analysis of outbreak detection in \textit{Salmonellosis}}
 
-Historically, \gls{SALM} is associated with frequent disease outbreaks. This is no different during the time period investigated here. The data set consist of monthly counts of Danish \gls{SALM} cases, denoted as $y_{it}$. Here, the subscript $i$ differentiates between the six age groups $i=1,\cdots,6$. The subscript $t$ represents time.
+Historically, \glsfirst{SALM} is associated with frequent disease outbreaks. This is no different during the time period investigated here. The data set consist of monthly counts of Danish \gls{SALM} cases, denoted as $y_{it}$. Here, the subscript $i$ differentiates between the six age groups $i=1,\cdots,6$. The subscript $t$ represents time.
 
 \subsubsection{Applying the state-of-the-art outbreak detection algorithm to \textit{Salmonellosis}}
 
-From Figure \@ref(fig:CompareStateOfTheArtSALM), it is evident that both of the state-of-the-art methods generate an overwhelming number of alarms across all six age groups. The Farrington method produces `r SALM_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm`alarms, while the Noufaily method produces `r SALM_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms. Although these methods exhibit high sensitivity, the excessive number of alarms undermines their usefulness and practicality.
+From Figure \@ref(fig:CompareStateOfTheArtSALM), it is evident that both of the state-of-the-art methods generate an overwhelming number of alarms across all six age groups. The Farrington method produces `r SALM_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces `r SALM_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms. Although these methods exhibit high sensitivity, the excessive number of alarms undermines their usefulness and practicality.
 
 (ref:CompareStateOfTheArtSALM) Monthly \gls{SALM} incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations time points outside reference data. Alarm triggered (full opacity) if observations exceeds threshold. 
 
@@ -349,39 +349,39 @@ If the method is employed in an automated setting, it is essential to report the
 
 \section{Performance of statistical outbreak detection algorithms}
  
-In this section, the performance of both the state-of-the-art and novel outbreak detection algorithms is evaluated to assess their ability to identify outbreaks in the case studies. A comparison is made between the alarms raised by each method using a timeline plot. Additionally, the first identified cases in the outbreaks investigated by SSI and potential collaborators are included in the plot to provide context and evaluate the accuracy and timeliness of the outbreak detection algorithms.
+In this section, the performance of both the state-of-the-art and novel outbreak detection algorithms is evaluated to assess their ability to identify outbreaks in the case studies. A comparison is made between the alarms raised by each method using a timeline plot. Additionally, the first identified cases in the outbreaks investigated by \gls{SSI} and potential collaborators are included in the plot to provide context and evaluate the accuracy and timeliness of the outbreak detection algorithms.
 
 Additionally, a brief overview of the advantages and disadvantages are provided for each method. 
 
 Figure \@ref(fig:CompareAlarmsLIST) demonstrates that the state-of-the-art outbreak detection algorithms, especially the Farrington method, raise a higher number of alarms compared to the novel algorithms in the \gls{LIST} case study.
 
-(ref:CompareAlarmsLIST) Alarm plot displaying alarms for \gls{LIST} time series using four different algorithms, along with outbreaks investigated by SSI.
+(ref:CompareAlarmsLIST) Alarm plot displaying alarms for \gls{LIST} time series using four different algorithms, along with outbreaks investigated by \gls{SSI}.
 
 ```{r CompareAlarmsLIST, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsLIST)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_alarms_LIST.png")
 ```
 
-In general, SSI initiates an outbreak investigation when there are either 2 cases with identical bacteria over a 12-week period or 3 cases at any given time. Therefore, it is crucial to have a method with high sensitivity for automated \gls{LIST} outbreak detection. As discussed earlier, the Farrington method demonstrates lower sensitivity compared to the other algorithms, which may impact its suitability for detecting \gls{LIST} outbreaks. 
+In general, \gls{SSI} initiates an outbreak investigation when there are either 2 cases with identical bacteria over a 12-week period or 3 cases at any given time. Therefore, it is crucial to have a method with high sensitivity for automated \gls{LIST} outbreak detection. As discussed earlier, the Farrington method demonstrates lower sensitivity compared to the other algorithms, which may impact its suitability for detecting \gls{LIST} outbreaks. 
 
-Furthermore, it was discovered that the hierarchical models faced inherent convergence issues due to the lack of overdispersion in the data. This resulted in insufficient information to adequately inform the second stage model and impacted the performance of the models in detecting outbreaks.
+Furthermore, it was discovered that the hierarchical models faced inherent convergence issues due to the lack of overdispersion in the data. This resulted in insufficient information to adequately inform the second stage model and impacted the performance of the models in detecting outbreaks. Consequently, the novel method had prolonged periods where the estimated random effects and thresholds collapse.
 
-However, it is worth noting that the novel outbreak detection algorithms successfully identified five outbreaks that aligned with ongoing investigations conducted by SSI and collaborating organizations.
+However, it is worth noting that the novel outbreak detection algorithms successfully identified five outbreaks that aligned with ongoing investigations conducted by \gls{SSI} and collaborating organizations.
 
-In the \gls{SHIL} case study, the incidence of cases is slightly higher, resulting in a relatively higher number of alarms generated by both the state-of-the-art and novel outbreak detection methods. This can be observed in Figure \@ref(fig:CompareAlarmsSHIL). It is important to note that only one well-documented outbreak of \gls{SHIL} was investigated by SSI and collaborating organizations. As a result, the number of alarms generated by the methods may be overestimated in terms of the priority given to investigating outbreaks in this specific disease.
+In the \gls{SHIL} case study, the incidence of cases is slightly higher, resulting in a relatively higher number of alarms generated by both the state-of-the-art and novel outbreak detection methods. This can be observed in Figure \@ref(fig:CompareAlarmsSHIL). It is important to note that only one well-documented outbreak of \gls{SHIL} was investigated by \gls{SSI} and collaborating organizations. As a result, the number of alarms generated by the methods may be overestimated in terms of the priority given to investigating outbreaks in this specific disease.
 
 Additionally, it is worth noting that none of the algorithms were able to identify this outbreak, as it occurred during the \gls{COVID-19}-related lockdown period when there were very few reported cases. This highlights the challenge of detecting outbreaks in periods of low incidence or during exceptional circumstances such as a lockdown.
 
-(ref:CompareAlarmsSHIL) Alarm plot displaying alarms for \gls{SHIL} time series using four different algorithms, along with outbreaks investigated by SSI.
+(ref:CompareAlarmsSHIL) Alarm plot displaying alarms for \gls{SHIL} time series using four different algorithms, along with outbreaks investigated by \gls{SSI}.
 
 ```{r CompareAlarmsSHIL, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsSHIL)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_alarms_SHIL.png")
 ```
 
-Furthermore, it is interesting to mention that a total of `r SSI_FUD %>% filter(str_detect(string = Pathogen, pattern = "Shigella")) %>% reframe(n=n()) %>% .$n` outbreaks with \gls{SHIL} have been reported to the Food- and Waterborne Outbreak Database (FUD) between 2008 and 2022. Unfortunately, due to the limitations of this thesis, it was not possible to retrieve the necessary information to provide a detailed description of these outbreaks. Therefore, with the available information, it is not possible to reject the possibility that some of the alarms raised by the algorithms coincided with concurrent outbreak investigations.
+Furthermore, it is interesting to mention that a total of `r SSI_FUD %>% filter(str_detect(string = Pathogen, pattern = "Shigella")) %>% reframe(n=n()) %>% .$n` outbreaks with \gls{SHIL} have been reported to the \gls{FUD} between 2008 and 2022. Unfortunately, due to the limitations of this thesis, it was not possible to retrieve the necessary information to provide a detailed description of these outbreaks. Therefore, with the available information, it is not possible to reject the possibility that some of the alarms raised by the algorithms coincided with concurrent outbreak investigations.
 
 When examining the \gls{STEC} data, the substantial difference in sensitivity between the state-of-the-art and novel outbreak detection methods becomes evident. Figure \@ref(fig:CompareAlarmsSTEC) clearly demonstrates that both state-of-the-art methods generate a significant number of alarms. This excessive number of alarms raises concerns about the practicality and feasibility of these methods in real-world applications.
 
-(ref:CompareAlarmsSTEC) Alarm plot displaying alarms for the \gls{STEC} time series using four different algorithms, along with outbreaks investigated by SSI.
+(ref:CompareAlarmsSTEC) Alarm plot displaying alarms for the \gls{STEC} time series using four different algorithms, along with outbreaks investigated by \gls{SSI}.
 
 ```{r CompareAlarmsSTEC, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsSTEC)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_alarms_STEC.png")
@@ -391,13 +391,13 @@ It is worth noting that both the state-of-the-art and novel outbreak detection a
 
 In the case study of \gls{SALM}, a large number of alarms are generated by both the state-of-the-art and novel outbreak detection algorithms. These alarms are depicted in Figure \@ref(fig:CompareAlarmsSALM). The vast number of alarms can be attributed to the inherent nature of the disease, as \gls{SALM} is known for frequently causing outbreaks. Therefore, the high number of alarms generated in this case is no unexpected. 
 
-(ref:CompareAlarmsSALM) Alarm plot displaying alarms for \gls{SALM} time series using four different algorithms, along with outbreaks investigated by SSI.
+(ref:CompareAlarmsSALM) Alarm plot displaying alarms for \gls{SALM} time series using four different algorithms, along with outbreaks investigated by \gls{SSI}. Note that there are several more outbreak with \gls{SALM}, than what is included in this plot. This is because of missing or poor documentation of these outbreak. However, for an overview over the outbreak reported to \gls{FUD}, refer to Table \@ref(tab:FUD).
 
 ```{r CompareAlarmsSALM, echo=FALSE, out.width="100%", fig.cap="(ref:CompareAlarmsSALM)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_alarms_SALM.png")
 ```
 
-For future work, it is indeed beneficial to consider monitoring individual serotypes of \textit{Salmonella} bacteria instead of monitoring them collectively. This approach would enable more specific and targeted outbreak detection. By focusing on specific serotypes, the algorithms can potentially reduce the number of false alarms and enhance the overall effectiveness of outbreak detection for SALM infections.
+For future work, it is indeed beneficial to consider monitoring individual serotypes of \textit{Salmonella} bacteria instead of monitoring them collectively. This approach would enable more specific and targeted outbreak detection. By focusing on specific serotypes, the algorithms can potentially reduce the number of false alarms and enhance the overall effectiveness of outbreak detection for \gls{SALM} infections.
 
 Furthermore, monitoring individual serotypes provides an opportunity to prioritize outbreaks of \textit{Salmonella} serotypes that are known to cause particularly severe diseases. This allows for a proactive response in identifying and containing outbreaks that pose a higher risk to public health. By tailoring the detection algorithms to specific serotypes, public health authorities can effectively prioritize their efforts and allocate resources accordingly, leading to more efficient and targeted outbreak management strategies.
 

@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.1)  6 JUL 2023 09:46
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.1)  6 JUL 2023 11:33
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1550,14 +1550,14 @@ Underfull \hbox (badness 1365) in paragraph at lines 326--326
 File: ../figures/EpiPlot.png Graphic file (type bmp)
 <../figures/EpiPlot.png>
 [6]
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca025d37b8.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca025d37b8.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca043b94c9f.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca043b94c9f.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca0ec87ad4.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca0ec87ad4.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca0139a6319.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca0139a6319.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca01d34de7.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca01d34de7.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca064d451ad.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca064d451ad.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca071617363.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca071617363.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca067dc3c2c.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5ca067dc3c2c.pdf>
 [7]
 File: ../figures/LIST_long_plot.png Graphic file (type bmp)
 <../figures/LIST_long_plot.png>
@@ -1723,10 +1723,9 @@ Chapter 5.
 ]
 File: ../figures/Compare_stateOfTheArt_STEC.png Graphic file (type bmp)
 <../figures/Compare_stateOfTheArt_STEC.png>
-[32] [33] [34]
+[32] [33] [34] [35]
 File: ../figures/STEC_novel_par_ageGroup.png Graphic file (type bmp)
 <../figures/STEC_novel_par_ageGroup.png>
-[35]
 File: ../figures/STEC_novel_par_trend.png Graphic file (type bmp)
 <../figures/STEC_novel_par_trend.png>
 
@@ -3218,10 +3217,10 @@ Package logreq Info: Writing requests to '_main.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 62404 strings out of 477888
- 1439746 string characters out of 5821823
- 2626746 words of memory out of 5000000
- 82408 multiletter control sequences out of 15000+600000
+ 62405 strings out of 477888
+ 1439767 string characters out of 5821823
+ 2627013 words of memory out of 5000000
+ 82409 multiletter control sequences out of 15000+600000
  573019 words of font info for 134 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  111i,18n,110p,2291b,5749s stack positions out of 10000i,1000n,20000p,200000b,200000s
