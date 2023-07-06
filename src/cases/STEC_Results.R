@@ -1,11 +1,12 @@
 
 # Import libraries
+library(cowplot)
 library(dplyr)
 library(readr)
 library(tidyr)
 library(surveillance)
 library(ggplot2)
-
+library(purrr)
 # DTU colours
 dtuPalette <- c("#990000",
                          "#2F3EEA",
@@ -443,7 +444,13 @@ STEC_novel_par_plot <- STEC_novel_par %>%
   facet_grid(rows = vars(Parameter), cols = vars(Model), scales = "free_y", labeller = custom_labeller) +
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(theta))) +
-  scale_x_date(name = "Month")
+  scale_x_date(name = "Month") +
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26),
+        legend.title = element_text(size = 26),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
 ggsave(filename = "STEC_novel_par_plot.png",
        plot = STEC_novel_par_plot,
        path = "../../figures/",
@@ -599,23 +606,110 @@ ggsave(filename = "Compare_alarms_STEC.png",
 
 
 
+STEC_PoisG_ageGroup_trend_seasonality_sdRep <- STEC_PoisG_ageGroup_trend_seasonality %>%
+  select(ref.date, sd.rep) %>%
+  .$sd.rep
 
+STEC_PoisN_ageGroup_trend_seasonality_sdRep <- STEC_PoisN_ageGroup_trend_seasonality %>%
+  select(`sd.rep`) %>%
+  .$sd.rep
 
-
-STEC_novel_par %>%
-  filter(Model == "Combined" & grepl(pattern = "sin|cos", x = Parameter)) %>%
-  pivot_wider(names_from = Parameter, values_from = theta:CI.upr) %>%
-  mutate(Amplitude = sqrt(`theta_sin(pi/6 * periodInYear)`^2 + `theta_cos(pi/6 * periodInYear)`^2)) %>%
-  ggplot(mapping = aes(x = ref.date, y = Amplitude, colour = Method)) +
-  geom_line(linewidth = 1) +
-  scale_color_manual(values = dtuPalette) +
-  scale_x_date(name = "Month")
+# Make bootstrap estimates for the amplitude and phase of the seasonality
+bstrp.results <- tibble()
+for(i in 1:length(STEC_PoisG_ageGroup_trend_seasonality_sdRep)){
   
-STEC_novel_par %>%
-  filter(Model == "Combined" & grepl(pattern = "sin|cos", x = Parameter)) %>%
-  pivot_wider(names_from = Parameter, values_from = theta:CI.upr) %>%
-  mutate(Phase = -atan(`theta_cos(pi/6 * periodInYear)`/`theta_sin(pi/6 * periodInYear)`)) %>%
-  ggplot(mapping = aes(x = ref.date, y = Phase, colour = Method)) +
-  geom_line(linewidth = 1) +
+  ref.date <- STEC_PoisG_ageGroup_trend_seasonality %>%
+    filter(row_number() == i) %>%
+    .$ref.date
+  
+  # Extract parameters
+  beta_PoisN <- STEC_PoisN_ageGroup_trend_seasonality_sdRep[[i]]$par.fixed[8:9]
+  beta_PoisG <- STEC_PoisG_ageGroup_trend_seasonality_sdRep[[i]]$par.fixed[8:9]
+  cov.beta_PoisN <- STEC_PoisN_ageGroup_trend_seasonality_sdRep[[i]]$cov.fixed[8:9,8:9]
+  cov.beta_PoisG <- STEC_PoisG_ageGroup_trend_seasonality_sdRep[[i]]$cov.fixed[8:9,8:9]
+  
+  # Bootstrap the parameters
+  simSeasonality_PoisN <- MASS::mvrnorm(n = 1e4, mu = beta_PoisN, Sigma = cov.beta_PoisN)
+  simSeasonality_PoisG <- MASS::mvrnorm(n = 1e4, mu = beta_PoisG, Sigma = cov.beta_PoisG)
+  
+  # Append Poisson Normal results
+  bstrp.results <- bind_rows(bstrp.results,
+                             tibble(Date = ref.date,
+                                    Method = "Poisson Normal",
+                                    Amplitude = sqrt(beta_PoisN[1]^2 +  beta_PoisN[2]^2),
+                                    Phase = -atan(beta_PoisN[2]/beta_PoisN[1]),
+                                    sim.sin = simSeasonality_PoisN[,1],
+                                    sim.cos = simSeasonality_PoisN[,2]))
+  
+  # Append Poisson Gamma results
+  bstrp.results <- bind_rows(bstrp.results,
+                             tibble(Date = ref.date,
+                                    Method = "Poisson Gamma",
+                                    Amplitude = sqrt(beta_PoisG[1]^2 +  beta_PoisG[2]^2),
+                                    Phase = -atan( beta_PoisG[2]/beta_PoisG[1]),
+                                    sim.sin = simSeasonality_PoisG[,1],
+                                    sim.cos = simSeasonality_PoisG[,2]))
+}
+
+
+Amplitude <- bstrp.results %>%
+  mutate(bstrp_amplitude = sqrt(sim.sin^2 + sim.cos^2)) %>%
+  group_by(Date, Method, Amplitude) %>%
+  reframe(lwr_CI = quantile(x = bstrp_amplitude, probs = c(0.025)),
+          upr_CI = quantile(x = bstrp_amplitude, probs = c(0.975))) %>%
+  ggplot(mapping = aes(x = Date, colour = Method)) +
+  geom_line(mapping = aes(y = Amplitude), linewidth = 1) +
+  geom_line(mapping = aes(y = lwr_CI), lty = "dashed") +
+  geom_line(mapping = aes(y = upr_CI), lty = "dashed") +
   scale_color_manual(values = dtuPalette) +
+  scale_y_continuous(name = expression(omega)) +
   scale_x_date(name = "Month")
+ggsave(filename = "Amplitude.png",
+       plot = Amplitude,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")  
+
+Phase <- bstrp.results %>%
+  mutate(bstrp_phase = -atan(sim.cos/sim.sin)) %>%
+  group_by(Date, Method, Phase) %>%
+  reframe(lwr_CI = quantile(x = bstrp_phase, probs = c(0.025)),
+          upr_CI = quantile(x = bstrp_phase, probs = c(0.975))) %>%
+  ggplot(mapping = aes(x = Date, colour = Method)) +
+  geom_line(mapping = aes(y = Phase), linewidth = 1) +
+  geom_line(mapping = aes(y = lwr_CI), lty = "dashed") +
+  geom_line(mapping = aes(y = upr_CI), lty = "dashed") +
+  scale_color_manual(values = dtuPalette) +
+  scale_y_continuous(name = expression(rho)) +
+  scale_x_date(name = "Month")
+ggsave(filename = "Phase.png",
+       plot = Phase,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")  
+
+
+
+
+
+AmplitudePhase <- plot_grid(Amplitude + theme(axis.text.x = element_blank(),
+                            axis.title.x = element_blank(),
+                            axis.ticks.x = element_blank()),
+          Phase + guides(colour = "none"),
+          ncol = 1, nrow = 2, align = "vh",
+          labels = c("(a)", "(b)"), label_size = 18)
+ggsave(filename = "AmplitudePhase.png",
+       plot = AmplitudePhase,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 12,
+       units = "in",
+       dpi = "print")  
+  

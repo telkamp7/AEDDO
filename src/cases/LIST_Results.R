@@ -344,7 +344,13 @@ LIST_novel_par_plot <- LIST_novel_par %>%
   facet_wrap(facets = vars(Parameter), scales = "free_y", labeller = custom_labeller) +
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(theta))) +
-  scale_x_date(name = "Month")
+  scale_x_date(name = "Month") +
+  theme(axis.text = element_text(size = 18),
+        axis.title = element_text(size = 22),
+        strip.text = element_text(size = 20),
+        legend.title = element_text(size = 22),
+        legend.text = element_text(size = 20),
+        legend.key.size = unit(2, 'cm'))
 ggsave(filename = "LIST_novel_par_plot.png",
        plot = LIST_novel_par_plot,
        path = "../../figures/",

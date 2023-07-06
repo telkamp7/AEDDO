@@ -39,15 +39,7 @@ To simulate the baseline data without outbreaks, 100 replicates are generated fo
 
 The 624 weeks are divided into three periods: weeks 1-313 are used for training, weeks 313-575 are considered as baseline weeks, and weeks 576-624 are designated as the test weeks for evaluation. In Figure \@ref(fig:Realizations), one randomly selected realization for scenario 5, 7, 12, and 28 are visualized.
 
-The simulation results are based on the test weeks of all the replicates, totaling $100\times 49=4900$ replicates, for each of the 28 data scenarios and each method investigated.
-
-(ref:Realizations) Plots of one randomly chosen realization for scenario 8, scenario 12, scenario 13, and scenario 20 (see Table \@ref(tab:scenariosTbl)). During outbreaks (circles), outbreak cases are added to the baseline data. Four outbreaks are added during the baseline weeks and 1 outbreak is added during the test weeks. The results are based on the data obtained in the test weeks (grey area).
-
-```{r Realizations, echo=FALSE, out.width="100%", fig.cap="(ref:Realizations)", fig.pos = "H", fig.show = "hold"}
-
-knitr::include_graphics("../figures/Realizations.png")
-
-```
+The simulation results are based on the test weeks of all the replicates, totaling $100\times 49=4900$ weeks, for each of the 28 data scenarios and each method investigated.
 
 \section{The simulated outbreaks}
 
@@ -74,6 +66,16 @@ To simulate outbreaks, the following procedure is followed:
 \item \textbf{Outbreaks in current weeks.} For each data series, one outbreak is generated. The start time of the outbreak is randomly chosen from the last 49 weeks (weeks 576-624). The value of $k$ is sampled randomly in the range of 1 to 10. Similar to the previous case, different outbreaks are generated for each of the 2800 runs.
 \end{itemize}
 
+One randomly chosen realization for scenario 8, 12, 13, and 20 are visualized in Figure \@ref(fig:Realizations).
+
+(ref:Realizations) Plots of one randomly chosen realization for scenario 8, 12, 13, and 20 (see Table \@ref(tab:scenariosTbl)). During outbreaks (circles), outbreak cases are added to the baseline data. Four outbreaks are added during the baseline weeks and 1 outbreak is added during the test weeks. The results are based on the data obtained in the test weeks (grey area).
+
+```{r Realizations, echo=FALSE, out.width="100%", fig.cap="(ref:Realizations)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/Realizations.png")
+```
+
+Evidently, the scenarios vary in their epidemiological characteristics, such as seasonality, trend, and incidence.
+
 \section{Evaluation measures}
 
 To evaluate the performance of the outbreak detection system in the absence and presence of outbreaks, several measures are employed to assess its effectiveness. These measures are specifically designed to capture relevant quantities in the given context.
@@ -90,7 +92,7 @@ In this section, the results of the simulation study are presented. Both the sta
 
 The data used consists of weekly counts of a simulated disease, denoted as $y_t$, where $t=1,\cdots,T$ represents the time period of $T=624$ weeks. In order to evaluate the state-of-the-art and novel outbreak detection algorithms, it is decided to include 5 years of reference data, corresponding to a total of `r 5*52` weeks.
 
-The first step involves applying the state-of-the-art outbreak detection algorithms, with specific control arguments determined for the Farrington and Noufaily methods. These control arguments for the algorithms are specified exactly as in @Noufaily_2013, in order to reproduce the same results. Notably, the thresholds calculated in the state-of-the-art algorithms are based on the $99.5\%$ quantiles. Also, in the Noufaily method, it is decided to exclude the last 26 weeks before the current week to avoid adaption of the model to emerging outbreaks, which would reduce its sensitivity. In the Farrington method, only 3 weeks are excluded before the current week. To access the full configuration of the state-of-the-art methods, refer to Appendix \@ref(controlsStateOfTheArt). 
+The first step involves applying the state-of-the-art outbreak detection algorithms, with specific control arguments determined for the Farrington and Noufaily methods. These control arguments for the algorithms are specified exactly as in @Noufaily_2013, in order to reproduce the same results. Notably, the thresholds calculated in the state-of-the-art algorithms are based on the $99.5\%$ quantiles. Also, in the Noufaily method, it is decided to exclude the last $26$ weeks before the current week to avoid adaption of the model to emerging outbreaks, which would reduce its sensitivity. In the Farrington method, only $3$ weeks are excluded before the current week. To access the full configuration of the state-of-the-art methods, refer to Appendix \@ref(controlsStateOfTheArt). 
 
 Hereafter, the novel outbreak detection algorithm is applied. For this purpose, the model for the fixed effects in each of the modeling frameworks is defined as
 
@@ -98,11 +100,13 @@ Hereafter, the novel outbreak detection algorithm is applied. For this purpose, 
   \log(\lambda_{t}) = \beta_{intercept} + \beta_{trend} t + \sin \Big(\frac{2\pi\cdot \tau_t}{52}\Big) \beta_{\sin} + \cos \Big(\frac{2\pi\cdot \tau_t}{52}\Big)\beta_{\cos}
 \end{equation}
 
-Unlike the state-of-the-art algorithms, the thresholds in the novel algorithm are based on the 95% quantiles of the second stage model.
+Unlike the state-of-the-art algorithms, the thresholds in the novel algorithm are based on the $95\%$ quantile of the distribution of the random effects in the second stage model. This threshold is calculated based on either a Gaussian distribution using the plug-in estimate $\hat{\sigma}$ or a Gamma distribution using the plug-in estimate $\hat{\phi}$ depending on the modeling framework.
 
 \subsubsection{False Positive Rates}
 
-In general, the Farrington method tends to have relatively higher \glspl{FPR} when using the Farrington method compared to the other methods. compared to the other methods. This is not surprising, as the Farrington method is known to be overly sensitive and thus more prone to producing false alarms. On the other hand, the Noufaily method generally outperforms the other methods in terms of minimizing the \glspl{FPR}. The novel algorithms, using the two different modeling frameworks, perform somewhere in between the two state-of-the-art algorithms in terms of \gls{FPR}.
+In general, the method introduced by @Farrington_1996 tends to have relatively higher \glspl{FPR} compared to the other methods. This observation is consistent with the results presented in Table \@ref(tab:FPRTbl). However, this outcome is not surprising since the Farrington method is known to be overly sensitive, making it more prone to producing false alarms. On the other hand, the improved method by @Noufaily_2013 outperforms the other methods by minimizing the \gls{FPR}.
+
+Additionally, it is noted that the novel algorithms, using the two different modeling frameworks, perform somewhere in between the two state-of-the-art algorithms in terms of minimizing the \gls{FPR}.
 
 ```{r FPRTbl, echo=FALSE}
 FPR %>%
@@ -112,12 +116,11 @@ FPR %>%
   kable_paper(latex_option = c("HOLD_position"))
 ```
 
-
 Upon examining Figure \@ref(fig:FPR), it becomes even more apparent that the Noufaily method consistently outperforms the other methods. Furthermore, it is interesting to note that scenario 8 and 15 consistently pose challenges for all methods, while scenarios 13-20 prove to be particularly problematic for the novel method. 
 
 A closer look reveals that scenarios 13-20 have the highest overdispersion parameters, indicating increased variability in the data. On the other hand, scenario 8 incorporates both a steep trend and a seasonality component, which can complicate the detection process for all methods.
 
-(ref:FPR) \glspl{FPR} obtained in each of the 28 scenarios for each of the methods applied. Thresholds are based on the $0.95$ quantile
+(ref:FPR) \glspl{FPR} obtained in each of the 28 scenarios for each of the methods applied.
 
 ```{r FPR, echo=FALSE, out.width="100%", fig.cap="(ref:FPR)", fig.pos = "H", fig.show = "hold"}
 
@@ -125,10 +128,9 @@ knitr::include_graphics("../figures/FPRPlot.png")
 
 ```
 
-
 \subsubsection{Probability an outbreak is detected}
 
-As expected, the \gls{POD} of an outbreak increases with the size of $k$. Intuitively, when the outbreak size $n$ is larger, it becomes more likely to be detected by the outbreak detection algorithms. In the results, it is evident that the Farrington method performs exceptionally well in terms of \gls{POD}, closely followed by the novel method using both modeling frameworks. Moreover, it can be seen that the Noufaily method is outperformed by the other, with respect to \gls{POD}. 
+As expected, the \gls{POD} of an outbreak increases with the size of $k$. Intuitively, when the outbreak size $n$ is larger, it becomes more likely to be detected by the outbreak detection algorithms. In Table \@ref(tab:PODTbl), it is evident that the Farrington method performs very well in terms of \gls{POD}, closely followed by the novel method using both modeling frameworks. Moreover, it can be seen that the Noufaily method is outperformed by the other, with respect to \gls{POD}. 
 
 The high performance of the Farrington method can be attributed to its sensitivity in detecting outbreaks. Similarly, the novel method utilizing both modeling frameworks demonstrates its effectiveness in detecting outbreaks of varying sizes.
 

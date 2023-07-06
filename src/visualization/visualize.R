@@ -42,6 +42,7 @@ dtuPalette <- c("#990000",
                 
 
 
+
 PDFLogNormal <- tibble(z = c(0:4),
        density = c(
   integrate(f = dlnorm, lower = 0, upper = 1, meanlog = 0, sdlog = 0.5)$value,

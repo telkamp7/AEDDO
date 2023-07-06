@@ -121,13 +121,13 @@ It can be shown, that the combined models for the fixed effects minimizes the lo
 
 Additionally, it is worth noting that the parameter estimates and confidence intervals for the fixed effects are consistent across the two modeling frameworks, despite the differences in assumptions about the distribution of random effects. This suggests that the choice of modeling framework does not have a substantial impact on the estimation of the fixed effects in this analysis.
 
-It is noteworthy that all parameter estimates, except one, are statistically significant at $t_0$. The only parameter estimate that is not significant is $\hat{\beta}_{cos}$, as its 95% confidence interval overlaps with zero in both modeling frameworks.
+It is noteworthy that all parameter estimates, except one, are statistically significant at $t_0$. The only parameter estimate that is not significant is $\hat{\beta}_{cos}$, as its $95\%$ confidence interval overlaps with zero in both modeling frameworks.
 
 A slight, yet consistent, increase in the contribution from the age group to the overall intensity of \gls{STEC} cases is observed in Figure \@ref(fig:STECnovelparageGroup) over the analyzed period, with only one instance of a decrease in intensity immediately after the 2020 \gls{COVID-19} lockdown.
 
 It is worth mentioning that in the hierarchical Poisson Gamma model, the maximum likelihood estimate for $\hat\beta(ageGroup_i)$ directly represents the contribution of the age group to the disease intensity. This is possible due to the properties of the expected value described in Equation \eqref{eq:meanNB}. However, this direct interpretation does not hold for the parameter estimates obtained in the hierarchical Poisson Normal model. Nevertheless, it can be observed that both sets of parameter estimates are similar throughout the entire time period, indicating that this discrepancy is not significant.
 
-(ref:STECnovelparageGroup) Considering \gls{STEC} in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\beta(ageGroup_i)$ for the models given in Equation \eqref{eq:AgegroupTrendSeasonality} estimated using the rolling window with a width of $k=36$ months. 
+(ref:STECnovelparageGroup) Considering \gls{STEC} in the time period between January 2011 and December 2022. Estimate (solid line) and $95\%$ profile likelihood confidence interval (dashed line) of $\hat\beta(ageGroup_i)$ for the models given in Equation \eqref{eq:AgegroupTrendSeasonality} estimated using the rolling window with a width of $k=36$ months. 
 
 ```{r STECnovelparageGroup, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelparageGroup)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/STEC_novel_par_ageGroup.png")
@@ -137,23 +137,39 @@ For the most, the maximum likelihood estimate for $\hat\beta_{trend}$ indicates 
 
 Notably, a significant drop in the trend is observed in the mid-2020, immediately after the \gls{COVID-19} lockdown, lasting until the mid-2021. Since then, the trend has been steadily increasing and is currently at an all-time high.
 
-(ref:STECnovelpartrend) Disease trend in \gls{STEC} in the time period between January 2011 and December 2022. Recursive estimates (solid line) and 95% profile likelihood confidence intervals (dashed line) of $\hat\beta_{trend}$ for the combined model. Estimates are obtained using a rolling window with a width of $k=36$ months and discarding observations that are characterized as alarms.
+(ref:STECnovelpartrend) Disease trend in \gls{STEC} in the time period between January 2011 and December 2022. Recursive estimates (solid line) and $95\%$ profile likelihood confidence intervals (dashed line) of $\hat\beta_{trend}$ for the combined model. Estimates are obtained using a rolling window with a width of $k=36$ months and discarding observations that are characterized as alarms.
 
 ```{r STECnovelpartrend, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelpartrend)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/STEC_novel_par_trend.png")
 ```
 
-From Figure \@ref(fig:STECnovelparseasonality), it is evident that there is a pronounced and statistically significant seasonality in the observed period. Additionally, it is noteworthy that the amplitude of the seasonal component varies over time. Specifically, there is an increase in the amplitude of the seasonal pattern after 2018, coinciding with the introduction of a PCR method for diagnostics. This change in diagnostic practices may have influenced the detection and reporting of \gls{STEC} cases, leading to a seemingly intensified seasonal pattern in the data. However, it is most likely due to a change in the observational bias, as the PCR method is more sensitive than previous methods used. The varying amplitude emphasizes the importance of considering temporal changes and external factors when modeling and interpreting disease outbreak data.
+Figure \@ref(fig:STECnovelparseasonality) clearly demonstrates the presence of significant and pronounced seasonality in the observed period for \gls{STEC}. The estimated seasonality parameters exhibit variability over time.
 
-(ref:STECnovelparseasonality) Disease seasonality in \gls{STEC} in the time period between January 2011 and December 2022. Recursive estimates (solid line) and 95% profile likelihood confidence intervals (dashed line) of $\hat\beta_{\cos}$ and $\hat\beta_{\sin}$ for the combined model. Estimates are obtained using a rolling window with a width of $k=36$ months and discarding observations that are characterized as alarms.
+(ref:STECnovelparseasonality) Disease seasonality in \gls{STEC} in the time period between January 2011 and December 2022. Recursive estimates (solid line) and $95\%$ profile likelihood confidence intervals (dashed line) of $\hat\beta_{\cos}$ and $\hat\beta_{\sin}$ for the combined model. Estimates are obtained using a rolling window with a width of $k=36$ months and discarding observations that are characterized as alarms.
 
 ```{r STECnovelparseasonality, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelparseasonality)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/STEC_novel_par_seasonality.png")
 ```
 
+To further understand the variation in the seasonal component, the amplitude ($\omega$) and phase ($\rho$) are calculated using the formulas:
+
+\begin{align}
+\omega = \sqrt{(\beta_{\sin}^2 + \beta_{\cos}^2)} & \quad \rho = -\arctan \bigg(\frac{\beta_{\cos}}{\beta_{\sin}}\bigg)
+\end{align}
+
+Due to the challenges of propagating uncertainty estimates, bootstrap confidence intervals are calculated based on 10,000 replicates for each parameter. The maximum likelihood estimate for the amplitude is visualized along with its bootstrap confidence interval in Figure \@ref(fig:AmplitudePhase).
+
+(ref:AmplitudePhase) Illustration of the amplitude \textbf{(a)} and phase \textbf{(b)} along with a $95\%$ bootstrap confidence interval for each of the modeling frameworks.
+
+```{r AmplitudePhase, echo=FALSE, out.width="100%", fig.cap="(ref:AmplitudePhase)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/AmplitudePhase.png")
+```
+
+It is worth noting that the amplitude of the seasonal component exhibits temporal variation. Particularly, an increase in amplitude is observed after 2018, coinciding with the introduction of a more sensitive PCR diagnostic method. This change in diagnostic practices may have influenced the detection and reporting of \gls{STEC} cases, resulting in an apparent intensification of the seasonal pattern. However, it is more likely attributed to a change in observational bias rather than a true increase in disease intensity. The varying amplitude highlights the importance of considering temporal changes and external factors when modeling and interpreting disease outbreak data.
+
 The estimated variance $\hat{\sigma}$ for the hierarchical Poisson Normal model and the estimated dispersion $\hat{\phi}$ for the hierarchical Poisson Gamma model are visualized in Figure \@ref(fig:STECnovelparseaDispersion). These parameters provide insights into the variability of the random effects and play a crucial role in determining the threshold for detecting outbreaks. The values of $\hat{\sigma}$ and $\hat{\phi}$ help assess the magnitude of deviations from the expected disease intensity and aid in distinguishing significant aberrations from normal fluctuations in the data
 
-(ref:STECnovelparseaDispersion) Variability and dispersion in \gls{STEC} in the time period between January 2011 and December 2022. Recursive estimates (solid line) and 95% profile likelihood confidence intervals (dashed line) of $\hat\phi$ and $\hat\sigma$. Estimates are obtained using a rolling window with a width of $k=36$ months and discarding observations that are characterized as alarms.
+(ref:STECnovelparseaDispersion) Variability and dispersion in \gls{STEC} in the time period between January 2011 and December 2022. Recursive estimates (solid line) and $95\%$ profile likelihood confidence intervals (dashed line) of $\hat\phi$ and $\hat\sigma$. Estimates are obtained using a rolling window with a width of $k=36$ months and discarding observations that are characterized as alarms.
 
 ```{r STECnovelparseaDispersion, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelparseaDispersion)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/STEC_novel_par_dispersion.png")
@@ -168,7 +184,7 @@ Figure \@ref(fig:CompareNovelSTEC) illustrates the estimated one-step ahead rand
 
 The random effects $u_{i{t_1}}$ represent the deviations from the expected outbreak intensity in the subsequent time period for each age group. These random effects provide information on whether there is an unusual or unexpected increase or decrease in the outbreak intensity compared to the expected values.
 
-The upper bounds $U_{t_0}$ are calculated based on the 90% quantile of the distribution of the random effects obtained from the second stage model. They serve as threshold values to identify potential outbreaks. If the one-step ahead random effects exceed the upper bounds, it suggests a significant deviation from normal variation and indicates a potential outbreak.
+The upper bounds $U_{t_0}$ are calculated based on the $90\%$ quantile of the distribution of the random effects obtained from the second stage model. They serve as threshold values to identify potential outbreaks. If the one-step ahead random effects exceed the upper bounds, it suggests a significant deviation from normal variation and indicates a potential outbreak.
 
 By visualizing the one-step ahead random effects and the upper bounds together, epidemiologists can easily identify periods or age groups where the random effects surpass the upper bounds, highlighting potential outbreaks that require further investigation and monitoring.
 
@@ -307,7 +323,7 @@ It is worth noting that the periods where the estimated second stage model param
 
 As the number of cases are very low, it is also unlikely that an outbreak is occurring. Regardless, it is not possible for statistical models to detect these outbreaks.
 
-In the case of the novel outbreak detection algorithm, particular attention is given to periods with overdispersion. This is because the modeling frameworks assume that the distribution of random "noise" can be modeled by a Gaussian distribution, viz. hierarchical Poisson Normal model, or an exponential dispersion family, viz. hierarchical Poisson Gamma model. In the absence of overdispersion, count data can be adequately modeled by a Poisson distribution alone, making an approach based on generalized linear models more suitable.
+In the case of the novel outbreak detection algorithm, particular attention is given to periods with overdispersion. This is because the modeling frameworks assume that the distribution of random "noise" can be modeled by a Gaussian distribution, viz. hierarchical Poisson Normal model, or an exponential dispersion family, viz. hierarchical Poisson Gamma model. In the absence of overdispersion, count data can be adequately modeled by a Poisson distribution alone, making an approach based on \glspl{GLM} more suitable.
 
 Further investigation into modeling periods without overdispersion using hierarchical models are required but out of scope of this thesis.
 
@@ -319,11 +335,11 @@ Considering the specific circumstances and potential changes in observational bi
 
 An important potential extension of automated statistical outbreak detection algorithms is the incorporation of data drift monitoring. This involves detecting changes in the underlying data distribution and adapting the model accordingly to maintain its predictive performance. Specifically, detecting sudden decreases in case counts can be considered a form of data drift. 
 
-Indeed, sudden decreases in case counts can be treated similarly to sudden increases in case counts, and detecting such data drift can be incorporated into hierarchical models using the unobserved one-step ahead random effects $u_{i{t_0}}$. One approach is to define a lower threshold $L_{t_0}$ by selecting an appropriate quantile of the random effects distribution obtained from the second stage model, such as the 5% or 10% quantile.
+Indeed, sudden decreases in case counts can be treated similarly to sudden increases in case counts, and detecting such data drift can be incorporated into hierarchical models using the unobserved one-step ahead random effects $u_{i{t_0}}$. One approach is to define a lower threshold $L_{t_0}$ by selecting an appropriate quantile of the random effects distribution obtained from the second stage model, such as the $5\%$ or $10\%$ quantile.
 
-As a proof of concept, Figure \@ref(fig:ComparenovellowerSHIL) presents the visualization of the estimated one-step ahead random effects for the \textit{Shigellosis} data, accompanied by a lower bound defined as the 10% quantile in the random effects distribution. The extension to the novel method demonstrates potential, with a total of 5 and 6 data drift alarms raised in the hierarchical Poisson Normal model and Poisson Gamma model, respectively. When a data drift alarm occurs, it should be of concern to the epidemiologist, prompting further investigation into the reasons behind the abnormally low numbers. It is crucial to critically assess the input data and the fixed effects model employed recursively to ensure optimal performance of the automated procedure.
+As a proof of concept, Figure \@ref(fig:ComparenovellowerSHIL) presents the visualization of the estimated one-step ahead random effects for the \textit{Shigellosis} data, accompanied by a lower bound defined as the $10\%$ quantile in the random effects distribution. The extension to the novel method demonstrates potential, with a total of 5 and 6 data drift alarms raised in the hierarchical Poisson Normal model and Poisson Gamma model, respectively. When a data drift alarm occurs, it should be of concern to the epidemiologist, prompting further investigation into the reasons behind the abnormally low numbers. It is crucial to critically assess the input data and the fixed effects model employed recursively to ensure optimal performance of the automated procedure.
 
-(ref:ComparenovellowerSHIL) Estimated one-step ahead random effects $\hat u_{i{t_0}}$ (circles) for \gls{SHIL} in Denmark, 2011-2022, are shown for the trend fixed effects model described in \eqref{eq:Trend}. An alarm is raised (solid circle) if $\hat u_{t_1}$ transcend the lower threshold $L_{t_0}$ (dashed line). In the hierarchical Poisson Normal model (left), the random effects are exponentiated to $\exp(\hat u_{it_0})$ to transform them into the same domain as the hierarchical Poisson Gamma model (right).
+(ref:ComparenovellowerSHIL) Estimated one-step ahead random effects $\hat u_{i{t_0}}$ (circles) for \gls{SHIL} in Denmark, 2011-2022, are shown for the trend fixed effects model described in \eqref{eq:Trend}. An alarm is raised (solid circle) if $\hat u_{t_1}$ transcend the lower threshold $L_{t_0}$ (dashed line) based on the $10\%$ quantile in the random effects distribution. In the hierarchical Poisson Normal model (left), the random effects are exponentiated to $\exp(\hat u_{it_0})$ to transform them into the same domain as the hierarchical Poisson Gamma model (right).
 
 ```{r ComparenovellowerSHIL, echo=FALSE, out.width="100%", fig.cap="(ref:ComparenovellowerSHIL)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_novel_lower_SHIL.png")

@@ -1,11 +1,20 @@
 \chapter{Discussion}
 
+
+
 \section{Pros and cons for the different modeling frameworks}
 
+A neat feature of the hierarchical Poisson Gamma model is that the parameter estimates obtained using this modeling framework can be directly interpreted as their actual contribution to the disease intensity. This is possible because of the properties of the resulting distributional model, viz. the negative binomial distribution, of $Y$, where the expected value is exactly equal to $\mathbb{E}[Y]=\lambda$.
 
+On the other hand, the same cannot be said for the hierarchical Poisson Normal model. In this case, the expected value of the distribution of $Y|u$ is unknown, as it is generally not feasible to obtain closed-form solutions for the marginal likelihood. Thus, numerical methods, such as the Laplace approximation, need to be employed to estimate the model parameters and make inferences.
 
+However, it is shown in this master thesis that the parameter estimates and confidence intervals for the fixed effects models are consistent across the two modeling frameworks, despite the differences in assumptions about the distribution of random effects. 
 
+Also, for the purpose of outbreak detection, the fixed effects parameters are considered nuisance parameters. Therefore, the choice between the two modeling frameworks may depend more on the specific characteristics of the data and the computational considerations, rather than on the interpretation of the parameter estimates. 
 
+One notable difference between the two modeling frameworks considered in the novel outbreak detection algorithm is the observed difference in run time. It was shown that the hierarchical Poisson Gamma model offers computational advantages in terms of run time efficiency. The run time for this model was remarkably faster, up to a factor of $3\times$, compared to the hierarchical Poisson Normal model.
+
+This difference in run time is likely attributed to the computational requirements of the Laplace approximation, which is needed in the hierarchical Poisson Normal model. However, it is important to note that for the task at hand, efficient run time may not be the main priority. The outbreak detection procedure is most likely executed on a weekly basis, so the computational advantages of the hierarchical Poisson Gamma model may not be crucial in terms of real-time decision-making.
 
 \section{Harnessing the potential of MiBa}
 
@@ -19,9 +28,7 @@ Expanding on the field of automated disease outbreak detection is crucial to ful
 
 This master thesis serves as a proof of concept and can serve as a catalyst for future research and development in automated disease outbreak detection. The focus should be on customizing methods to effectively utilize the valuable \gls{MiBa} data, as this has the potential to greatly improve the efficiency of detecting and responding to infectious disease outbreaks. By fully leveraging the capabilities of \gls{MiBa}-based surveillance and continuously improving automated detection methods, the overall disease surveillance efforts can be strengthened, leading to better protection of public health.
 
-
 \section{Potential extensions of the novel algorithm}
-
 
 An extension of the novel outbreak detection method proposed in this master thesis involves incorporating correlation, either in time or between groups. The \gls{ACF} plot in Figure \@ref(fig:ACF) provides insights into the temporal dependencies and correlations withing the data.
 

@@ -408,7 +408,13 @@ SHIL_novel_par_plot <- SHIL_novel_par %>%
   facet_grid(rows = vars(Parameter), cols = vars(Model), scales = "free_y", labeller = custom_labeller) +
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(theta))) +
-  scale_x_date(name = "Month")
+  scale_x_date(name = "Month") +
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26),
+        legend.title = element_text(size = 26),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
 ggsave(filename = "SHIL_novel_par_plot.png",
        plot = SHIL_novel_par_plot,
        path = "../../figures/",
