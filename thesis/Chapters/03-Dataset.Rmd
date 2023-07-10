@@ -1,6 +1,6 @@
 \chapter{Surveillance data in Denmark}\label{Dataset}
 
-This chapter delves into the data collection methods and quality assurance procedures within the Danish surveillance system. Moreover, it introduces the case studies selected for this master thesis, which include: \gls{LIST}, \gls{SHIL}, \gls{STEC}, and \gls{SALM}. The epidemiological background of the diseases, along with notable outbreaks in the period from 2008 to 2022, is presented
+This chapter delves into the data collection methods and quality assurance procedures within the Danish surveillance system. Moreover, it introduces the case studies selected for this master thesis, which include: \glsfirst{LIST}, \glsfirst{SHIL}, \glsfirst{STEC}, and \glsfirst{SALM}. The epidemiological background of the diseases, along with notable outbreaks in the period from 2008 to 2022, is presented
 
 \section{Data collection and data quality}
 

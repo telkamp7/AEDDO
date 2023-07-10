@@ -662,8 +662,14 @@ Amplitude <- bstrp.results %>%
   geom_line(mapping = aes(y = lwr_CI), lty = "dashed") +
   geom_line(mapping = aes(y = upr_CI), lty = "dashed") +
   scale_color_manual(values = dtuPalette) +
-  scale_y_continuous(name = expression(omega)) +
-  scale_x_date(name = "Month")
+  scale_y_continuous(name = expression(omega), limits = c(0.1,0.9),
+                     breaks = seq(0.2,0.8,by=0.2)) +
+  scale_x_date(name = "Month") +
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 28),
+        legend.title = element_text(size = 28),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
 ggsave(filename = "Amplitude.png",
        plot = Amplitude,
        path = "../../figures/",
@@ -684,7 +690,12 @@ Phase <- bstrp.results %>%
   geom_line(mapping = aes(y = upr_CI), lty = "dashed") +
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(rho)) +
-  scale_x_date(name = "Month")
+  scale_x_date(name = "Month") +
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 28),
+        legend.title = element_text(size = 28),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
 ggsave(filename = "Phase.png",
        plot = Phase,
        path = "../../figures/",
@@ -694,22 +705,16 @@ ggsave(filename = "Phase.png",
        units = "in",
        dpi = "print")  
 
+legend <- get_legend(Amplitude)
 
-
-
-
-AmplitudePhase <- plot_grid(Amplitude + theme(axis.text.x = element_blank(),
-                            axis.title.x = element_blank(),
-                            axis.ticks.x = element_blank()),
+AmplitudePhase <- plot_grid(legend,
+                            Amplitude + guides(colour = "none") + 
+                              theme(axis.text.x = element_blank(),
+                                    axis.title.x = element_blank(),
+                                    axis.ticks.x = element_blank()),
           Phase + guides(colour = "none"),
-          ncol = 1, nrow = 2, align = "vh",
-          labels = c("(a)", "(b)"), label_size = 18)
-ggsave(filename = "AmplitudePhase.png",
-       plot = AmplitudePhase,
-       path = "../../figures/",
-       device = png,
-       width = 16,
-       height = 12,
-       units = "in",
-       dpi = "print")  
-  
+          ncol = 1, align = "v", rel_heights = c(0.1,0.45,0.45),
+          labels = c("","(a)", "(b)"), label_size = 26)
+
+save_plot(filename = "../../figures/AmplitudePhase.png",
+          plot = AmplitudePhase, base_height = 12, base_width = 16)

@@ -649,7 +649,7 @@ plot6 <- SALM_novel %>%
 ACFplot <- plot_grid(plot1, plot2, plot3, plot4, plot5, plot6,
                      ncol = 2,
                      labels = c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)"),
-                     label_size = 18,
+                     label_size = 24,
                      align = "hv") +
   theme()
 save_plot(filename = "../../figures/ACFplot.png",

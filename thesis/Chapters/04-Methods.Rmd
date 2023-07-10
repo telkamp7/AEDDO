@@ -39,7 +39,7 @@ In the second step, the algorithm predicts the expected number of counts $\lambd
 The original method assumes that a transformation of the prediction error, denoted as $g(y_{t_0}-\hat{\lambda}_{t_0})$, follows a normal distribution. For example, when using the identity transformation $g(x)=x$, the assumption becomes
 
 \begin{equation}
-y_{t_0} - \hat{\lambda}_{t_0} \sim \N(0, \V\big(y_{t_0}-\hat{\lambda}_{t_0})\big)
+y_{t_0} - \hat{\lambda}_{t_0} \sim \N \big(0, \V(y_{t_0}-\hat{\lambda}_{t_0})\big)
 \end{equation}
 
 The upper bound of the prediction interval is then calculated based on this distribution. The variance of the prediction error is given by
@@ -51,7 +51,7 @@ The upper bound of the prediction interval is then calculated based on this dist
 Here, $\V(\hat{y}_{t_0})$ represents the variance of an observation, and $V(\hat{\lambda}_{t_0})$ represents the variance of the estimate. The threshold, defined as the upper bound of a one-sided $(1-\alpha)\cdot100\%$ prediction interval, is calculated as
 
 \begin{equation}
-U_{t_0} = \hat{\lambda}_{0} + z_{1-\alpha}\hat{\V}\Big(\sqrt{y_{t_0}-\hat{\lambda}_{t_0}}\Big)
+U_{t_0} = \hat{\lambda}_{0} + z_{1-\alpha}\hat{\V}\bigg(\sqrt{y_{t_0}-\hat{\lambda}_{t_0}}\bigg)
 \end{equation}
 
 However, this method's weakness lies in the assumption of normality itself. Therefore, an alternative assumption was presented in @Noufaily_2013. This approach assumes that $y_{t_0}$ follows a negative binomial distribution, denoted as $\text{NB}(\lambda_{t_0}, \nu)$, where $\lambda_{t_0}$ represents the mean and $\nu = \frac{\lambda_{t_0}}{\phi-1}$ represents the over-dispersion parameter. In this parameterization, the expected value of $y_t$ remains $\lambda_t$, and the variance of $y_t$ is $\phi\lambda_t$, with $\phi > 1$. If $\phi \leq 1$, a Poisson distribution is assumed for the observed count. The threshold is defined as a quantile of the negative binomial distribution using the plug-in estimates $\hat{\lambda}_{t_0}$ and $\hat{\phi}$.
@@ -76,7 +76,7 @@ The first step involves fitting either a hierarchical Poisson Normal or Poisson 
 
 Here $\boldsymbol x_{it}$ and $\boldsymbol\beta$ are $p$-dimensional vectors of covariates and fixed effects parameters respectively, where $p$ denotes the number of covariates or fixed effects parameters, $m$ denotes the number of groups, and $T$ denotes the length of the period.
 
-In the second step of the algorithm, as a new observation becomes available, the algorithm infers the one-step ahead random effect $u_{i{t_1}}$ for each group using the obtained model estimates $\hat{\theta}_{t_0}$. Here, $t_0$ represents the current time point, and $t_1$ represents the one-step ahead time point. The threshold $U_{t_0}$ for detecting outbreaks is defined as a quantile of the distribution of the random effects in the second stage model. This threshold can be calculated based on either a Gaussian distribution using the plug-in estimate $\hat{\sigma}$ or a Gamma distribution using the plug-in estimate $\hat{\phi}$. The choice of distribution depends on the specific modeling framework and assumptions used in the analysis.
+In the second step of the algorithm, as a new observation becomes available, the algorithm infers the one-step ahead random effect $u_{i{t_1}}$ for each group using the obtained model estimates $\hat{\theta}_{t_0}$. Here, $t_0$ represents the current time point, and $t_1$ represents the one-step ahead time point. The threshold $U_{t_0}$ for detecting outbreaks is defined as a quantile of the distribution of the random effects in the second stage model. This threshold can be calculated based on either a Gaussian distribution using the plug-in estimate $\hat{\sigma}_{t_0}$ or a Gamma distribution using the plug-in estimate $\hat{\phi}_{t_0}$. The choice of distribution depends on the specific modeling framework and assumptions used in the analysis.
 
 In the final step, the inferred random effect $\hat{u}_{i{t}_1}$ is compared to the upper bound $U_{t_0}$, and an alarm is raised if $\hat{u}_{i{t}_1}>U_{t_0}$. If an outbreak is detected, the related observation $y_{it_1}$ is omitted from the parameter estimation in the future. Thus, resulting in a smaller sample size for the rolling window until that specific observation is discarded.
 
@@ -184,7 +184,7 @@ The joint likelihood for the count observations $\boldsymbol y$ and the random e
 
 \begin{multline}\label{eq:jnllPoisN}
   L(\boldsymbol{\beta}, \sigma;u_{it},y_{it})=\\
-  \prod_{t=1}^{T}\prod_{i=1}^{m} \frac{(\lambda_{it}\exp(u_{it}))^{y_{it}}}{y_{it}!}\exp\big(-\lambda_{it}\exp(u_{it})\big) \prod_{t=1}^{T}\prod_{i=1}^{m} \frac{1}{\sigma\sqrt{2\pi}}\exp\Bigg(-\frac{u_{it}^2}{2\sigma^2}\Bigg)
+  \prod_{t=1}^{T}\prod_{i=1}^{m} \frac{\big(\lambda_{it}\exp(u_{it})\big)^{y_{it}}}{y_{it}!}\exp\big(-\lambda_{it}\exp(u_{it})\big) \prod_{t=1}^{T}\prod_{i=1}^{m} \frac{1}{\sigma\sqrt{2\pi}}\exp\Bigg(-\frac{u_{it}^2}{2\sigma^2}\Bigg)
 \end{multline}
 :::
 
@@ -200,7 +200,7 @@ Here the parameter $\phi>0$ is called the \textit{precision parameter}, which in
 
 In general, when the conditional distribution of $Y|u$ is a Poisson distribution, and the conjugate distribution is assumed to be a Gamma distribution with mean value 1, it follows that the distribution of $Y$ is a negative binomial distribution.
 
-To further motivate this choice of distribution for the second stage model, an illustrative example is presented.
+To further motivate this choice of distribution for the second stage model, an illustrative example focusing on \glsfirst{LIST} is presented.
 
 ::: {.example #poisgExample name="Variation between observed cases of LIST"}
 
@@ -227,6 +227,7 @@ meanYExample <- round(momentsLIST$`mean(y)`,2)
 varYExample <- round(momentsLIST$`var(y)`,2)
 
 ```
+
 Usually, it is reasonable to assume a Poisson distribution for count data, where the expected value and variance are both equal to $\lambda$. However, it should be noted that this assumption may not always hold true when modeling count data.
 
 ```{r PoisGexampleTbl, echo=FALSE}
@@ -236,16 +237,16 @@ LIST %>%
   group_by(y) %>% 
   reframe(observed = n()) %>%
   full_join(y = poisNBExp, by = join_by(y)) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", caption = "The distribution of cases with $1,2,\\cdots,10+$ cases of LIST.", col.names = c("Number of LIST\ncases","Number of times\nobserved", "Poisson\nexpected", "Negative binomial\nexpected"), digits = 2, linesep = "") %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", caption = "The distribution of cases with $1,2,\\cdots,10+$ cases of \\gls{LIST}.", col.names = c("Number of LIST\ncases","Number of times\nobserved", "Poisson\nexpected", "Negative binomial\nexpected"), digits = 2, linesep = "") %>%
   kable_paper(latex_options = c("HOLD_position"), full_width = TRUE)
 
 ```
 
 Take, for example, the monthly cases of LIST analyzed in this thesis. Table \@ref(tab:PoisGexampleTbl) presents the distribution of these cases from 2008 to 2022, along with the expected numbers from both the Poisson and Negative binomial distributions. The distribution of cases over time is visualized in Figure \@ref(fig:PoisGexampleFig).
 
-As observed, the actual distribution has notably heavier tails compared to the Poisson distribution. Additionally, the mean of the Poisson distribution for the monthly LIST cases is $\hat{\lambda}=\bar{y}=`r meanYExample`$, while the empirical variance is $s^2=`r varYExample`$, which is considerably larger than the mean. These findings indicate overdispersion, suggesting that a Negative binomial model would be more appropriate for modeling the data.
+As observed, the actual distribution has notably heavier tails compared to the Poisson distribution. Additionally, the mean of the Poisson distribution for the monthly \gls{LIST} cases is $\hat{\lambda}=\bar{y}=`r meanYExample`$, while the empirical variance is $s^2=`r varYExample`$, which is considerably larger than the mean. These findings indicate overdispersion, suggesting that a Negative binomial model would be more appropriate for modeling the data.
 
-(ref:PoisGexampleFig) Distribution of monthly cases of LIST together with the expected numbers from both the Poisson and Negative binomial distributions
+(ref:PoisGexampleFig) Distribution of monthly cases of \gls{LIST} together with the expected numbers from both the Poisson and Negative binomial distributions
 
 ```{r PoisGexampleFig, echo=FALSE, out.width="80%", fig.cap="(ref:PoisGexampleFig)", fig.pos = "H", fig.show = "hold", fig.align='center'}
 
@@ -314,10 +315,10 @@ Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability function for t
   \end{aligned}
 \end{equation}
 
-In \eqref{eq:marMix} it is noted that the integrand is the kernel in the probability density function for a Gamma distribution, $\G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)$. As the integral of the density shall equal one, we find by adjusting the norming constant that
+In \eqref{eq:marMix} it is noted that the integrand is the kernel in the probability density function for a Gamma distribution, $\G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)$. As the integral of the density shall equal one, it is found by adjusting the norming constant that
 
 \begin{equation}
-  \int_{u=0}^\infty  u^{ y+ 1/\phi-1} \exp \bigg(- u/\Big(\phi/( \lambda \phi+1)\Big)\bigg) \,du = \frac{\phi^{ y+ 1/\phi}\Gamma( y+\boldsymbol 1/\phi)}{( \lambda \phi + 1)^{y+1/\phi}}
+  \int_{u=0}^\infty  u^{ y+ 1/\phi-1} \exp \Big(- u/\big(\phi/( \lambda \phi+1)\big)\Big) \,du = \frac{\phi^{ y+ 1/\phi}\Gamma( y+\boldsymbol 1/\phi)}{( \lambda \phi + 1)^{y+1/\phi}}
 \end{equation}
 
 Therefore, it is shown that the marginal distribution of $Y$ is a negative binomial distribution, $Y\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)$. The probability function for $Y$ is 
@@ -331,7 +332,7 @@ Therefore, it is shown that the marginal distribution of $Y$ is a negative binom
   \end{aligned}
 \end{equation}
 
-where we have used the convention
+where the following convention is used
 
 \begin{equation}
   \begin{pmatrix} z\\y \end{pmatrix} = \frac{\Gamma(z+1)}{\Gamma(z+1-y)y!}
@@ -350,7 +351,7 @@ The joint likelihood function for estimating $(\boldsymbol \beta,\phi)$ is
 \end{equation}
 :::
 
-\subsubsection{Inference on individual groups}
+\subsection{Inference on individual groups}
 
 Consider the compound Poisson Gamma model in \eqref{eq:PoisGam}, and assume that a value $Y=y$ has been observed.
 
@@ -360,12 +361,12 @@ The conditional distribution of $u$ for given $Y=y$ is found using Bayes Theorem
   \begin{aligned}
     g_{u}(u|Y=y)&=\frac{f_{y,u}(y,u)}{g_Y(y;\lambda, \phi)} \\
     &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\phi)} \\
-    &=\frac{1}{g_{Y}(y;\lambda,\phi)}\bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)\bigg) \\
+    &=\frac{1}{g_{Y}(y;\lambda,\phi)}\Bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)\Bigg) \\
     &\propto u^{y+1/\phi-1} \exp \big(- u(\lambda\phi+1)/\phi\big)
   \end{aligned}
 \end{equation}
 
-We identify the \textit{kernel} of the probability density function
+Here, the \textit{kernel} of the probability density function is identified
 
 \begin{equation}
   u^{y+1/\phi-1} \exp (- u(\lambda\phi+1)/\phi)
@@ -390,7 +391,7 @@ And the variance of the conditional distribution is:
 
 These formulas provide the mean and variance of the conditional distribution of $u$ given the observed value $Y=y$. 
 
-\subsubsection{Why is the Gamma distribution chosen to represent the variation between months?}
+\subsection{Why is the Gamma distribution chosen to represent the variation between months?}
 
 The choice of the Gamma distribution for modeling the random effects has been motivated by several reasons. Firstly, the support of the Gamma distribution, which ranges from 0 to infinity, aligns with the mean-value space, denoted as $\mathcal{M}$, for the Poisson distribution. This ensures that the random effects are constrained within a meaningful range for the underlying Poisson process.
 
@@ -466,9 +467,7 @@ The minimization of the Laplace approximation for the marginal likelihood is the
   \V\big(\phi(\hat{\boldsymbol \theta})\big)=-\phi_{\boldsymbol \theta}'(\hat{\boldsymbol \theta})\Big(\Delta^2 \ell_{M,LA}(\boldsymbol{\hat{\theta}, y})\Big)^{-1} \phi_{\boldsymbol \theta}'(\hat{\boldsymbol \theta})^T
 \end{equation}
 
-Additionally, \textbf{TMB} utilizes Automatic Differentiation (AD) techniques [@Griewank_2008] to evaluate first, second, and potentially third-order derivatives. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models. Therefore, even though the random effects are analytically integrated out in the hierarchical Poisson Gamma model, and the Laplace approximation is not needed, implementing the joint log-likelihood function in \textbf{TMB} can still result in more efficient computations.
-
-For a comprehensive introduction to the concept of AD, it is recommended to read Section 2.1 and Section 2.2 of @Fournier_2012. 
+Additionally, \textbf{TMB} utilizes Automatic Differentiation (AD) techniques [@Griewank_2008] to evaluate first, second, and potentially third-order derivatives. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models. Therefore, even though the random effects are analytically integrated out in the hierarchical Poisson Gamma model, and the Laplace approximation is not needed, implementing the joint log-likelihood function in \textbf{TMB} can still result in more efficient computations. For a comprehensive introduction to the concept of AD, it is recommended to read Section 2.1 and Section 2.2 of @Fournier_2012. 
 
 It is important to note that the implementation of the hierarchical Poisson Normal model requires the use of the Laplace approximation to approximate the likelihood function. To investigate the impact on run time, the optimization of both the hierarchical Poisson Normal and Poisson Gamma models is compared using a simulated data set with $n=1000$. The simulated series $Y=\{y_1,\cdots,y_n\}$ follows a Poisson distribution with a rate of $\lambda=5$, i.e., $Y\sim\Pois(5)$. After generating the series, the following model for the fixed effects is optimized in both modeling frameworks:
 
@@ -476,7 +475,7 @@ It is important to note that the implementation of the hierarchical Poisson Norm
   \log(\lambda) = \beta_{\text{Intercept}}
 \end{equation}
 
-Finally, the optimization routines for each of the modeling frameworks is run 100 times and the run time across these iterations are collected using the R package \textbf{microbenchmark}\footnote{This R package can be accessed from the \gls{CRAN} at \href{ https://CRAN.R-project.org/package=microbenchmark}{ \nolinkurl{https://CRAN.R-project.org/package=microbenchmark}}}. The resulting run times are visualized as a violin plot in Figure \@ref(fig:ComparePerformance).
+Finally, the optimization routines for each of the modeling frameworks is run 100 times and the run time across these iterations are collected using the R package \textbf{microbenchmark}, which can be accessed from the \gls{CRAN} at \href{https://CRAN.R-project.org/package=microbenchmark}{ \nolinkurl{https://CRAN.R-project.org/package=microbenchmark}}. The resulting run times are visualized as a violin plot in Figure \@ref(fig:ComparePerformance).
 
 (ref:ComparePerformance) A violin plot [@Jerry_1998] of the 100 run times for the optimization routines in each modeling framework.
 
@@ -484,7 +483,7 @@ Finally, the optimization routines for each of the modeling frameworks is run 10
 knitr::include_graphics("../figures/Compare_Performance.png")
 ```
 
-Figure \@ref(fig:ComparePerformance) shows a violin plot comparing the running times for the optimization routines in each modeling framework. The plot demonstrates that the run time in the hierarchical Poisson Gamma model is remarkably faster, up to a factor of $3\times$, compared to the hierarchical Poisson Normal model. This indicates that the Poisson Gamma model may offer computational advantages in terms of run time efficiency.
+Figure \@ref(fig:ComparePerformance) shows a violin plot comparing the running times for the optimization routines in each modeling framework. The plot demonstrates that the run time in the hierarchical Poisson Gamma model is remarkably faster, up to a factor of $4\times$, compared to the hierarchical Poisson Normal model. This indicates that the Poisson Gamma model may offer computational advantages in terms of run time efficiency.
 
 \section{Scoring rule}
 
@@ -494,9 +493,7 @@ In this section, the scoring rule used to evaluate the overall score of the mode
 \bar{S}(G,y)=\frac{1}{N} \sum_{t=1}^{N}S(G_t,y_t)
 \end{equation}
 
-One commonly used scoring rule is the \textit{logarithmic score} derived from likelihood theory, which is defined as $S(G,y)=-\log\big(G(y)\big)$ [@Good_1992; @Tilmann_2007]. In this thesis, this scoring rule is based on the probability mass function and is equivalent tot he log-likelihood of the forecast model. It has desirable properties as it captures all possible information about the observed data in relation to the model. However, it has a potential drawback in that it heavily penalizes unlikely observations. Consequently, even small changes in the tails of a density forecast can lead to significant changes in the \textit{logarithmic score}, even when the overall shape of the mass remains unchanged.
-
-The calculation of the logarithmic score is shown in Example \@ref(exm:logs), which is adapted from @Blicher_2021.
+One commonly used scoring rule is the \textit{logarithmic score} derived from likelihood theory, which is defined as $S(G,y)=-\log\big(G(y)\big)$ [@Good_1992; @Tilmann_2007]. In this thesis, this scoring rule is based on the probability mass function and is equivalent tot he log-likelihood of the forecast model. The calculation of the logarithmic score is shown in Example \@ref(exm:logs), which is adapted from @Blicher_2021.
 
 ::: {.example #logs name="Calculation of the logarithmic score"}
 
@@ -575,5 +572,6 @@ t(tibble(`$i$` = paste(1:10), `$S(f,y_i)$` = round(LogSf,2), `$S(g,y_i)$` = roun
 ```
 :::
 
+The \textit{logarithmic score} has desirable properties as it captures all possible information about the observed data in relation to the model. However, it has a potential drawback in that it heavily penalizes unlikely observations. Consequently, even small changes in the tails of a density forecast can lead to significant changes in the \textit{logarithmic score}, even when the overall shape of the mass remains unchanged.
 
 \cleardoublepage

@@ -12,25 +12,25 @@ For a detailed presentation of the data used to generate these results, please r
 
 The initial analysis focuses on \glsfirst{STEC}. The data set comprises monthly counts of Danish \gls{STEC} cases, denoted as $y_{it}$, where $i=1,\dots,6$ represents the six age groups and $t=1,\dots,T$ represents the time period of $T=180$ months starting in 2008. The first step involves applying the state-of-the-art outbreak detection algorithms to identify potential outbreaks in the time series.
 
-Following that, the novel algorithm is utilized, and different models for the fixed effects are proposed. Both the hierarchical Poisson Normal model and the hierarchical Poisson Gamma model is considered for the modeling framework. To determine the most appropriate models for further analysis, the performance of the different fixed effects models is compared using the average logarithmic score, denoted as $\bar{S}(G,y)$, within each of the modeling frameworks. The average logarithmic score provides a measure of how well the models fit the observed data and allows for objective comparison between different models.
+After the first step the novel algorithm is utilized, and different models for the fixed effects are proposed. Both the hierarchical Poisson Normal and Poisson Gamma models are considered as modeling frameworks. To determine the most appropriate models for further analysis, the performance of the different fixed effects models is compared using the average logarithmic score, denoted as $\bar{S}(G,y)$, within each of the modeling frameworks. The average logarithmic score provides a measure of how well the models fit the observed data and allows for objective comparison between different models.
 
 \subsection{Applying the state-of-the-art outbreak detection algorithm to STEC}
 
-To investigate outbreak detection, the method by @Farrington_1996 and the subsequently improved method by @Noufaily_2013 are initially explored. These methods can be employed using the `farringtonFlexible` function, which is available in the R package called \textbf{surveillance}. The methods are controlled using specific `control` arguments. Here, a period of $b=3$ years and a window half-width of $w=3$ is chosen for reference data. Consequently, the number of baseline months used to calculate the thresholds are based on a total of $n=`r 3*(2*2+1)`$ months. Also, the threshold calculation is based on a significance level of $\alpha=0.05$. To access the other specific `control` arguments used in this thesis, refer to Appendix \@ref(controlsStateOfTheArt).
+To investigate outbreak detection, the method by @Farrington_1996 and the subsequently improved method by @Noufaily_2013 are initially explored. These methods can be employed using the `farringtonFlexible` function, which is available from the R package called \textbf{surveillance}. The methods are controlled using specific `control` arguments. Here, a period of $b=3$ years and a window half-width of $w=3$ is chosen for reference data. Consequently, the number of baseline months used to calculate the thresholds are based on a total of $n=`r 3*(2*2+1)`$ months. Also, the threshold calculation is based on a significance level of $\alpha=0.05$. To access the other specific `control` arguments used in this thesis, refer to Appendix \@ref(controlsStateOfTheArt).
 
 For the analysis of \gls{STEC}, the reference values are based on data collected from January 2008 to February 2011. Subsequently, surveillance is performed using the data spanning from March 2011 to December 2022. The resulting time series and alarms are visualized in Figure \@ref(fig:CompareStateOfTheArtSTEC).
 
-(ref:CompareStateOfTheArtSTEC) Monthly \gls{STEC} incidence per 100.000 in Denmark, 2008-2022. Monitored by (left) Farrington and (right) Noufaily method. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observations time points outside reference data. Alarm triggered (dark color) if observations exceeds threshold. 
+(ref:CompareStateOfTheArtSTEC) Monthly \gls{STEC} incidence per 100.000 in six age groups in Denmark, 2008-2022. Monitored by Farrington (left) and Noufaily (right) methods. Reference data for the estimation of model parameters from January 2008 to March 2011 (grey area). Threshold (dashed line) is computed for observation time points outside reference data. Alarm triggered (dark color) if observations exceeds threshold. 
 
 ```{r CompareStateOfTheArtSTEC, echo=FALSE, out.width="100%", fig.cap="(ref:CompareStateOfTheArtSTEC)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/Compare_stateOfTheArt_STEC.png")
 ```
 
-Multiple alarms are displayed in Figure \@ref(fig:CompareStateOfTheArtSTEC) for both the Farrington and Noufaily method. The Farrington method generates a total of `r STEC_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces a notably lower count of `r STEC_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms. It is not surprising that the Farrington method generates more alarms, as it is known for its high sensitivity. This means that the method is able to detect very small aberrations in the time series, but it also leads to a significant number of "false positive" alarms.
+Multiple alarms are displayed in Figure \@ref(fig:CompareStateOfTheArtSTEC) for both the Farrington and Noufaily methods. The Farrington method generates a total of `r STEC_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces a notably lower count of `r STEC_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms. It is not surprising that the Farrington method generates more alarms, as it is known for its high sensitivity. This means that the method is able to detect very small aberrations in the time series, but it also leads to a notable number of "false positive" alarms.
 
 The substantial number of alarms generated by both methods raises valid concerns regarding their practical utility. The sheer volume of alarms can overwhelm epidemiologists and pose challenges in effectively prioritizing and investigating potential outbreaks. It is essential to consider the overall disease picture and avoid overly burdening epidemiologists with verification tasks. Striking a balance between sensitivity and specificity is crucial to ensure that the generated alarms are meaningful and actionable, leading to efficient outbreak detection and response.
 
-As a general rule, alarms that are triggered simultaneously in multiple age groups or during concurrent time points are of particular importance. Such patterns indicate potential outbreaks that warrant further attention and investigation by epidemiologist. By analyzing and interpreting the alarms in context, epidemiologists can gain a more thorough understanding of the outbreak situation and make informed decisions about resource allocation and intervention strategies.
+As a general rule, alarms that are triggered simultaneously in multiple age groups or during concurrent time points are of particular importance. Such patterns indicate potential outbreaks that warrant further attention and investigation by epidemiologists. By analyzing and interpreting the alarms in context, epidemiologists can gain a more thorough understanding of the outbreak situation and make informed decisions about resource allocation and intervention strategies.
 
 When comparing the results from the Farrington and Noufaily methods in Figure \@ref(fig:CompareStateOfTheArtSTEC), it is interesting to note that the thresholds are inflated towards the end of the series. Specifically, the Noufaily method exhibits a higher threshold compared to the Farrington method. This behavior is expected since the Noufaily method employs a less drastic approach in weighting prior outbreaks, allowing more information to be transmitted from previous outbreaks. As a result, the Noufaily method allows for a greater variation in the series and may generate fewer alarms. This characteristic highlights the different sensitivities of the two methods.
 
@@ -50,7 +50,7 @@ In the initial model, the intensity $\lambda_{it}$ is assumed to be solely depen
   \log(\lambda_{it}) = \beta(ageGroup_{i}) + \log(n_{it})
 \end{equation}
 
-Here, $\beta(ageGroup_{i})$ represents the fixed effect specific to the age group $i$, capturing the age group's influence on the outbreak intensity. The term $\log(n_{it})$ acts as an offset, accounting for the population size at time $t$ for age group $i$. This model will be refereed to as the \textit{constant} model.
+Here, $\beta(ageGroup_{i})$ represents the fixed effect specific to the age group $i$, capturing the age group's influence on the outbreak intensity. The term $\log(n_{it})$ acts as an offset, accounting for the population size at time $t$ for age group $i$. This model will be referred to as the \textit{constant} model.
 
 In the first extension of the constant model, the trend over time across all age groups is incorporated. The extended model is termed the \textit{trend} model and is formulated as:
 
@@ -63,7 +63,7 @@ In this model, $\beta_{trend}$ quantifies the rate of change in the outbreak int
 In addition to the models described earlier, another model is proposed, which incorporates a seasonality component represented by Fourier terms into the analysis. This model builds upon the constant model and assumes an annual seasonality pattern. This model is termed the \textit{seasonality} model. The intensity $\lambda_{it}$ is modeled as follows:
 
 \begin{equation}\label{eq:Seasonality}
-\log(\lambda_{it})=\beta(ageGroup_{i})+ \sin \Big(\frac{2\pi\cdot \tau_t}{12}\Big) \beta_{\sin} + \cos \Big(2\frac{\pi\cdot \tau_t}{12}\Big) \beta_{\cos} + \log(n_{it})
+\log(\lambda_{it})=\beta(ageGroup_{i})+ \sin \Big(\frac{2\pi\cdot \tau_t}{12}\Big) \beta_{\sin} + \cos \Big(\frac{2\pi\cdot \tau_t}{12}\Big) \beta_{\cos} + \log(n_{it})
 \end{equation}
 
 In this model, $\tau_t$ represents the time period $t$ within a year, ranging from 1 to 12 (corresponding to the months of January to December). The parameters $\beta_{\sin}$ and $\beta_{\cos}$ capture the effect of the seasonal pattern on the outbreak intensity. By including sine and cosine functions of $\tau_t$, the model accounts for the periodic fluctuations in the outbreak intensity observed throughout the year. This allows for the detection and analysis of seasonality patterns in the outbreak data, providing insights into the seasonal variations in disease occurrence.
@@ -76,10 +76,7 @@ In addition to the models described earlier, a final model is proposed that comb
 
 \subsubsection{Performance evaluation and parameter estimates of hierachical models}
 
-The proposed models above are subsequently implemented and estimated in two different modeling frameworks: the hierarchical Poisson Normal model and the hierarchical Poisson Gamma model. The performance of these models is evaluated using the average logarithmic score, $\bar{S}(G,y)$. 
-
-In Table \@ref(tab:STECNovelTbl), an excerpt of these results, namely for the models that minimizes the average logarithmic score, $\bar S(G,y)$, for both modeling framework, are summarized. For the full table of results, refer to Table \@ref(tab:STECNovelTblAppendix).
-
+The proposed fixed effects models are subsequently implemented and estimated in the two different modeling frameworks: the hierarchical Poisson Normal model and the Poisson Gamma model. The performance of these models is evaluated using the average logarithmic score, $\bar{S}(G,y)$. An excerpt of these results, namely for the models that minimizes $\bar S(G,y)$ in both modeling frameworks, are summarized in Table \@ref(tab:STECNovelTbl). For the full table of results, refer to Table \@ref(tab:STECNovelTblAppendix).
 
 ```{r STECNovelTbl, echo=FALSE}
 STEC_novel_tbl %>%
@@ -106,7 +103,7 @@ STEC_novel_tbl %>%
            Parameter == "cos(pi/6 * periodInYear)" ~ "$\\hat{\\beta}_{\\cos}$"
          )) %>%
   select(Model, ` ` = avgLogS, Parameter, Estimate = theta, `95\\% CI`) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "An excerpt of the \\gls{STEC} modeling results, namely for the models that minimizes the average logarithmic score, $\\bar S(G,y)$. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, digits = 2, caption = "An excerpt of the \\gls{STEC} modeling results, namely for the models that minimizes the average logarithmic score, $\\bar S(G,y)$. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   column_spec(1, bold = T) %>%
   collapse_rows(columns = 1:2, 
@@ -117,7 +114,7 @@ STEC_novel_tbl %>%
                 custom_latex_hline = 1:2)
 ```
 
-It can be shown, that the combined models for the fixed effects minimizes the logarithmic score for both modeling frameworks, indicating a better fit to the \gls{STEC} data. As a result, these models have been selected for further investigation regarding their ability to detect outbreaks.
+It is shown, that the combined model for the fixed effects minimizes the logarithmic score for both modeling frameworks, indicating a better fit to the \gls{STEC} data. As a result, these models have been selected for further investigation regarding their ability to detect outbreaks.
 
 Additionally, it is worth noting that the parameter estimates and confidence intervals for the fixed effects are consistent across the two modeling frameworks, despite the differences in assumptions about the distribution of random effects. This suggests that the choice of modeling framework does not have a substantial impact on the estimation of the fixed effects in this analysis.
 
@@ -125,17 +122,17 @@ It is noteworthy that all parameter estimates, except one, are statistically sig
 
 A slight, yet consistent, increase in the contribution from the age group to the overall intensity of \gls{STEC} cases is observed in Figure \@ref(fig:STECnovelparageGroup) over the analyzed period, with only one instance of a decrease in intensity immediately after the 2020 \gls{COVID-19} lockdown.
 
-It is worth mentioning that in the hierarchical Poisson Gamma model, the maximum likelihood estimate for $\hat\beta(ageGroup_i)$ directly represents the contribution of the age group to the disease intensity. This is possible due to the properties of the expected value described in Equation \eqref{eq:meanNB}. However, this direct interpretation does not hold for the parameter estimates obtained in the hierarchical Poisson Normal model. Nevertheless, it can be observed that both sets of parameter estimates are similar throughout the entire time period, indicating that this discrepancy is not significant.
-
-(ref:STECnovelparageGroup) Considering \gls{STEC} in the time period between January 2011 and December 2022. Estimate (solid line) and $95\%$ profile likelihood confidence interval (dashed line) of $\hat\beta(ageGroup_i)$ for the models given in Equation \eqref{eq:AgegroupTrendSeasonality} estimated using the rolling window with a width of $k=36$ months. 
+(ref:STECnovelparageGroup) Age group contribution in \gls{STEC} in the time period between January 2011 and December 2022. Recursive estimates (solid line) and $95\%$ profile likelihood confidence intervals (dashed line) of $\hat\beta(ageGroup_i)$ for the combined model. Estimates are obtained using a rolling window with a width of $k=36$ months and discarding observations that are characterized as alarms.
 
 ```{r STECnovelparageGroup, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelparageGroup)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/STEC_novel_par_ageGroup.png")
 ```
 
+It is worth mentioning that in the hierarchical Poisson Gamma model, the maximum likelihood estimate for $\hat\beta(ageGroup_i)$ directly represents the contribution of the age group to the disease intensity. This is possible due to the properties of the expected value described in Equation \eqref{eq:meanNB}. However, this direct interpretation does not hold for the parameter estimates obtained in the hierarchical Poisson Normal model. Nevertheless, it can be observed that both sets of parameter estimates are similar throughout the entire time period, indicating that this discrepancy is not significant.
+
 For the most, the maximum likelihood estimate for $\hat\beta_{trend}$ indicates a positive trend during the observed period (See Figure \@ref(fig:STECnovelpartrend)). However, it is important to note that the trend is not consistently statistically significant. The first significant positive trend is observed in the mid-2014, lasting until 2016. Another significant positive trend is observed in 2018, coinciding with the transition from a culture-based diagnostic method to a PCR method in most departments of clinical microbiology [@Svendsen_2023].
 
-Notably, a significant drop in the trend is observed in the mid-2020, immediately after the \gls{COVID-19} lockdown, lasting until the mid-2021. Since then, the trend has been steadily increasing and is currently at an all-time high.
+Notably, a significant drop in the trend is observed in the mid-2020, immediately after the \gls{COVID-19} lockdown, lasting until the mid-2021. Since then, the trend has been steadily increasing and is currently at an all-time high for the observed period.
 
 (ref:STECnovelpartrend) Disease trend in \gls{STEC} in the time period between January 2011 and December 2022. Recursive estimates (solid line) and $95\%$ profile likelihood confidence intervals (dashed line) of $\hat\beta_{trend}$ for the combined model. Estimates are obtained using a rolling window with a width of $k=36$ months and discarding observations that are characterized as alarms.
 
@@ -151,15 +148,15 @@ Figure \@ref(fig:STECnovelparseasonality) clearly demonstrates the presence of s
 knitr::include_graphics("../figures/STEC_novel_par_seasonality.png")
 ```
 
-To further understand the variation in the seasonal component, the amplitude ($\omega$) and phase ($\rho$) are calculated using the formulas:
+To further understand the variation in the seasonal component, the amplitude $\omega$ and phase $\rho$ are calculated using the following formulas:
 
-\begin{align}
-\omega = \sqrt{(\beta_{\sin}^2 + \beta_{\cos}^2)} & \quad \rho = -\arctan \bigg(\frac{\beta_{\cos}}{\beta_{\sin}}\bigg)
-\end{align}
+\begin{equation}
+\omega = \sqrt{(\beta_{\sin}^2 + \beta_{\cos}^2)} \qquad \quad \rho = -\arctan \bigg(\frac{\beta_{\cos}}{\beta_{\sin}}\bigg)
+\end{equation}
 
-Due to the challenges of propagating uncertainty estimates, bootstrap confidence intervals are calculated based on 10,000 replicates for each parameter. The maximum likelihood estimate for the amplitude is visualized along with its bootstrap confidence interval in Figure \@ref(fig:AmplitudePhase).
+Due to the challenges of propagating uncertainty estimates, bootstrap confidence intervals are calculated based on 10,000 replicates for each parameter, in each time point, and for each modeling framework. The maximum likelihood estimates for the amplitude and phase is visualized along with its corresponding bootstrap confidence intervals in Figure \@ref(fig:AmplitudePhase).
 
-(ref:AmplitudePhase) Illustration of the amplitude \textbf{(a)} and phase \textbf{(b)} along with a $95\%$ bootstrap confidence interval for each of the modeling frameworks.
+(ref:AmplitudePhase) Illustration of the amplitude \textbf{(a)} and phase \textbf{(b)} along with their corresponding $95\%$ bootstrap confidence intervals for each of the modeling frameworks.
 
 ```{r AmplitudePhase, echo=FALSE, out.width="100%", fig.cap="(ref:AmplitudePhase)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/AmplitudePhase.png")
@@ -174,7 +171,6 @@ The estimated variance $\hat{\sigma}$ for the hierarchical Poisson Normal model 
 ```{r STECnovelparseaDispersion, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelparseaDispersion)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/STEC_novel_par_dispersion.png")
 ```
-
 
 It should be noted that the inability of the second stage model parameters ($\sigma$ or $\phi$) to converge during certain time periods does not affect the performance of the novel outbreak detection algorithm. These periods typically coincide with time periods with relatively few reported cases, i.e. periods with no outbreaks. Generally, these periods occur when the data show no overdispersion. In such cases, the time series can be adequately modeled by a Poisson distribution, and therefore the second stage model is not informed. Specifically, this becomes relevant in the case study of \gls{LIST}, where the example of missing overdispersion is very explicit. The role of overdispersion in the disease data will be discussed in Section \@ref(ChallengesOD).
 
@@ -416,6 +412,32 @@ knitr::include_graphics("../figures/Compare_alarms_SALM.png")
 For future work, it is indeed beneficial to consider monitoring individual serotypes of \textit{Salmonella} bacteria instead of monitoring them collectively. This approach would enable more specific and targeted outbreak detection. By focusing on specific serotypes, the algorithms can potentially reduce the number of false alarms and enhance the overall effectiveness of outbreak detection for \gls{SALM} infections.
 
 Furthermore, monitoring individual serotypes provides an opportunity to prioritize outbreaks of \textit{Salmonella} serotypes that are known to cause particularly severe diseases. This allows for a proactive response in identifying and containing outbreaks that pose a higher risk to public health. By tailoring the detection algorithms to specific serotypes, public health authorities can effectively prioritize their efforts and allocate resources accordingly, leading to more efficient and targeted outbreak management strategies.
+
+\section{Potential extensions of the novel algorithm}
+
+A potential extension of the novel outbreak detection method proposed in this master thesis involves incorporating correlation, either in time or between groups. To highlight this, an example considering the \gls{SALM} case study is presented. The \gls{ACF} plot in Figure \@ref(fig:ACF) provides insights into the temporal dependencies and correlations withing the data.
+
+(ref:ACF) \gls{ACF} for the estimated one-step ahead random effects $\hat u_{i{t_0}}$ for the six age groups in the \gls{SALM} case study. The plots are organized in increasing age group, i.e. \textbf{(a)} <1 year, \textbf{(b)} 1-4 years, \textbf{(c)} 5-14 years, \textbf{(d)} 15-24 years, \textbf{(e)} 25-64 years, and \textbf{(f)} 65+ years.
+
+```{r ACF, echo=FALSE, out.width="100%", fig.cap="(ref:ACF)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/ACFplot.png")
+```
+
+The \gls{ACF} plot reveals significant autocorrelation at lag 1 across all age groups, indicating a strong temporal dependency. Some age groups, such as 15-24 years, 25-64 years, and 65+ years, exhibit significant autocorrelation at lag 2. Additionally, a notable seasonal autocorrelation is observed at lag 12 in most age groups. These findings suggest the presence of underlying patterns and correlations that can be further explored and leveraged in the development of the outbreak detection method.
+
+The correlation plot in Figure \@ref(fig:corr) provides insights into the intergroup correlation, highlighting potential shared patterns or dependencies across different age groups.
+
+(ref:corr) Correlation of the estimated one-step ahead random effects $\hat u_{i{t_0}}$ for the six age groups in the \gls{SALM} case study.
+
+```{r corr, echo=FALSE, out.width="100%", fig.cap="(ref:corr)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/corrPlot.png")
+```
+
+The plot clearly shows a strong intergroup correlation between the age groups, particularly between 5-14 years, 15-24 years, and 25-64 years. This suggests that these age groups may exhibit similar disease patterns or dynamics.
+
+Analyzing the intergroup correlation can provide valuable information for understanding the dynamics and interactions between different age groups. It can help identify commonalities and differences in disease patterns, enabling targeted intervention strategies and efficient resource allocation.
+
+Further exploration and analysis of the intergroup correlation can enhance our understanding of disease dynamics and improve the accuracy and effectiveness of the outbreak detection method, leading to better public health outcomes.
 
 \cleardoublepage
 
