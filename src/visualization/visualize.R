@@ -118,12 +118,12 @@ stecEpiPlot <- finalDat %>%
   ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
   geom_point(size = 2) +
   geom_line(linewidth = 1) +
-  scale_y_continuous(name = "Incidence per 100.000", labels = label_number(accuracy = 0.1)) +
+  scale_y_continuous(name = "Incidence per 100,000", labels = label_number(accuracy = 0.1)) +
   scale_x_discrete(name = "Month") +
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(override.aes = list(size = 3, linewidth = 2), nrow = 1)) +
   theme(plot.margin = unit(c(1,0.5,0.5,0.5), "cm"),
-        axis.title = element_text(size = 19),
+        axis.title = element_text(size = 22),
         legend.text = element_text(size = 22),
         legend.title = element_text(size = 25))
 yearLegend <- get_legend(stecEpiPlot)
@@ -133,12 +133,12 @@ shigellaEpiPlot <- finalDat %>%
   ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
   geom_point(size = 2) +
   geom_line(linewidth = 1) +
-  scale_y_continuous(name = "Incidence per 100.000", labels = label_number(accuracy = 0.1)) +
+  scale_y_continuous(name = "Incidence per 100,000", labels = label_number(accuracy = 0.1)) +
   scale_x_discrete(name = "Month") +
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(nrow = 1)) +
   theme(plot.margin = unit(c(1,0.5,0.5,0.5), "cm"),
-        axis.title = element_text(size = 19))
+        axis.title = element_text(size = 22))
 
 
 listEpiPlot <- finalDat %>%
@@ -146,36 +146,36 @@ listEpiPlot <- finalDat %>%
   ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
   geom_point(size = 2) +
   geom_line(linewidth = 1) +
-  scale_y_continuous(name = "Incidence per 100.000", labels = label_number(accuracy = 0.1)) +
+  scale_y_continuous(name = "Incidence per 100,000", labels = label_number(accuracy = 0.1)) +
   scale_x_discrete(name = "Month") +
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(nrow = 1)) +
   theme(plot.margin = unit(c(1,0.5,0.5,0.5), "cm"),
-        axis.title = element_text(size = 19))
+        axis.title = element_text(size = 22))
 
 salmEpiPlot <- finalDat %>%
   filter(caseDef == "SALM" & year %in% as.character(2012:2022)) %>%
   ggplot(mapping = aes(x = month, y = y/n * 1e5, colour = year, group = year)) +
   geom_point(size = 2) +
   geom_line(linewidth = 1) +
-  scale_y_continuous(name = "Incidence per 100.000", labels = label_number(accuracy = 0.1)) +
+  scale_y_continuous(name = "Incidence per 100,000", labels = label_number(accuracy = 0.1)) +
   scale_x_discrete(name = "Month") +
   scale_colour_manual(name = "Year", values = dtuPalette) +
   guides(colour = guide_legend(nrow = 1)) +
   theme(plot.margin = unit(c(1,0.5,0.5,0.5), "cm"),
-          axis.title = element_text(size = 19))
+          axis.title = element_text(size = 22))
 
 diseasePlots <- plot_grid(listEpiPlot + guides(colour = "none"),
                           shigellaEpiPlot + guides(colour = "none"),
                           stecEpiPlot + guides(colour = "none"),
                           salmEpiPlot + guides(colour = "none"),
                           labels = c("(a)", "(b)", "(c)", "(d)"),
-                          label_size = 18,
+                          label_size = 22,
                           align = "hv")
 
 finalEpiPlot <- plot_grid(yearLegend, diseasePlots, ncol = 1, rel_heights = c(0.05,0.9))
 finalEpiPlot
-ggsave(filename = "EpiPlot.png", plot = finalEpiPlot, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
+ggsave(filename = "EpiPlot.png", plot = finalEpiPlot, path = "../../figures/", device = png, width = 16, height = 12, units = "in", dpi = "print")
 
 dat %>%
   group_by(caseDef) %>%

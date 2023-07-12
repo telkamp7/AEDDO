@@ -1,7 +1,15 @@
 \chapter{Discussion}
 
+In this chapter, several topics that have not been previously discussed will be addressed. This includes addressing the implications of overly sensitive outbreak detection methods, providing a summary of the considerations when deciding on a modeling framework in the novel method, and exploring the potential of \gls{MiBa}-based surveillance.
 
-\section{Pros and cons for the different modeling frameworks}
+\section{Alarm fatigue and the implications for outbreak detection}
+
+The field of automated disease outbreak detection has witnessed significant advancements in recent years, with the development of sophisticated statistical methods and the utilization of computerized databases. These advancements have tremendous potential in supplementing epidemiologists and help them effectively prioritize their efforts and allocate resources accordingly, leading to more efficient and targeted outbreak management strategies. However, and emerging concern in the field is the phenomenon known as "alarm fatigue" and its implications for statistical outbreak detection.
+
+Alarm fatigue refers to the desensitization and decreased responsiveness that can occur when epidemiologists are exposed to frequent of excessive alarms from a statistical outbreak detection method. Specifically, the state-of-the-art methods are known for their occasional lack of specificity, leading to false alarms that can overwhelm the epidemiologists with verification tasks. Consequently, their usefulness and practicality in real-world settings are undermined. 
+
+
+\section{For and against of the two modeling frameworks in the novel method}
 
 The hierarchical Poisson Gamma model offers the advantage of directly interpreting parameter estimates as their actual contribution to disease intensity, thanks to the properties of the resulting negative binomial distribution. In contrast, the hierarchical Poisson Normal model lacks a known expected value for the distribution of $Y|u$, necessitating numerical methods like the Laplace approximation for parameter estimation and inference.
 

@@ -707,14 +707,18 @@ ggsave(filename = "Phase.png",
 
 legend <- get_legend(Amplitude)
 
+preAmplitudePhase <- plot_grid(
+  Amplitude + guides(colour = "none") + 
+    theme(axis.text.x = element_blank(),
+          axis.title.x = element_blank(),
+          axis.ticks.x = element_blank()),
+  Phase + guides(colour = "none"),
+  ncol = 1, align = "vh",
+  labels = c("(a)", "(b)"), label_size = 26) 
+
 AmplitudePhase <- plot_grid(legend,
-                            Amplitude + guides(colour = "none") + 
-                              theme(axis.text.x = element_blank(),
-                                    axis.title.x = element_blank(),
-                                    axis.ticks.x = element_blank()),
-          Phase + guides(colour = "none"),
-          ncol = 1, align = "v", rel_heights = c(0.1,0.45,0.45),
-          labels = c("","(a)", "(b)"), label_size = 26)
+                            preAmplitudePhase, rel_heights = c(0.1,0.9),
+                            ncol = 1, align = "vh")
 
 save_plot(filename = "../../figures/AmplitudePhase.png",
-          plot = AmplitudePhase, base_height = 12, base_width = 16)
+          plot = AmplitudePhase, base_height = 12, base_width = 16, bg = "white")

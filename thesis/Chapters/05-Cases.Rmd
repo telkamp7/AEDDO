@@ -203,9 +203,9 @@ It is also important to mention that different age groupings are utilized in eac
 
 \subsection{Analysis of outbreak detection in \textit{Listeriosis}}
 
-Intuitively, it is not common to employ statistical methods for monitoring and detecting outbreaks of \glsfirst{LIST}. The current state-of-the-art approach for detecting outbreaks of this disease relies heavily on laboratory-based methods, specifically WGS. WGS enables epidemiologists to link cases that have occurred over an extended period, even months or years apart, and identify them as part of a continuous-source outbreak. Statistical method may face challenges in detecting such outbreaks due to their complex and prolonged nature. However, it is crucial to include this case study in the thesis to highlight both the strengths and limitations of the novel and state-of-the-art methods.
+Intuitively, it is not common to employ statistical methods for monitoring and detecting outbreaks of \glsfirst{LIST}. The current state-of-the-art approach for detecting outbreaks of this disease relies heavily on laboratory-based methods, specifically \glsfirst{WGS}. \gls{WGS} enables epidemiologists to link cases that have occurred over an extended period, even months or years apart, and identify them as part of a continuous-source outbreak. Statistical methods may face challenges in detecting such outbreaks due to their complex and prolonged nature. However, it is crucial to include this case study in the thesis to highlight both the strengths and limitations of the novel and state-of-the-art methods.
 
-The data used in this case study consist of Danish \gls{LIST} case counts from the laboratory notification system. These counts are denoted as $y_{it}$. Here, the subscript $i$ distinguishes between two age groups, with $i=1$ representing the age group below 65 years and $i=2$ representing the age group above 65 years. As in the \gls{STEC} case study, the subscript $t$ denotes the time.
+The data used in this case study consist of Danish \gls{LIST} case counts from the laboratory notification system. These counts are denoted as $y_{it}$. Here, the subscript $i$ distinguishes between two age groups, with $i=1$ representing the age group below 65 years and $i=2$ representing the age group of 65 years and above. As in the \gls{STEC} case study, the subscript $t$ denotes the time.
 
 \subsubsection{Applying the state-of-the-art outbreak detection algorithms to \textit{Listeriosis}}
 
@@ -217,7 +217,7 @@ The Farrington and Noufaily methods are both investigated on their ability to de
 knitr::include_graphics("../figures/Compare_stateOfTheArt_LIST.png")
 ```
 
-In Figure \@ref(fig:CompareStateOfTheArtLIST), multiple alarms can be observed for both the Farrington Noufaily methods. The Farrington method triggers a total of `r LIST_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces slightly fewer alarms, specifically `r LIST_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms.
+In Figure \@ref(fig:CompareStateOfTheArtLIST), multiple alarms can be observed for both the Farrington and Noufaily methods. The Farrington method triggers a total of `r LIST_alarms_Farrington %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms, while the Noufaily method produces slightly fewer alarms, specifically `r LIST_alarms_Noufaily %>% summarize(nAlarm = sum(alarm)) %>% .$nAlarm` alarms.
 
 Interestingly, both methods demonstrate the ability to correctly raise alarms during ongoing outbreak investigations by SSI. One notable example is the outbreak investigated by SSI, which involved 41 cases and resulted in 17 deaths [@Wingstrand_2015]. The Farrington method successfully flags this event in September 2013, with alarms occurring sporadically in the subsequent period. The Noufaily method also identifies this outbreak, although it first does so in June 2014.
 
@@ -237,7 +237,7 @@ Nevertheless, it is worth noting that both modeling framework identifies the sam
 
 \subsection{Analysis of outbreak detection in \textit{Shigellosis}}
 
-The \glsfirst{SHIL} data set consists of Danish \gls{SHIL} case counts categorized into two age groups. These counts are represented as $y_{it}$, where the subscript $i=1$ corresponds to the age group below 25 years, and $i=2$ corresponds to the age group above 25 years. It should be noted that the selection of these age groups was not based on clear epidemiological reasoning. In retrospect, it would have been more informative to differentiate between sexes rather than age groups, as men who have sex with men have a higher risk of contracting and spreading the disease. However, this information was received towards the end of writing the thesis and was therefore not given priority.
+The \glsfirst{SHIL} data set consists of Danish \gls{SHIL} case counts categorized into two age groups. These counts are represented as $y_{it}$, where the subscript $i=1$ corresponds to the age group below 25 years, and $i=2$ corresponds to the age group of 25 years and above. It should be noted that the selection of these age groups was not based on clear epidemiological reasoning.
 
 \subsubsection{Applying the state-of-the-art outbreak detection algorithm to \textit{Shigellosis}}
 
@@ -266,6 +266,8 @@ knitr::include_graphics("../figures/Compare_novel_SHIL.png")
 It is noteworthy that the 20 alarms generated by both modeling frameworks coincide, indicating consistency in their detection. Additionally, it is observed that the novel outbreak detection algorithms identify fewer alarms compared to the state-of-the-art algorithms. However, it is important to highlight that both algorithms detect outbreaks during certain overlapping time periods, demonstrating their ability to capture similar patterns of disease occurrence. 
 
 However, it is also noted that the novel algorithm failed to identify the outbreak investigated by SSI and collaborators in the summer of 2020. As previously described when applying the state-of-the-art methods, this outbreak is particularly challenging to detect for statistical outbreak detection algorithms
+
+In retrospect, it would have been more informative to differentiate between sexes rather than age groups, as men who have sex with men have a higher risk of contracting and spreading the disease. However, this information was received towards the end of writing the thesis and was therefore not given priority.
 
 \subsection{Analysis of outbreak detection in \textit{Salmonellosis}}
 
