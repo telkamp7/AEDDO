@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.11)  14 JUL 2023 12:33
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.7.11)  14 JUL 2023 12:58
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1549,14 +1549,14 @@ Underfull \hbox (badness 1365) in paragraph at lines 344--344
 File: ../figures/EpiPlot.png Graphic file (type bmp)
 <../figures/EpiPlot.png>
 [6]
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_62343c423077.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_62343c423077.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_62347294555f.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_62347294555f.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_62345c3c6a6b.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_62345c3c6a6b.pdf>
-File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_6234c0f3d6d.pdf Graphic file (type pdf)
-<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_6234c0f3d6d.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_55601ff89ab.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_55601ff89ab.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_55606fd77a3.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_55606fd77a3.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5560740d239b.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_5560740d239b.pdf>
+File: C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_556038b222e7.pdf Graphic file (type pdf)
+<use C:/GIT/AEDDO/Thesis/_main_files/figure-latex/plot_556038b222e7.pdf>
 
 Underfull \vbox (badness 10000) has occurred while \output is active []
 
@@ -3207,7 +3207,7 @@ Package logreq Info: Writing requests to '_main.run.xml'.
  ) 
 Here is how much of TeX's memory you used:
  62386 strings out of 477888
- 1438868 string characters out of 5821822
+ 1438859 string characters out of 5821822
  2630028 words of memory out of 5000000
  82391 multiletter control sequences out of 15000+600000
  573027 words of font info for 135 fonts, out of 8000000 for 9000
