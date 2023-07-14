@@ -59,7 +59,7 @@ The mean and variance are
 
 \section{The Negative Binomial distribution}
 
-A discrete random variable $Z$ with support $0,1,2,\cdots$, is said to be distributed according to the negative binomial distribution model if the probability mass function for $Z$ is
+A discrete random variable $Z$ with support $0,1,2,\cdots$, is said to be distributed according to the Negative Binomial distribution model if the probability mass function for $Z$ is
 
 \begin{equation}
   f(z)=\begin{pmatrix} r+z-1 \\ z \end{pmatrix} p^r(1-p)^y
@@ -161,7 +161,7 @@ con.noufaily <- list(
 
 \chapter{Clusters reported to The Food- and waterborne Outbreak Database}\label{FUDData}
 
-In this chapter, all the clusters of \glsfirst{LIST}, \glsfirst{SHIL}, \glsfirst{STEC}, and \glsfirst{SALM} reported to \glsfirst{FUD} is presented. These outbreaks are clusters are summarized in Table \@ref(tab:FUD).
+In this chapter, all the clusters of \glsfirst{LIST}, \glsfirst{SHIL}, \glsfirst{STEC}, and \glsfirst{SALM} reported to \glsfirst{FUD} is presented. These clusters are summarized in Table \@ref(tab:FUD).
 
 ```{r FUD, echo=FALSE}
 SSI_FUD %>%
@@ -169,7 +169,7 @@ SSI_FUD %>%
   kbl(booktabs = TRUE,
       longtable = TRUE,
       escape = FALSE,
-      caption = paste0("Food- and waterborne disease outbreaks of LIST, SHIL, STEC, and SALM reported in \\glsfirst{FUD} (n=",n_SSI_FUD$n,"), 2008-2022."),
+      caption = paste0("Food- and waterborne disease clusters of LIST, SHIL, STEC, and SALM reported in \\glsfirst{FUD} (n=",n_SSI_FUD$n,"), 2008-2022."),
       linesep = "") %>%
   kable_paper(full_width = TRUE, latex_options = c("repeat_header", "HOLD_position")) %>%
   column_spec(1, width = "4.5cm") %>%
@@ -202,7 +202,7 @@ LIST_alarms_StateOfTheArt %>%
 
 \chapter{Figures and tables related to the case studies}\label{FigAndTabCaseStudy}
 
-In this chapter, the full overview over the figures and tables related to the case studies is presented.
+In this chapter, a full overview over the figures and tables related to the case studies of \glsfirst{LIST}, \glsfirst{SHIL}, \glsfirst{STEC}, and \glsfirst{SALM} are included.
 
 \section{\textit{Listeriosis}}
 
@@ -222,36 +222,26 @@ LIST_novel_tbl %>%
            Parameter == "log_sigma" ~ "$\\log(\\hat{\\sigma})$",
            Parameter == "log_phi" ~ "$\\log(\\hat{\\phi})$"
          )) %>%
-  mutate(Formula = case_when(
-    Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}"
-  )) %>%
-  select(`   ` = Model, `  ` = Formula, ` ` = avgLogS, Parameter, Estimate = theta, `95\\% CI`) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "LIST modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
+  select(`   ` = Model, ` ` = avgLogS, Parameter, Estimate = theta, `95\\% CI`) %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "\\gls{LIST} modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for the constant fixed effects model. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   column_spec(1, bold = T) %>%
-  collapse_rows(columns = 1:3, 
+  collapse_rows(columns = 1:2, 
                 row_group_label_position = "stack",
                 row_group_label_fonts = row_group_label_fonts,
                 latex_hline = "custom",
                 valign = "middle",
-                custom_latex_hline = 1:3)
+                custom_latex_hline = 1:2)
 
 ```
 
-(ref:LISTnovelparplot) Considering LIST in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
+(ref:LISTnovelparplot) Considering \gls{LIST} in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the constant fixed effects model estimated using the rolling window with a width of $k=36$ months. 
 
 ```{r LISTnovelparplot, echo=FALSE, out.width="100%", fig.cap="(ref:LISTnovelparplot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/LIST_novel_par_plot.png")
 ```
 
-
 \section{\textit{Shigellosis}}
-
-(ref:SHILSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of SHIL by SSI and possible collaborators.
-
-```{r SHILSSIoutbreaks, echo=FALSE, out.width="100%", fig.cap="(ref:SHILSSIoutbreaks)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/SHIL_SSI_outbreaks.png")
-```
 
 ```{r SHILNovelTblAppendix, echo=FALSE}
 
@@ -273,13 +263,13 @@ SHIL_novel_tbl %>%
            Parameter == "cos(pi/6 * periodInYear)" ~ "$\\hat{\\beta}_{\\cos}$"
          )) %>%
   mutate(Formula = case_when(
-    Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
+    Formula == "ageGroup" ~ "Constant",
+    Formula == "ageGroup_trend" ~ "Trend",
+    Formula == "ageGroup_seasonality" ~ "Seasonality",
+    Formula == "ageGroup_trend_seasonality" ~ "Combined"
   )) %>%
   select(`   ` = Model, `  ` = Formula, ` ` = avgLogS, Parameter, Estimate = theta, `95\\% CI`) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "SHIL modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "\\gls{SHIL} modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   column_spec(1, bold = T) %>%
   collapse_rows(columns = 1:3, 
@@ -291,19 +281,13 @@ SHIL_novel_tbl %>%
 
 ```
 
-(ref:SHILnovelparplot) Considering SHIL in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
+(ref:SHILnovelparplot) Considering \gls{SHIL} in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
 
 ```{r SHILnovelparplot, echo=FALSE, out.width="100%", fig.cap="(ref:SHILnovelparplot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/SHIL_novel_par_plot.png")
 ```
 
 \section{Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
-
-(ref:STECSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of \gls{STEC} by \gls{SSI} and possible collaborators.
-
-```{r STECSSIoutbreaks, echo=FALSE, out.width="100%", fig.cap="(ref:STECSSIoutbreaks)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/STEC_SSI_outbreaks.png")
-```
 
 ```{r STECNovelTblAppendix, echo=FALSE}
 
@@ -330,13 +314,13 @@ STEC_novel_tbl %>%
            Parameter == "cos(pi/6 * periodInYear)" ~ "$\\hat{\\beta}_{\\cos}$"
          )) %>%
   mutate(Formula = case_when(
-    Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
+    Formula == "ageGroup" ~ "Constant",
+    Formula == "ageGroup_trend" ~ "Trend",
+    Formula == "ageGroup_seasonality" ~ "Seasonality",
+    Formula == "ageGroup_trend_seasonality" ~ "Combined"
   )) %>%
   select(`   ` = Model, `  ` = Formula, ` ` = avgLogS, Parameter, Estimate = theta, `95\\% CI`) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "STEC modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "\\gls{STEC} modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   column_spec(1, bold = T) %>%
   collapse_rows(columns = 1:3, 
@@ -348,7 +332,7 @@ STEC_novel_tbl %>%
 
 ```
 
-(ref:STECnovelparplot) Considering STEC in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
+(ref:STECnovelparplot) Considering \gls{STEC} in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
 
 ```{r STECnovelparplot, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelparplot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/STEC_novel_par_plot.png")
@@ -381,13 +365,13 @@ SALM_novel_tbl %>%
            Parameter == "cos(pi/6 * periodInYear)" ~ "$\\hat{\\beta}_{\\cos}$"
          )) %>%
   mutate(Formula = case_when(
-    Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
+    Formula == "ageGroup" ~ "Constant",
+    Formula == "ageGroup_trend" ~ "Trend",
+    Formula == "ageGroup_seasonality" ~ "Seasonality",
+    Formula == "ageGroup_trend_seasonality" ~ "Combined"
   )) %>%
   select(`   ` = Model, `  ` = Formula, ` ` = avgLogS, Parameter, Estimate = theta, `95\\% CI`) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "SALM modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "\\gls{SALM} modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   column_spec(1, bold = T) %>%
   collapse_rows(columns = 1:3, 
@@ -399,7 +383,7 @@ SALM_novel_tbl %>%
 
 ```
 
-(ref:SALMnovelparplot) Considering SALM in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
+(ref:SALMnovelparplot) Considering \gls{SALM} in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
 
 ```{r SALMnovelparplot, echo=FALSE, out.width="100%", fig.cap="(ref:SALMnovelparplot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/SALM_novel_par_plot.png")

@@ -1,12 +1,14 @@
 \chapter{Methods}
 
-In this chapter, the current state-of-the-art methods for disease outbreak detection will be outlined. Furthermore, the novel outbreak detection algorithm will be introduced, along with the theory related to generalized mixed effects models and hierarchical generalized linear models. These modeling frameworks are utilized in this master thesis to analyze the count observations denoted as $\boldsymbol{y}$, but more importantly they play a crucial role in assessing the unobserved random variables or random effects represented by $\boldsymbol{u}$, which are directly employed in the detection algorithm for characterizing outbreaks.
+In this chapter, the current state-of-the-art methods for disease outbreak detection will be outlined (Section \@ref(StateOfTheArt)). Furthermore, the novel outbreak detection algorithm will be introduced, along with the theory related to generalized mixed effects models (Section \@ref(GLMM)) and hierarchical generalized linear models (Section \@ref(HLMM)). The presentation of theory related to these modeling frameworks are mostly inspired by @Madsen_2010. 
 
-Due to the complexity of generalized mixed effects models, obtaining closed-form solutions is generally not feasible. Therefore, an overview of the Laplace approximation technique will be provided in this chapter, which allows for approximating the likelihood function in these models. Additionally, the implementation of these models in the R programming language will be presented.
+In this thesis, these modeling frameworks are utilized to analyze the count observations denoted as $\boldsymbol{y}$, but more importantly they play a crucial role in assessing the unobserved random variables or random effects represented by $\boldsymbol{u}$, which are directly employed in the detection algorithm for characterizing outbreaks.
+
+Due to the complexity of generalized mixed effects models, obtaining closed-form solutions is generally not feasible. Therefore, an overview of the Laplace approximation technique will be provided in Section Section \@ref(GLMM), which allows for approximating the likelihood function in these models. Additionally, the implementation of these models in the R programming language will be presented in Section \@ref(TMB). Finally, an outline of the \textit{logarithmic score}, which is used to objectively evaluate the performance of the models in the novel method, is presented in Section \@ref(scoring).
 
 \section{State-of-the-art outbreak detection algorithm}\label{StateOfTheArt}
 
-In this section, the original method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will be outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this thesis. Both of the aforementioned methods have been implemented in the R package called \textbf{surveillance} by @Salmon_2016, which can be accessed from the \gls{CRAN} at \href{https://cran.r-project.org/web/packages/surveillance/index.html}{\nolinkurl{https://cran.r-project.org/web/packages/surveillance/index.html}}. The presentation of these methods are strongly inspired by @Salmon_2016.
+In this section, the original method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will be outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this thesis. Both of the aforementioned methods have been implemented in the R package called \textbf{surveillance} by @Salmon_2016, which can be accessed from the \gls{CRAN} at \href{https://cran.r-project.org/web/packages/surveillance/index.html}{\nolinkurl{https://cran.r-project.org/web/packages/surveillance/index.html}}. The presentation of the two methods are strongly inspired by @Salmon_2016.
 
 Both methods follow the same steps in the algorithm. The first step involves fitting an over-dispersed Poisson \gls{GLM} with a log link to the reference data. In this model, the baseline count $y_t$ corresponding to the baseline time point $t$ is assumed to have an expected value $\lambda_t$ and a variance $\phi\lambda_t$, where $\phi\geq1$ is ensured to account for over-dispersion. The systematic component of the model includes only a linear time trend in the frequency of reports. Therefore, the systematic component can be expressed as
 
@@ -54,7 +56,7 @@ Here, $\V(\hat{y}_{t_0})$ represents the variance of an observation, and $V(\hat
 U_{t_0} = \hat{\lambda}_{0} + z_{1-\alpha}\hat{\V}\bigg(\sqrt{y_{t_0}-\hat{\lambda}_{t_0}}\bigg)
 \end{equation}
 
-However, this method's weakness lies in the assumption of normality itself. Therefore, an alternative assumption was presented in @Noufaily_2013. This approach assumes that $y_{t_0}$ follows a negative binomial distribution, denoted as $\text{NB}(\lambda_{t_0}, \nu)$, where $\lambda_{t_0}$ represents the mean and $\nu = \frac{\lambda_{t_0}}{\phi-1}$ represents the over-dispersion parameter. In this parameterization, the expected value of $y_t$ remains $\lambda_t$, and the variance of $y_t$ is $\phi\lambda_t$, with $\phi > 1$. If $\phi \leq 1$, a Poisson distribution is assumed for the observed count. The threshold is defined as a quantile of the negative binomial distribution using the plug-in estimates $\hat{\lambda}_{t_0}$ and $\hat{\phi}$.
+However, this method's weakness lies in the assumption of normality itself. Therefore, an alternative assumption was presented in @Noufaily_2013. This approach assumes that $y_{t_0}$ follows a Negative Binomial distribution, denoted as $\text{NB}(\lambda_{t_0}, \nu)$, where $\lambda_{t_0}$ represents the mean and $\nu = \frac{\lambda_{t_0}}{\phi-1}$ represents the over-dispersion parameter. In this parameterization, the expected value of $y_t$ remains $\lambda_t$, and the variance of $y_t$ is $\phi\lambda_t$, with $\phi > 1$. If $\phi \leq 1$, a Poisson distribution is assumed for the observed count. The threshold is defined as a quantile of the Negative Binomial distribution using the plug-in estimates $\hat{\lambda}_{t_0}$ and $\hat{\phi}$.
 
 In the final step, the observed count $y_{t_0}$ is compared to the upper bound $U_{t_0}$, and an alarm is raised if $y_{t_0} > U_{t_0}$. The fitting of the \gls{GLM} in both methods involves three important steps.
 
@@ -84,7 +86,7 @@ The above algorithm is implemented in an R function, which can be accessed from 
 
 \section{General mixed effects models}\label{GLMM}
 
-In this section selected theory related to generalized mixed effects models is presented. The presentation of Section \@ref(GLMM) and Section \@ref(HLMM) is mostly inspired by @Madsen_2010. 
+In this section selected theory related to generalized mixed effects models is presented. Moreover, an outline of the Laplace approximation is included.
 
 The general mixed effects model can be represented by its likelihood function
 
@@ -190,7 +192,7 @@ The joint likelihood for the count observations $\boldsymbol y$ and the random e
 
 \section{Hierarchical generalized linear models}\label{HLMM}
 
-In this section selected theory related to hierarchical generalized linear models is presented. The model class was initially formulated by @Lee_1996 as a natural generalization of the generalized linear models to also incorporate random effects. A starting point in hierarchical modelling is an assumption that the distribution of random effects may be modeled by an exponential dispersion family. This family of models were first introduced by @Fisher_1922, and has proven to play an important role in mathematical statistics because of their simple inferential properties. The exponential dispersion family considers a family of distributions, which can be written on the form
+In this section selected theory related to hierarchical generalized linear models is presented. The model class was initially formulated by @Lee_1996 as a natural generalization of the \gls{GLM} to also incorporate random effects. A starting point in hierarchical modelling is an assumption that the distribution of random effects may be modeled by an exponential dispersion family. This family of models were first introduced by @Fisher_1922, and has proven to play an important role in mathematical statistics because of their simple inferential properties. The exponential dispersion family considers a family of distributions, which can be written on the form
 
 \begin{equation}\label{eq:expDispFam}
   f_Y(y;\theta)=c(y,\phi)\exp\big(\phi \{\theta y-\kappa(\theta) \}\big)
@@ -198,7 +200,7 @@ In this section selected theory related to hierarchical generalized linear model
 
 Here the parameter $\phi>0$ is called the \textit{precision parameter}, which in some cases represents a shape parameter as for the Gamma distribution. In other cases the precision parameter represents an over-dispersion that is not related to the mean. These distributions combine with the so-called \textit{standard conjugate distributions} in a simple way, and lead to marginal distributions that may be expressed in a closed form suited for likelihood calculations. For an introduction to the concept of \textit{standard conjugate distributions} and the definition of a hierarchical generalized linear model, refer to Section 6.3 and Section 6.5 of @Madsen_2010, respectively.
 
-In general, when the conditional distribution of $Y|u$ is a Poisson distribution, and the conjugate distribution is assumed to be a Gamma distribution with mean value 1, it follows that the distribution of $Y$ is a negative binomial distribution.
+In general, when the conditional distribution of $Y|u$ is a Poisson distribution, and the conjugate distribution is assumed to be a Gamma distribution with mean value 1, it follows that the distribution of $Y$ is a Negative Binomial distribution.
 
 To further motivate this choice of distribution for the second stage model, an illustrative example focusing on \glsfirst{LIST} is presented.
 
@@ -237,16 +239,16 @@ LIST %>%
   group_by(y) %>% 
   reframe(observed = n()) %>%
   full_join(y = poisNBExp, by = join_by(y)) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", caption = "The distribution of cases with $1,2,\\cdots,10+$ cases of \\gls{LIST}.", col.names = c("Number of LIST\ncases","Number of times\nobserved", "Poisson\nexpected", "Negative binomial\nexpected"), digits = 2, linesep = "") %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", caption = "The distribution of observations with $1,2,\\cdots,10+$ cases of \\gls{LIST}.", col.names = c("Number of LIST\ncases","Number of times\nobserved", "Poisson\nexpected", "Negative binomial\nexpected"), digits = 2, linesep = "") %>%
   kable_paper(latex_options = c("HOLD_position"), full_width = TRUE)
 
 ```
 
-Take, for example, the monthly cases of LIST analyzed in this thesis. Table \@ref(tab:PoisGexampleTbl) presents the distribution of these cases from 2008 to 2022, along with the expected numbers from both the Poisson and Negative binomial distributions. The distribution of cases over time is visualized in Figure \@ref(fig:PoisGexampleFig).
+Take, for example, the monthly cases of \gls{LIST} analyzed in this thesis. Table \@ref(tab:PoisGexampleTbl) presents the distribution of these cases from 2008 to 2022, along with the expected numbers from both the Poisson and Negative Binomial distributions. The distribution of cases over time is visualized in Figure \@ref(fig:PoisGexampleFig).
 
-As observed, the actual distribution has notably heavier tails compared to the Poisson distribution. Additionally, the mean of the Poisson distribution for the monthly \gls{LIST} cases is $\hat{\lambda}=\bar{y}=`r meanYExample`$, while the empirical variance is $s^2=`r varYExample`$, which is considerably larger than the mean. These findings indicate overdispersion, suggesting that a Negative binomial model would be more appropriate for modeling the data.
+As observed in both the table and figure, the empirical distribution of \gls{LIST} has notably heavier tails compared to the Poisson distribution. Additionally, the mean of the Poisson distribution for the monthly \gls{LIST} cases is $\hat{\lambda}=\bar{y}=`r meanYExample`$, while the empirical variance is $s^2=`r varYExample`$, which is considerably larger than the mean. These findings indicate overdispersion, suggesting that a Negative Binomial model would be more appropriate for modeling the data.
 
-(ref:PoisGexampleFig) Distribution of monthly cases of \gls{LIST} together with the expected numbers from both the Poisson and Negative binomial distributions
+(ref:PoisGexampleFig) Empirical distribution of monthly \gls{LIST} cases together with the expected numbers from both the Poisson and Negative Binomial distributions
 
 ```{r PoisGexampleFig, echo=FALSE, out.width="80%", fig.cap="(ref:PoisGexampleFig)", fig.pos = "H", fig.show = "hold", fig.align='center'}
 
@@ -321,7 +323,7 @@ In \eqref{eq:marMix} it is noted that the integrand is the kernel in the probabi
   \int_{u=0}^\infty  u^{ y+ 1/\phi-1} \exp \Big(- u/\big(\phi/( \lambda \phi+1)\big)\Big) \,du = \frac{\phi^{ y+ 1/\phi}\Gamma( y+\boldsymbol 1/\phi)}{( \lambda \phi + 1)^{y+1/\phi}}
 \end{equation}
 
-Therefore, it is shown that the marginal distribution of $Y$ is a negative binomial distribution, $Y\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)$. The probability function for $Y$ is 
+Therefore, it is shown that the marginal distribution of $Y$ is a Negative Binomial distribution, $Y\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)$. The probability function for $Y$ is 
 
 \begin{equation} \label{eq:pdfMix}
   \begin{aligned}
@@ -401,7 +403,7 @@ Additionally, the choice of the Gamma distribution has benefits in terms of the 
 
 Overall, the Gamma distribution is selected due to its alignment with the mean-value space of the Poisson distribution, its flexibility in capturing diverse distributions, and its analytical convenience in computing the marginal distribution of the response variable.
 
-\section{Parameter estimation}
+\section{Parameter estimation}\label{TMB}
 
 In this section, the parameter estimation and implementation of the models used in the novel outbreak detection algorithm are presented. These model are implemented in R using the open-source R package \textbf{TMB} (Template Model Builder) developed by @Kristensen_2016. This package facilitates efficient maximum likelihood estimation and uncertainty calculations for the parameter set $\boldsymbol \theta=(\boldsymbol{\beta, \Psi})$ and random effects $\boldsymbol u$. The presentation of the parameter estimation conducted in \textbf{TMB} is strongly inspired by Chapter 2 in @Kristensen_2016 and Section 5.10 in @Madsen_2010.
 
@@ -487,7 +489,7 @@ knitr::include_graphics("../figures/Compare_Performance.png")
 
 Figure \@ref(fig:ComparePerformance) shows a violin plot comparing the running times for the optimization routines in each modeling framework. The plot demonstrates that the run time in the hierarchical Poisson Gamma model is remarkably faster, up to a factor of $4\times$, compared to the hierarchical Poisson Normal model. This indicates that the Poisson Gamma model may offer computational advantages in terms of run time efficiency.
 
-\section{Scoring rule}
+\section{Scoring rule}\label{scoring}
 
 In this section, the scoring rule used to evaluate the overall score of the models is outlined. The approach is inspired by @Blicher_2021.  For a given time series ${y_t}={y_1,\dots,y_N}$, each forecast and its corresponding realized observation pair $(G_t,y_t)$ is evaluated. The overall score of the model is then reported as the average score:
 
@@ -495,17 +497,17 @@ In this section, the scoring rule used to evaluate the overall score of the mode
 \bar{S}(G,y)=\frac{1}{N} \sum_{t=1}^{N}S(G_t,y_t)
 \end{equation}
 
-One commonly used scoring rule is the \textit{logarithmic score} derived from likelihood theory, which is defined as $S(G,y)=-\log\big(G(y)\big)$ [@Good_1992; @Tilmann_2007]. In this thesis, this scoring rule is based on the probability mass function and is equivalent tot he log-likelihood of the forecast model. The calculation of the logarithmic score is shown in Example \@ref(exm:logs), which is adapted from @Blicher_2021.
+One commonly used scoring rule is the \textit{logarithmic score} derived from likelihood theory, which is defined as $S(G,y)=-\log\big(G(y)\big)$ [@Good_1992; @Tilmann_2007]. In this thesis, this scoring rule is based on the probability mass function and is equivalent to the log-likelihood of the forecast model. The calculation of the logarithmic score is shown in Example \@ref(exm:logs), which is adapted from @Blicher_2021.
 
 ::: {.example #logs name="Calculation of the logarithmic score"}
 
-The Gamma distribution is used to represent the probabilistic forecast in this example. The Gamma distribution is parametrized by two parameters, shape ($\alpha$) and rate ($\beta$), and its probability density function (PDF) is given by:
+The Gamma distribution is used to represent the probabilistic forecast in this example. The Gamma distribution is parametrized by two parameters, shape $\alpha$ and rate $\beta$, and its probability density function (PDF) is given by:
 
 \begin{equation}
 f(y) = \frac{1}{\Gamma(\alpha)\beta}\left(\frac{y}{\beta}\right)^{\alpha-1}\exp\left(-\frac{y}{\beta}\right)
 \end{equation}
 
-In this example, the parameters of the true model, denoted as $f$, is chosen to be $(\alpha,\beta)=(3,3)$. 10 observations are simulated, denoted as $y_1,y_2,\dots,y_{10}$, which are shown in Table \@ref(tab:LogSExample). The true model $f$ is compared to a competing model, denoted as $g$, which is a Gamma distribution with parameters $(\alpha,\beta)=(3,8)$. The true model $f$, the competing model $g$, and the observations $\boldsymbol y$ are illustrated in Figure \@ref(fig:LogSExamplePlot).
+In this example, the parameters of the true model, denoted as $f$, is chosen to be $(\alpha,\beta)=(3,3)$. 10 observations are simulated, denoted as $y_1,y_2,\dots,y_{10}$, which are shown in Table \@ref(tab:LogSExample). 
 
 ```{r LogSExample, echo=FALSE}
 
@@ -519,7 +521,9 @@ t(tibble(`$i$` = paste(1:10), `$y_i$` = y)) %>%
 
 ```
 
-(ref:LogSExamplePlot) Observations (green dots) were simulated from a $\G(3,3)$-distribution. The true model $f$ (blue) is shown, along with the PDF for the competing model $g$, which follows a $G(3,8)$-distribution.
+The true model $f$ is compared to a competing model, denoted as $g$, which is a Gamma distribution with parameters $(\alpha,\beta)=(3,8)$. The true model $f$, the competing model $g$, and the observations $\boldsymbol y$ are illustrated in Figure \@ref(fig:LogSExamplePlot).
+
+(ref:LogSExamplePlot) Observations (green dots) were simulated from a $\G(3,3)$-distribution. The true model $f$ (blue) is shown, along with the PDF for the competing model $g$ (red), which follows a $G(3,8)$-distribution.
 
 ```{r LogSExamplePlot, echo=FALSE, out.width="80%", fig.cap="(ref:LogSExamplePlot)", fig.pos = "H", fig.show = "hold", fig.align='center'}
 
@@ -551,12 +555,12 @@ The logarithmic score of the true model $f$ for the first observation, $y_1=`r y
 \begin{equation}
   \begin{aligned}
   -\log\big(f(y_1)\big)&=-\log\big(f(`r y[1]`)\big) \\
-  &=-\log\left[ \frac{1}{\Gamma(3)4}\Big(\frac{`r y[1]`}{4}\Big)^{3-1}\exp(-`r y[1]`/4)\right] \\
+  &=-\log\left[ \frac{1}{\Gamma(3)4}\bigg(\frac{`r y[1]`}{4}\bigg)^{3-1}\exp(-`r y[1]`/4)\right] \\
   &=`r round(dgamma(x = y[1], shape = 3, rate = 4, log = TRUE),3)`
   \end{aligned}
 \end{equation}
 
-Similarly, the logarithmic scores for the other observations can be calculated using the same formula. The individual logarithmic scores for all 10 observations are presented in Table \@ref(tab:tabLogS). Among the 10 observations, `r sum(LogSf < LogSg)` of them are more likely to occur under the true model $f$ compared to the competing model $g$. The final key quantity, the average logarithmic score, $\bar{S}(G,\boldsymbol y)$, can be calculated using Equation \eqref{eq:averageLogS}.
+Similarly, the logarithmic scores for the other observations can be calculated using the same formula. The individual logarithmic scores for all 10 observations are presented in Table \@ref(tab:tabLogS). 
 
 \begin{equation}
   \begin{aligned}
@@ -572,8 +576,10 @@ t(tibble(`$i$` = paste(1:10), `$S(f,y_i)$` = round(LogSf,2), `$S(g,y_i)$` = roun
   kable_paper(full_width = TRUE, latex_options = "HOLD_position")
 
 ```
+
+Among the 10 observations, `r sum(LogSf < LogSg)` of them are more likely to occur under the true model $f$ compared to the competing model $g$. The final key quantity, the average logarithmic score, $\bar{S}(G,\boldsymbol y)$, can be calculated using Equation \eqref{eq:averageLogS}.
 :::
 
-The \textit{logarithmic score} has desirable properties as it captures all possible information about the observed data in relation to the model. However, it has a potential drawback in that it heavily penalizes unlikely observations. Consequently, even small changes in the tails of a density forecast can lead to significant changes in the \textit{logarithmic score}, even when the overall shape of the mass remains unchanged.
+The \textit{logarithmic score} has desirable properties as it captures all possible information about the observed data in relation to the model. However, it has a potential drawback in that it heavily penalizes unlikely observations. Consequently, even small changes in the tails of a density forecast can lead to significant changes in the \textit{logarithmic score}, even when the overall shape of the density remains unchanged.
 
 \cleardoublepage

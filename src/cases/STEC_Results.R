@@ -54,7 +54,13 @@ STEC_long_plot <- STEC %>%
   geom_bar(position = "stack", stat = "identity") + 
   scale_fill_manual(name = "Age group", values = dtuPalette) +
   scale_y_continuous(name = "Number of cases") +
-  scale_x_date(name = "Month")
+  scale_x_date(name = "Month") +
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26),
+        legend.title = element_text(size = 26),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(1, 'cm'))
 ggsave(filename = "STEC_long_plot.png",
        plot = STEC_long_plot,
        path = "../../figures/",
@@ -163,7 +169,7 @@ ggsave(filename = "Compare_stateOfTheArt_STEC.png",
        path = "../../figures/",
        device = png,
        width = 16,
-       height = 12,
+       height = 14,
        units = "in",
        dpi = "print")
 
@@ -395,13 +401,15 @@ Compare_novel <- STEC_novel %>%
   scale_colour_manual(values = dtuPalette) +
   scale_shape_manual(values = c(1,19)) +
   guides(colour = "none", shape = "none") +
-  theme(strip.text = element_text(size = 20))
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26))
 ggsave(filename = "Compare_novel_STEC.png",
        plot = Compare_novel,
        path = "../../figures/",
        device = png,
        width = 16,
-       height = 12,
+       height = 14,
        units = "in",
        dpi = "print")  
 
@@ -471,7 +479,11 @@ STEC_novel_par_ageGroup <- STEC_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(beta)[i])) +
   scale_x_date(name = "Month") +
-  theme(strip.text = element_text(size = 20))
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 28),
+        legend.title = element_text(size = 28),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
 ggsave(filename = "STEC_novel_par_ageGroup.png",
        plot = STEC_novel_par_ageGroup,
        path = "../../figures/",
@@ -491,7 +503,11 @@ STEC_novel_par_trend <- STEC_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(beta)[i])) +
   scale_x_date(name = "Month") +
-  theme(strip.text = element_text(size = 20))
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 28),
+        legend.title = element_text(size = 28),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
 ggsave(filename = "STEC_novel_par_trend.png",
        plot = STEC_novel_par_trend,
        path = "../../figures/",
@@ -511,7 +527,11 @@ STEC_novel_par_seasonality <- STEC_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(beta)[i])) +
   scale_x_date(name = "Month") +
-  theme(strip.text = element_text(size = 20))
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 28),
+        legend.title = element_text(size = 28),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
 ggsave(filename = "STEC_novel_par_seasonality.png",
        plot = STEC_novel_par_seasonality,
        path = "../../figures/",
@@ -532,7 +552,11 @@ STEC_novel_par_dispersion <- STEC_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(Psi))) +
   scale_x_date(name = "Month") +
-  theme(strip.text = element_text(size = 20))
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 28),
+        legend.title = element_text(size = 28),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
 ggsave(filename = "STEC_novel_par_dispersion.png",
        plot = STEC_novel_par_dispersion,
        path = "../../figures/",
@@ -552,12 +576,14 @@ STEC_SSI_outbreaks <- SSI_outbreaks %>%
   arrange(desc(Start)) %>%
   mutate(outbreak_no = row_number()) %>%
   ggplot() +
-  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), linewidth = 1.2, colour = dtuPalette[6]) +
-  geom_point(mapping = aes(x = Start, y = outbreak_no), pch = 17, size = 3, colour = dtuPalette[6]) +
+  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), linewidth = 2, colour = dtuPalette[6]) +
+  geom_point(mapping = aes(x = Start, y = outbreak_no), pch = 17, size = 5, colour = dtuPalette[6]) +
   scale_x_date(name = "Date", limits = c(as.Date(c("2008-01-01", "2022-12-01")))) +
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank(),
-        axis.ticks.y = element_blank())
+        axis.ticks.y = element_blank(),
+        axis.title.x = element_text(size = 26),
+        axis.text.x = element_text(size = 24))
 ggsave(filename = "STEC_SSI_outbreaks.png",
        plot = STEC_SSI_outbreaks,
        path = "../../figures/",
@@ -593,7 +619,10 @@ Compare_alarms <- STEC_compare %>%
   scale_y_discrete(limits = rev(levels(STEC_compare$method))) +
   scale_x_date(name = "Date") +
   guides(colour = "none") +
-  theme(axis.title.y = element_blank(),
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26),
+        axis.title.y = element_blank(),
         panel.spacing.x = unit(2.67, "lines"))
 ggsave(filename = "Compare_alarms_STEC.png",
        plot = Compare_alarms,

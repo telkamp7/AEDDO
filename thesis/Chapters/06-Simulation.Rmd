@@ -1,8 +1,8 @@
 \chapter{Simulation study}
 
-In this chapter, a simulation study is conducted to evaluate the performance of the novel outbreak detection algorithm compared to state-of-the-art algorithms. The simulations cover various scenarios, adapted from the study by @Noufaily_2013. However, for the purpose of this master thesis, the focus is not on diseases with bi-annual seasonality. Therefore, the scenarios involving bi-annual seasonality are excluded from the simulation study.
+In this chapter, a simulation study is conducted to evaluate the performance of the novel outbreak detection algorithm compared to state-of-the-art algorithms. The simulations cover various scenarios, adapted from the study by @Noufaily_2013. 
 
-The chapter begins by describing the method used to simulate the baseline data. These data are generated using a negative binomial model with a time-dependent mean $\mu(t)$. Next, the assumptions regarding the simulated outbreaks are outlined, including the outbreak size and distribution in time.
+The chapter begins by describing the method used to simulate the baseline data. These data are generated using a Negative Binomial model with a time-dependent mean $\mu(t)$. Next, the assumptions regarding the simulated outbreaks are outlined, including the outbreak size and distribution in time.
 
 The evaluation measures used to assess the performance of the outbreak detection algorithms are then presented. These measures are designed to capture relevant quantities in the context of outbreak detection.
 
@@ -10,7 +10,7 @@ Finally, the chapter presents the results of applying both the state-of-the-art 
 
 \section{The simulated baseline data}
 
-The simulated baseline data is generated using a negative binomial model with a mean parameter $\mu$ and a variance parameter $\phi\mu$. The dispersion parameter $\phi$ is assumed to be greater than or equal to 1. The mean $\mu(t)$ is defined by a linear predictor that includes a trend component and a seasonality component represented by Fourier terms.
+The simulated baseline data is generated using a Negative Binomial model with a mean parameter $\mu$ and a variance parameter $\phi\mu$. The dispersion parameter $\phi$ is assumed to be greater than or equal to 1. The mean $\mu(t)$ is defined by a linear predictor that includes a trend component and a seasonality component represented by Fourier terms.
 
 The equation for $\mu(t)$ is given as:
 
@@ -43,9 +43,9 @@ The simulation results are based on the test weeks of all the replicates, totali
 
 \section{The simulated outbreaks}
 
-The outbreaks starting in week $t_i$ are simulated using the following procedure. First, a constant value $k$ is chosen at random. The size of the outbreak, denoted as $n$, is then generated randomly from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline count in that scenario.
+The outbreaks starting in week $t_i$ are simulated using the following procedure. First, a constant value $k$ is chosen at random. The size of the outbreak, denoted as $v$, is then generated randomly from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline count in that scenario.
 
-Next, the outbreak is distributed randomly in time according to a discretized log-normal distribution with a mean of $0$ and a standard deviation of $0.5$, represented as $Z \sim \lfloor \LN(0,0.5^2)\rfloor$. This is achieved by drawing $n$ random numbers, which correspond to the outbreak size, from the specified log-normal distribution and then rounding down these numbers to the nearest integer.
+Next, the outbreak is distributed randomly in time according to a discretized log-normal distribution with a mean of $0$ and a standard deviation of $0.5$, represented as $Z \sim \lfloor \LN(0,0.5^2)\rfloor$. This is achieved by drawing $v$ random numbers, which correspond to the outbreak size, from the specified log-normal distribution and then rounding down these numbers to the nearest integer.
 
 The probability mass function for the discretized log-normal distribution is visualized in Figure \@ref(fig:PDFLogNormal).
 
@@ -62,8 +62,8 @@ Typically, outbreak durations of 2-4 weeks are observed when values of $k$ are i
 To simulate outbreaks, the following procedure is followed:
 
 \begin{itemize} 
-\item \textbf{Outbreaks in baseline weeks.} For each data series, four outbreaks are generated. The start time of each outbreak is randomly selected from the baseline weeks (weeks 313-575). The value of $k$ is sampled randomly with replacement from the set $\{2, 3, 5, 10\}$. It should be noted that different outbreaks are generated for each of the 2800 runs.
-\item \textbf{Outbreaks in current weeks.} For each data series, one outbreak is generated. The start time of the outbreak is randomly chosen from the last 49 weeks (weeks 576-624). The value of $k$ is sampled randomly in the range of 1 to 10. Similar to the previous case, different outbreaks are generated for each of the 2800 runs.
+\item \textbf{Outbreaks in baseline weeks:} For each data series, four outbreaks are generated. The start time of each outbreak is randomly selected from the baseline weeks (weeks 313-575). The value of $k$ is sampled randomly with replacement from the set $\{2, 3, 5, 10\}$. It should be noted that different outbreaks are generated for each of the 2800 runs.
+\item \textbf{Outbreaks in current weeks:} For each data series, one outbreak is generated. The start time of the outbreak is randomly chosen from the last 49 weeks (weeks 576-624). The value of $k$ is sampled randomly in the range of 1 to 10. Similar to the previous case, different outbreaks are generated for each of the 2800 runs.
 \end{itemize}
 
 One randomly chosen realization for scenario 8, 12, 13, and 20 are visualized in Figure \@ref(fig:Realizations).
@@ -82,7 +82,7 @@ To evaluate the performance of the outbreak detection system in the absence and 
 
 In the absence of outbreaks in the data, one of the primary measures used is the \gls{FPR}. This is calculated for each of the 28 scenarios, before the addition of the simulated outbreaks to the baseline data. The \gls{FPR} is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold in the absence of any simulated outbreaks.
 
-Another measure is the \gls{POD} of an outbreak, also known as power. Likewise, this is calculated for each of the 28 scenarios, but this time it is in the presence of the simulated outbreaks. The algorithm is applied iteratively for the 49 current weeks, and an outbreak is considered detected if the observed value exceeds the threshold at least once within the start and end times of the outbreak. The \gls{POD} of an outbreak is then determined as the proportion of outbreaks detected out of the 100 runs.
+Another measure is the \gls{POD} of an outbreak. Likewise, this is calculated for each of the 28 scenarios, but this time it is in the presence of the simulated outbreaks. The algorithm is applied iteratively for the 49 current weeks, and an outbreak is considered detected if the observed value exceeds the threshold at least once within the start and end times of the outbreak. The \gls{POD} of an outbreak is then determined as the proportion of outbreaks detected out of the 100 runs.
 
 It is important to note that the \gls{FPR} is a rate per week, while the \gls{POD} is a rate per realization. These evaluation measures are chosen because they provide insights into the performance of the detection system on individual time series.
 
@@ -130,7 +130,7 @@ knitr::include_graphics("../figures/FPRPlot.png")
 
 \subsubsection{Probability an outbreak is detected}
 
-As expected, the \gls{POD} of an outbreak increases with the size of $k$. Intuitively, when the outbreak size $n$ is larger, it becomes more likely to be detected by the outbreak detection algorithms. In Table \@ref(tab:PODTbl), it is evident that the Farrington method performs very well in terms of \gls{POD}, closely followed by the novel method using both modeling frameworks. Moreover, it can be seen that the Noufaily method is outperformed by the other, with respect to \gls{POD}. 
+As expected, the \gls{POD} of an outbreak increases with the size of $k$. Intuitively, when the outbreak size $v$ is larger, it becomes more likely to be detected by the outbreak detection algorithms. In Table \@ref(tab:PODTbl), it is evident that the Farrington method performs very well in terms of \gls{POD}, closely followed by the novel method using either modeling framework. Moreover, it can be seen that the Noufaily method is outperformed by the other methods, w.r.t. \gls{POD}. 
 
 The high performance of the Farrington method can be attributed to its sensitivity in detecting outbreaks. Similarly, the novel method utilizing both modeling frameworks demonstrates its effectiveness in detecting outbreaks of varying sizes.
 
@@ -148,17 +148,17 @@ POD %>%
 
 In Figure \@ref(fig:PropDetect), the variability in \glspl{POD} of outbreaks can be observed across the 28 scenarios. The level of variability in \gls{POD} is generally low when the outbreak size factor $k$ is set to 1, indicating that only a few outbreaks are detected in these scenarios. Similarly, when $k$ is set to 10, indicating that almost all outbreaks are detected, the variability in \gls{POD} is also low.
 
-On the other hand, the variability in \gls{POD} across the scenarios is highest when $k$ is set to 5, indicating that around half of the outbreaks are detected. In these scenarios, the detection of outbreaks becomes more uncertain, resulting in higher variability in the performance of the outbreak detection methods.
+On the other hand, the variability in \gls{POD} across the scenarios is highest when $k$ is set to 5, and around $75\%$ of the outbreaks are detected.
 
-(ref:PropDetect) \gls{POD} of an outbreak of size $k$ times the standard deviations of the baseline data. The \gls{POD} for each scenario is plotted along with the median curves (bold) across all 28 scenarios.
+(ref:PropDetect) \gls{POD} of an outbreak of a random size $v$ drawn from a Poisson distribution withmean equal to $k$ times the standard deviations of the baseline data. The x-axis shows increasing values of $k$. The \gls{POD} for each scenario is plotted along with the median curves (bold) across all 28 scenarios.
 
 ```{r PropDetect, echo=FALSE, out.width="100%", fig.cap="(ref:PropDetect)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/PropDetect.png")
 ```
 
-It is important to bear in mind that an outbreak of size $n$ is randomly distributed in time according to a discretized log-normal distribution with a mean of $0$ and a standard deviation of $0.5$, denoted as $Z \sim \lfloor \LN(0,0.5^2)\rfloor$. The probability mass function of $Z$ is shown in Figure \@ref(fig:PDFLogNormal). From the figure, it can be observed that $50\%$ of the outbreak cases are added to the same week as the outbreak starts, $42\%$ are added to the following week, and only $7\%$ are added two weeks after the start. Therefore, the simulated outbreak cases are not observed in a single week only but rather in several concurrent weeks.
+It is important to bear in mind that an outbreak of size $v$ is randomly distributed in time according to a discretized log-normal distribution with a mean of $0$ and a standard deviation of $0.5$, denoted as $Z \sim \lfloor \LN(0,0.5^2)\rfloor$. The probability mass function of $Z$ is shown in Figure \@ref(fig:PDFLogNormal). From the figure, it can be observed that $50\%$ of the outbreak cases are added to the same week as the outbreak starts, $42\%$ are added to the following week, and only $7\%$ are added two weeks after the start. Therefore, the simulated outbreak cases are not observed in a single week only but rather in several concurrent weeks.
 
-Consequently, this means that an outbreak of size $n$ generated from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline series is perceived to be relatively smaller than initially perceived in the simulation setup. For example, an outbreak of size $k=4$ times the standard deviation may only be perceived as an outbreak of size $2$ times the standard deviation in an individual week.
+Consequently, an outbreak of size $v$ generated from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline series is perceived to be relatively smaller than initially perceived in the simulation setup. For example, an outbreak of size $k=4$ times the standard deviation may only be perceived as an outbreak signal of size $2$ times the standard deviation in an individual week.
 
 
 \cleardoublepage

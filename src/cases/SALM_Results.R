@@ -59,7 +59,13 @@ SALM_long_plot <- SALM %>%
   geom_bar(position = "stack", stat = "identity") + 
   scale_fill_manual(name = "Age group", values = dtuPalette) +
   scale_y_continuous(name = "Number of cases") +
-  scale_x_date(name = "Month")
+  scale_x_date(name = "Month") +
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26),
+        legend.title = element_text(size = 26),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(1, 'cm'))
 ggsave(filename = "SALM_long_plot.png",
        plot = SALM_long_plot,
        path = "../../figures/",
@@ -159,16 +165,16 @@ Compare_stateOfTheArt_SALM <- Compare_stateOfTheArt_SALM_dat %>%
   scale_fill_manual(values = dtuPalette) +
   scale_alpha_manual(values = c(0.3, 1)) +
   guides(fill = "none", alpha = "none") +
-  theme(panel.spacing.y = unit(1, "lines"), 
-        # axis.ticks.x = element_blank(),
-        axis.text.x = element_text(vjust = -1.2)) +
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26)) +
   annotate(geom = "rect", xmin = as.Date("2008-01-01")-10, xmax = as.Date("2011-03-01"), ymin = -Inf, ymax = Inf, alpha = 0.2)
 ggsave(filename = "Compare_stateOfTheArt_SALM.png",
        plot = Compare_stateOfTheArt_SALM,
        path = "../../figures/",
        device = png,
        width = 16,
-       height = 12,
+       height = 14,
        units = "in",
        dpi = "print")
 
@@ -182,12 +188,14 @@ SALM_SSI_outbreaks <- SSI_outbreaks %>%
   arrange(desc(Start)) %>%
   mutate(outbreak_no = row_number()) %>%
   ggplot() +
-  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), linewidth = 1.2, colour = dtuPalette[5]) +
-  geom_point(mapping = aes(x = Start, y = outbreak_no), pch = 17, size = 3,colour = dtuPalette[5]) +
+  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), linewidth = 2, colour = dtuPalette[5]) +
+  geom_point(mapping = aes(x = Start, y = outbreak_no), pch = 17, size = 5, colour = dtuPalette[5]) +
   scale_x_date(name = "Date", limits = c(as.Date(c("2008-01-01", "2022-12-01")))) +
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank(),
-        axis.ticks.y = element_blank())
+        axis.ticks.y = element_blank(),
+        axis.title.x = element_text(size = 26),
+        axis.text.x = element_text(size = 24))
 ggsave(filename = "SALM_SSI_outbreaks.png",
        plot = SALM_SSI_outbreaks,
        path = "../../figures/",
@@ -333,13 +341,15 @@ Compare_novel <- SALM_novel %>%
   scale_colour_manual(values = dtuPalette) +
   scale_shape_manual(values = c(1,19)) +
   guides(colour = "none", shape = "none") +
-  theme(strip.text = element_text(size = 20))
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26))
 ggsave(filename = "Compare_novel_SALM.png",
        plot = Compare_novel,
        path = "../../figures/",
        device = png,
        width = 16,
-       height = 12,
+       height = 14,
        units = "in",
        dpi = "print")  
 
@@ -552,7 +562,10 @@ Compare_alarms <- SALM_compare %>%
   scale_y_discrete(limits = rev(levels(SALM_compare$method))) +
   scale_x_date(name = "Date") +
   guides(colour = "none") +
-  theme(axis.title.y = element_blank(),
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26),
+        axis.title.y = element_blank(),
         panel.spacing.x = unit(2.67, "lines"))
 ggsave(filename = "Compare_alarms_SALM.png",
        plot = Compare_alarms,
@@ -587,7 +600,9 @@ handle_alarms <- SALM_PoisN_ageGroup_trend_seasonality %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = "Effective number of observations") +
   guides(colour = "none") +
-  theme(strip.text = element_text(size = 20))
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26))
 ggsave(filename = "handle_alarms.png",
        plot = handle_alarms,
        path = "../../figures/",

@@ -1,10 +1,10 @@
 \chapter{Surveillance data in Denmark}\label{Dataset}
 
-This chapter delves into the data collection methods and quality assurance procedures within the Danish surveillance system. Moreover, it introduces the case studies selected for this master thesis, which include: \glsfirst{LIST}, \glsfirst{SHIL}, \glsfirst{STEC}, and \glsfirst{SALM}. The epidemiological background of the diseases, along with notable outbreaks in the period from 2008 to 2022, is presented
+This chapter delves into the data collection methods and quality assurance procedures within the Danish surveillance system. Moreover, it introduces the case studies selected for this master thesis, which include \glsfirst{LIST}, \glsfirst{SHIL}, \glsfirst{STEC}, and \glsfirst{SALM}. The epidemiological background of the diseases, along with notable outbreaks investigated and documented by \glsfirst{SSI} in the period from 2008 to 2022, is presented
 
 \section{Data collection and data quality}
 
-In Denmark, the surveillance of infectious diseases is conducted by \glsfirst{SSI}. This surveillance system plays a pivotal role in national and international disease preparedness. It encompasses more than just the collection and registration of disease data; it also involves the prompt and ongoing dissemination of knowledge to the relevant authorities responsible for treatment, prevention, and control. This comprehensive approach ensures efficient communication and facilitates appropriate measures to address infectious diseases. 
+In Denmark, the surveillance of infectious diseases is conducted by \gls{SSI}. This surveillance system plays a pivotal role in national and international disease preparedness. It encompasses more than just the collection and registration of disease data; it also involves the prompt and ongoing dissemination of knowledge to the relevant authorities responsible for treatment, prevention, and control. This comprehensive approach ensures efficient communication and facilitates appropriate measures to address infectious diseases. 
 
 The quality of the Danish surveillance registers is maintained at a high standard, thanks to The National Board of Health Statutory Order on Physicians' Notification of Infectious Diseases (\href{https://www.retsinformation.dk/eli/lta/2000/277}{\nolinkurl{https://www.retsinformation.dk/eli/lta/2000/277}}). This order specifies that several diseases\footnote{For a full list of diseases see \href{https://www.ssi.dk/sygdomme-beredskab-og-forskning/anmeldelse-af-sygdomme/lovpligtige-meldesystemer/individ_anmeldelses_sygdomme}{\nolinkurl{https://www.ssi.dk/sygdomme-beredskab-og-forskning/anmeldelse-af-sygdomme/lovpligtige-meldesystemer/individ_anmeldelses_sygdomme}}} are individually notifiable by physicians and general practitioners. Notifications consist of essential patient information and are submitted in paper form to both the Ministry of Health and to \gls{SSI}. This rigorous notification process ensures accurate and comprehensive data collection for disease surveillance purposes in Denmark. 
 In addition to the individually notifiable diseases, \gls{SSI} has implemented a laboratory notification system for numerous microorganisms. Clinical-microbiological laboratories are obligated to report the identification of specific microorganisms, along with relevant patient information. These data are then stored in \glsfirst{MiBa} [@Voldstedlund_2014]. 
@@ -13,17 +13,17 @@ In addition to the individually notifiable diseases, \gls{SSI} has implemented a
 
 \section{Introducing the case studies}
 
-For the scope of this master thesis, only a specific subset of diseases from the mandatory notification system is considered. This subset consists of \gls{LIST}, \gls{SHIL}, \gls{STEC}, and \gls{SALM}. These diseases have been chosen for analysis and investigation based on various factors, such as seasonality, incidence, and severity. Additionally, these diseases have been associated with documented outbreaks investigated by \gls{SSI} in the past decade, which adds to their relevance for the study. For a full overview over the food- and waterborne disease outbreaks reported in \gls{FUD}, refer to Table \@ref(tab:FUD).
+For the scope of this master thesis, only a specific subset of diseases from the mandatory notification system is considered. This subset consists of \gls{LIST}, \gls{SHIL}, \gls{STEC}, and \gls{SALM}. These diseases have been chosen for analysis and investigation based on various characteristics, such as seasonality, incidence, and severity. Additionally, these diseases are associated with documented outbreaks investigated and documented by \gls{SSI} in the past decade, which adds to their relevance for the study. However, not all outbreaks are equally documented. Thus, for a full overview over the disease clusters reported in \gls{FUD}, refer to Table \@ref(tab:FUD). For visualization purposes, this figure only includes data from 2012 to 2022.
 
 The count observations are observed in the period from January 2008 to December 2022. An epidemic curve graph for selection of the data for each of the diseases considered in this thesis is shown in Figure \ref{fig:EpiPlot}.
 
-(ref:EpiPlot) Epidemic curve showing the incidence per 100,000 in Denmark, 2012-2022, for the subset of diseases considered in this master thesis. \textbf{(a)} \gls{LIST}, \textbf{(b)} \gls{SHIL}, \textbf{(c)} \gls{STEC}, and \textbf{(d)} \gls{SALM}
+(ref:EpiPlot) Epidemic curve showing the incidence per 100,000 in Denmark, 2012-2022, for the subset of diseases considered in this master thesis. \textbf{(a)} \gls{LIST}, \textbf{(b)} \gls{SHIL}, \textbf{(c)} \gls{STEC}, and \textbf{(d)} \gls{SALM}.
 
 ```{r EpiPlot, echo=FALSE, out.width="100%", fig.cap="(ref:EpiPlot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/EpiPlot.png")
 ```
 
-Evidently, the subset of diseases in Figure \@ref(fig:EpiPlot) exhibits varying incidences and different levels of seasonal patterns on an annual basis. It is interesting to note that the incidences peak in August, which can be attributed to several factors, including:
+Evidently, the subset of diseases in Figure \@ref(fig:EpiPlot) exhibits varying incidences and different levels of seasonal patterns on an annual basis. It is interesting to note that the incidences generally peak in August, which can be attributed to several factors, including:
 
 \begin{itemize}
 \item \textbf{Increased travel activity:} Especially when individuals travel to countries with unsafe drinking water, poor sanitation, and insufficient hygiene practices.
@@ -38,7 +38,7 @@ From Figure \@ref(fig:EpiPlot)a, it is evident that the incidence of \gls{LIST} 
 
 In Figure \@ref(fig:EpiPlot)b, the incidence of the \gls{SHIL} exhibits a consistent pattern over the years, with sporadic peaks occurring in the time series. Notable examples include a peak in August 2015, where the incidence reaches its highest level in the entire series. Additionally, January of 2016 stands out compared to other years. From the series alone, it is not evident whether there is a significant seasonality in the data. Another interesting observation is the substantial increase in incidence during August and September 2020 compared to the period leading up to these months.
 
-Furthermore, in Figure \@ref(fig:EpiPlot)c, a significant increase in the amplitude of the seasonal variation in \gls{STEC} can be observed starting from 2018, with incidences doubling compared to the preceding years. At a first glance, this increase in the incidences might be recognized as a serious, reoccurring outbreak of the disease, but a more reasonable explanation can be found. Up to 2018, most departments of clinical microbiology used culture-based methods as a diagnostic test for bacterial pathogens and the process of changing the test method to \gls{PCR} methods was ongoing [@Svendsen_2023]. In general, \gls{PCR} resulted in higher incidences compared to other test methods, which is to no surprise as higher sensitivity is well documented for \gls{PCR} [@Buss_2015; @Knabl_2016].
+Furthermore, in Figure \@ref(fig:EpiPlot)c, a notable increase in the amplitude of the seasonal variation in \gls{STEC} can be observed starting from 2018, with incidences doubling compared to the preceding years. At a first glance, this increase in the incidences might be recognized as a serious, reoccurring outbreak of the disease, but a more reasonable explanation can be found. Up to 2018, most departments of clinical microbiology used culture-based methods as a diagnostic test for bacterial pathogens and the process of changing the test method to \gls{PCR} methods was ongoing [@Svendsen_2023]. In general, \gls{PCR} resulted in higher incidences compared to other test methods, which is to no surprise as higher sensitivity is well documented for \gls{PCR} [@Buss_2015; @Knabl_2016].
 
 Overall, the highest incidences among the diseases considered in this thesis are observed for \gls{SALM} in Figure \@ref(fig:EpiPlot)d. \gls{SALM} exhibits a notable pattern of high incidence throughout the observed period. However, there is a significant drop in incidences observed in 2020, which is consistent with the impact of the \gls{COVID-19} pandemic on disease surveillance and reporting. Additionally, 2021 shows generally lower incidences compared to previous years.
 
@@ -61,7 +61,7 @@ inline_plot %>%
 
 ```
 
-In Table \@ref(tab:summaryStat), it is readily seen that the diseases exhibit different statistical properties, including variations in mean incidence, standard deviation, and range. These variations indicate that each disease has its own unique epidemiological characteristics.
+In Table \@ref(tab:summaryStat), it is readily seen that the diseases exhibit different statistical properties, including variations in mean number of monthly cases, standard deviation, and range. These variations indicate that each disease has its own unique epidemiological characteristics.
 
 From an epidemiological perspective, all the diseases within the selected subset pose a significant risk of infection and can vary in terms of severity for affected individuals. Therefore, early identification of disease outbreaks is of utmost importance in order to promptly implement necessary interventions. Timely detection allows for swift and targeted actions to control the spread of these diseases and mitigate their impact on public health.
 
@@ -71,7 +71,9 @@ From an epidemiological perspective, all the diseases within the selected subset
 
 This disease primarily affects pregnant women, unborn or newborn babies, the elderly, and individuals with weakened immune systems. The disease is associated with high mortality [@Goulet_2012] and manifests in three ways: sepsis, meningitis, and mother-to-child transmission. Pregnancy-associated listeria can have severe consequences for the fetus or newborn, including miscarriage, stillbirth, neonatal sepsis, and meningitis [@Awofisayo_2015]. \gls{LIST} is uncommon among individuals in other demographic groups.
 
-(ref:LISTLongPlot) A stacked bar graph illustrating the number of \gls{LIST} cases observed in the period from 2008 to 2022 for the age groups below and above 65 years.
+In 2014, \glsfirst{WGS} was employed by \gls{SSI} as the routine testing of \textit{Listeria} isolates in Denmark [@Wingstrand_2015]. This method involves mapping the entire DNA of the bacteria and enables \gls{SSI} to identify cases where patients are infected with identical \textit{Listeria} bacteria. However, it is important to note that for this thesis, the DNA typing data is unavailable for use.
+
+(ref:LISTLongPlot) A stacked bar graph illustrating the number of monthly \gls{LIST} cases observed in the period from 2008 to 2022 for the age groups below 65 years and 65 years and above.
 
 ```{r LISTLongPlot, echo=FALSE, out.width="100%", fig.cap="(ref:LISTLongPlot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/LIST_long_plot.png")
@@ -79,15 +81,13 @@ knitr::include_graphics("../figures/LIST_long_plot.png")
 
 The first notified outbreak in the 20th century occurred in 2009 [@Smith_2011]. This outbreak affected 8 people, of which two died. The patient samples were isolated between the 6th and 11th of May and it was believed that the cause was infected beef meat from a meals-on-wheels delivery.
 
-In 2014, \glsfirst{WGS} was employed by \gls{SSI} as the routine testing of \textit{Listeria} isolates in Denmark [@Wingstrand_2015]. This method involves mapping the entire DNA of the bacteria and enables \gls{SSI} to identify cases where patients are infected with identical \textit{Listeria} bacteria. However, it is important to note that for this thesis, the DNA typing data is unavailable for use.
-
-A notable outbreak investigated by \gls{SSI} occurred between September 2013 and October 2014 [@Kvistholm_2016]. This \gls{LIST} outbreak involved a total of 41 cases, resulting in 17 deaths. Deli meat products from a specific company were identified as the source of the outbreak. The high mortality rate may be attributed to the consumption of these products in nursing homes and hospitals, where patients are more vulnerable. Following the discovery of \textit{Listeria} at the facility, the \gls{DVFA} recalled all products from the company. Following the outbreak, a series of control activities and research project were initiated to improve the control and management of \textit{Listeria} in the food production [@Takeuchi_2023].
+A notable outbreak investigated by \gls{SSI} occurred between September 2013 and October 2014 [@Kvistholm_2016]. This \gls{LIST} outbreak involved a total of 41 cases, resulting in 17 deaths. Deli meat products from a specific company were identified as the source of the outbreak. The high mortality rate in this outbreak may be attributed to the consumption of these products in nursing homes and hospitals, where patients are more vulnerable. Following the discovery of \textit{Listeria} at a producetion facility, the \gls{DVFA} recalled all products from the company. Following the outbreak, a series of control activities and research project were initiated to improve the control and management of \textit{Listeria} in food production [@Takeuchi_2023].
 
 In another \gls{LIST} outbreak investigated by \gls{SSI}, the source was traced back to cold-smoked and cured salmon products [@Schjorring_2017]. A total of 5 related cases were identified, with 4 of them occurring in August 2017, and the fifth case in May 2017. 
 
 In some cases, despite extensive investigations, the source of contamination in an outbreak cannot always be identified. Such was the case in an unresolved outbreak that took place between the 13th of May and the 6th of June, 2022. During this period, a total of nine cases were infected with the same type of \textit{Listeria}, with the majority of affected patients located in the Capital Region of Denmark. Despite thorough efforts, the specific source of contamination remained unknown.
 
-Early identification of outbreaks caused by \textit{Listeria monocytogenes} is crucial to implement timely interventions and mitigate the impact of the disease. Otherwise, these outbreaks can persist over an extended period. \gls{SSI} has successfully resolved several long-spanned outbreaks in the last decade. For example, one investigation revealed that a single outbreak was actually two simultaneous outbreaks caused by the consumption of smoked fish. Each outbreak consisted of ten cases and spanned from May 2013 to July 2015 [@Gillesberg_2016]. 
+Early identification of outbreaks caused by \textit{Listeria monocytogenes} is crucial to implement timely interventions and mitigate the impact of the disease. Otherwise, these outbreaks can persist over an extended period. \gls{SSI} has successfully resolved several long-spanned outbreaks in the last decade. For example, one investigation revealed that a single outbreak was actually two simultaneous outbreaks both caused by the consumption of smoked fish. Each outbreak consisted of ten cases and spanned from May 2013 to July 2015 [@Gillesberg_2016]. 
 
 Other documented [@Helwigh_2018; @Helwigh_2020; @Lassen_2023] long-spanned outbreaks investigated by \gls{SSI} include: 
 
@@ -100,35 +100,37 @@ Other documented [@Helwigh_2018; @Helwigh_2020; @Lassen_2023] long-spanned outbr
 
 The use of \gls{WGS} in these outbreaks provided the ability to link cases that occurred over a period of years and revealed that they were, in fact, continuous-source outbreaks.
 
-In a recent outbreak investigated by \gls{SSI}, \gls{DVFA}, and the National Food Institute at the \gls{DTU}, fish patties were identified as the source of contamination. This outbreak occurred from August 2022 to December 2022 and affected a total of 11 cases [@Lassen_2023].
+In a recent outbreak investigated by \gls{SSI}, \gls{DVFA}, and the National Food Institute at the \gls{DTU}, fish patties were identified as the source of contamination. This outbreak occurred from August 2022 to December 2022 and affected a total of 11 cases [@Lassen_2023]. In Figure \@ref(fig:LISTSSIoutbreaks) a timeline plot indicating the start and duration of outbreaks investigated and documented by \gls{SSI} is visualized.
 
-(ref:LISTSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of \gls{LIST} by \gls{SSI} and possible collaborators. Time of detection (circle) is indicated when the information is available.
+(ref:LISTSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of \gls{LIST} by \gls{SSI}. Time of detection (circle) is indicated when the information is available.
 
 ```{r LISTSSIoutbreaks, echo=FALSE, out.width="100%", fig.cap="(ref:LISTSSIoutbreaks)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/LIST_SSI_outbreaks.png")
 ```
 
+Evidently, the figure shows that many of the \gls{LIST} outbreaks are long-spanned and overlap each other. 
+
 \subsection{Epidemiological background and notable outbreaks of \textit{Shiggellosis}}
 
-\glsfirst{SHIL} is a diarrheal illness that is caused by a group of bacteria called \textit{Shigella}. There are four types of \textit{Shigella} bacteria, namely: \textit{Shigella dysenteriae}, \textit{Shigella boydii}, \textit{Shigella flexneri}, and \textit{Shigella sonnei}. The latter is the most common species in Denmark. For surveillance purposes, it is generally preferred to consider data from the laboratory notification systems, as it includes information about the specific type of \textit{Shigella} bacteria. However, for the purpose of this thesis, all four types of \textit{Shigella} bacteria are analyzed collectively, regardless of the availability of type-specific information in the data.
+\glsfirst{SHIL} is a diarrheal illness that is caused by a group of bacteria called \textit{Shigella}. There are four types of \textit{Shigella} bacteria, namely: \textit{Shigella dysenteriae}, \textit{Shigella boydii}, \textit{Shigella flexneri}, and \textit{Shigella sonnei}. The latter is the most common species in Denmark. 
 
 The bacteria are highly contagious and can be transmitted through direct person-to-person contact, consumption of contaminated food, or ingestion of water contaminated with human feces. \gls{SHIL} infections are most commonly observed in children under the age of 5, individuals traveling to regions with poor sanitation and unsafe water and food practices, as well as gay, bisexual, and other men who have sex with men. 
 
-(ref:SHIGLongPlot) A stacked bar graph illustrating the number of \gls{SHIL} cases observed in the period from 2008 to 2022 for the age groups below and above 25 years.
+(ref:SHILlongplot) A stacked bar graph illustrating the number of monthly \gls{SHIL} cases observed in the period from 2008 to 2022 for the age groups below 25 years and 25 years and above.
 
-```{r SHIGLongPlot, echo=FALSE, out.width="100%", fig.cap="(ref:SHIGLongPlot)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/SHIG_long_plot.png")
+```{r SHILlongplot, echo=FALSE, out.width="100%", fig.cap="(ref:SHILlongplot)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/SHIL_long_plot.png")
 ```
 
 In Denmark, another significant cause of \gls{SHIL} outbreaks is the importation of contaminated vegetables. This was evident in several incidents, including a 2007 outbreak where 215 individuals fell ill after consuming imported contaminated baby corn [@Lewis_2009], a smaller outbreak in 2009 linked to sugar snap peas from Kenya [@Muller_2009], and a 2020 outbreak associated with fresh mint as the source of infection [@Helwigh_2020]. 
 
-The 2020 outbreak is indeed a significant focus of this study, as it serves as a benchmark for evaluating the effectiveness of outbreak detection algorithms. It took place from the 22nd of August to the 9th of September and was investigated by \gls{SSI} in collaboration with the \gls{DVFA} and the National Food Institute at \gls{DTU} The outbreak affected 44 patients, mainly concentrated in the Capital Region of Denmark. The investigation identified at least five events where individuals subsequently developed \gls{SHIL}. 
+The 2020 outbreak is indeed a significant focus of this study, as it serves as a benchmark for evaluating the effectiveness of outbreak detection algorithms. It took place from the 22nd of August to the 9th of September and was investigated by \gls{SSI} in collaboration with the \gls{DVFA} and the National Food Institute at \gls{DTU} The outbreak affected 44 patients, mainly concentrated in the Capital Region of Denmark. The investigation identified at least five independent events where individuals subsequently developed \gls{SHIL}. 
 
 \subsection{Epidemiological background and notable outbreaks of Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
 
 \glsfirst{STEC} primarily spreads through contaminated food. Less common sources of infection include contaminated drinking and bathing water, as well as direct or indirect contact with infected animals. Cattle and other ruminants are primary reservoirs for \gls{STEC} serotypes that are frequently associated with human disease [@Menge_2020]. Therefore, in Denmark, the source of infection is often products derived from beef, non-heat-treated dairy products, or other foods such as ready-to-eat vegetables, leafy greens, vegetable sprouts, and berries contaminated with feces from cows. \gls{HUS} is a severe complication that, in some cases, particularly in children, can develop following an infection with \gls{STEC}.
 
-(ref:STECLongPlot) A stacked bar graph illustrating the number of STEC cases observed in the period from 2008 to 2022 for the six age groups.
+(ref:STECLongPlot) A stacked bar graph illustrating the number of monthly \gls{STEC} cases observed in the period from 2008 to 2022 for the six age groups.
 
 ```{r STECLongPlot, echo=FALSE, out.width="100%", fig.cap="(ref:STECLongPlot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/STEC_long_plot.png")
@@ -148,7 +150,7 @@ More recent outbreaks include a 38-case outbreak from September to November 2018
 
 \glsfirst{SALM} is a bacterial disease that primarily affects the intestinal tracts of humans. The \textit{Salmonella} bacteria are commonly found in the intestines of animals and humans and are excreted in feces. Human infection typically occurs through the consumption of contaminated food or water. \textit{Salmonella} infections are often associated with the consumption of raw or under cooked meat, poultry, eggs or egg products, as well as unpasteurized milk.  
 
-(ref:SALMLongPlot) A stacked bar graph illustrating the number of \gls{SALM} cases observed in the period from 2008 to 2022 for the six age groups.
+(ref:SALMLongPlot) A stacked bar graph illustrating the number of monthly \gls{SALM} cases observed in the period from 2008 to 2022 for the six age groups.
 
 ```{r SALMLongPlot, echo=FALSE, out.width="100%", fig.cap="(ref:SALMLongPlot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/SALM_long_plot.png")
@@ -156,7 +158,7 @@ knitr::include_graphics("../figures/SALM_long_plot.png")
 
 It is worth noting that an increasing proportion of infections in Denmark are now observed in connection with international travel, particularly since \textit{Salmonella} has been eliminated from commercial chicken flocks in Denmark, making Danish eggs and poultry meat free from the bacteria. However, imported meat products can still pose a risk of contamination.
 
-Also, numerous clusters of \gls{SALM} is reported to \gls{FUD} every year, and the disease remains a major public health issue. This was also evident in one of the longest lasting outbreaks with \textit{Salmonella}. A total of 172 cases were reported between March and September 2010 [@Kuhn_2013; @Helwigh_2010]. It is not feasible to describe all of the outbreaks in detail. However, for a full overview over the outbreaks reported to \gls{FUD}, refer to Table \@ref(tab:FUD). Also, Figure \@ref(fig:SALMSSIoutbreaks) shows a timeline plot for some of the outbreaks of \gls{SALM} documented by \gls{SSI} and possible collaborators.
+Numerous clusters of \gls{SALM} is reported to \gls{FUD} every year, and the disease remains a major public health issue. This was also evident in one of the longest lasting outbreaks with \textit{Salmonella}. A total of 172 cases were reported between March and September 2010 [@Kuhn_2013; @Helwigh_2010]. Multiple other outbreaks are investigated and well-documented by \gls{SSI}. However, it is not feasible to describe all of them in detail. For a full overview over the clusters of \gls{SALM} reported to \gls{FUD}, refer to Table \@ref(tab:FUD). Also, Figure \@ref(fig:SALMSSIoutbreaks) shows a timeline plot for some of the outbreaks of \gls{SALM} documented by \gls{SSI} and possible collaborators.
 
 (ref:SALMSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of \gls{SALM} by \gls{SSI} and possible collaborators.
 
