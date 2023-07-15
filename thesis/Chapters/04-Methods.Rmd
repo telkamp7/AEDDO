@@ -84,11 +84,11 @@ In the final step, the inferred random effect $\hat{u}_{i{t}_1}$ is compared to 
 
 The above algorithm is implemented in an R function, which can be accessed from the associated GitHub repository at \href{https://github.com/telkamp7/AEDDO/blob/main/src/models/aeddo.R}{src/models/aeddo.R}.
 
-\section{General mixed effects models}\label{GLMM}
+\section{Generalized mixed effects models}\label{GLMM}
 
 In this section selected theory related to generalized mixed effects models is presented. Moreover, an outline of the Laplace approximation is included.
 
-The general mixed effects model can be represented by its likelihood function
+The generalized mixed effects model can be represented by its likelihood function
 
 \begin{equation}\label{eq:glmm}
   L_{M}(\boldsymbol{\theta; y})=\int_{\mathbb{R}^{q}} L(\boldsymbol{\theta;u,y}) d\boldsymbol{u}
@@ -393,7 +393,7 @@ And the variance of the conditional distribution is:
 
 These formulas provide the mean and variance of the conditional distribution of $u$ given the observed value $Y=y$. 
 
-\subsection{Why is the Gamma distribution chosen to represent the variation between months?}
+\subsection{Rationale for use of the Gamma distribution to represent the variation between months}
 
 The choice of the Gamma distribution for modeling the random effects has been motivated by several reasons. Firstly, the support of the Gamma distribution, which ranges from 0 to infinity, aligns with the mean-value space, denoted as $\mathcal{M}$, for the Poisson distribution. This ensures that the random effects are constrained within a meaningful range for the underlying Poisson process.
 
@@ -407,7 +407,7 @@ Overall, the Gamma distribution is selected due to its alignment with the mean-v
 
 In this section, the parameter estimation and implementation of the models used in the novel outbreak detection algorithm are presented. These model are implemented in R using the open-source R package \textbf{TMB} (Template Model Builder) developed by @Kristensen_2016. This package facilitates efficient maximum likelihood estimation and uncertainty calculations for the parameter set $\boldsymbol \theta=(\boldsymbol{\beta, \Psi})$ and random effects $\boldsymbol u$. The presentation of the parameter estimation conducted in \textbf{TMB} is strongly inspired by Chapter 2 in @Kristensen_2016 and Section 5.10 in @Madsen_2010.
 
-\textbf{TMB} maximizes a user-provided objective function in the form of a C++ template, to estimate the maximum likelihood for the parameter set $\boldsymbol \theta = (\boldsymbol{\beta, \Psi})$. In the following code chunk, the C++ template for the hierarchical Poisson normal model specified in \eqref{eq:PoisN}, is shown:
+\textbf{TMB} maximizes a user-provided objective function in the form of a C++ template, to estimate the maximum likelihood for the parameter set $\boldsymbol \theta = (\boldsymbol{\beta, \Psi})$. In the following code chunk, the C++ template for the hierarchical Poisson normal model specified in \eqref{eq:PoisN}, is shown\footnote{Refer to the associated GitHub repository at \href{https://github.com/telkamp7/AEDDO/blob/main/src/models/PoissonGamma.cpp}{src/models/PoissonGamma.cpp} to access the C++ template for the hierarchical Poisson Gamma model.}:
 
 ```{Rcpp, eval=FALSE}
 #include <TMB.hpp>
@@ -433,9 +433,7 @@ Type objective_function<Type>::operator() ()
 }
 ```
 
-
-
-Refer to the associated GitHub repository at \href{https://github.com/telkamp7/AEDDO/blob/main/src/models/PoissonGamma.cpp}{src/models/PoissonGamma.cpp} to access the C++ template for the hierarchical Poisson Gamma model. The objective function maximizes the marginal log-likelihood function, which integrates out the random effects $\boldsymbol u$
+The objective function maximizes the marginal log-likelihood function, which integrates out the random effects $\boldsymbol u$
 
 \begin{equation}
   \ell_{M}(\boldsymbol{\theta; y})=\int_{\mathbb{R}^{q}} \ell (\boldsymbol{\theta;u,y}) d\boldsymbol{u}

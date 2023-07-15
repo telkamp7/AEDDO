@@ -71,13 +71,17 @@ From an epidemiological perspective, all the diseases within the selected subset
 
 This disease primarily affects pregnant women, unborn or newborn babies, the elderly, and individuals with weakened immune systems. The disease is associated with high mortality [@Goulet_2012] and manifests in three ways: sepsis, meningitis, and mother-to-child transmission. Pregnancy-associated listeria can have severe consequences for the fetus or newborn, including miscarriage, stillbirth, neonatal sepsis, and meningitis [@Awofisayo_2015]. \gls{LIST} is uncommon among individuals in other demographic groups.
 
-In 2014, \glsfirst{WGS} was employed by \gls{SSI} as the routine testing of \textit{Listeria} isolates in Denmark [@Wingstrand_2015]. This method involves mapping the entire DNA of the bacteria and enables \gls{SSI} to identify cases where patients are infected with identical \textit{Listeria} bacteria. However, it is important to note that for this thesis, the DNA typing data is unavailable for use.
+In 2014, \glsfirst{WGS} was employed by \gls{SSI} as the routine testing of \textit{Listeria} isolates in Denmark [@Wingstrand_2015]. This method involves mapping the entire DNA of the bacteria and enables \gls{SSI} to identify cases where patients are infected with identical \textit{Listeria} bacteria. However, it is important to note that for this thesis, the DNA typing data is unavailable for use. 
+
+For modeling purposes, the \gls{LIST} cases are divided into two age groups: below 65 years and 65 years and above. Figure \@ref(fig:LISTLongPlot) shows a stacked bar graph illustrating the number of monthly \gls{LIST} cases in the two age groups.
 
 (ref:LISTLongPlot) A stacked bar graph illustrating the number of monthly \gls{LIST} cases observed in the period from 2008 to 2022 for the age groups below 65 years and 65 years and above.
 
 ```{r LISTLongPlot, echo=FALSE, out.width="100%", fig.cap="(ref:LISTLongPlot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/LIST_long_plot.png")
 ```
+
+Generally, there are more reported cases in the age group of 65 years and above. There can be several hypotheses for this, but one very probable explanation is that individuals in this age group are more prone to becoming very ill from this disease and are therefore more likely to get tested. Additionally, there may be a cultural aspect at play. Elderly people have a tradition of eating the Danish dish \textit{smørrebrød}, which often involves cold-sliced meats and shrimps. Unfortunately, these toppings are high-risk foods that are more likely to be contaminated with \textit{Listeria monocytogenes}.
 
 The first notified outbreak in the 20th century occurred in 2009 [@Smith_2011]. This outbreak affected 8 people, of which two died. The patient samples were isolated between the 6th and 11th of May and it was believed that the cause was infected beef meat from a meals-on-wheels delivery.
 
@@ -116,6 +120,8 @@ Evidently, the figure shows that many of the \gls{LIST} outbreaks are long-spann
 
 The bacteria are highly contagious and can be transmitted through direct person-to-person contact, consumption of contaminated food, or ingestion of water contaminated with human feces. \gls{SHIL} infections are most commonly observed in children under the age of 5, individuals traveling to regions with poor sanitation and unsafe water and food practices, as well as gay, bisexual, and other men who have sex with men. 
 
+In this disease, the cases are divided into two age groups: below 25 years and 25 years and above. As shown in Figure \@ref(fig:SHILlongplot), the majority of cases are observed in the age group of 25 years and above.
+
 (ref:SHILlongplot) A stacked bar graph illustrating the number of monthly \gls{SHIL} cases observed in the period from 2008 to 2022 for the age groups below 25 years and 25 years and above.
 
 ```{r SHILlongplot, echo=FALSE, out.width="100%", fig.cap="(ref:SHILlongplot)", fig.pos = "H", fig.show = "hold"}
@@ -129,6 +135,8 @@ The 2020 outbreak is indeed a significant focus of this study, as it serves as a
 \subsection{Epidemiological background and notable outbreaks of Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
 
 \glsfirst{STEC} primarily spreads through contaminated food. Less common sources of infection include contaminated drinking and bathing water, as well as direct or indirect contact with infected animals. Cattle and other ruminants are primary reservoirs for \gls{STEC} serotypes that are frequently associated with human disease [@Menge_2020]. Therefore, in Denmark, the source of infection is often products derived from beef, non-heat-treated dairy products, or other foods such as ready-to-eat vegetables, leafy greens, vegetable sprouts, and berries contaminated with feces from cows. \gls{HUS} is a severe complication that, in some cases, particularly in children, can develop following an infection with \gls{STEC}.
+
+In this disease, the cases are separated into six age groups, namely: below 1 year, between 1-4 years, 5-14 years, 15-24 years, 25-64 years, and 65 years and above. The distribution of cases in these age groups is visualized in a stacked bar graph in Figure \@ref(fig:STECLongPlot).
 
 (ref:STECLongPlot) A stacked bar graph illustrating the number of monthly \gls{STEC} cases observed in the period from 2008 to 2022 for the six age groups.
 
@@ -148,7 +156,9 @@ More recent outbreaks include a 38-case outbreak from September to November 2018
 
 \subsection{Epidemiological background and notable outbreaks of \textit{Salmonellosis}}
 
-\glsfirst{SALM} is a bacterial disease that primarily affects the intestinal tracts of humans. The \textit{Salmonella} bacteria are commonly found in the intestines of animals and humans and are excreted in feces. Human infection typically occurs through the consumption of contaminated food or water. \textit{Salmonella} infections are often associated with the consumption of raw or under cooked meat, poultry, eggs or egg products, as well as unpasteurized milk.  
+\glsfirst{SALM} is a bacterial disease that primarily affects the intestinal tracts of humans. The \textit{Salmonella} bacteria are commonly found in the intestines of animals and humans and are excreted in feces. Human infection typically occurs through the consumption of contaminated food or water. \textit{Salmonella} infections are often associated with the consumption of raw or under cooked meat, poultry, eggs or egg products, as well as unpasteurized milk. 
+
+Like in the \gls{STEC} case study, this disease is also divided into the same six age groups, namely: below 1 year, between 1-4 years, 5-14 years, 15-24 years, 25-64 years, and 65 years and above. The distribution of cases in these age groups is visualized in a stacked bar graph in Figure \@ref(fig:SALMLongPlot).
 
 (ref:SALMLongPlot) A stacked bar graph illustrating the number of monthly \gls{SALM} cases observed in the period from 2008 to 2022 for the six age groups.
 

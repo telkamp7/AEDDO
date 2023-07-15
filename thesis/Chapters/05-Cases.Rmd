@@ -178,7 +178,7 @@ Figure \@ref(fig:CompareNovelSTEC) illustrates the estimated one-step ahead rand
 
 The random effects $u_{i{t_1}}$ represent the deviations from the expected outbreak intensity in the subsequent time period for each age group. These random effects provide information on whether there is an unusual or unexpected increase or decrease in the outbreak intensity compared to the expected values.
 
-The upper bounds $U_{t_0}$ are calculated based on the $90\%$ quantile of the distribution of the random effects obtained from the second stage model. They serve as threshold values to identify potential outbreaks. If the one-step ahead random effects $\u_{it_1}$ exceed the upper bounds $U_{t_0}$, it suggests a significant deviation from normal variation and indicates a potential outbreak signal.
+The upper bounds $U_{t_0}$ are calculated based on the $90\%$ quantile of the distribution of the random effects obtained from the second stage model. They serve as threshold values to identify potential outbreaks. If the one-step ahead random effects $u_{it_1}$ exceed the upper bounds $U_{t_0}$, it suggests a significant deviation from normal variation and indicates a potential outbreak signal.
 
 By visualizing the one-step ahead random effects $u_{it_1}$ and the upper bounds $U_{t_0}$ together, epidemiologists can easily identify periods or age groups where the random effects surpass the upper bounds, highlighting potential outbreaks that require further investigation and monitoring.
 
@@ -326,7 +326,6 @@ Deploying an outbreak detection algorithm blindly, without considering the conte
 Considering the specific circumstances and potential changes in observational bias is crucial when interpreting outbreak detection results. It is important to determine whether the number of cases during an outbreak is considered aberrant compared to similar periods in other years. However, in situations where there is a sudden decrease in reported cases, such as during a lockdown, detecting outbreaks using statistical methods becomes more challenging.
 
 An important potential extension of automated statistical outbreak detection algorithms is the incorporation of data drift monitoring. This involves detecting changes in the underlying data distribution and adapting the model accordingly to maintain its predictive performance. Specifically, detecting sudden decreases in case counts can be considered a form of data drift. 
-
 Indeed, sudden decreases in case counts can be treated similarly to sudden increases in case counts, and detecting such data drift can be incorporated into hierarchical models using the unobserved one-step ahead random effects $u_{i{t_1}}$. One approach is to define a lower threshold $L_{t_0}$ by selecting an appropriate quantile of the random effects distribution obtained from the second stage model, such as the $5\%$ or $10\%$ quantile.
 
 As a proof of concept, Figure \@ref(fig:ComparenovellowerSHIL) presents the visualization of the estimated one-step ahead random effects for the \gls{SHIL} data, accompanied by a lower bound defined as the $10\%$ quantile in the random effects distribution. 
@@ -341,7 +340,7 @@ knitr::include_graphics("../figures/Compare_novel_lower_SHIL.png")
 
 The inclusion of data drift monitoring can improve the algorithms' ability to adapt to changing outbreak patterns and contextual factors, leading to more reliable and accurate detection outcomes.
 
-\subsection{How do we handle many alarms?}
+\subsection{Handling diseases with frequent outbreaks}
 
 Dealing with diseases that generate frequent alarms presents a challenge in statistical outbreak detection. The novel outbreak detection algorithm addresses this challenge by excluding flagged observations from future parameter estimation. This exclusion reduces the sample window for parameter estimation and results in a loss of information and reduced variation in the data. The purpose of this exclusion is to prevent inflated parameter estimates.
 
@@ -388,6 +387,8 @@ knitr::include_graphics("../figures/Compare_alarms_SHIL.png")
 ```
 
 Furthermore, it is interesting to mention that a total of `r SSI_FUD %>% filter(str_detect(string = Pathogen, pattern = "Shigella")) %>% reframe(n=n()) %>% .$n` clusters with \gls{SHIL} have been reported to the \gls{FUD} between 2008 and 2022. Unfortunately, due to the limitations of this thesis, it was not possible to retrieve the necessary information to provide a detailed description of these outbreaks. Therefore, with the available information, it is not possible to reject the possibility that some of the alarms raised by the algorithms coincided with one or more of these clusters.
+
+In retrospect, it would have been more informative to differentiate between sexes rather than age groups in the \gls{SHIL} case study, as men who have sex with men have a higher risk of contracting and spreading the disease. However, this information was received towards the end of writing the thesis and was therefore not given priority.
 
 When examining the \gls{STEC} data, the substantial difference in sensitivity between the state-of-the-art and novel outbreak detection methods becomes evident. Figure \@ref(fig:CompareAlarmsSTEC) clearly demonstrates that both state-of-the-art methods generate a significant number of alarms. This excessive number of alarms raises concerns about the practicality and feasibility of these methods in real-world applications.
 
