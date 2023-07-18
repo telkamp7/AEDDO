@@ -22,6 +22,8 @@ In this equation, $m$ represents the number of Fourier terms used to model seaso
 
 To cover a wide range of data sets encountered in practical applications, 28 different parameter combinations are generated. These combinations vary in terms of trends (represented by different values of $\beta$), seasonalities (represented by different values of $\gamma_1$ and $\gamma_2$), baseline frequencies of reports (represented by different values of $\theta$), and dispersion (represented by different values of $\phi$). The specific parameter values for the 28 scenarios are provided in Table \@ref(tab:scenariosTbl).
 
+\newpage
+
 ```{r scenariosTbl, echo=FALSE}
 
 scenarios %>%

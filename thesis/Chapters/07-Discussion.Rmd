@@ -1,7 +1,12 @@
 \chapter{Discussion}
 
-In this chapter, several topics that have not been previously discussed will be addressed. This includes addressing the implications of overly sensitive outbreak detection methods, providing a summary of the considerations when deciding on a modeling framework in the novel method, and exploring the potential of \gls{MiBa}-based surveillance.
+This chapter delves into several topics that have not been previously addressed in this thesis. Firstly, the implications of "alarm fatigue" caused be overly sensitive outbreak detection methods is discussed. 
 
+Hereafter, a overview of the consideration when selecting a modeling framework for the novel outbreak detection method is provided. Comparing the hierarchical Poisson Normal model and the hierarchical Poisson Gamma model, their strengths and weaknesses are examined, which can be helpful when deciding on the most suitable framework for specific data scenarios.
+
+Additionally, the immense potential of \gls{MiBa}-based surveillance for diseases surveillance is discussed. The success of \gls{MiBa} in various surveillance systems showcases the value of utilizing this resource in outbreak detection. By leveraging advanced algorithms and methodologies with \gls{MiBa} data, automated disease outbreak detection becomes a reality, enabling timely interventions and prevention measures.
+
+Overall, this chapter not only identifies crucial aspects affecting outbreak detection but also underscores the significance of customizing methods to effectively leverage \gls{MiBa} data for improved disease surveillance and public health protection.
 
 \section{Alarm fatigue and the implications for outbreak detection}
 

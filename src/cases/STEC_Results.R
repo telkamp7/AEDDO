@@ -415,7 +415,7 @@ ggsave(filename = "Compare_novel_STEC.png",
 
 
 custom_labeller <- as_labeller(
-  c(`ageGroup<1 year`="beta[1~year]", `ageGroup1-4 years`="beta[1-4~years]",
+  c(`ageGroup0-1 years`="beta['<1 year']", `ageGroup1-4 years`="beta[1-4~years]",
     `ageGroup5-14 years`="beta[5-14~years]",`ageGroup15-24 years`="beta[15-24~years]",
     `ageGroup25-64 years`="beta[25-64~years]", `ageGroup65+ years`="beta[65+~years]",
     `t`="beta[trend]", `sin(pi/6 * periodInYear)` ="beta[sin]",
@@ -438,7 +438,8 @@ STEC_novel_par <- bind_rows(
                                                   "ageGroup5-14 years", "ageGroup15-24 years",
                                                   "ageGroup25-64 years", "ageGroup65+ years",
                                                   "t","sin(pi/6 * periodInYear)",
-                                                  "cos(pi/6 * periodInYear)", "log_sigma", "log_phi")))
+                                                  "cos(pi/6 * periodInYear)", "log_sigma", "log_phi")),
+         Parameter = fct_recode(Parameter, `ageGroup0-1 years`= "ageGroup<1 year")) 
 
 
 STEC_novel_par_plot <- STEC_novel_par %>%
@@ -453,7 +454,8 @@ STEC_novel_par_plot <- STEC_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(theta))) +
   scale_x_date(name = "Month") +
-  theme(axis.text = element_text(size = 24),
+  theme(axis.text.y = element_text(size = 24),
+        axis.text.x = element_text(size = 20),
         axis.title = element_text(size = 26),
         strip.text = element_text(size = 26),
         legend.title = element_text(size = 26),
@@ -479,8 +481,10 @@ STEC_novel_par_ageGroup <- STEC_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(beta)[i])) +
   scale_x_date(name = "Month") +
-  theme(axis.text = element_text(size = 24),
+  theme(axis.text.y = element_text(size = 24),
+        axis.text.x = element_text(size = 20),
         axis.title = element_text(size = 28),
+        strip.text = element_text(size = 26),
         legend.title = element_text(size = 28),
         legend.text = element_text(size = 24),
         legend.key.size = unit(3, 'cm'))
@@ -505,6 +509,7 @@ STEC_novel_par_trend <- STEC_novel_par %>%
   scale_x_date(name = "Month") +
   theme(axis.text = element_text(size = 24),
         axis.title = element_text(size = 28),
+        strip.text = element_text(size = 26),
         legend.title = element_text(size = 28),
         legend.text = element_text(size = 24),
         legend.key.size = unit(3, 'cm'))
@@ -529,6 +534,7 @@ STEC_novel_par_seasonality <- STEC_novel_par %>%
   scale_x_date(name = "Month") +
   theme(axis.text = element_text(size = 24),
         axis.title = element_text(size = 28),
+        strip.text = element_text(size = 26),
         legend.title = element_text(size = 28),
         legend.text = element_text(size = 24),
         legend.key.size = unit(3, 'cm'))
@@ -553,6 +559,7 @@ STEC_novel_par_dispersion <- STEC_novel_par %>%
   scale_y_continuous(name = expression(widehat(Psi))) +
   scale_x_date(name = "Month") +
   theme(axis.text = element_text(size = 24),
+        strip.text = element_text(size = 26),
         axis.title = element_text(size = 28),
         legend.title = element_text(size = 28),
         legend.text = element_text(size = 24),

@@ -230,7 +230,7 @@ varYExample <- round(momentsLIST$`var(y)`,2)
 
 ```
 
-Usually, it is reasonable to assume a Poisson distribution for count data, where the expected value and variance are both equal to $\lambda$. However, it should be noted that this assumption may not always hold true when modeling count data.
+Usually, it is reasonable to assume a Poisson distribution for count data, where the expected value and variance are both equal to $\lambda$. However, it should be noted that this assumption may not always hold true when modeling count data. Take, for example, the monthly cases of \gls{LIST} analyzed in this thesis. Table \@ref(tab:PoisGexampleTbl) presents the distribution of these cases from 2008 to 2022, along with the expected numbers from both the Poisson and Negative Binomial distributions. The distribution of cases over time is visualized in Figure \@ref(fig:PoisGexampleFig).
 
 ```{r PoisGexampleTbl, echo=FALSE}
 
@@ -239,14 +239,10 @@ LIST %>%
   group_by(y) %>% 
   reframe(observed = n()) %>%
   full_join(y = poisNBExp, by = join_by(y)) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", caption = "The distribution of observations with $1,2,\\cdots,10+$ cases of \\gls{LIST}.", col.names = c("Number of LIST\ncases","Number of times\nobserved", "Poisson\nexpected", "Negative binomial\nexpected"), digits = 2, linesep = "") %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", caption = "The distribution of observations with $1,2,\\cdots,10+$ cases of \\gls{LIST}.", col.names = c("\\# of LIST cases","\\# of times observed", "Pois. expected", "Neg. bin. expected"), digits = 2, linesep = "") %>%
   kable_paper(latex_options = c("HOLD_position"), full_width = TRUE)
 
 ```
-
-Take, for example, the monthly cases of \gls{LIST} analyzed in this thesis. Table \@ref(tab:PoisGexampleTbl) presents the distribution of these cases from 2008 to 2022, along with the expected numbers from both the Poisson and Negative Binomial distributions. The distribution of cases over time is visualized in Figure \@ref(fig:PoisGexampleFig).
-
-As observed in both the table and figure, the empirical distribution of \gls{LIST} has notably heavier tails compared to the Poisson distribution. Additionally, the mean of the Poisson distribution for the monthly \gls{LIST} cases is $\hat{\lambda}=\bar{y}=`r meanYExample`$, while the empirical variance is $s^2=`r varYExample`$, which is considerably larger than the mean. These findings indicate overdispersion, suggesting that a Negative Binomial model would be more appropriate for modeling the data.
 
 (ref:PoisGexampleFig) Empirical distribution of monthly \gls{LIST} cases together with the expected numbers from both the Poisson and Negative Binomial distributions
 
@@ -279,6 +275,9 @@ LIST %>%
         legend.key.size = unit(1, 'cm'))
 
 ```
+
+As observed in both the table and figure, the empirical distribution of \gls{LIST} has notably heavier tails compared to the Poisson distribution. Additionally, the mean of the Poisson distribution for the monthly \gls{LIST} cases is $\hat{\lambda}=\bar{y}=`r meanYExample`$, while the empirical variance is $s^2=`r varYExample`$, which is considerably larger than the mean. These findings indicate overdispersion, suggesting that a Negative Binomial model would be more appropriate for modeling the data.
+
 :::
 
 \subsection{Formulation of the hierarchical model}
@@ -477,7 +476,9 @@ It is important to note that the implementation of the hierarchical Poisson Norm
   \log(\lambda) = \beta_{\text{Intercept}}
 \end{equation}
 
-Finally, the optimization routines for each of the modeling frameworks is run 100 times and the run time across these iterations are collected using the R package \textbf{microbenchmark}, which can be accessed from the \gls{CRAN} at \href{https://CRAN.R-project.org/package=microbenchmark}{ \nolinkurl{https://CRAN.R-project.org/package=microbenchmark}}. The resulting run times are visualized as a violin plot in Figure \@ref(fig:ComparePerformance).
+Finally, the optimization routines for each of the modeling frameworks is run 100 times and the run time across these iterations are collected using the R package \textbf{microbenchmark}, which can be accessed from the \gls{CRAN} at \href{https://CRAN.R-project.org/package=microbenchmark}{ \nolinkurl{https://CRAN.R-project.org/package=microbenchmark}}. 
+
+The results are visualized in Figure \@ref(fig:ComparePerformance). The figure shows a violin plot comparing the running times for the optimization routines in each modeling framework. The plot demonstrates that the run time in the hierarchical Poisson Gamma model is remarkably faster, up to a factor of $4\times$, compared to the hierarchical Poisson Normal model. This indicates that the Poisson Gamma model may offer computational advantages in terms of run time efficiency.
 
 (ref:ComparePerformance) A violin plot [@Jerry_1998] of the 100 run times for the optimization routines in each modeling framework.
 
@@ -485,7 +486,7 @@ Finally, the optimization routines for each of the modeling frameworks is run 10
 knitr::include_graphics("../figures/Compare_Performance.png")
 ```
 
-Figure \@ref(fig:ComparePerformance) shows a violin plot comparing the running times for the optimization routines in each modeling framework. The plot demonstrates that the run time in the hierarchical Poisson Gamma model is remarkably faster, up to a factor of $4\times$, compared to the hierarchical Poisson Normal model. This indicates that the Poisson Gamma model may offer computational advantages in terms of run time efficiency.
+
 
 \section{Scoring rule}\label{scoring}
 

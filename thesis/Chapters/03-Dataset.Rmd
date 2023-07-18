@@ -30,6 +30,8 @@ Evidently, the subset of diseases in Figure \@ref(fig:EpiPlot) exhibits varying 
 \item \textbf{Large social gatherings:} Events such as weddings, large festivals, or other gatherings where a significant number of people consume potentially contaminated food or drinking water.
 \end{itemize}
 
+\newpage
+
 Moreover, one could hypothesize that the warmer climate during the summer could potentially directly influence the proliferation of bacteria, which in turn may have an impact on the transmission and spread of these diseases.
 
 In general, there is a noticeable decrease in the number of observed cases starting from March 2020 and continuing until January 2021. This decline can be attributed to the strict lockdown measures implemented in Denmark in response to the \gls{COVID-19} pandemic. These measures, which involved restrictions on movement and social interactions, likely played a significant role in reducing the transmission of infectious diseases, including the ones being investigated.
@@ -134,7 +136,7 @@ The 2020 outbreak is indeed a significant focus of this study, as it serves as a
 
 \subsection{Epidemiological background and notable outbreaks of Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
 
-\glsfirst{STEC} primarily spreads through contaminated food. Less common sources of infection include contaminated drinking and bathing water, as well as direct or indirect contact with infected animals. Cattle and other ruminants are primary reservoirs for \gls{STEC} serotypes that are frequently associated with human disease [@Menge_2020]. Therefore, in Denmark, the source of infection is often products derived from beef, non-heat-treated dairy products, or other foods such as ready-to-eat vegetables, leafy greens, vegetable sprouts, and berries contaminated with feces from cows. \gls{HUS} is a severe complication that, in some cases, particularly in children, can develop following an infection with \gls{STEC}.
+\glsfirst{STEC} primarily spreads through contaminated food. Less common sources of infection include contaminated drinking and bathing water, as well as direct or indirect contact with infected animals. Cattle and other ruminants are primary reservoirs for \gls{STEC} serotypes that are frequently associated with human disease [@Menge_2020]. Therefore, in Denmark, the source of infection is often products derived from beef, non-heat-treated dairy products, or other foods such as ready-to-eat vegetables, leafy greens, vegetable sprouts, and berries contaminated with feces from cows. \gls{HUS} is a severe complication that, in some cases, particularly in children, can develop following an infection with \gls{STEC}. Also, it is important to note that not all patients are routinely tested for \gls{STEC}, and therefore, physicians need to specifically request \gls{STEC} testing when submitting stool samples.
 
 In this disease, the cases are separated into six age groups, namely: below 1 year, between 1-4 years, 5-14 years, 15-24 years, 25-64 years, and 65 years and above. The distribution of cases in these age groups is visualized in a stacked bar graph in Figure \@ref(fig:STECLongPlot).
 
@@ -145,8 +147,6 @@ knitr::include_graphics("../figures/STEC_long_plot.png")
 ```
 
 In general, stool samples are commonly used for diagnostic purposes in cases of \gls{STEC} infections. Until 2018, most clinical microbiology departments relied on culture-based methods to detect and identify \gls{STEC} bacteria in stool samples. However, in recent years, \gls{PCR} methods have been increasingly adopted as a replacement for culture-based methods in the diagnosis of \gls{STEC} infections [@Svendsen_2023]. \gls{PCR} methods offer advantages such as increased sensitivity and faster turnaround time, contributing to their growing popularity in clinical laboratories. 
-
-It is important to note that not all patients are routinely tested for \gls{STEC}, and therefore, physicians need to specifically request \gls{STEC} testing when submitting stool samples.
 
 One of the earliest documented \gls{STEC} outbreaks occurred in 2007, involving 18 laboratory-confirmed cases over a six-week period. The outbreak primarily affected children in daycare settings, and most patients experienced mild symptoms without bloody diarrhea. Investigations indicated a specific brand of organic beef sausage as the likely source of infection.
 

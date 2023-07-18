@@ -287,6 +287,8 @@ SHIL_novel_tbl %>%
 knitr::include_graphics("../figures/SHIL_novel_par_plot.png")
 ```
 
+\newpage
+
 \section{Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
 
 ```{r STECNovelTblAppendix, echo=FALSE}

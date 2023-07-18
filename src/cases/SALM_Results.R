@@ -446,7 +446,8 @@ SALM_novel_par_plot <- SALM_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(theta))) +
   scale_x_date(name = "Month") +
-  theme(axis.text = element_text(size = 24),
+  theme(axis.text.y= element_text(size = 24),
+        axis.text.x= element_text(size = 20),
         axis.title = element_text(size = 26),
         strip.text = element_text(size = 26),
         legend.title = element_text(size = 26),

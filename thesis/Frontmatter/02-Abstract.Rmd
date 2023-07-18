@@ -2,7 +2,7 @@
 \section*{Abstract}
 \addcontentsline{toc}{section}{Abstract}
 
-In recent years there has been a surge in interest and development of statistical methods for automated and early detection of infectious disease outbreaks. This growth can largely be attributed to the widespread availability of computerized databases, such as \gls{MiBa}. The accessibility of these databases has provided a wealth of data that can be analyzed, facilitating the use of statistical outbreak detection methods.
+In recent years there has been a surge in interest and development of statistical methods for automated and early detection of infectious disease outbreaks. This growth can largely be attributed to the widespread availability of computerized databases, such as \glsentrylong{MiBa}. The accessibility of these databases has provided a wealth of data that can be analyzed, facilitating the use of statistical outbreak detection methods.
 
 However, at the time of writing this thesis, there are no fully automated detection procedures in place at \gls{SSI}, and the identification of outbreaks relies on the work of individual epidemiologists. Consequently, there is a momentous demand for an automated procedure for the early identification of disease outbreaks.
 
