@@ -408,7 +408,7 @@ SALM_novel_par <- bind_rows(
                                                   "log_sigma", "log_phi")))
 
 custom_labeller <- as_labeller(
-  c(`ageGroup<1 year`="beta[1~year]", `ageGroup1-4 years`="beta[1-4~years]",
+  c(`ageGroup<1 year`="beta['<1 year']", `ageGroup1-4 years`="beta[1-4~years]",
     `ageGroup5-14 years`="beta[5-14~years]",`ageGroup15-24 years`="beta[15-24~years]",
     `ageGroup25-64 years`="beta[25-64~years]", `ageGroup65+ years`="beta[65+~years]",
     `t`="beta[trend]", `sin(pi/6 * periodInYear)` ="beta[sin]",
