@@ -1,14 +1,18 @@
 \chapter{Methods}
 
-In this chapter, the current state-of-the-art methods for disease outbreak detection will be outlined (Section \@ref(StateOfTheArt)). Furthermore, the novel outbreak detection algorithm will be introduced, along with the theory related to generalized mixed effects models (Section \@ref(GLMM)) and hierarchical generalized linear models (Section \@ref(HLMM)). The presentation of theory related to these modeling frameworks are mostly inspired by @Madsen_2010. 
+In this chapter, the current state-of-the-art methods for disease outbreak detection will be outlined (Section \@ref(StateOfTheArt)). Furthermore, the novel outbreak detection algorithm will be introduced (Section  \@ref(Novel)), along with the theory related to generalized mixed effects models (Section \@ref(GLMM)) and hierarchical generalized linear models (Section \@ref(HLMM)). The presentation of theory related to these modeling frameworks are mostly inspired by @Madsen_2010. 
 
 In this thesis, these modeling frameworks are utilized to analyze the count observations denoted as $\boldsymbol{y}$, but more importantly they play a crucial role in assessing the unobserved random variables or random effects represented by $\boldsymbol{u}$, which are directly employed in the detection algorithm for characterizing outbreaks.
 
-Due to the complexity of generalized mixed effects models, obtaining closed-form solutions is generally not feasible. Therefore, an overview of the Laplace approximation technique will be provided in Section Section \@ref(GLMM), which allows for approximating the likelihood function in these models. Additionally, the implementation of these models in the R programming language will be presented in Section \@ref(TMB). Finally, an outline of the \textit{logarithmic score}, which is used to objectively evaluate the performance of the models in the novel method, is presented in Section \@ref(scoring).
+Due to the complexity of generalized mixed effects models, obtaining closed-form solutions is generally not feasible. Therefore, an overview of the Laplace approximation technique will be provided in Section Section \@ref(GLMM), which allows for approximating the likelihood function in these models. Additionally, the implementation of these models in the R programming language will be presented in Section \@ref(TMB). 
+
+Lastly, an outline of the \textit{logarithmic score}, which is used to objectively evaluate the performance of the models in the novel method, is presented in Section \@ref(scoring).
 
 \section{State-of-the-art outbreak detection algorithm}\label{StateOfTheArt}
 
-In this section, the original method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will be outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this thesis. Both of the aforementioned methods have been implemented in the R package called \textbf{surveillance} by @Salmon_2016, which can be accessed from the \gls{CRAN} at \href{https://cran.r-project.org/web/packages/surveillance/index.html}{\nolinkurl{https://cran.r-project.org/web/packages/surveillance/index.html}}. The presentation of the two methods are strongly inspired by @Salmon_2016.
+In this section, the original method introduced by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013 will be outlined. These methods are recognized as the current state-of-the-art for disease outbreak detection and will be used as benchmarks to evaluate the performance of the novel outbreak detection algorithm proposed in this thesis. 
+
+Both of the aforementioned methods have been implemented in the R package called \textbf{surveillance} by @Salmon_2016, which can be accessed from the \gls{CRAN} at \href{https://cran.r-project.org/web/packages/surveillance/index.html}{\nolinkurl{https://cran.r-project.org/web/packages/surveillance/index.html}}. The presentation of the two methods are strongly inspired by @Salmon_2016.
 
 Both methods follow the same steps in the algorithm. The first step involves fitting an over-dispersed Poisson \gls{GLM} with a log link to the reference data. In this model, the baseline count $y_t$ corresponding to the baseline time point $t$ is assumed to have an expected value $\lambda_t$ and a variance $\phi\lambda_t$, where $\phi\geq1$ is ensured to account for over-dispersion. The systematic component of the model includes only a linear time trend in the frequency of reports. Therefore, the systematic component can be expressed as
 
@@ -392,7 +396,7 @@ And the variance of the conditional distribution is:
 
 These formulas provide the mean and variance of the conditional distribution of $u$ given the observed value $Y=y$. 
 
-\subsection{Rationale for use of the Gamma distribution to represent the variation between months}
+\subsection{The rationale for employing the Gamma distribution as a second stage model}
 
 The choice of the Gamma distribution for modeling the random effects has been motivated by several reasons. Firstly, the support of the Gamma distribution, which ranges from 0 to infinity, aligns with the mean-value space, denoted as $\mathcal{M}$, for the Poisson distribution. This ensures that the random effects are constrained within a meaningful range for the underlying Poisson process.
 
@@ -406,7 +410,7 @@ Overall, the Gamma distribution is selected due to its alignment with the mean-v
 
 In this section, the parameter estimation and implementation of the models used in the novel outbreak detection algorithm are presented. These model are implemented in R using the open-source R package \textbf{TMB} (Template Model Builder) developed by @Kristensen_2016. This package facilitates efficient maximum likelihood estimation and uncertainty calculations for the parameter set $\boldsymbol \theta=(\boldsymbol{\beta, \Psi})$ and random effects $\boldsymbol u$. The presentation of the parameter estimation conducted in \textbf{TMB} is strongly inspired by Chapter 2 in @Kristensen_2016 and Section 5.10 in @Madsen_2010.
 
-\textbf{TMB} maximizes a user-provided objective function in the form of a C++ template, to estimate the maximum likelihood for the parameter set $\boldsymbol \theta = (\boldsymbol{\beta, \Psi})$. In the following code chunk, the C++ template for the hierarchical Poisson normal model specified in \eqref{eq:PoisN}, is shown\footnote{Refer to the associated GitHub repository at \href{https://github.com/telkamp7/AEDDO/blob/main/src/models/PoissonGamma.cpp}{src/models/PoissonGamma.cpp} to access the C++ template for the hierarchical Poisson Gamma model.}:
+\textbf{TMB} maximizes a user-provided objective function in the form of a C++ template, to estimate the maximum likelihood for the parameter set $\boldsymbol \theta = (\boldsymbol{\beta, \Psi})$. The following code chunk illustrates the C++ template for the hierarchical Poisson Normal model\footnote{Refer to the associated GitHub repository at \href{https://github.com/telkamp7/AEDDO/blob/main/src/models/PoissonGamma.cpp}{src/models/PoissonGamma.cpp} to access the C++ template for the hierarchical Poisson Gamma model.} specified in \eqref{eq:PoisN}:
 
 ```{Rcpp, eval=FALSE}
 #include <TMB.hpp>

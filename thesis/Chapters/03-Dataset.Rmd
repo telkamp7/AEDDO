@@ -11,6 +11,8 @@ In addition to the individually notifiable diseases, \gls{SSI} has implemented a
 
 \gls{MiBa} is a nationwide and automatically updated database specifically designed to collect and store microbiological test results. In order to utilize the data from \gls{MiBa}, the information in the test results needs to have a standardized structure with common codes and terminology. \gls{MiBa} employs national standards to harmonize the data, which initially may be structured in diverse formats. The standards currently used are XRPT05, which is widely employed for the exchange of microbiological test results in the healthcare system, and a specific standard called XRPT06. These standards are regularly revised and exist in various versions\footnote{Information on national standards and codes within the healthcare domain can be found on MedCom's website (\href{https://medcom.dk/}{https://medcom.dk/}).}. The national surveillance system focuses on diseases of a severe nature, those that are highly contagious, and the majority of vaccine-preventable diseases. 
 
+\newpage
+
 \section{Introducing the case studies}
 
 For the scope of this master thesis, only a specific subset of diseases from the mandatory notification system is considered. This subset consists of \gls{LIST}, \gls{SHIL}, \gls{STEC}, and \gls{SALM}. These diseases have been chosen for analysis and investigation based on various characteristics, such as seasonality, incidence, and severity. Additionally, these diseases are associated with documented outbreaks investigated and documented by \gls{SSI} in the past decade, which adds to their relevance for the study. However, not all outbreaks are equally documented. Thus, for a full overview over the disease clusters reported in \gls{FUD}, refer to Table \@ref(tab:FUD). For visualization purposes, this figure only includes data from 2012 to 2022.
@@ -23,16 +25,15 @@ The count observations are observed in the period from January 2008 to December 
 knitr::include_graphics("../figures/EpiPlot.png")
 ```
 
-Evidently, the subset of diseases in Figure \@ref(fig:EpiPlot) exhibits varying incidences and different levels of seasonal patterns on an annual basis. It is interesting to note that the incidences generally peak in August, which can be attributed to several factors, including:
+Evidently, the subset of diseases in Figure \@ref(fig:EpiPlot) exhibits varying incidences and different levels of seasonal patterns on an annual basis. 
+
+It is interesting to note that the incidences generally peak in August, which can be attributed to several factors, including:
 
 \begin{itemize}
 \item \textbf{Increased travel activity:} Especially when individuals travel to countries with unsafe drinking water, poor sanitation, and insufficient hygiene practices.
 \item \textbf{Large social gatherings:} Events such as weddings, large festivals, or other gatherings where a significant number of people consume potentially contaminated food or drinking water.
+\item \textbf{Warmer climate impact:} The warmer climate during the summer months may directly influence the proliferation of bacteria, which in turn can affect the transmission and spread of these diseases.
 \end{itemize}
-
-\newpage
-
-Moreover, one could hypothesize that the warmer climate during the summer could potentially directly influence the proliferation of bacteria, which in turn may have an impact on the transmission and spread of these diseases.
 
 In general, there is a noticeable decrease in the number of observed cases starting from March 2020 and continuing until January 2021. This decline can be attributed to the strict lockdown measures implemented in Denmark in response to the \gls{COVID-19} pandemic. These measures, which involved restrictions on movement and social interactions, likely played a significant role in reducing the transmission of infectious diseases, including the ones being investigated.
 

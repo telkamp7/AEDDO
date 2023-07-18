@@ -2,7 +2,9 @@
 
 This chapter presents the findings obtained from applying both the state-of-the-art and novel outbreak detection algorithms to the subset of diseases examined in this master thesis. To demonstrate the practical application of these algorithms, a case study focusing on \glsfirst{STEC} will be presented. The results of the remaining case studies will be summarized more concisely, highlighting the differences observed. For a complete collection of figures and tables related to the case studies, please refer to Appendix \@ref(FigAndTabCaseStudy).
 
-It is widely recognized that effective monitoring of a surveillance time series necessitates accurate modeling of the time series prior to assessing aberrations. Therefore, the performance of these algorithms in identifying outbreaks within the selected diseases will be thoroughly discussed and analyzed. Both the state-of-the-art and the novel algorithms take into account trends and seasonality, which will be addressed in the analysis. Additionally, a comparison of the two modeling frameworks used in the novel algorithm will be presented, providing valuable insights into the strengths and limitations of generalized mixed effects models and hierarchical generalized linear models.
+It is widely recognized that effective monitoring of a surveillance time series necessitates accurate modeling of the time series prior to assessing aberrations. Therefore, the performance of these algorithms in identifying outbreaks within the selected diseases will be thoroughly discussed and analyzed. Both the state-of-the-art and the novel algorithms take into account trends and seasonality, which will be addressed in the analysis. 
+
+Additionally, a comparison of the two modeling frameworks used in the novel algorithm will be presented, providing valuable insights into the strengths and limitations of generalized mixed effects models and hierarchical generalized linear models.
 
 Moreover, this chapter outlines some of the challenges encountered during the process of conducting this thesis, specifically related to statistical outbreak detection. These challenges are showcased using real case studies of diseases in the mandatory notification system, including \glsfirst{LIST}, \glsfirst{SHIL} and \glsfirst{SALM}. Several key topics will be discussed, including the role of overdispersion in statistical outbreak detection, the influence of context and observational bias, and the approach to handling diseases with numerous alarms. Furthermore, a comparative analysis will be conducted to evaluate the effectiveness of different methods in detecting outbreaks. 
 
@@ -203,15 +205,21 @@ From Figure \@ref(fig:CompareNovelSTEC), it is evident that the estimated one-st
 
 \section{Outbreak detection in other case studies}
 
-In addition to the case study of \gls{STEC}, this section delves into outbreak detection in other case studies of foodborne illness, including \glsfirst{LIST}, \glsfirst{SHIL}, and \glsfirst{SALM}. By exploring the outbreak detection methods in several case studies, the aim is to gain an understanding of the versatility and effectiveness of both the state-of-the-art and novel outbreak detection methods in various epidemiological contexts. Each of the selected case studies presents unique challenges and patterns of spread. Also, it is also important to mention that different age groupings are utilized in each of the case studies.
+In addition to the case study of \gls{STEC}, this section delves into outbreak detection in other case studies of foodborne illness, including \glsfirst{LIST}, \glsfirst{SHIL}, and \glsfirst{SALM}. 
+
+By exploring the outbreak detection methods in several case studies, the aim is to gain an understanding of the versatility and effectiveness of both the state-of-the-art and novel outbreak detection methods in various epidemiological contexts. Each of the selected case studies presents unique challenges and patterns of spread. Also, it is also important to mention that different age groupings are utilized in each of the case studies.
 
 The ultimate objective is to assess how the statistical outbreak detection methods performs across different disease scenarios and demographics, showcasing its potential to contribute to disease surveillance and early intervention efforts. 
 
-As for the \gls{STEC} case study, the reference data used in the state-of-the-art outbreak detection algorithms is based on monthly data from January 2008 to February 2011. Subsequent surveillance is conducted using data from March 2011 to December 2022. In the novel outbreak detection algorithm, a rolling window of width $k=36$ is used. Thus, the reference data is established using monthly data collected from January 2008 to December 2010. The time series is then monitored for outbreaks using data from January 2011 to December 2022.
+As for the \gls{STEC} case study, the reference data used in the state-of-the-art outbreak detection algorithms is based on monthly data from January 2008 to February 2011. Subsequent surveillance is conducted using data from March 2011 to December 2022. 
+
+In the novel outbreak detection algorithm, a rolling window of width $k=36$ is used. Thus, the reference data is established using monthly data collected from January 2008 to December 2010. The time series is then monitored for outbreaks using data from January 2011 to December 2022.
 
 \subsection{Analysis of outbreak detection in \textit{Listeriosis}}
 
-Intuitively, it is not common to employ statistical methods for monitoring and detecting outbreaks of \glsfirst{LIST}. The current state-of-the-art approach for detecting outbreaks of this disease relies heavily on laboratory-based methods, specifically \glsfirst{WGS}. \gls{WGS} enables epidemiologists to link cases that have occurred over an extended period, even months or years apart, and identify them as part of a continuous-source outbreak. Statistical methods may face challenges in detecting such outbreaks due to their complex and prolonged nature. However, it is crucial to include this case study in the thesis to highlight both the strengths and limitations of the novel and state-of-the-art methods.
+Intuitively, it is not common to employ statistical methods for monitoring and detecting outbreaks of \glsfirst{LIST}. The current state-of-the-art approach for detecting outbreaks of this disease relies heavily on laboratory-based methods, specifically \glsfirst{WGS}. 
+
+\gls{WGS} enables epidemiologists to link cases that have occurred over an extended period, even months or years apart, and identify them as part of a continuous-source outbreak. Statistical methods may face challenges in detecting such outbreaks due to their complex and prolonged nature. However, it is crucial to include this case study in the thesis to highlight both the strengths and limitations of the novel and state-of-the-art methods.
 
 The data used in this case study consist of monthly Danish \gls{LIST} case counts from the laboratory notification system. These counts are denoted as $y_{it}$. Here, the subscript $i$ distinguishes between two age groups, with $i=1$ representing the age group below 65 years and $i=2$ representing the age group of 65 years and above. As in the \gls{STEC} case study, the subscript $t$ denotes the time.
 
@@ -227,11 +235,15 @@ knitr::include_graphics("../figures/Compare_stateOfTheArt_LIST.png")
 
 Interestingly, both methods demonstrate the ability to correctly raise alarms coinciding with ongoing outbreak investigations by SSI. One notable example is the outbreak that involved 41 cases and resulted in 17 deaths [@Wingstrand_2015]. The Farrington method successfully flags this event in September 2013, with alarms occurring sporadically in the subsequent period. The Noufaily method also identifies this outbreak, although it first does so in June 2014.
 
-It is worth noting that the other observations flagged by the methods may be related to some of the numerous other long-spanned outbreaks that occurred concurrently in the period from 2016 to 2021. Also, several alarms are raised sporadically in 2022 coinciding with the outbreaks investigated by SSI caused by cold-cut and fish patties, respectively [@Lassen_2023]. For a full list of the alarms raised by the methods see Table \@ref(tab:LISTStateOfTheArtTbl).
+It is worth noting that the other observations flagged by the methods may be related to some of the numerous other long-spanned outbreaks that occurred concurrently in the period from 2016 to 2021. 
+
+Also, several alarms are raised sporadically in 2022 coinciding with the outbreaks investigated by SSI caused by cold-cut and fish patties, respectively [@Lassen_2023]. For a full list of the alarms raised by the methods see Table \@ref(tab:LISTStateOfTheArtTbl).
 
 \subsubsection{Applying the novel outbreak detection algorithm to \textit{Listeriosis}}
 
-For the \gls{LIST} data, it is found that only the constant age group model for the fixed effects is able to converge. However, even the constant fixed effects models struggle to accurately capture the underlying process of the disease. Figure \@ref(fig:CompareNovelLIST) provides a visual representation of this, showing the estimated one-step ahead random effects $\hat u_{i{t_1}}$ and the calculated thresholds $U_{t_0}$. It can be observed that the estimated random effects and the calculated thresholds collapse for prolonged periods, indicating that there is insufficient information in the data to inform the second stage model. This is particularly evident in the hierarchical Poisson Normal model, where the estimate of the variance parameter $\hat\sigma$ approaches zero. The role of overdispersion in the disease data will be further discussed in Section \@ref(ChallengesOD).
+For the \gls{LIST} data, it is found that only the constant age group model for the fixed effects is able to converge. However, even the constant fixed effects models struggle to accurately capture the underlying process of the disease. Figure \@ref(fig:CompareNovelLIST) provides a visual representation of this, showing the estimated one-step ahead random effects $\hat u_{i{t_1}}$ and the calculated thresholds $U_{t_0}$. 
+
+It can be observed that the estimated random effects and the calculated thresholds collapse for prolonged periods, indicating that there is insufficient information in the data to inform the second stage model. This is particularly evident in the hierarchical Poisson Normal model, where the estimate of the variance parameter $\hat\sigma$ approaches zero. The role of overdispersion in the disease data will be further discussed in Section \@ref(ChallengesOD).
 
 (ref:CompareNovelLIST) Estimated one-step ahead random effects $\hat u_{i{t_1}}$ (circles) for \gls{LIST} in Denmark, 2011-2022, are shown for the constant model described. An alarm is raised (solid circle) if $\hat u_{it_1}$ exceeds the threshold $U_{t_0}$ (dashed line). In the hierarchical Poisson Normal model (left), the random effects are exponentiated to $\exp(\hat u_{it_1})$ to transform them into the same domain as the hierarchical Poisson Gamma model (right).
 
@@ -239,7 +251,9 @@ For the \gls{LIST} data, it is found that only the constant age group model for 
 knitr::include_graphics("../figures/Compare_novel_LIST.png")
 ```
 
-Nevertheless, it is worth noting that both modeling frameworks identify the same observations as outbreaks, all of which coincide with one or more concurrent outbreaks investigated by SSI. The first two observations characterized as outbreaks occur in August and September 2014 coinciding with the outbreak investigated by SSI that affected a total of 41 individuals. Notably, the investigation of this outbreak was initiated on the 26th of July by SSI [@Wingstrand_2015]. The third outbreak is in January 2017 coinciding with multiple investigations, and the last two outbreaks are in June and November 2022 coinciding with cold-cut and fish patties, respectively [@Lassen_2023].
+Nevertheless, it is worth noting that both modeling frameworks identify the same observations as outbreaks, all of which coincide with one or more concurrent outbreaks investigated by SSI. The first two observations characterized as outbreaks occur in August and September 2014 coinciding with the outbreak investigated by SSI that affected a total of 41 individuals. Notably, the investigation of this outbreak was initiated on the 26th of July by SSI [@Wingstrand_2015]. 
+
+The third outbreak is in January 2017 coinciding with multiple investigations, and the last two outbreaks are in June and November 2022 coinciding with cold-cut and fish patties, respectively [@Lassen_2023].
 
 \subsection{Analysis of outbreak detection in \textit{Shigellosis}}
 
@@ -337,7 +351,8 @@ Deploying an outbreak detection algorithm blindly, without considering the conte
 
 Considering the specific circumstances and potential changes in observational bias is crucial when interpreting outbreak detection results. It is important to determine whether the number of cases during an outbreak is considered aberrant compared to similar periods in other years. However, in situations where there is a sudden decrease in reported cases, such as during a lockdown, detecting outbreaks using statistical methods becomes more challenging.
 
-An important potential extension of automated statistical outbreak detection algorithms is the incorporation of data drift monitoring. This involves detecting changes in the underlying data distribution and adapting the model accordingly to maintain its predictive performance. Specifically, detecting sudden decreases in case counts can be considered a form of data drift. 
+An important potential extension of automated statistical outbreak detection algorithms is the incorporation of data drift monitoring. This involves detecting changes in the underlying data distribution and adapting the model accordingly to maintain its predictive performance. Specifically, detecting sudden decreases in case counts can be considered a form of data drift.
+
 Indeed, sudden decreases in case counts can be treated similarly to sudden increases in case counts, and detecting such data drift can be incorporated into hierarchical models using the unobserved one-step ahead random effects $u_{i{t_1}}$. One approach is to define a lower threshold $L_{t_0}$ by selecting an appropriate quantile of the random effects distribution obtained from the second stage model, such as the $5\%$ or $10\%$ quantile.
 
 As a proof of concept, Figure \@ref(fig:ComparenovellowerSHIL) presents the visualization of the estimated one-step ahead random effects for the \gls{SHIL} data, accompanied by a lower bound defined as the $10\%$ quantile in the random effects distribution. 
@@ -358,7 +373,9 @@ Dealing with diseases that generate frequent alarms presents a challenge in stat
 
 On the other hand, the state-of-the-art detection algorithm employs a re-weighting scheme using Anscombe residuals. It has been observed that the Farrington method's correction for past outbreaks is too drastic, and a higher re-weighting threshold of 2.58 rather than 1 is recommended in the Noufaily method to improve specificity [@Noufaily_2013].
 
-Effectively handling previous outbreaks in statistical outbreak detection requires domain-specific knowledge from epidemiologists to determine the most appropriate approach. While the novel method completely excludes past outbreaks, this may not be the optimal practice as it reduces the sample window. A clear example of this can be seen in the \gls{SALM} case study. In Figure \@ref(fig:handlealarms), the effective number of observations used for parameter estimation at a given point in time is visualized.
+Effectively handling previous outbreaks in statistical outbreak detection requires domain-specific knowledge from epidemiologists to determine the most appropriate approach. While the novel method completely excludes past outbreaks, this may not be the optimal practice as it reduces the sample window. 
+
+A clear example of this can be seen in the \gls{SALM} case study. In Figure \@ref(fig:handlealarms), the effective number of observations used for parameter estimation at a given point in time is visualized.
 
 (ref:handlealarms) Effective number of observations in the \gls{SALM} case study, that enter the parameter estimation at a given point in time.
 
