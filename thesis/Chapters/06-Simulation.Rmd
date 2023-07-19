@@ -114,7 +114,7 @@ Additionally, it is noted that the novel algorithms, using the two different mod
 FPR %>%
   group_by(Method) %>%
   reframe(median(FPR), mean(FPR), sd(FPR), min(FPR), max(FPR)) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", caption = "Summary statstics of the \\glspl{FPR} obtained in the 28 scenarios using the four different methods.") %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", digits = 3, caption = "Summary statstics of the \\glspl{FPR} obtained in the 28 scenarios using the four different methods.") %>%
   kable_paper(latex_option = c("HOLD_position"))
 ```
 
@@ -140,7 +140,7 @@ The high performance of the Farrington method can be attributed to its sensitivi
 POD %>%
   filter(k %in% c(2,4,6,8,10)) %>%
   reframe(median(POD), mean(POD),   sd(POD), min(POD), max(POD)) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "Summary statistics of the \\gls{POD} of an outbreak of size $k$ times the standard deviations of the baseline data for each of the methods applied. ", linesep = c(rep("", 4), "\\addlinespace")) %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", digits = 3, longtable = TRUE, caption = "Summary statistics of the \\gls{POD} of an outbreak of size $k$ times the standard deviations of the baseline data for each of the methods applied. ", linesep = c(rep("", 4), "\\addlinespace")) %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   collapse_rows(columns = 1, 
                 latex_hline = "custom",

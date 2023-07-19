@@ -59,11 +59,14 @@ p <- autoplot(mbm)
 
 Compare_Performance <- p +
   stat_ydensity(mapping = aes(fill = expr)) +
+  scale_y_continuous(name = "Time [Milliseconds]", breaks = c(0,20,40,60,80,100)) +
   scale_fill_manual(name = "Method", values = c("#990000", "#2F3EEA")) +
-  theme(axis.text = element_text(size = 20),
-        axis.title = element_text(size = 22),
-        legend.title = element_text(size = 22),
-        legend.text = element_text(size = 20),
+  theme_bw() + 
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        legend.title = element_text(size = 26),
+        legend.text = element_text(size = 24),
+        legend.position = "top",
         axis.title.y = element_blank(),
         axis.text.y = element_blank(),
         axis.ticks.y = element_blank())
@@ -72,7 +75,7 @@ ggsave(filename = "Compare_Performance.png",
        plot = Compare_Performance,
        path = "../../figures/",
        device = png,
-       width = 16,
-       height = 12,
+       width = 12,
+       height = 6,
        units = "in",
        dpi = "print")

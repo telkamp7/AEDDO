@@ -52,7 +52,9 @@ PDFLogNormal <- tibble(z = c(0:4),
   integrate(f = dlnorm, lower = 4, upper = 5, meanlog = 0, sdlog = 0.5)$value)) %>%
   ggplot(mapping = aes(x = z, y = density)) +
   geom_step(colour = "#1FD082", linewidth = 2) +
-  scale_y_continuous(name = "Density")
+  scale_y_continuous(name = "Density") +
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 28))
 ggsave(filename = "PDFLogNormal.png", plot = PDFLogNormal, path = "../../figures/", device = png, width = 16, height = 8, units = "in", dpi = "print")
 # 
 # PDFLogNormal <- ggplot(data = data.frame(z = c(0,3)), aes(z)) +
