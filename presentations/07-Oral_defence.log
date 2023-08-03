@@ -1,9 +1,9 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.8.1)  1 AUG 2023 09:56
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.8.1)  2 AUG 2023 13:47
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
-**06-Case_studies.tex
-(./06-Case_studies.tex
+**07-Oral_defence.tex
+(./07-Oral_defence.tex
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-06-30>
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/beamer/beamer.cls
@@ -691,11 +691,8 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@lastruleclass=\count361
 \@thisrulewidth=\dimen334
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/siunitx/siunitx.sty
-Package: siunitx 2023-07-26 v3.2.9 A comprehensive (SI) units package
-\l__siunitx_angle_tmp_dim=\dimen335
-\l__siunitx_angle_marker_box=\box83
-\l__siunitx_angle_unit_box=\box84
-\l__siunitx_compound_count_int=\count362
+Package: siunitx 2023-08-01 v3.3.1 A comprehensive (SI) units package
+\l__siunitx_number_uncert_offset_int=\count362
 \l__siunitx_number_exponent_fixed_int=\count363
 \l__siunitx_number_min_decimal_int=\count364
 \l__siunitx_number_min_integer_int=\count365
@@ -705,6 +702,10 @@ Package: siunitx 2023-07-26 v3.2.9 A comprehensive (SI) units package
 \l__siunitx_number_group_first_int=\count369
 \l__siunitx_number_group_size_int=\count370
 \l__siunitx_number_group_minimum_int=\count371
+\l__siunitx_angle_tmp_dim=\dimen335
+\l__siunitx_angle_marker_box=\box83
+\l__siunitx_angle_unit_box=\box84
+\l__siunitx_compound_count_int=\count372
 \l__siunitx_table_tmp_box=\box85
 \l__siunitx_table_tmp_dim=\dimen336
 \l__siunitx_table_column_width_dim=\dimen337
@@ -715,9 +716,9 @@ Package: siunitx 2023-07-26 v3.2.9 A comprehensive (SI) units package
 \l__siunitx_table_after_box=\box90
 \l__siunitx_table_before_dim=\dimen338
 \l__siunitx_table_carry_dim=\dimen339
-\l__siunitx_unit_tmp_int=\count372
-\l__siunitx_unit_position_int=\count373
-\l__siunitx_unit_total_int=\count374
+\l__siunitx_unit_tmp_int=\count373
+\l__siunitx_unit_position_int=\count374
+\l__siunitx_unit_total_int=\count375
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/array.sty
 Package: array 2022/09/04 v2.5g Tabular extension package (FMi)
 \col@sep=\dimen340
@@ -731,55 +732,55 @@ Package: array 2022/09/04 v2.5g Tabular extension package (FMi)
 Package: biblatex 2023/03/05 v3.19 programmable bibliographies (PK/MW)
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/logreq/logreq.sty
 Package: logreq 2010/08/04 v1.0 xml request logger
-\lrq@indent=\count375
+\lrq@indent=\count376
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/logreq/logreq.def
 File: logreq.def 2010/08/04 v1.0 logreq spec v1.0
 )) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ifthen.sty
 Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
 )
-\c@tabx@nest=\count376
-\c@listtotal=\count377
-\c@listcount=\count378
-\c@liststart=\count379
-\c@liststop=\count380
-\c@citecount=\count381
-\c@citetotal=\count382
-\c@multicitecount=\count383
-\c@multicitetotal=\count384
-\c@instcount=\count385
-\c@maxnames=\count386
-\c@minnames=\count387
-\c@maxitems=\count388
-\c@minitems=\count389
-\c@citecounter=\count390
-\c@maxcitecounter=\count391
-\c@savedcitecounter=\count392
-\c@uniquelist=\count393
-\c@uniquename=\count394
-\c@refsection=\count395
-\c@refsegment=\count396
-\c@maxextratitle=\count397
-\c@maxextratitleyear=\count398
-\c@maxextraname=\count399
-\c@maxextradate=\count400
-\c@maxextraalpha=\count401
-\c@abbrvpenalty=\count402
-\c@highnamepenalty=\count403
-\c@lownamepenalty=\count404
-\c@maxparens=\count405
-\c@parenlevel=\count406
-\blx@tempcnta=\count407
-\blx@tempcntb=\count408
-\blx@tempcntc=\count409
-\c@blx@maxsection=\count410
-\blx@maxsegment@0=\count411
-\blx@notetype=\count412
-\blx@parenlevel@text=\count413
-\blx@parenlevel@foot=\count414
-\blx@sectionciteorder@0=\count415
-\blx@sectionciteorderinternal@0=\count416
-\blx@entrysetcounter=\count417
-\blx@biblioinstance=\count418
+\c@tabx@nest=\count377
+\c@listtotal=\count378
+\c@listcount=\count379
+\c@liststart=\count380
+\c@liststop=\count381
+\c@citecount=\count382
+\c@citetotal=\count383
+\c@multicitecount=\count384
+\c@multicitetotal=\count385
+\c@instcount=\count386
+\c@maxnames=\count387
+\c@minnames=\count388
+\c@maxitems=\count389
+\c@minitems=\count390
+\c@citecounter=\count391
+\c@maxcitecounter=\count392
+\c@savedcitecounter=\count393
+\c@uniquelist=\count394
+\c@uniquename=\count395
+\c@refsection=\count396
+\c@refsegment=\count397
+\c@maxextratitle=\count398
+\c@maxextratitleyear=\count399
+\c@maxextraname=\count400
+\c@maxextradate=\count401
+\c@maxextraalpha=\count402
+\c@abbrvpenalty=\count403
+\c@highnamepenalty=\count404
+\c@lownamepenalty=\count405
+\c@maxparens=\count406
+\c@parenlevel=\count407
+\blx@tempcnta=\count408
+\blx@tempcntb=\count409
+\blx@tempcntc=\count410
+\c@blx@maxsection=\count411
+\blx@maxsegment@0=\count412
+\blx@notetype=\count413
+\blx@parenlevel@text=\count414
+\blx@parenlevel@foot=\count415
+\blx@sectionciteorder@0=\count416
+\blx@sectionciteorderinternal@0=\count417
+\blx@entrysetcounter=\count418
+\blx@biblioinstance=\count419
 \labelnumberwidth=\skip67
 \labelalphawidth=\skip68
 \biblabelsep=\skip69
@@ -791,9 +792,9 @@ Package: ifthen 2022/04/13 v1.1d Standard LaTeX ifthen package (DPC)
 \blx@bcfin=\read4
 \blx@bcfout=\write5
 \blx@langwohyphens=\language4
-\c@mincomprange=\count419
-\c@maxcomprange=\count420
-\c@mincompwidth=\count421
+\c@mincomprange=\count420
+\c@maxcomprange=\count421
+\c@mincompwidth=\count422
 Package biblatex Info: Trying to load biblatex default data model...
 Package biblatex Info: ... file 'blx-dm.def' found.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/biblatex/blx-dm.def
@@ -803,74 +804,74 @@ Package biblatex Info: Trying to load biblatex style data model...
 Package biblatex Info: ... file 'authoryear.dbx' not found.
 Package biblatex Info: Trying to load biblatex custom data model...
 Package biblatex Info: ... file 'biblatex-dm.cfg' not found.
-\c@afterword=\count422
-\c@savedafterword=\count423
-\c@annotator=\count424
-\c@savedannotator=\count425
-\c@author=\count426
-\c@savedauthor=\count427
-\c@bookauthor=\count428
-\c@savedbookauthor=\count429
-\c@commentator=\count430
-\c@savedcommentator=\count431
-\c@editor=\count432
-\c@savededitor=\count433
-\c@editora=\count434
-\c@savededitora=\count435
-\c@editorb=\count436
-\c@savededitorb=\count437
-\c@editorc=\count438
-\c@savededitorc=\count439
-\c@foreword=\count440
-\c@savedforeword=\count441
-\c@holder=\count442
-\c@savedholder=\count443
-\c@introduction=\count444
-\c@savedintroduction=\count445
-\c@namea=\count446
-\c@savednamea=\count447
-\c@nameb=\count448
-\c@savednameb=\count449
-\c@namec=\count450
-\c@savednamec=\count451
-\c@translator=\count452
-\c@savedtranslator=\count453
-\c@shortauthor=\count454
-\c@savedshortauthor=\count455
-\c@shorteditor=\count456
-\c@savedshorteditor=\count457
-\c@labelname=\count458
-\c@savedlabelname=\count459
-\c@institution=\count460
-\c@savedinstitution=\count461
-\c@lista=\count462
-\c@savedlista=\count463
-\c@listb=\count464
-\c@savedlistb=\count465
-\c@listc=\count466
-\c@savedlistc=\count467
-\c@listd=\count468
-\c@savedlistd=\count469
-\c@liste=\count470
-\c@savedliste=\count471
-\c@listf=\count472
-\c@savedlistf=\count473
-\c@location=\count474
-\c@savedlocation=\count475
-\c@organization=\count476
-\c@savedorganization=\count477
-\c@origlocation=\count478
-\c@savedoriglocation=\count479
-\c@origpublisher=\count480
-\c@savedorigpublisher=\count481
-\c@publisher=\count482
-\c@savedpublisher=\count483
-\c@language=\count484
-\c@savedlanguage=\count485
-\c@origlanguage=\count486
-\c@savedoriglanguage=\count487
-\c@pageref=\count488
-\c@savedpageref=\count489
+\c@afterword=\count423
+\c@savedafterword=\count424
+\c@annotator=\count425
+\c@savedannotator=\count426
+\c@author=\count427
+\c@savedauthor=\count428
+\c@bookauthor=\count429
+\c@savedbookauthor=\count430
+\c@commentator=\count431
+\c@savedcommentator=\count432
+\c@editor=\count433
+\c@savededitor=\count434
+\c@editora=\count435
+\c@savededitora=\count436
+\c@editorb=\count437
+\c@savededitorb=\count438
+\c@editorc=\count439
+\c@savededitorc=\count440
+\c@foreword=\count441
+\c@savedforeword=\count442
+\c@holder=\count443
+\c@savedholder=\count444
+\c@introduction=\count445
+\c@savedintroduction=\count446
+\c@namea=\count447
+\c@savednamea=\count448
+\c@nameb=\count449
+\c@savednameb=\count450
+\c@namec=\count451
+\c@savednamec=\count452
+\c@translator=\count453
+\c@savedtranslator=\count454
+\c@shortauthor=\count455
+\c@savedshortauthor=\count456
+\c@shorteditor=\count457
+\c@savedshorteditor=\count458
+\c@labelname=\count459
+\c@savedlabelname=\count460
+\c@institution=\count461
+\c@savedinstitution=\count462
+\c@lista=\count463
+\c@savedlista=\count464
+\c@listb=\count465
+\c@savedlistb=\count466
+\c@listc=\count467
+\c@savedlistc=\count468
+\c@listd=\count469
+\c@savedlistd=\count470
+\c@liste=\count471
+\c@savedliste=\count472
+\c@listf=\count473
+\c@savedlistf=\count474
+\c@location=\count475
+\c@savedlocation=\count476
+\c@organization=\count477
+\c@savedorganization=\count478
+\c@origlocation=\count479
+\c@savedoriglocation=\count480
+\c@origpublisher=\count481
+\c@savedorigpublisher=\count482
+\c@publisher=\count483
+\c@savedpublisher=\count484
+\c@language=\count485
+\c@savedlanguage=\count486
+\c@origlanguage=\count487
+\c@savedoriglanguage=\count488
+\c@pageref=\count489
+\c@savedpageref=\count490
 \shorthandwidth=\skip75
 \shortjournalwidth=\skip76
 \shortserieswidth=\skip77
@@ -906,19 +907,19 @@ Package biblatex Info: Trying to load generic definitions...
 Package biblatex Info: ... file 'biblatex.def' found.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/biblatex/biblatex.def
 File: biblatex.def 2023/03/05 v3.19 biblatex compatibility (PK/MW)
-\c@textcitecount=\count490
-\c@textcitetotal=\count491
-\c@textcitemaxnames=\count492
-\c@biburlbigbreakpenalty=\count493
-\c@biburlbreakpenalty=\count494
-\c@biburlnumpenalty=\count495
-\c@biburlucpenalty=\count496
-\c@biburllcpenalty=\count497
+\c@textcitecount=\count491
+\c@textcitetotal=\count492
+\c@textcitemaxnames=\count493
+\c@biburlbigbreakpenalty=\count494
+\c@biburlbreakpenalty=\count495
+\c@biburlnumpenalty=\count496
+\c@biburlucpenalty=\count497
+\c@biburllcpenalty=\count498
 \biburlbigskip=\muskip18
 \biburlnumskip=\muskip19
 \biburlucskip=\muskip20
 \biburllcskip=\muskip21
-\c@smartand=\count498
+\c@smartand=\count499
 )
 Package biblatex Info: Trying to load bibliography style 'authoryear'...
 Package biblatex Info: ... file 'authoryear.bbx' found.
@@ -928,8 +929,8 @@ Package biblatex Info: Trying to load bibliography style 'standard'...
 Package biblatex Info: ... file 'standard.bbx' found.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/biblatex/bbx/standard.bbx
 File: standard.bbx 2023/03/05 v3.19 biblatex bibliography style (PK/MW)
-\c@bbx:relatedcount=\count499
-\c@bbx:relatedtotal=\count500
+\c@bbx:relatedcount=\count500
+\c@bbx:relatedtotal=\count501
 ))
 Package biblatex Info: Trying to load citation style 'authoryear'...
 Package biblatex Info: ... file 'authoryear.cbx' found.
@@ -955,11 +956,11 @@ Package biblatex Info: Document encoding is UTF8 ....
 Package: expl3 2023-06-30 L3 programming layer (loader) 
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
 File: l3backend-xetex.def 2023-04-19 L3 backend support: XeTeX
-\g__graphics_track_int=\count501
+\g__graphics_track_int=\count502
 \l__pdf_internal_box=\box93
-\g__pdf_backend_object_int=\count502
-\g__pdf_backend_annotation_int=\count503
-\g__pdf_backend_link_int=\count504
+\g__pdf_backend_object_int=\count503
+\g__pdf_backend_annotation_int=\count504
+\g__pdf_backend_link_int=\count505
 ))
 Package biblatex Info: ... and expl3
 (biblatex)             2023-06-30 L3 programming layer (loader) 
@@ -974,11 +975,11 @@ Invalid UTF-8 byte or sequence at line 284 replaced by U+FFFD.
 Invalid UTF-8 byte or sequence at line 299 replaced by U+FFFD.
 Invalid UTF-8 byte or sequence at line 550 replaced by U+FFFD.
 Package: algorithm2e 2017/07/18 v5.2 algorithms environments
-\c@AlgoLine=\count505
+\c@AlgoLine=\count506
 \algocf@hangindent=\skip89
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/ifoddpage/ifoddpage.sty
 Package: ifoddpage 2022/10/18 v1.2 Conditionals for odd/even page detection
-\c@checkoddpage=\count506
+\c@checkoddpage=\count507
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/xspace.sty
 Package: xspace 2014/10/28 v1.13 Space after command names (DPC,MH)
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/relsize/relsize.sty
@@ -1014,9 +1015,9 @@ Package: relsize 2013/03/29 ver 4.1
 \algoheightrule=\skip105
 \algotitleheightruledefault=\skip106
 \algotitleheightrule=\skip107
-\c@algocfline=\count507
-\c@algocfproc=\count508
-\c@algocf=\count509
+\c@algocfline=\count508
+\c@algocfproc=\count509
+\c@algocf=\count510
 \algocf@algoframe=\box100
 \algocf@algobox=\box101
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/lmodern.sty
@@ -1067,7 +1068,7 @@ Package: xkeyval 2022/06/16 v2.9 package option processing (HA)
 \XKV@toks=\toks57
 \XKV@tempa@toks=\toks58
 )
-\XKV@depth=\count510
+\XKV@depth=\count511
 File: xkeyval.tex 2014/12/03 v2.7a key=value parser (HA)
 )) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fmtcount/fcprefix.sty
 Invalid UTF-8 byte or sequence at line 10 replaced by U+FFFD.
@@ -1077,55 +1078,55 @@ Package: fcprefix 2012/09/28
 Invalid UTF-8 byte or sequence at line 10 replaced by U+FFFD.
 Invalid UTF-8 byte or sequence at line 22 replaced by U+FFFD.
 Package: fcnumparser 2017/06/15
-\fc@digit@counter=\count511
+\fc@digit@counter=\count512
 ))
-\c@padzeroesN=\count512
-\fc@tmpcatcode=\count513
+\c@padzeroesN=\count513
+\fc@tmpcatcode=\count514
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fmtcount/fc-english.def
 Invalid UTF-8 byte or sequence at line 10 replaced by U+FFFD.
 Invalid UTF-8 byte or sequence at line 22 replaced by U+FFFD.
 File: fc-english.def 2016/01/12
 )
-\@DT@modctr=\count514
-\@ordinalctr=\count515
-\@orgargctr=\count516
-\@strctr=\count517
-\@tmpstrctr=\count518
-\@DT@loopN=\count519
-\@DT@X=\count520
+\@DT@modctr=\count515
+\@ordinalctr=\count516
+\@orgargctr=\count517
+\@strctr=\count518
+\@tmpstrctr=\count519
+\@DT@loopN=\count520
+\@DT@X=\count521
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/datetime/datetime-defaults.sty
 Package: datetime-defaults 2013/09/10
 )
-\@day=\count521
-\@month=\count522
-\@year=\count523
-\c@HOUR=\count524
-\c@HOURXII=\count525
-\c@MINUTE=\count526
-\c@TOHOUR=\count527
-\c@TOMINUTE=\count528
-\c@SECOND=\count529
-\currenthour=\count530
-\currentminute=\count531
-\currentsecond=\count532
+\@day=\count522
+\@month=\count523
+\@year=\count524
+\c@HOUR=\count525
+\c@HOURXII=\count526
+\c@MINUTE=\count527
+\c@TOHOUR=\count528
+\c@TOMINUTE=\count529
+\c@SECOND=\count530
+\currenthour=\count531
+\currentminute=\count532
+\currentsecond=\count533
 Package datetime Info: No datetime.cfg file found, using default settings on input line 308.
-\@dtctr=\count533
-\dayofyear=\count534
-\dayofweek=\count535
+\@dtctr=\count534
+\dayofyear=\count535
+\dayofweek=\count536
 LaTeX Info: Redefining \today on input line 736.
 \dt@a=\toks59
 \dt@b=\toks60
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/calc.sty
 Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
-\calc@Acount=\count536
-\calc@Bcount=\count537
+\calc@Acount=\count537
+\calc@Bcount=\count538
 \calc@Adimen=\dimen348
 \calc@Bdimen=\dimen349
 \calc@Askip=\skip108
 \calc@Bskip=\skip109
 LaTeX Info: Redefining \setlength on input line 80.
 LaTeX Info: Redefining \addtolength on input line 81.
-\calc@Ccount=\count538
+\calc@Ccount=\count539
 \calc@Cskip=\skip110
 )
 Class  Info: The file departments.tex with department logo file naming has been loaded. on input line 21.
@@ -1137,37 +1138,41 @@ Package dtubeamer Info: Successfully loaded the DTU colours. on input line 22.
 \widthtitle=\skip113
 \widthdate=\skip114
 )
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `\\' on input line 41.
+
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package csquotes Info: Adjusting default style.
 Package csquotes Info: Redefining alias 'default' -> 'english'.
-(./06-Case_studies.aux)
-\openout1 = `06-Case_studies.aux'.
+(./07-Oral_defence.aux)
+\openout1 = `07-Oral_defence.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 55.
-LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 55.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 61.
+LaTeX Font Info:    Trying to load font information for TS1+cmr on input line 61.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/ts1cmr.fd
 File: ts1cmr.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
-LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 55.
-LaTeX Font Info:    ... okay on input line 55.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for TU/lmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
+LaTeX Font Info:    Checking defaults for PU/pdf/m/n on input line 61.
+LaTeX Font Info:    ... okay on input line 61.
 *geometry* driver: auto-detecting
 *geometry* detected driver: xetex
 *geometry* verbose mode - [ preamble ] result:
@@ -1202,10 +1207,10 @@ LaTeX Font Info:    ... okay on input line 55.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-Package hyperref Info: Link coloring OFF on input line 55.
-(./06-Case_studies.out) (./06-Case_studies.out)
+Package hyperref Info: Link coloring OFF on input line 61.
+(./07-Oral_defence.out) (./07-Oral_defence.out)
 \@outlinefile=\write6
-\openout6 = `06-Case_studies.out'.
+\openout6 = `07-Oral_defence.out'.
 
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/translator/translator-basic-dictionary-English.dict
 Dictionary: translator-basic-dictionary, Language: English 
@@ -1235,20 +1240,22 @@ Package biblatex Info: XeTeX detected.
 (biblatex)             Assuming input encoding 'utf8'.
 Package biblatex Info: Data encoding 'utf8' specified.
 (biblatex)             No need to reencode data.
-\openout5 = `06-Case_studies-blx.bib'.
+\openout5 = `07-Oral_defence-blx.bib'.
 
 Package biblatex Info: Trying to load bibliographic data...
-Package biblatex Info: ... file '06-Case_studies.bbl' found.
-(./06-Case_studies.bbl)
-Package biblatex Info: Reference section=0 on input line 55.
-Package biblatex Info: Reference segment=0 on input line 55.
-(./06-Case_studies.nav)
+Package biblatex Info: ... file '07-Oral_defence.bbl' found.
+(./07-Oral_defence.bbl)
+Package biblatex Info: Reference section=0 on input line 61.
+Package biblatex Info: Reference segment=0 on input line 61.
+(./07-Oral_defence.nav)
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <12> not available
-(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 60.
+(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 66.
+LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <10> not available
+(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 66.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 File: tex_dtu_compute_a_uk.pdf Graphic file (type pdf)
@@ -1260,46 +1267,46 @@ File: tex_dtu_frise.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-(./06-Case_studies.toc
-LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 2.
+LaTeX Font Info:    Trying to load font information for OT1+lmr on input line 94.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ot1lmr.fd
 File: ot1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OML+lmm on input line 2.
+LaTeX Font Info:    Trying to load font information for OML+lmm on input line 94.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omllmm.fd
 File: omllmm.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 2.
+LaTeX Font Info:    Trying to load font information for OMS+lmsy on input line 94.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omslmsy.fd
 File: omslmsy.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 2.
+LaTeX Font Info:    Trying to load font information for OMX+lmex on input line 94.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/omxlmex.fd
 File: omxlmex.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10> on input line 2.
+(Font)              <10> on input line 94.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <7> on input line 2.
+(Font)              <7> on input line 94.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <5> on input line 2.
-LaTeX Font Info:    Trying to load font information for U+msa on input line 2.
+(Font)              <5> on input line 94.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 94.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 2.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 94.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 4.
+(Font)              <10.95> on input line 94.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 4.
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <8> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 14.
-)
-LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <10> not available
-(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 67.
+(Font)              <8> on input line 94.
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <6> on input line 94.
+File: ../figures/MiBaPetriComp.png Graphic file (type bmp)
+<../figures/MiBaPetriComp.png>
+File: ../figures/MiBa.png Graphic file (type bmp)
+<../figures/MiBa.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [2
@@ -1307,12 +1314,6 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-File: ../figures/EpiPlot.png Graphic file (type bmp)
-<../figures/EpiPlot.png>
-
-Overfull \vbox (65.94548pt too high) detected at line 80
- []
-
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [3
@@ -1320,13 +1321,13 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
 [4
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
+LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <10.95> not available
+(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 124.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [5
@@ -1341,8 +1342,6 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <10.95> on input line 131.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [7
@@ -1371,6 +1370,12 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
+File: ../figures/STEC_long_plot.png Graphic file (type bmp)
+<../figures/STEC_long_plot.png>
+LaTeX Font Info:    Font shape `T1/lmss/b/it' in size <12> not available
+(Font)              Font shape `T1/lmss/bx/it' tried instead on input line 196.
+LaTeX Font Info:    Font shape `T1/lmss/bx/it' in size <12> not available
+(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 196.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [11
@@ -1385,8 +1390,6 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <10.95> not available
-(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 220.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [13
@@ -1394,14 +1397,6 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-File: ../figures/Compare_stateOfTheArt_LIST.png Graphic file (type bmp)
-<../figures/Compare_stateOfTheArt_LIST.png>
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 236.
-LaTeX Font Info:    Font shape `T1/lmss/b/it' in size <12> not available
-(Font)              Font shape `T1/lmss/bx/it' tried instead on input line 236.
-LaTeX Font Info:    Font shape `T1/lmss/bx/it' in size <12> not available
-(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 236.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [14
@@ -1409,8 +1404,6 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-File: ../figures/Compare_novel_LIST.png Graphic file (type bmp)
-<../figures/Compare_novel_LIST.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [15
@@ -1418,21 +1411,15 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-File: ../figures/Compare_alarms_LIST.png Graphic file (type bmp)
-<../figures/Compare_alarms_LIST.png>
+File: ../figures/Compare_novel_STEC.png Graphic file (type bmp)
+<../figures/Compare_novel_STEC.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [16
 
 ]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-File: ../figures/Compare_stateOfTheArt_SHIG.png Graphic file (type bmp)
-<../figures/Compare_stateOfTheArt_SHIG.png>
-
-Overfull \vbox (6.80356pt too high) detected at line 271
- []
-
+File: ../figures/Compare_novel_STEC.png Graphic file (type bmp)
+<../figures/Compare_novel_STEC.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [17
@@ -1440,141 +1427,53 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-File: ../figures/Compare_novel_SHIG.png Graphic file (type bmp)
-<../figures/Compare_novel_SHIG.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[18
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-File: ../figures/Compare_alarms_SHIG.png Graphic file (type bmp)
-<../figures/Compare_alarms_SHIG.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[19
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-File: ../figures/Compare_stateOfTheArt_STEC.png Graphic file (type bmp)
-<../figures/Compare_stateOfTheArt_STEC.png>
-
-Overfull \vbox (130.93309pt too high) detected at line 308
- []
-
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[20
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-File: ../figures/Compare_novel_STEC.png Graphic file (type bmp)
-<../figures/Compare_novel_STEC.png>
-
-Overfull \vbox (121.43309pt too high) detected at line 319
- []
-
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[21
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-File: ../figures/Compare_alarms_STEC.png Graphic file (type bmp)
-<../figures/Compare_alarms_STEC.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[22
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-File: ../figures/Compare_stateOfTheArt_SALM.png Graphic file (type bmp)
-<../figures/Compare_stateOfTheArt_SALM.png>
-
-Overfull \vbox (118.43309pt too high) detected at line 343
- []
-
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[23
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-File: ../figures/Compare_novel_SALM.png Graphic file (type bmp)
-<../figures/Compare_novel_SALM.png>
-
-Overfull \vbox (106.43309pt too high) detected at line 354
- []
-
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[24
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-File: ../figures/Compare_alarms_SALM.png Graphic file (type bmp)
-<../figures/Compare_alarms_SALM.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[25
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
 LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 372.
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 372.
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 293.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 293.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
 File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 
 LaTeX Font Warning: Font shape `T1/lmss/m/sc' in size <10.95> not available
-(Font)              Font shape `T1/lmr/m/sc' tried instead on input line 372.
+(Font)              Font shape `T1/lmr/m/sc' tried instead on input line 293.
 
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 372.
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 293.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
 File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 Missing character: There is no – ("2013) in font ec-lmss10!
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[26
+[18
 
 ]
 \tf@nav=\write7
-\openout7 = `06-Case_studies.nav'.
+\openout7 = `07-Oral_defence.nav'.
 
 \tf@toc=\write8
-\openout8 = `06-Case_studies.toc'.
+\openout8 = `07-Oral_defence.toc'.
 
 \tf@snm=\write9
-\openout9 = `06-Case_studies.snm'.
+\openout9 = `07-Oral_defence.snm'.
 
-(./06-Case_studies.aux)
+(./07-Oral_defence.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-06-30>
  ***********
-Package rerunfilecheck Info: File `06-Case_studies.out' has not changed.
-(rerunfilecheck)             Checksum: A4D6A4B06773D5B33B9302BB42E09CAD;3156.
-Package logreq Info: Writing requests to '06-Case_studies.run.xml'.
-\openout1 = `06-Case_studies.run.xml'.
+Package rerunfilecheck Info: File `07-Oral_defence.out' has not changed.
+(rerunfilecheck)             Checksum: 785195976465DC99BE9F9FB87FC6872B;2703.
+Package logreq Info: Writing requests to '07-Oral_defence.run.xml'.
+\openout1 = `07-Oral_defence.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 48851 strings out of 477888
- 1149038 string characters out of 5821337
- 1961195 words of memory out of 5000000
- 68917 multiletter control sequences out of 15000+600000
- 643594 words of font info for 103 fonts, out of 8000000 for 9000
+ 48734 strings out of 477888
+ 1145013 string characters out of 5821337
+ 1961903 words of memory out of 5000000
+ 68812 multiletter control sequences out of 15000+600000
+ 637985 words of font info for 101 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  101i,21n,107p,2168b,5001s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on 06-Case_studies.pdf (26 pages).
+Output written on 07-Oral_defence.pdf (18 pages).
