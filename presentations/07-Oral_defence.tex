@@ -53,6 +53,7 @@ Technical University of Denmark}
 \DeclareMathOperator{\G}{G}
 \DeclareMathOperator{\N}{N}
 \DeclareMathOperator{\NB}{NB}
+\DeclareMathOperator{\LN}{LN}
 \DeclareMathOperator{\Pois}{Pois}
 \DeclareMathOperator{\Geom}{Geom}
 
@@ -149,7 +150,7 @@ to characterize an outbreak.
 \begin{frame}{Step 2: Inference of random effects}
 \protect\hypertarget{step-2-inference-of-random-effects}{}
 \begin{itemize}
-  \item Infer one-step ahead random effects $u_{i{t_0}}$ for each group using the fitted model
+  \item Infer one-step ahead random effects $u_{i{t_1}}$ for each group using the fitted model
   \item Define outbreak detection threshold $U_{t_0}$ as a quantile of the second stage model's random effects distribution
   \item Use either a Gaussian or Gamma distribution with respective plug-in estimates
 \end{itemize}
@@ -158,8 +159,8 @@ to characterize an outbreak.
 \begin{frame}{Step 3: Parameter estimations and outbreak detection}
 \protect\hypertarget{step-3-parameter-estimations-and-outbreak-detection}{}
 \begin{itemize}
-  \item Compare inferred random effects $u_{i{t_0}}$ to an threshold $U_{t_0}$
-  \item Raise and alarm if the inferred random effect exceeds the threshold, i.e. $u_{i{t_0}}>U_{t_0}$
+  \item Compare inferred random effects $u_{i{t_1}}$ to an threshold $U_{t_0}$
+  \item Raise and alarm if the inferred random effect exceeds the threshold, i.e. $u_{i{t_1}}>U_{t_0}$
   \item Omit outbreak related observations from future parameter estimation
 \end{itemize}
 \end{frame}
@@ -204,9 +205,9 @@ models}\label{formulation-of-hierarchical-models}}
 \end{equation}
 
 \begin{itemize}
-  \item $\lambda_{it}$ is the outbreak intensity at time $t$ for age group $i$.
-  \item $\beta(ageGroup_{i})$ is the fixed effect specific to age group $i$.
-  \item $\log(n_{it})$ acts as an offset, accounting for the population size at time $t$ for age group $i$.
+  \item $\lambda_{it}$ is the outbreak intensity at time $t$ for age group $i$
+  \item $\beta(ageGroup_{i})$ is the fixed effect specific to age group $i$
+  \item $\log(n_{it})$ acts as an offset, accounting for the population size at time $t$ for age group $i$
 \end{itemize}
 \end{frame}
 
@@ -219,8 +220,8 @@ models}\label{formulation-of-hierarchical-models}}
 \end{equation}
 
 \begin{itemize}
-  \item In addition to Model 1, includes a trend component.
-  \item $\beta_{trend}$ quantifies the rate of change in the outbreak intensity over time.
+  \item In addition to constant model, includes a trend component
+  \item $\beta_{trend}$ quantifies the rate of change in the outbreak intensity over time
 \end{itemize}
 \end{frame}
 
@@ -233,9 +234,9 @@ models}\label{formulation-of-hierarchical-models}}
 \end{equation}
 
 \begin{itemize}
-  \item In addition to Model 1, incorporates an annual seasonality pattern.
-  \item $\tau_t$ represents the time period $t$ within a year (1-12).
-  \item $\beta_{\sin}$ and $\beta_{\cos}$ capture the effect of the seasonal pattern.
+  \item In addition to constant model, incorporates an annual seasonality pattern
+  \item $\tau_t$ represents the time period $t$ within a year (1-12)
+  \item $\beta_{\sin}$ and $\beta_{\cos}$ capture the effect of the seasonal pattern
 \end{itemize}
 \end{frame}
 
@@ -249,8 +250,8 @@ model}\label{combined-trend-and-seasonality-model}}
 \end{equation}
 
 \begin{itemize}
-  \item Builds upon previous models, combining trend and seasonality components.
-  \item Includes both $\beta_{trend}$, $\beta_{\sin}$, and $\beta_{\cos}$ parameters.
+  \item Builds upon previous models, combining trend and seasonality components
+  \item Includes both $\beta_{trend}$, $\beta_{\sin}$, and $\beta_{\cos}$ parameters
 \end{itemize}
 \end{frame}
 
@@ -260,20 +261,20 @@ effects}\label{estimated-one-step-ahead-random-effects}}
 
 \begin{frame}{Estimated one-step ahead random effects}
 \begin{columns}
-\begin{column}{.53\textwidth}
+\begin{column}{.50\textwidth}
 \begin{itemize}
-  \item<1> The upper bound $U_{t_0}$ is calculated based on the $90\%$ quantile of the distribution of the random effects
-  \item<1> If the one-step ahead random effects $u_{it_1}$ exceeds the upper bound $U_{t_0}$ an alarm is raised
-  \item<1> In the hierarchical Poisson Normal model (left), the random effects are exponentiated to transform them into the same domain as the hierarchical Poisson Gamma model (right)
+  \item<1> Upper bound $U_{t_0}$ is based on the $90\%$ quantile of the random effects distribution
+  \item<1> If the one-step ahead random effects $u_{it_1}$ exceeds $U_{t_0}$ an alarm is raised
+  \item<1> In the Poisson Normal model (left), the random effects are exponentiated to transform them into the same domain as the Poisson Gamma model (right)
 \end{itemize}
-\vspace{.3cm}
+\vspace{.1cm}
 \begin{itemize}
   \item<2> 30 alarms are generated using the hierarchical Poisson Normal framework, while 31 alarms are generated using the hierarchical Poisson Gamma framework.
   \item<2> A great number of alarms are generated in the period from March 2021 to March 2022
 \end{itemize}
 \end{column}
 \hfill
-\begin{column}{.43\textwidth}
+\begin{column}{.46\textwidth}
 
  \tiny
 
@@ -285,11 +286,232 @@ effects}\label{estimated-one-step-ahead-random-effects}}
 \end{columns}
 \end{frame}
 
+\hypertarget{performance-of-statistical-outbreak-detection-algorithms}{%
+\subsection{Performance of statistical outbreak detection
+algorithms}\label{performance-of-statistical-outbreak-detection-algorithms}}
+
+\begin{frame}{Performance of statistical outbreak detection algorithms}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/Compare_alarms_STEC}
+
+\normalsize
+\end{frame}
+
+\hypertarget{challenges-in-statistical-outbreak-detection}{%
+\subsection{Challenges in statistical outbreak
+detection}\label{challenges-in-statistical-outbreak-detection}}
+
+\begin{frame}{Challenges in statistical outbreak detection}
+\begin{columns}
+\begin{column}{.50\textwidth}
+\begin{itemize}
+  \item<1> Role of overdispersion in statistical outbreak detection
+  \item<2> The impact of context and observational bias
+  \item<3> Handling diseases with frequent outbreaks
+\end{itemize}
+\end{column}
+\hfill
+\begin{column}{.46\textwidth}
+\only<1>{
+
+ \tiny
+
+
+\includegraphics[width=1\linewidth]{../figures/LIST_meanAndStandardDeviation} 
+
+ \normalsize
+}
+\only<2>{
+
+ \tiny
+
+
+\includegraphics[width=1\linewidth]{../figures/Compare_novel_lower_SHIL} 
+
+ \normalsize
+}
+\only<3>{
+
+ \tiny
+
+
+\includegraphics[width=1\linewidth]{../figures/handle_alarms} 
+
+ \normalsize
+}
+\end{column}
+\end{columns}
+\end{frame}
+
+\hypertarget{simulation-study}{%
+\section{Simulation study}\label{simulation-study}}
+
+\hypertarget{baseline-data}{%
+\subsection{Baseline data}\label{baseline-data}}
+
+\begin{frame}{Baseline data}
+Simulated baseline data is generated according to a Negative Binomial
+distribution with mean \(\mu\) and a variance parameter \(\phi\mu\). The
+equation for the mean \(\mu(t)\) is given as:
+
+\begin{equation}
+\mu(t)=\exp\Biggl(\theta+\beta_t+\sum_{j=1}^m \biggl(\gamma_1 \cos\Bigl(\frac{2\pi jt}{52}\Bigl) + \gamma_2 \sin \Bigl(\frac{2\pi jt}{52} \Bigl)\biggl)\Biggl)
+\end{equation}
+
+\vspace{.3cm}
+
+Refer to Table 6.1 in the thesis to see the 28 different scenarios
+\end{frame}
+
+\hypertarget{outbreaks}{%
+\subsection{Outbreaks}\label{outbreaks}}
+
+\begin{frame}{Outbreaks}
+\begin{itemize}
+  \item Random constant value $k$ is chosen
+  \item Outbreak size $v$ is generated from a Poisson distribution with mean equal to $k$ times the standard deviation from the baseline data
+  \item The $v$ outbreak cases are distributed randomly in time according to a discretized log-normal distribution represented as $Z \sim \lfloor \LN(0,0.5^2)\rfloor$
+\end{itemize}
+\end{frame}
+
+\hypertarget{false-positive-rates}{%
+\subsection{False Positive Rates}\label{false-positive-rates}}
+
+\begin{frame}{False Positive Rates}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/FPRPlot}
+
+\normalsize
+\end{frame}
+
+\hypertarget{probability-an-outbreak-is-detected}{%
+\subsection{Probability an outbreak is
+detected}\label{probability-an-outbreak-is-detected}}
+
+\begin{frame}{Probability an outbreak is detected}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/PropDetect}
+
+\normalsize
+\end{frame}
+
+\hypertarget{other-relevant-diseases}{%
+\section{Other relevant diseases}\label{other-relevant-diseases}}
+
+\hypertarget{campylobacter}{%
+\subsection{Campylobacter}\label{campylobacter}}
+
+\begin{frame}{Campylobacter}
+\tiny
+
+\begin{figure}[H]
+\includegraphics[width=0.7\linewidth]{../figures/DALY} \caption{Disability adjusted life years (DALY) at the population level and at individual level. Reprinted from \cite{Pires_2020}.}\label{fig:DALY}
+\end{figure}
+
+\normalsize
+\end{frame}
+
+\begin{frame}{Campylobacter}
+\protect\hypertarget{campylobacter-1}{}
+\center
+
+\huge\textbf{LIVE DEMONSTRATION}
+\end{frame}
+
+\hypertarget{summary}{%
+\section{Summary}\label{summary}}
+
+\begin{frame}{Summary}
+\begin{itemize}
+  \item Easy incorporation of \textbf{covariates}
+  \item Estimates are \textbf{consistent} across the two modeling frameworks
+  \item Effectively \textbf{control the number of "false alarms"}
+  \item Great potential in utilizing \textbf{MiBa-based surveillance}
+\end{itemize}
+\end{frame}
+
 \hypertarget{references}{%
 \section{References}\label{references}}
 
 \begin{frame}{References}
 \printbibliography[heading=none]
+\end{frame}
+
+\hypertarget{hierarchical-poisson-gamma-model}{%
+\section{Hierarchical Poisson Gamma
+model}\label{hierarchical-poisson-gamma-model}}
+
+\hypertarget{probability-function-for-y}{%
+\subsection{\texorpdfstring{Probability function for
+\(Y\)}{Probability function for Y}}\label{probability-function-for-y}}
+
+\begin{frame}{Probability function for \(Y\)}
+\begin{equation} \label{eq:pdfMix}
+  \begin{aligned}
+    P[Y=y]&=g_{Y}(y;\boldsymbol \beta, \phi) \\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}}\frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}} \\
+    &=\frac{\Gamma(y+1/\phi)}{\Gamma(1/\phi)y!}\frac{1}{(\lambda\phi+1)^{1/\phi}}\bigg(\frac{\lambda\phi}{\lambda\phi+1}\bigg)^{y} \\
+    &=\begin{pmatrix} y+1/\phi-1 \\ y \end{pmatrix} \frac{1}{(\lambda\phi+1)^{1/\phi}}\bigg(\frac{\lambda\phi}{\lambda\phi+1}\bigg)^{y} \ , \quad \mathrm{for} \ y = 0, 1, 2, \dots
+  \end{aligned}
+\end{equation}
+
+where the following convention is used
+
+\begin{equation}
+  \begin{pmatrix} z\\y \end{pmatrix} = \frac{\Gamma(z+1)}{\Gamma(z+1-y)y!}
+\end{equation}
+
+The marginal distribution of \(Y\) is a negative binomial distribution,
+\(Y\sim \NB\big(1/\phi,1/(\lambda \phi+1)\big)\)
+\end{frame}
+
+\hypertarget{proof}{%
+\subsection{Proof}\label{proof}}
+
+\begin{frame}{Proof}
+The probability function for the conditional distribution of \(Y\) for
+given \(u\)
+
+\begin{equation}\label{eq:pdfPois}
+  f_{Y|u}(y;u,\boldsymbol{\beta})=\frac{(\lambda u)^{y}}{y!}\exp(-\lambda u)
+\end{equation}
+
+and the probability density function for the distribution of \(u\) is
+
+\begin{equation} \label{eq:pdfGamma}
+  f_{u}(u;\phi)=\frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)
+\end{equation}
+\end{frame}
+
+\begin{frame}{Proof}
+\protect\hypertarget{proof-1}{}
+Given \eqref{eq:pdfPois} and \eqref{eq:pdfGamma}, the probability
+function for the marginal distribution of \(Y\) is determined from
+
+\begin{equation} \label{eq:marMix}
+  \begin{aligned}
+    g_{Y}(y;\beta,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;u,\beta) f_{u}(u;\phi) \,du \\
+    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u /\phi) \,du\\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi-1} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
+  \end{aligned}
+\end{equation}
+\end{frame}
+
+\begin{frame}{Proof}
+\protect\hypertarget{proof-2}{}
+In \eqref{eq:marMix} it is noted that the integrand is the \emph{kernel}
+in the probability density function for a Gamma distribution,
+\(\G\big(y+1/\phi,\phi/(\lambda \phi+1)\big)\). As the integral of the
+density shall equal one, we find by adjusting the norming constant that
+
+\begin{equation}
+  \int_{u=0}^\infty  u^{ y+ 1/\phi-1} \exp \Big(- u/\big(\phi/( \lambda \phi+1)\big)\Big) \,du = \frac{\phi^{ y+ 1/\phi}\Gamma( y+\boldsymbol 1/\phi)}{( \lambda \phi + 1)^{y+1/\phi}}
+\end{equation}
+
+and then \eqref{eq:pdfMix} follows
 \end{frame}
 
 
