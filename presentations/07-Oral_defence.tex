@@ -101,7 +101,7 @@ Technical University of Denmark}
 \begin{itemize}
   \item<1> Review of existing literature on statistical methods for detecting disease outbreaks
   \item<1>  Identification and implementation of state-of-the-art methods for detection of disease outbreaks
-  \item<1-2> Formulation of \textbf<2>{hierarchical} models for the individually notifiable diseases
+  \item<1-2> \textbf<2>{Formulation of hierarchical models} for the individually notifiable diseases
   \item<1-2> Development of an \textbf<2>{automated method}, based on the hierarchical models, for automated and early detection of disease outbreaks
   \item<1-2> Comparison of the developed method and state-of-the-art methods in \textbf<2>{one} or more case study
   \item<1-2> Comparison of the developed method and state-of-the-art methods in a \textbf<2>{simulation study}
@@ -170,11 +170,22 @@ to characterize an outbreak.
 models}\label{formulation-of-hierarchical-models}}
 
 \begin{frame}{Formulation of hierarchical models}
+\only<1>{
 \begin{align*}
   \mathbf{Pois}&\mathbf{son} \ \mathbf{Normal} & \mathbf{Pois}&\mathbf{son} \ \mathbf{Gamma} \\
   \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) & \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \\
   \boldsymbol{u} &\sim \N(\boldsymbol{0},I\sigma^2) & \boldsymbol{u} &\sim \G(\boldsymbol 1/\phi,\phi)
 \end{align*}
+}
+\only<2>{
+\begin{align*}
+  \mathbf{Pois}&\mathbf{son} \ \mathbf{Normal} & \mathbf{Pois}&\mathbf{son} \ \mathbf{Gamma} \\
+  \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) & \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \\
+  \boldsymbol{u} &\sim \N(\boldsymbol{0},I\sigma^2) & \boldsymbol{u} &\sim \G(\boldsymbol 1/\phi,\phi) \\
+  & & & \\
+  & & Y&\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)
+\end{align*}
+}
 \end{frame}
 
 \hypertarget{case-study}{%
@@ -263,13 +274,13 @@ effects}\label{estimated-one-step-ahead-random-effects}}
 \begin{columns}
 \begin{column}{.50\textwidth}
 \begin{itemize}
+  \item<1> The combined model minimizes the logarithmic score  
   \item<1> Upper bound $U_{t_0}$ is based on the $90\%$ quantile of the random effects distribution
   \item<1> If the one-step ahead random effects $u_{it_1}$ exceeds $U_{t_0}$ an alarm is raised
-  \item<1> In the Poisson Normal model (left), the random effects are exponentiated to transform them into the same domain as the Poisson Gamma model (right)
 \end{itemize}
 \vspace{.1cm}
 \begin{itemize}
-  \item<2> 30 alarms are generated using the hierarchical Poisson Normal framework, while 31 alarms are generated using the hierarchical Poisson Gamma framework.
+  \item<2> 30 alarms are generated using the Poisson Normal framework, while 31 alarms are generated using the Poisson Gamma framework.
   \item<2> A great number of alarms are generated in the period from March 2021 to March 2022
 \end{itemize}
 \end{column}
@@ -368,11 +379,27 @@ Refer to Table 6.1 in the thesis to see the 28 different scenarios
 \subsection{Outbreaks}\label{outbreaks}}
 
 \begin{frame}{Outbreaks}
+\begin{columns}
+\begin{column}{.50\textwidth}
 \begin{itemize}
+  \item Four outbreaks during baseline weeks (313-575), one outbreak during current weeks (576-624)
   \item Random constant value $k$ is chosen
   \item Outbreak size $v$ is generated from a Poisson distribution with mean equal to $k$ times the standard deviation from the baseline data
   \item The $v$ outbreak cases are distributed randomly in time according to a discretized log-normal distribution represented as $Z \sim \lfloor \LN(0,0.5^2)\rfloor$
 \end{itemize}
+\end{column}
+\hfill
+\begin{column}{.46\textwidth}
+
+ \tiny
+
+\begin{figure}[H]
+\includegraphics[width=1\linewidth]{../figures/Realizations} \caption{Plots of one randomly chosen realization for scenario 8, 12, 13, and 20.}\label{fig:Realizations}
+\end{figure}
+
+ \normalsize
+\end{column}
+\end{columns}
 \end{frame}
 
 \hypertarget{false-positive-rates}{%

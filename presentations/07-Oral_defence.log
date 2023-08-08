@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.8.1)  7 AUG 2023 10:00
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.8.1)  8 AUG 2023 14:01
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1370,19 +1370,17 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-File: ../figures/STEC_long_plot.png Graphic file (type bmp)
-<../figures/STEC_long_plot.png>
-LaTeX Font Info:    Font shape `T1/lmss/b/it' in size <12> not available
-(Font)              Font shape `T1/lmss/bx/it' tried instead on input line 197.
-LaTeX Font Info:    Font shape `T1/lmss/bx/it' in size <12> not available
-(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 197.
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
 [11
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
+File: ../figures/STEC_long_plot.png Graphic file (type bmp)
+<../figures/STEC_long_plot.png>
+LaTeX Font Info:    Font shape `T1/lmss/b/it' in size <12> not available
+(Font)              Font shape `T1/lmss/bx/it' tried instead on input line 208.
+LaTeX Font Info:    Font shape `T1/lmss/bx/it' in size <12> not available
+(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 208.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [12
@@ -1411,18 +1409,25 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+[16
+
+]
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
 File: ../figures/Compare_novel_STEC.png Graphic file (type bmp)
 <../figures/Compare_novel_STEC.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[16
+[17
 
 ]
 File: ../figures/Compare_novel_STEC.png Graphic file (type bmp)
 <../figures/Compare_novel_STEC.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[17
+[18
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1431,7 +1436,7 @@ File: ../figures/Compare_alarms_STEC.png Graphic file (type bmp)
 <../figures/Compare_alarms_STEC.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[18
+[19
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1440,25 +1445,18 @@ File: ../figures/LIST_meanAndStandardDeviation.png Graphic file (type bmp)
 <../figures/LIST_meanAndStandardDeviation.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[19
+[20
 
 ]
 File: ../figures/Compare_novel_lower_SHIL.png Graphic file (type bmp)
 <../figures/Compare_novel_lower_SHIL.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[20
+[21
 
 ]
 File: ../figures/handle_alarms.png Graphic file (type bmp)
 <../figures/handle_alarms.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[21
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [22
@@ -1473,11 +1471,20 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
+File: ../figures/Realizations.png Graphic file (type bmp)
+<../figures/Realizations.png>
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+[24
+
+]
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
 File: ../figures/FPRPlot.png Graphic file (type bmp)
 <../figures/FPRPlot.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[24
+[25
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1486,7 +1493,7 @@ File: ../figures/PropDetect.png Graphic file (type bmp)
 <../figures/PropDetect.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[25
+[26
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1494,18 +1501,9 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 File: ../figures/DALY.jpeg Graphic file (type bmp)
 <../figures/DALY.jpeg>
 
-Overfull \vbox (7.21523pt too high) detected at line 415
+Overfull \vbox (7.21523pt too high) detected at line 442
  []
 
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[26
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <20.74> not available
-(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 422.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [27
@@ -1513,6 +1511,8 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
+LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <20.74> not available
+(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 449.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [28
@@ -1520,21 +1520,6 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 441.
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 441.
-(c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
-File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-
-LaTeX Font Warning: Font shape `T1/lmss/m/sc' in size <10.95> not available
-(Font)              Font shape `T1/lmr/m/sc' tried instead on input line 441.
-
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 441.
-(c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-Missing character: There is no – ("2013) in font ec-lmss10!
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [29
@@ -1542,8 +1527,21 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 469.
+LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 468.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 468.
+(c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
+File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+
+LaTeX Font Warning: Font shape `T1/lmss/m/sc' in size <10.95> not available
+(Font)              Font shape `T1/lmr/m/sc' tried instead on input line 468.
+
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 468.
+(c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+Missing character: There is no – ("2013) in font ec-lmss10!
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [30
@@ -1551,6 +1549,8 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <12> on input line 496.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [31
@@ -1570,6 +1570,13 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 [33
 
 ]
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+[34
+
+]
 \tf@nav=\write7
 \openout7 = `07-Oral_defence.nav'.
 
@@ -1585,18 +1592,18 @@ LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-06-30>
  ***********
 Package rerunfilecheck Info: File `07-Oral_defence.out' has not changed.
-(rerunfilecheck)             Checksum: 6BDD800DF10A685852D179F556E92B0E;4980.
+(rerunfilecheck)             Checksum: 953B0DD86E95A8F853F3E6E1BF5DEECB;4980.
 Package logreq Info: Writing requests to '07-Oral_defence.run.xml'.
 \openout1 = `07-Oral_defence.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 48985 strings out of 477888
- 1151351 string characters out of 5821337
- 1969014 words of memory out of 5000000
- 69051 multiletter control sequences out of 15000+600000
+ 49005 strings out of 477888
+ 1151967 string characters out of 5821337
+ 1969047 words of memory out of 5000000
+ 69070 multiletter control sequences out of 15000+600000
  650505 words of font info for 109 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  101i,21n,107p,2168b,5003s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on 07-Oral_defence.pdf (33 pages).
+Output written on 07-Oral_defence.pdf (34 pages).
