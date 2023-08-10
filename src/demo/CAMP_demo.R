@@ -1,3 +1,5 @@
+# Set working directory
+setwd("C:/GIT/AEDDO/src/demo/")
 
 # Import libraries
 library(readr)

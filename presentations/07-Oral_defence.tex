@@ -103,7 +103,7 @@ Technical University of Denmark}
   \item<1>  Identification and implementation of state-of-the-art methods for detection of disease outbreaks
   \item<1-2> \textbf<2>{Formulation of hierarchical models} for the individually notifiable diseases
   \item<1-2> Development of an \textbf<2>{automated method}, based on the hierarchical models, for automated and early detection of disease outbreaks
-  \item<1-2> Comparison of the developed method and state-of-the-art methods in \textbf<2>{one} or more case study
+  \item<1-2> Comparison of the developed method and state-of-the-art methods in one or more \textbf<2>{case study}
   \item<1-2> Comparison of the developed method and state-of-the-art methods in a \textbf<2>{simulation study}
 \end{itemize}
 \end{frame}
@@ -135,6 +135,26 @@ random effects \(\boldsymbol u\). These random effects are used directly
 to characterize an outbreak.
 \end{frame}
 
+\begin{frame}{Formulation of hierarchical models}
+\protect\hypertarget{formulation-of-hierarchical-models}{}
+\only<1>{
+\begin{align*}
+  \mathbf{Pois}&\mathbf{son} \ \mathbf{Normal} & \mathbf{Pois}&\mathbf{son} \ \mathbf{Gamma} \\
+  \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) & \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \\
+  \boldsymbol{u} &\sim \N(\boldsymbol{0},I\sigma^2) & \boldsymbol{u} &\sim \G(\boldsymbol 1/\phi,\phi)
+\end{align*}
+}
+\only<2>{
+\begin{align*}
+  \mathbf{Pois}&\mathbf{son} \ \mathbf{Normal} & \mathbf{Pois}&\mathbf{son} \ \mathbf{Gamma} \\
+  \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) & \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \\
+  \boldsymbol{u} &\sim \N(\boldsymbol{0},I\sigma^2) & \boldsymbol{u} &\sim \G(\boldsymbol 1/\phi,\phi) \\
+  & & & \\
+  & & Y&\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)
+\end{align*}
+}
+\end{frame}
+
 \begin{frame}{Step 1: Modeling framework}
 \protect\hypertarget{step-1-modeling-framework}{}
 \begin{itemize}
@@ -163,29 +183,6 @@ to characterize an outbreak.
   \item Raise and alarm if the inferred random effect exceeds the threshold, i.e. $u_{i{t_1}}>U_{t_0}$
   \item Omit outbreak related observations from future parameter estimation
 \end{itemize}
-\end{frame}
-
-\hypertarget{formulation-of-hierarchical-models}{%
-\subsection{Formulation of hierarchical
-models}\label{formulation-of-hierarchical-models}}
-
-\begin{frame}{Formulation of hierarchical models}
-\only<1>{
-\begin{align*}
-  \mathbf{Pois}&\mathbf{son} \ \mathbf{Normal} & \mathbf{Pois}&\mathbf{son} \ \mathbf{Gamma} \\
-  \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) & \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \\
-  \boldsymbol{u} &\sim \N(\boldsymbol{0},I\sigma^2) & \boldsymbol{u} &\sim \G(\boldsymbol 1/\phi,\phi)
-\end{align*}
-}
-\only<2>{
-\begin{align*}
-  \mathbf{Pois}&\mathbf{son} \ \mathbf{Normal} & \mathbf{Pois}&\mathbf{son} \ \mathbf{Gamma} \\
-  \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) & \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \\
-  \boldsymbol{u} &\sim \N(\boldsymbol{0},I\sigma^2) & \boldsymbol{u} &\sim \G(\boldsymbol 1/\phi,\phi) \\
-  & & & \\
-  & & Y&\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)
-\end{align*}
-}
 \end{frame}
 
 \hypertarget{case-study}{%

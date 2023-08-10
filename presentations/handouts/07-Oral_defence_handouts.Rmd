@@ -60,6 +60,16 @@ knitr::include_graphics("../../figures/MiBa.png")
 
 State-of-the-art algorithms for aberration detection is presented in \cite{Salmon_2016} and implemented in the R package **surveillance**. The R package includes the method introduced by \cite{Farrington_1996} together with the subsequently improved method proposed by \cite{Noufaily_2013}.
 
+### Formulation of hierarchical models
+
+\begin{align*}
+  \mathbf{Pois}&\mathbf{son} \ \mathbf{Normal} & \mathbf{Pois}&\mathbf{son} \ \mathbf{Gamma} \\
+  \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) & \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \\
+  \boldsymbol{u} &\sim \N(\boldsymbol{0},I\sigma^2) & \boldsymbol{u} &\sim \G(\boldsymbol 1/\phi,\phi) \\
+  & & & \\
+  & & Y&\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)
+\end{align*}
+
 ## Novel algorithm
 
 The novel algorithm utilizes a generalized mixed effects model or a hierarchical mixed effects model as a modeling framework to model the count case observations $\boldsymbol y$ and assess the unobserved random effects $\boldsymbol u$. These random effects are used directly to characterize an outbreak.
@@ -90,16 +100,6 @@ The novel algorithm utilizes a generalized mixed effects model or a hierarchical
   \item Raise and alarm if the inferred random effect exceeds the threshold, i.e. $u_{i{t_1}}>U_{t_0}$
   \item Omit outbreak related observations from future parameter estimation
 \end{itemize}
-
-## Formulation of hierarchical models
-
-\begin{align*}
-  \mathbf{Pois}&\mathbf{son} \ \mathbf{Normal} & \mathbf{Pois}&\mathbf{son} \ \mathbf{Gamma} \\
-  \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) & \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \\
-  \boldsymbol{u} &\sim \N(\boldsymbol{0},I\sigma^2) & \boldsymbol{u} &\sim \G(\boldsymbol 1/\phi,\phi) \\
-  & & & \\
-  & & Y&\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)
-\end{align*}
 
 # Case study
 
