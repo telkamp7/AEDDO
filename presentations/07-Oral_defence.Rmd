@@ -78,7 +78,7 @@ The novel algorithm utilizes a generalized mixed effects model or a hierarchical
   \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) & \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \\
   \boldsymbol{u} &\sim \N(\boldsymbol{0},I\sigma^2) & \boldsymbol{u} &\sim \G(\boldsymbol 1/\phi,\phi) \\
   & & & \\
-  & & \boldsymbol{Y}&\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)
+  & & Y&\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)
 \end{align*}
 }
 
