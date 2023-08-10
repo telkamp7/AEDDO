@@ -1,0 +1,72 @@
+\documentclass[aspectratio=169,handout]{beamer}
+
+% Default packages
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+\usepackage{csquotes}
+\usepackage{pgfplots}
+\usepackage{pgfpages}
+\pgfplotsset{compat=newest}
+\usepackage{booktabs}
+\usepackage{siunitx}
+\usepackage{amsmath}
+\usepackage[backend=bibtex,style=authoryear]{biblatex}
+\usepackage[ruled]{algorithm2e}
+\bibliography{bibliography.bib}
+
+% Removes icon in bibliography
+\setbeamertemplate{bibliography item}{}
+
+\pgfpagesuselayout{4 on 1}[a4paper,border shrink=10mm,landscape]
+
+% Font selection
+% Latin Modern
+\usepackage{lmodern}
+% Verdana font type
+%\usepackage{verdana}
+% Helvetica
+%\usepackage{helvet}
+% Times (text and math)
+%\usepackage{newtx, newtxmath}
+% Nice font combination
+%\usepackage{mathptmx} % math
+%\usepackage{sourcesanspro} % sans-serif
+\usepackage{charter} % serif
+
+%Avoid shaded in RMarkdown
+$if(highlighting-macros)$
+$highlighting-macros$
+$endif$
+
+% Use DTU theme, see below for options
+\usetheme[department=compute]{DTU}
+
+\title[$project$]{$title$}
+\author{$author$}
+\institute{$institute$}
+\date{$date$}
+	
+\newcommand{\tabitem}{{\color{dtured}$$\bullet$$} }
+
+\DeclareMathOperator{\E}{E}
+\DeclareMathOperator{\V}{V}
+\DeclareMathOperator{\G}{G}
+\DeclareMathOperator{\N}{N}
+\DeclareMathOperator{\NB}{NB}
+\DeclareMathOperator{\LN}{LN}
+\DeclareMathOperator{\Pois}{Pois}
+\DeclareMathOperator{\Geom}{Geom}
+
+\setbeamercovered{transparent}
+
+\begin{document}
+
+
+\frame{
+	\maketitle
+}
+
+$body$
+
+
+\end{document}

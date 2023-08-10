@@ -1,10 +1,11 @@
-\documentclass[aspectratio=169]{beamer}
+\documentclass[aspectratio=169,handout]{beamer}
 
 % Default packages
 \usepackage[T1]{fontenc}
 \usepackage[english]{babel}
 \usepackage{csquotes}
 \usepackage{pgfplots}
+\usepackage{pgfpages}
 \pgfplotsset{compat=newest}
 \usepackage{booktabs}
 \usepackage{siunitx}
@@ -15,6 +16,8 @@
 
 % Removes icon in bibliography
 \setbeamertemplate{bibliography item}{}
+
+\pgfpagesuselayout{4 on 1}[a4paper,border shrink=10mm,landscape]
 
 % Font selection
 % Latin Modern
@@ -87,7 +90,7 @@ Technical University of Denmark}
  \tiny
 
 
-\includegraphics[width=0.75\linewidth]{../figures/MiBaPetriComp} \includegraphics[width=0.75\linewidth]{../figures/MiBa} 
+\includegraphics[width=0.75\linewidth]{../../figures/MiBaPetriComp} \includegraphics[width=0.75\linewidth]{../../figures/MiBa} 
 
  \normalsize
 \end{column}
@@ -99,12 +102,12 @@ Technical University of Denmark}
 
 \begin{frame}{Research goals}
 \begin{itemize}
-  \item<1> Review of existing literature on statistical methods for detecting disease outbreaks
-  \item<1>  Identification and implementation of state-of-the-art methods for detection of disease outbreaks
-  \item<1-2> \textbf<2>{Formulation of hierarchical models} for the individually notifiable diseases
-  \item<1-2> Development of an \textbf<2>{automated method}, based on the hierarchical models, for automated and early detection of disease outbreaks
-  \item<1-2> Comparison of the developed method and state-of-the-art methods in \textbf<2>{one} or more case study
-  \item<1-2> Comparison of the developed method and state-of-the-art methods in a \textbf<2>{simulation study}
+  \item Review of existing literature on statistical methods for detecting disease outbreaks
+  \item  Identification and implementation of state-of-the-art methods for detection of disease outbreaks
+  \item Formulation of hierarchical models for the individually notifiable diseases
+  \item Development of an automated method, based on the hierarchical models, for automated and early detection of disease outbreaks
+  \item Comparison of the developed method and state-of-the-art methods in one or more case study
+  \item Comparison of the developed method and state-of-the-art methods in a simulation study
 \end{itemize}
 \end{frame}
 
@@ -170,14 +173,6 @@ to characterize an outbreak.
 models}\label{formulation-of-hierarchical-models}}
 
 \begin{frame}{Formulation of hierarchical models}
-\only<1>{
-\begin{align*}
-  \mathbf{Pois}&\mathbf{son} \ \mathbf{Normal} & \mathbf{Pois}&\mathbf{son} \ \mathbf{Gamma} \\
-  \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) & \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \\
-  \boldsymbol{u} &\sim \N(\boldsymbol{0},I\sigma^2) & \boldsymbol{u} &\sim \G(\boldsymbol 1/\phi,\phi)
-\end{align*}
-}
-\only<2>{
 \begin{align*}
   \mathbf{Pois}&\mathbf{son} \ \mathbf{Normal} & \mathbf{Pois}&\mathbf{son} \ \mathbf{Gamma} \\
   \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) & \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \\
@@ -185,7 +180,6 @@ models}\label{formulation-of-hierarchical-models}}
   & & & \\
   & & Y&\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)
 \end{align*}
-}
 \end{frame}
 
 \hypertarget{case-study}{%
@@ -201,7 +195,7 @@ models}\label{formulation-of-hierarchical-models}}
 \tiny
 
 \begin{figure}[H]
-\includegraphics[width=0.75\linewidth]{../figures/STEC_long_plot} \caption{A stacked bar graph illustrating the number of monthly STEC cases observed in the period from 2008 to 2022 for the six age groups.}\label{fig:STEC}
+\includegraphics[width=0.75\linewidth]{../../figures/STEC_long_plot} \caption{A stacked bar graph illustrating the number of monthly STEC cases observed in the period from 2008 to 2022 for the six age groups.}\label{fig:STEC}
 \end{figure}
 
 \normalsize
@@ -291,7 +285,7 @@ effects}\label{estimated-one-step-ahead-random-effects}}
  \tiny
 
 
-\includegraphics[width=1\linewidth]{../figures/Compare_novel_STEC} 
+\includegraphics[width=1\linewidth]{../../figures/Compare_novel_STEC} 
 
  \normalsize
 \end{column}
@@ -305,7 +299,7 @@ algorithms}\label{performance-of-statistical-outbreak-detection-algorithms}}
 \begin{frame}{Performance of statistical outbreak detection algorithms}
 \tiny
 
-\includegraphics[width=1\linewidth]{../figures/Compare_alarms_STEC}
+\includegraphics[width=1\linewidth]{../../figures/Compare_alarms_STEC}
 
 \normalsize
 \end{frame}
@@ -325,33 +319,7 @@ detection}\label{challenges-in-statistical-outbreak-detection}}
 \end{column}
 \hfill
 \begin{column}{.46\textwidth}
-\only<1>{
 
- \tiny
-
-
-\includegraphics[width=1\linewidth]{../figures/LIST_meanAndStandardDeviation} 
-
- \normalsize
-}
-\only<2>{
-
- \tiny
-
-
-\includegraphics[width=1\linewidth]{../figures/Compare_novel_lower_SHIL} 
-
- \normalsize
-}
-\only<3>{
-
- \tiny
-
-
-\includegraphics[width=1\linewidth]{../figures/handle_alarms} 
-
- \normalsize
-}
 \end{column}
 \end{columns}
 \end{frame}
@@ -395,7 +363,7 @@ Refer to Table 6.1 in the thesis to see the 28 different scenarios
  \tiny
 
 \begin{figure}[H]
-\includegraphics[width=1\linewidth]{../figures/Realizations} \caption{Plots of one randomly chosen realization for scenario 8, 12, 13, and 20.}\label{fig:Realizations}
+\includegraphics[width=1\linewidth]{../../figures/Realizations} \caption{Plots of one randomly chosen realization for scenario 8, 12, 13, and 20.}\label{fig:Realizations}
 \end{figure}
 
  \normalsize
@@ -409,7 +377,7 @@ Refer to Table 6.1 in the thesis to see the 28 different scenarios
 \begin{frame}{False Positive Rates}
 \tiny
 
-\includegraphics[width=1\linewidth]{../figures/FPRPlot}
+\includegraphics[width=1\linewidth]{../../figures/FPRPlot}
 
 \normalsize
 \end{frame}
@@ -421,7 +389,7 @@ detected}\label{probability-an-outbreak-is-detected}}
 \begin{frame}{Probability an outbreak is detected}
 \tiny
 
-\includegraphics[width=1\linewidth]{../figures/PropDetect}
+\includegraphics[width=1\linewidth]{../../figures/PropDetect}
 
 \normalsize
 \end{frame}
@@ -436,7 +404,7 @@ detected}\label{probability-an-outbreak-is-detected}}
 \tiny
 
 \begin{figure}[H]
-\includegraphics[width=0.7\linewidth]{../figures/DALY} \caption{Disability adjusted life years (DALY) at the population level and at individual level. Reprinted from \cite{Pires_2020}.}\label{fig:DALY}
+\includegraphics[width=0.7\linewidth]{../../figures/DALY} \caption{Disability adjusted life years (DALY) at the population level and at individual level. Reprinted from \cite{Pires_2020}.}\label{fig:DALY}
 \end{figure}
 
 \normalsize

@@ -37,8 +37,8 @@ knitr::knit_hooks$set(chunk = function(x, options) {
 \hfill
 \begin{column}{.38\textwidth}
 ```{r MiBa, echo=FALSE, out.width="75%", fig.pos = "H", fig.show = "hold", fig.keep='all', fig.ncol = 2}
-knitr::include_graphics("../figures/MiBaPetriComp.png")
-knitr::include_graphics("../figures/MiBa.png")
+knitr::include_graphics("../../figures/MiBaPetriComp.png")
+knitr::include_graphics("../../figures/MiBa.png")
 ```
 \end{column}
 \end{columns}
@@ -46,12 +46,12 @@ knitr::include_graphics("../figures/MiBa.png")
 ## Research goals
 
 \begin{itemize}
-  \item<1> Review of existing literature on statistical methods for detecting disease outbreaks
-  \item<1>  Identification and implementation of state-of-the-art methods for detection of disease outbreaks
-  \item<1-2> \textbf<2>{Formulation of hierarchical models} for the individually notifiable diseases
-  \item<1-2> Development of an \textbf<2>{automated method}, based on the hierarchical models, for automated and early detection of disease outbreaks
-  \item<1-2> Comparison of the developed method and state-of-the-art methods in \textbf<2>{one} or more case study
-  \item<1-2> Comparison of the developed method and state-of-the-art methods in a \textbf<2>{simulation study}
+  \item Review of existing literature on statistical methods for detecting disease outbreaks
+  \item  Identification and implementation of state-of-the-art methods for detection of disease outbreaks
+  \item Formulation of hierarchical models for the individually notifiable diseases
+  \item Development of an automated method, based on the hierarchical models, for automated and early detection of disease outbreaks
+  \item Comparison of the developed method and state-of-the-art methods in one or more case study
+  \item Comparison of the developed method and state-of-the-art methods in a simulation study
 \end{itemize}
 
 # Algorithms for prospective disease outbreak detection
@@ -92,14 +92,7 @@ The novel algorithm utilizes a generalized mixed effects model or a hierarchical
 \end{itemize}
 
 ## Formulation of hierarchical models
-\only<1>{
-\begin{align*}
-  \mathbf{Pois}&\mathbf{son} \ \mathbf{Normal} & \mathbf{Pois}&\mathbf{son} \ \mathbf{Gamma} \\
-  \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) & \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \\
-  \boldsymbol{u} &\sim \N(\boldsymbol{0},I\sigma^2) & \boldsymbol{u} &\sim \G(\boldsymbol 1/\phi,\phi)
-\end{align*}
-}
-\only<2>{
+
 \begin{align*}
   \mathbf{Pois}&\mathbf{son} \ \mathbf{Normal} & \mathbf{Pois}&\mathbf{son} \ \mathbf{Gamma} \\
   \boldsymbol{Y|u} &\sim \Pois \big( \boldsymbol{\lambda} \exp(\boldsymbol{u}) \big) & \boldsymbol{Y|u} &\sim \Pois (\boldsymbol{\lambda u}) \\
@@ -107,14 +100,13 @@ The novel algorithm utilizes a generalized mixed effects model or a hierarchical
   & & & \\
   & & Y&\sim\NB\big(1/\phi,1/(\lambda\phi+1)\big)
 \end{align*}
-}
 
 # Case study
 
 ## Shiga toxin (verotoxin)-producing *Escherichia coli* (STEC)
 
 ```{r STEC, echo=FALSE, out.width="75%", fig.cap="A stacked bar graph illustrating the number of monthly STEC cases observed in the period from 2008 to 2022 for the six age groups.",fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/STEC_long_plot.png")
+knitr::include_graphics("../../figures/STEC_long_plot.png")
 ```
 
 ## Constant model
@@ -182,7 +174,7 @@ knitr::include_graphics("../figures/STEC_long_plot.png")
 \hfill
 \begin{column}{.46\textwidth}
 ```{r CompareNovelSTEC, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/Compare_novel_STEC.png")
+knitr::include_graphics("../../figures/Compare_novel_STEC.png")
 ```
 \end{column}
 \end{columns}
@@ -190,7 +182,7 @@ knitr::include_graphics("../figures/Compare_novel_STEC.png")
 ## Performance of statistical outbreak detection algorithms
 
 ```{r CompareAlarmsSTEC, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/Compare_alarms_STEC.png")
+knitr::include_graphics("../../figures/Compare_alarms_STEC.png")
 ```
 
 ## Challenges in statistical outbreak detection
@@ -205,21 +197,7 @@ knitr::include_graphics("../figures/Compare_alarms_STEC.png")
 \end{column}
 \hfill
 \begin{column}{.46\textwidth}
-\only<1>{
-```{r LISTmeanAndStandardDeviation, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/LIST_meanAndStandardDeviation.png")
-```
-}
-\only<2>{
-```{r ComparenovellowerSHIL, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/Compare_novel_lower_SHIL.png")
-```
-}
-\only<3>{
-```{r handlealarms, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/handle_alarms.png")
-```
-}
+
 \end{column}
 \end{columns}
 
@@ -251,20 +229,20 @@ Refer to Table 6.1 in the thesis to see the 28 different scenarios
 \hfill
 \begin{column}{.46\textwidth}
 ```{r Realizations, echo=FALSE, out.width="100%", fig.cap="Plots of one randomly chosen realization for scenario 8, 12, 13, and 20.", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/Realizations.png")
+knitr::include_graphics("../../figures/Realizations.png")
 ```
 \end{column}
 \end{columns}
 ## False Positive Rates
 
 ```{r FPR, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/FPRPlot.png")
+knitr::include_graphics("../../figures/FPRPlot.png")
 ```
 
 ## Probability an outbreak is detected
 
 ```{r PropDetect, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/PropDetect.png")
+knitr::include_graphics("../../figures/PropDetect.png")
 ```
 
 # Other relevant diseases
@@ -272,7 +250,7 @@ knitr::include_graphics("../figures/PropDetect.png")
 ## Campylobacter
 
 ```{r DALY, echo=FALSE, out.width="70%", fig.cap="Disability adjusted life years (DALY) at the population level and at individual level. Reprinted from \\cite{Pires_2020}.", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/DALY.jpeg")
+knitr::include_graphics("../../figures/DALY.jpeg")
 ```
 
 ### Campylobacter
