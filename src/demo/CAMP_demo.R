@@ -4,6 +4,7 @@ setwd("C:/GIT/AEDDO/src/demo/")
 # Import libraries
 library(readr)
 library(dplyr)
+library(tidyr)
 library(lubridate)
 library(ggplot2)
 
@@ -40,6 +41,7 @@ CAMP <- read_rds(file = "../../data/processed/CAMP.rds") %>%
   filter(Date >= "2015-01-01" & Date <= "2019-12-01") %>%
   rename(y = cases) %>%
   select(Date, ageGroup, y, n)
+CAMP
 
 # Create a stacked bar graph for the number of CAMP cases
 p <- CAMP %>%
