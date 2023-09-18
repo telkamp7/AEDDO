@@ -1,11 +1,12 @@
 
 # Import libraries
+library(cowplot)
 library(dplyr)
 library(readr)
 library(tidyr)
 library(surveillance)
 library(ggplot2)
-
+library(purrr)
 # DTU colours
 dtuPalette <- c("#990000",
                          "#2F3EEA",
@@ -53,7 +54,13 @@ STEC_long_plot <- STEC %>%
   geom_bar(position = "stack", stat = "identity") + 
   scale_fill_manual(name = "Age group", values = dtuPalette) +
   scale_y_continuous(name = "Number of cases") +
-  scale_x_date(name = "Month")
+  scale_x_date(name = "Month") +
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26),
+        legend.title = element_text(size = 26),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(1, 'cm'))
 ggsave(filename = "STEC_long_plot.png",
        plot = STEC_long_plot,
        path = "../../figures/",
@@ -162,7 +169,7 @@ ggsave(filename = "Compare_stateOfTheArt_STEC.png",
        path = "../../figures/",
        device = png,
        width = 16,
-       height = 12,
+       height = 14,
        units = "in",
        dpi = "print")
 
@@ -394,19 +401,21 @@ Compare_novel <- STEC_novel %>%
   scale_colour_manual(values = dtuPalette) +
   scale_shape_manual(values = c(1,19)) +
   guides(colour = "none", shape = "none") +
-  theme(strip.text = element_text(size = 20))
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26))
 ggsave(filename = "Compare_novel_STEC.png",
        plot = Compare_novel,
        path = "../../figures/",
        device = png,
        width = 16,
-       height = 12,
+       height = 14,
        units = "in",
        dpi = "print")  
 
 
 custom_labeller <- as_labeller(
-  c(`ageGroup<1 year`="beta[1~year]", `ageGroup1-4 years`="beta[1-4~years]",
+  c(`ageGroup0-1 years`="beta['<1 year']", `ageGroup1-4 years`="beta[1-4~years]",
     `ageGroup5-14 years`="beta[5-14~years]",`ageGroup15-24 years`="beta[15-24~years]",
     `ageGroup25-64 years`="beta[25-64~years]", `ageGroup65+ years`="beta[65+~years]",
     `t`="beta[trend]", `sin(pi/6 * periodInYear)` ="beta[sin]",
@@ -429,7 +438,8 @@ STEC_novel_par <- bind_rows(
                                                   "ageGroup5-14 years", "ageGroup15-24 years",
                                                   "ageGroup25-64 years", "ageGroup65+ years",
                                                   "t","sin(pi/6 * periodInYear)",
-                                                  "cos(pi/6 * periodInYear)", "log_sigma", "log_phi")))
+                                                  "cos(pi/6 * periodInYear)", "log_sigma", "log_phi")),
+         Parameter = fct_recode(Parameter, `ageGroup0-1 years`= "ageGroup<1 year")) 
 
 
 STEC_novel_par_plot <- STEC_novel_par %>%
@@ -443,7 +453,14 @@ STEC_novel_par_plot <- STEC_novel_par %>%
   facet_grid(rows = vars(Parameter), cols = vars(Model), scales = "free_y", labeller = custom_labeller) +
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(theta))) +
-  scale_x_date(name = "Month")
+  scale_x_date(name = "Month") +
+  theme(axis.text.y = element_text(size = 24),
+        axis.text.x = element_text(size = 20),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26),
+        legend.title = element_text(size = 26),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
 ggsave(filename = "STEC_novel_par_plot.png",
        plot = STEC_novel_par_plot,
        path = "../../figures/",
@@ -464,7 +481,13 @@ STEC_novel_par_ageGroup <- STEC_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(beta)[i])) +
   scale_x_date(name = "Month") +
-  theme(strip.text = element_text(size = 20))
+  theme(axis.text.y = element_text(size = 24),
+        axis.text.x = element_text(size = 20),
+        axis.title = element_text(size = 28),
+        strip.text = element_text(size = 26),
+        legend.title = element_text(size = 28),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
 ggsave(filename = "STEC_novel_par_ageGroup.png",
        plot = STEC_novel_par_ageGroup,
        path = "../../figures/",
@@ -484,7 +507,12 @@ STEC_novel_par_trend <- STEC_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(beta)[i])) +
   scale_x_date(name = "Month") +
-  theme(strip.text = element_text(size = 20))
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 28),
+        strip.text = element_text(size = 26),
+        legend.title = element_text(size = 28),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
 ggsave(filename = "STEC_novel_par_trend.png",
        plot = STEC_novel_par_trend,
        path = "../../figures/",
@@ -504,7 +532,12 @@ STEC_novel_par_seasonality <- STEC_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(beta)[i])) +
   scale_x_date(name = "Month") +
-  theme(strip.text = element_text(size = 20))
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 28),
+        strip.text = element_text(size = 26),
+        legend.title = element_text(size = 28),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
 ggsave(filename = "STEC_novel_par_seasonality.png",
        plot = STEC_novel_par_seasonality,
        path = "../../figures/",
@@ -525,7 +558,12 @@ STEC_novel_par_dispersion <- STEC_novel_par %>%
   scale_color_manual(values = dtuPalette) +
   scale_y_continuous(name = expression(widehat(Psi))) +
   scale_x_date(name = "Month") +
-  theme(strip.text = element_text(size = 20))
+  theme(axis.text = element_text(size = 24),
+        strip.text = element_text(size = 26),
+        axis.title = element_text(size = 28),
+        legend.title = element_text(size = 28),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
 ggsave(filename = "STEC_novel_par_dispersion.png",
        plot = STEC_novel_par_dispersion,
        path = "../../figures/",
@@ -545,12 +583,14 @@ STEC_SSI_outbreaks <- SSI_outbreaks %>%
   arrange(desc(Start)) %>%
   mutate(outbreak_no = row_number()) %>%
   ggplot() +
-  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), linewidth = 1.2, colour = dtuPalette[6]) +
-  geom_point(mapping = aes(x = Start, y = outbreak_no), pch = 17, size = 3, colour = dtuPalette[6]) +
+  geom_segment(mapping = aes(x = Start, xend = End, y = outbreak_no, yend = outbreak_no), linewidth = 2, colour = dtuPalette[6]) +
+  geom_point(mapping = aes(x = Start, y = outbreak_no), pch = 17, size = 5, colour = dtuPalette[6]) +
   scale_x_date(name = "Date", limits = c(as.Date(c("2008-01-01", "2022-12-01")))) +
   theme(axis.title.y = element_blank(),
         axis.text.y = element_blank(),
-        axis.ticks.y = element_blank())
+        axis.ticks.y = element_blank(),
+        axis.title.x = element_text(size = 26),
+        axis.text.x = element_text(size = 24))
 ggsave(filename = "STEC_SSI_outbreaks.png",
        plot = STEC_SSI_outbreaks,
        path = "../../figures/",
@@ -586,7 +626,10 @@ Compare_alarms <- STEC_compare %>%
   scale_y_discrete(limits = rev(levels(STEC_compare$method))) +
   scale_x_date(name = "Date") +
   guides(colour = "none") +
-  theme(axis.title.y = element_blank(),
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26),
+        axis.title.y = element_blank(),
         panel.spacing.x = unit(2.67, "lines"))
 ggsave(filename = "Compare_alarms_STEC.png",
        plot = Compare_alarms,
@@ -599,23 +642,119 @@ ggsave(filename = "Compare_alarms_STEC.png",
 
 
 
+STEC_PoisG_ageGroup_trend_seasonality_sdRep <- STEC_PoisG_ageGroup_trend_seasonality %>%
+  select(ref.date, sd.rep) %>%
+  .$sd.rep
 
+STEC_PoisN_ageGroup_trend_seasonality_sdRep <- STEC_PoisN_ageGroup_trend_seasonality %>%
+  select(`sd.rep`) %>%
+  .$sd.rep
 
-
-STEC_novel_par %>%
-  filter(Model == "Combined" & grepl(pattern = "sin|cos", x = Parameter)) %>%
-  pivot_wider(names_from = Parameter, values_from = theta:CI.upr) %>%
-  mutate(Amplitude = sqrt(`theta_sin(pi/6 * periodInYear)`^2 + `theta_cos(pi/6 * periodInYear)`^2)) %>%
-  ggplot(mapping = aes(x = ref.date, y = Amplitude, colour = Method)) +
-  geom_line(linewidth = 1) +
-  scale_color_manual(values = dtuPalette) +
-  scale_x_date(name = "Month")
+# Make bootstrap estimates for the amplitude and phase of the seasonality
+bstrp.results <- tibble()
+for(i in 1:length(STEC_PoisG_ageGroup_trend_seasonality_sdRep)){
   
-STEC_novel_par %>%
-  filter(Model == "Combined" & grepl(pattern = "sin|cos", x = Parameter)) %>%
-  pivot_wider(names_from = Parameter, values_from = theta:CI.upr) %>%
-  mutate(Phase = -atan(`theta_cos(pi/6 * periodInYear)`/`theta_sin(pi/6 * periodInYear)`)) %>%
-  ggplot(mapping = aes(x = ref.date, y = Phase, colour = Method)) +
-  geom_line(linewidth = 1) +
+  ref.date <- STEC_PoisG_ageGroup_trend_seasonality %>%
+    filter(row_number() == i) %>%
+    .$ref.date
+  
+  # Extract parameters
+  beta_PoisN <- STEC_PoisN_ageGroup_trend_seasonality_sdRep[[i]]$par.fixed[8:9]
+  beta_PoisG <- STEC_PoisG_ageGroup_trend_seasonality_sdRep[[i]]$par.fixed[8:9]
+  cov.beta_PoisN <- STEC_PoisN_ageGroup_trend_seasonality_sdRep[[i]]$cov.fixed[8:9,8:9]
+  cov.beta_PoisG <- STEC_PoisG_ageGroup_trend_seasonality_sdRep[[i]]$cov.fixed[8:9,8:9]
+  
+  # Bootstrap the parameters
+  simSeasonality_PoisN <- MASS::mvrnorm(n = 1e4, mu = beta_PoisN, Sigma = cov.beta_PoisN)
+  simSeasonality_PoisG <- MASS::mvrnorm(n = 1e4, mu = beta_PoisG, Sigma = cov.beta_PoisG)
+  
+  # Append Poisson Normal results
+  bstrp.results <- bind_rows(bstrp.results,
+                             tibble(Date = ref.date,
+                                    Method = "Poisson Normal",
+                                    Amplitude = sqrt(beta_PoisN[1]^2 +  beta_PoisN[2]^2),
+                                    Phase = -atan(beta_PoisN[2]/beta_PoisN[1]),
+                                    sim.sin = simSeasonality_PoisN[,1],
+                                    sim.cos = simSeasonality_PoisN[,2]))
+  
+  # Append Poisson Gamma results
+  bstrp.results <- bind_rows(bstrp.results,
+                             tibble(Date = ref.date,
+                                    Method = "Poisson Gamma",
+                                    Amplitude = sqrt(beta_PoisG[1]^2 +  beta_PoisG[2]^2),
+                                    Phase = -atan( beta_PoisG[2]/beta_PoisG[1]),
+                                    sim.sin = simSeasonality_PoisG[,1],
+                                    sim.cos = simSeasonality_PoisG[,2]))
+}
+
+
+Amplitude <- bstrp.results %>%
+  mutate(bstrp_amplitude = sqrt(sim.sin^2 + sim.cos^2)) %>%
+  group_by(Date, Method, Amplitude) %>%
+  reframe(lwr_CI = quantile(x = bstrp_amplitude, probs = c(0.025)),
+          upr_CI = quantile(x = bstrp_amplitude, probs = c(0.975))) %>%
+  ggplot(mapping = aes(x = Date, colour = Method)) +
+  geom_line(mapping = aes(y = Amplitude), linewidth = 1) +
+  geom_line(mapping = aes(y = lwr_CI), lty = "dashed") +
+  geom_line(mapping = aes(y = upr_CI), lty = "dashed") +
   scale_color_manual(values = dtuPalette) +
-  scale_x_date(name = "Month")
+  scale_y_continuous(name = expression(omega), limits = c(0.1,0.9),
+                     breaks = seq(0.2,0.8,by=0.2)) +
+  scale_x_date(name = "Month") +
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 28),
+        legend.title = element_text(size = 28),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
+ggsave(filename = "Amplitude.png",
+       plot = Amplitude,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")  
+
+Phase <- bstrp.results %>%
+  mutate(bstrp_phase = -atan(sim.cos/sim.sin)) %>%
+  group_by(Date, Method, Phase) %>%
+  reframe(lwr_CI = quantile(x = bstrp_phase, probs = c(0.025)),
+          upr_CI = quantile(x = bstrp_phase, probs = c(0.975))) %>%
+  ggplot(mapping = aes(x = Date, colour = Method)) +
+  geom_line(mapping = aes(y = Phase), linewidth = 1) +
+  geom_line(mapping = aes(y = lwr_CI), lty = "dashed") +
+  geom_line(mapping = aes(y = upr_CI), lty = "dashed") +
+  scale_color_manual(values = dtuPalette) +
+  scale_y_continuous(name = expression(rho)) +
+  scale_x_date(name = "Month") +
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 28),
+        legend.title = element_text(size = 28),
+        legend.text = element_text(size = 24),
+        legend.key.size = unit(3, 'cm'))
+ggsave(filename = "Phase.png",
+       plot = Phase,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")  
+
+legend <- get_legend(Amplitude)
+
+preAmplitudePhase <- plot_grid(
+  Amplitude + guides(colour = "none") + 
+    theme(axis.text.x = element_blank(),
+          axis.title.x = element_blank(),
+          axis.ticks.x = element_blank()),
+  Phase + guides(colour = "none"),
+  ncol = 1, align = "vh",
+  labels = c("(a)", "(b)"), label_size = 26) 
+
+AmplitudePhase <- plot_grid(legend,
+                            preAmplitudePhase, rel_heights = c(0.1,0.9),
+                            ncol = 1, align = "vh")
+
+save_plot(filename = "../../figures/AmplitudePhase.png",
+          plot = AmplitudePhase, base_height = 12, base_width = 16, bg = "white")

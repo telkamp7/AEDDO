@@ -63,7 +63,10 @@ Realizations <- results %>%
   facet_wrap(facets = vars(scenario), scales = "free_y") +
   scale_x_continuous(name = "Week") +
   scale_y_continuous(name = "Number of cases") +
-  annotate(geom = "rect", xmin = 575, xmax = Inf, ymin = -Inf, ymax = Inf, alpha = 0.2)
+  annotate(geom = "rect", xmin = 575, xmax = Inf, ymin = -Inf, ymax = Inf, alpha = 0.2) +
+  theme(strip.text = element_text(size = 26),
+        axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26))
 ggsave(filename = "Realizations.png",
        plot = Realizations,
        path = "../../figures/",
@@ -118,7 +121,10 @@ FPRPlot <- FPR %>%
   scale_x_discrete(name = "Scenario") +
   scale_fill_manual(values = dtuPalette[c(7,9:11,5)]) +
   guides(fill = "none") +
-  theme(axis.text.x = element_text(size = 16))
+  theme(strip.text = element_text(size = 26),
+        axis.text.y = element_text(size = 24),
+        axis.text.x = element_text(size = 15),
+        axis.title = element_text(size = 28))
 ggsave(filename = "FPRPlot.png",
        plot = FPRPlot,
        path = "../../figures/",
@@ -182,7 +188,10 @@ PropDetect <- POD %>%
   facet_wrap(facets = vars(Method)) +
   scale_x_continuous(breaks = 1:10) +
   scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
-  guides(color = "none") 
+  guides(color = "none") +
+  theme(strip.text = element_text(size = 26),
+        axis.text = element_text(size = 24),
+        axis.title = element_text(size = 28))
 ggsave(filename = "PropDetect.png",
        plot = PropDetect,
        path = "../../figures/",

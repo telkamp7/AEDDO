@@ -4,7 +4,7 @@
 
 \chapter{Some probability functions}
 
-This chapter serves as a reference, specifying notation, properties, and moments related to the various distributions used in this master thesis.
+This chapter serves as a reference, specifying notation, properties, and moments related to the distributions used in this master thesis. The presentation of these probability functions are greatly inspired by @Madsen_2010. The densities and first two moment are briefly summarized in Table \@ref(table:probabilityFunctions). 
 
 \begin{table}[h!]
 \centering
@@ -25,38 +25,75 @@ This chapter serves as a reference, specifying notation, properties, and moments
   \label{table:probabilityFunctions}
 \end{table}
 
+\section{The Poisson distribution model}
 
-\chapter{C++ templates for the negative joint log-likelihood}\label{cpp}
+A discrete random variable $Y$, that can assume the values $0,1,2,\cdots$ is said to follow a Poisson distribution with the parameter $\lambda$, if the density function of $Y$ is of the form
 
-This chapter present the user template for the hierarchical Poisson Gamma model specified in \eqref{eq:PoisGam}.
+\begin{equation}
+  f(y)=\frac{\lambda^y}{y!}\exp(-\lambda)
+\end{equation}
 
-```{Rcpp, eval=FALSE}
-#include <TMB.hpp>
-template<class Type>
-Type objective_function<Type>::operator() ()
-{
-  // Data
-  DATA_VECTOR(y);                             // Count data
-  DATA_VECTOR(x);                             // Population size
-  DATA_MATRIX(X);                             // Design matrix
-  // Parameters
-  PARAMETER_VECTOR(beta);                     // Fixed effects parameters
-  PARAMETER(log_phi_u);                       // Model parameter
-  vector<Type> lambda  = exp(X*beta-log(x));  // Construct 'lambda'
-  Type phi_u = exp(log_phi_u);                // And the model parameters
-  Type r = 1/phi_u;                           // Construct the size
-  vector<Type> p = 1/(lambda*phi_u+1);        // And the prob. parameter
-  // Objective function
-  Type f = -sum(dnbinom(y, r, p,true));       // Calculate the objective
-  return f;
-}
-```
+for $y=0,1,2,\cdots$, where $0<\lambda$. The notation $Y\sim\Pois(\lambda)$ is short for the above.
+
+The mean and variance are
+
+\begin{equation}
+  \E[Y]=\lambda \qquad \V[Y]=\lambda
+\end{equation}
+
+\section{The Gamma distribution model}
+
+A continuous random variable $Y$, which can take all real non-negative values, is said to follow the Gamma distribution with parameters $\alpha$ and $\beta$ if the distribution of $Y$ can be described by a density function of the form 
+
+\begin{equation}
+  f(y)=\frac{1}{\Gamma(\alpha)\beta}\Big(\frac{y}{\beta}\Big)^{\alpha-1}\exp(-y/\beta)
+\end{equation}
+
+for $y\in\mathbb{R}_{+}$, with $\alpha\in\mathbb{R}_{+}$ and $\beta\in\mathbb{R}_{+}$. Short notation for the above is $Y\sim\G(\alpha,\beta)$. The parameter $\alpha$ is called the \textit{shape parameter}, and $\beta$ is a \textit{scale parameter} for the distribution.
+
+The mean and variance are
+
+\begin{equation}
+  \E[Y]=\alpha\beta \qquad \V[Y]=\alpha\beta^2
+\end{equation}
+
+\section{The Negative Binomial distribution}
+
+A discrete random variable $Z$ with support $0,1,2,\cdots$, is said to be distributed according to the Negative Binomial distribution model if the probability mass function for $Z$ is
+
+\begin{equation}
+  f(z)=\begin{pmatrix} r+z-1 \\ z \end{pmatrix} p^r(1-p)^y
+\end{equation}
+
+for $y=0,1,2,\cdots$. The Negative Binomial distribution describes the "waiting time", i.e., the number of "successes" before the $r$'th failure in a sequence of independent Bernoulli trials where the probability of success in each trial is $p$. Short notation for this is $Z\sim\NB(r,p)$.
+
+The mean and variance are
+
+\begin{equation}
+  \E[Y] = \frac{r(1+p)}{p} \qquad \V[Y] = \frac{r(1-p)}{p^2}
+\end{equation}
+
+\section{The Gaussian distribution model}
+
+A continuous random variable $Y$, which can take all real values, is said to follow the Gaussian distribution with parameters $\mu$ and $\sigma^2$ if the distribution of $Y$ can be described by a density function of the form 
+
+\begin{equation}
+  f(y)=\frac{1}{\sigma\sqrt{2\pi}}\exp\Big(-\frac{(y-\mu)^2}{2\sigma^2}\Big)
+\end{equation}
+
+for $y\in\mathbb{R}$, with $\mu\in\mathbb{R}$ and $\sigma^2\in\mathbb{R}_{+}$. Short notation for the above is $Y\sim\N(\mu,\sigma^2)$. The parameter $\mu$ represents the mean, and $\sigma^2$ the variance of the distribution. 
+
+Hence, the mean and variance are
+
+\begin{equation}
+  \E[Y] = \mu \qquad \V[Y] = \sigma^2
+\end{equation}
 
 \chapter{State-of-the-art detection algorithm}
 
 \section{Controls}\label{controlsStateOfTheArt}
 
-In the function `farringtonFlexible`, users can select either the original Farrington method or the improved method by Noufaily by specifying the appropriate `control` arguments. The choice of algorithm variant is determined by the contents of the `control` slot. In the example provided, `con.farrington` indicates the use of the original method, while `con.noufaily` represents the options for the improved method.
+In the function `farringtonFlexible`, which is accessible from the R package \textbf{surveillance}, users can select either the original Farrington method or the improved method by Noufaily by specifying the appropriate `control` arguments. The choice of algorithm variant is determined by the contents of the `control` slot. In the example provided, `con.farrington` indicates the use of the original method, while `con.noufaily` represents the options for the improved method.
 
 \subsection{Case studies}
 
@@ -122,7 +159,9 @@ con.noufaily <- list(
 
 ```
 
-\chapter{Outbreak data}\label{FUDData}
+\chapter{Clusters reported to The Food- and waterborne Outbreak Database}\label{FUDData}
+
+In this chapter, all the clusters of \glsfirst{LIST}, \glsfirst{SHIL}, \glsfirst{STEC}, and \glsfirst{SALM} reported to \glsfirst{FUD} is presented. These clusters are summarized in Table \@ref(tab:FUD).
 
 ```{r FUD, echo=FALSE}
 SSI_FUD %>%
@@ -130,7 +169,7 @@ SSI_FUD %>%
   kbl(booktabs = TRUE,
       longtable = TRUE,
       escape = FALSE,
-      caption = paste0("Food- and waterborne disease outbreaks of LIST, SHIL, STEC, and SALM reported in the Food- and waterborne Outbreak Database (FUD) (n=",n_SSI_FUD$n,"), 2008-2022."),
+      caption = paste0("Food- and waterborne disease clusters of LIST, SHIL, STEC, and SALM reported in \\glsfirst{FUD} (n=",n_SSI_FUD$n,"), 2008-2022."),
       linesep = "") %>%
   kable_paper(full_width = TRUE, latex_options = c("repeat_header", "HOLD_position")) %>%
   column_spec(1, width = "4.5cm") %>%
@@ -139,10 +178,9 @@ SSI_FUD %>%
   column_spec(4, width = "3cm") %>%
   column_spec(5, width = "0.5cm")
 ```
+\chapter{Alarms by state-of-the-art methods in the \textit{Listeriosis} case study}
 
-
-
-In this chapter an excerpt of the results
+In this chapter, the alarms generated by the @Farrington_1996 method and the subsequently improved @Noufaily_2013 method is summarized in Table \@ref(tab:LISTStateOfTheArtTbl).
 
 ```{r LISTStateOfTheArtTbl, echo=FALSE}
 
@@ -162,62 +200,9 @@ LIST_alarms_StateOfTheArt %>%
 
 ```
 
-```{r SHILStateOfTheArtTbl, echo=FALSE, eval=FALSE}
+\chapter{Figures and tables related to the case studies}\label{FigAndTabCaseStudy}
 
-SHIL_alarms_StateOfTheArt %>%
-  select(Date, ageGroup, method, y, threshold, alarm) %>%
-  pivot_wider(names_from = method, values_from = c(threshold, alarm)) %>%
-  select(Date, `Age group` = ageGroup, `$y_t$` = y, Treshold.1 = threshold_Farrington, Alarm.1 = alarm_Farrington, Threshold.2 = threshold_Noufaily, Alarm.2 = alarm_Noufaily) %>%
-  kbl(booktabs = TRUE,
-      longtable = TRUE,
-      escape = FALSE,
-      caption = "Longtable",
-      col.names = gsub("\\.\\d", "", names(.))) %>%
-  kable_paper(latex_options = c("repeat_header"),  repeat_header_method = c("replace")) %>%
-  add_header_above(c(" " = 3, "Farrington" = 2, "Noufaily" = 2)) %>%
-  column_spec(1, bold = TRUE) %>%
-  collapse_rows(columns = 1)
-
-```
-
-```{r STECStateOfTheArtTbl, echo=FALSE, eval=FALSE}
-
-STEC_alarms_StateOfTheArt %>%
-  select(Date, ageGroup, method, y, threshold, alarm) %>%
-  pivot_wider(names_from = method, values_from = c(threshold, alarm)) %>%
-  select(Date, `Age group` = ageGroup, `$y_t$` = y, Treshold.1 = threshold_Farrington, Alarm.1 = alarm_Farrington, Threshold.2 = threshold_Noufaily, Alarm.2 = alarm_Noufaily) %>%
-  kbl(booktabs = TRUE,
-      longtable = TRUE,
-      escape = FALSE,
-      caption = "Longtable",
-      col.names = gsub("\\.\\d", "", names(.))) %>%
-  kable_paper(latex_options = c("repeat_header"),  repeat_header_method = c("replace")) %>%
-  add_header_above(c(" " = 3, "Farrington" = 2, "Noufaily" = 2)) %>%
-  column_spec(1, bold = TRUE) %>%
-  collapse_rows(columns = 1)
-
-```
-
-```{r SALMStateOfTheArtTbl, echo=FALSE, eval=FALSE}
-
-SALM_alarms_StateOfTheArt %>%
-  select(Date, ageGroup, method, y, threshold, alarm) %>%
-  pivot_wider(names_from = method, values_from = c(threshold, alarm)) %>%
-  select(Date, `Age group` = ageGroup, `$y_t$` = y, Treshold.1 = threshold_Farrington, Alarm.1 = alarm_Farrington, Threshold.2 = threshold_Noufaily, Alarm.2 = alarm_Noufaily) %>%
-  kbl(booktabs = TRUE,
-      longtable = TRUE,
-      escape = FALSE,
-      caption = "Longtable",
-      col.names = gsub("\\.\\d", "", names(.))) %>%
-  kable_paper(latex_options = c("repeat_header"),  repeat_header_method = c("replace")) %>%
-  add_header_above(c(" " = 3, "Farrington" = 2, "Noufaily" = 2)) %>%
-  column_spec(1, bold = TRUE) %>%
-  collapse_rows(columns = 1)
-
-```
-
-
-\chapter{Figures and Tables related to the case studies}\label{FigAndTabCaseStudy}
+In this chapter, a full overview over the figures and tables related to the case studies of \glsfirst{LIST}, \glsfirst{SHIL}, \glsfirst{STEC}, and \glsfirst{SALM} are included.
 
 \section{\textit{Listeriosis}}
 
@@ -237,36 +222,26 @@ LIST_novel_tbl %>%
            Parameter == "log_sigma" ~ "$\\log(\\hat{\\sigma})$",
            Parameter == "log_phi" ~ "$\\log(\\hat{\\phi})$"
          )) %>%
-  mutate(Formula = case_when(
-    Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}"
-  )) %>%
-  select(`   ` = Model, `  ` = Formula, ` ` = avgLogS, Parameter, Estimate = theta, `95\\% CI`) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "LIST modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
+  select(`   ` = Model, ` ` = avgLogS, Parameter, Estimate = theta, `95\\% CI`) %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "\\gls{LIST} modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for the constant fixed effects model. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   column_spec(1, bold = T) %>%
-  collapse_rows(columns = 1:3, 
+  collapse_rows(columns = 1:2, 
                 row_group_label_position = "stack",
                 row_group_label_fonts = row_group_label_fonts,
                 latex_hline = "custom",
                 valign = "middle",
-                custom_latex_hline = 1:3)
+                custom_latex_hline = 1:2)
 
 ```
 
-(ref:LISTnovelparplot) Considering LIST in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
+(ref:LISTnovelparplot) Considering \gls{LIST} in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the constant fixed effects model estimated using the rolling window with a width of $k=36$ months. 
 
 ```{r LISTnovelparplot, echo=FALSE, out.width="100%", fig.cap="(ref:LISTnovelparplot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/LIST_novel_par_plot.png")
 ```
 
-
 \section{\textit{Shigellosis}}
-
-(ref:SHILSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of SHIL by SSI and possible collaborators.
-
-```{r SHILSSIoutbreaks, echo=FALSE, out.width="100%", fig.cap="(ref:SHILSSIoutbreaks)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/SHIL_SSI_outbreaks.png")
-```
 
 ```{r SHILNovelTblAppendix, echo=FALSE}
 
@@ -288,13 +263,13 @@ SHIL_novel_tbl %>%
            Parameter == "cos(pi/6 * periodInYear)" ~ "$\\hat{\\beta}_{\\cos}$"
          )) %>%
   mutate(Formula = case_when(
-    Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
+    Formula == "ageGroup" ~ "Constant",
+    Formula == "ageGroup_trend" ~ "Trend",
+    Formula == "ageGroup_seasonality" ~ "Seasonality",
+    Formula == "ageGroup_trend_seasonality" ~ "Combined"
   )) %>%
   select(`   ` = Model, `  ` = Formula, ` ` = avgLogS, Parameter, Estimate = theta, `95\\% CI`) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "SHIL modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "\\gls{SHIL} modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   column_spec(1, bold = T) %>%
   collapse_rows(columns = 1:3, 
@@ -306,20 +281,15 @@ SHIL_novel_tbl %>%
 
 ```
 
-(ref:SHILnovelparplot) Considering SHIL in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
+(ref:SHILnovelparplot) Considering \gls{SHIL} in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
 
 ```{r SHILnovelparplot, echo=FALSE, out.width="100%", fig.cap="(ref:SHILnovelparplot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/SHIL_novel_par_plot.png")
 ```
 
+\newpage
 
 \section{Shiga toxin (verotoxin)-producing \textit{Escherichia coli}}
-
-(ref:STECSSIoutbreaks) Timeline plot indicating the start (triangle) and duration (line) of documented outbreaks of \gls{STEC} by \gls{SSI} and possible collaborators.
-
-```{r STECSSIoutbreaks, echo=FALSE, out.width="100%", fig.cap="(ref:STECSSIoutbreaks)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/STEC_SSI_outbreaks.png")
-```
 
 ```{r STECNovelTblAppendix, echo=FALSE}
 
@@ -346,13 +316,13 @@ STEC_novel_tbl %>%
            Parameter == "cos(pi/6 * periodInYear)" ~ "$\\hat{\\beta}_{\\cos}$"
          )) %>%
   mutate(Formula = case_when(
-    Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
+    Formula == "ageGroup" ~ "Constant",
+    Formula == "ageGroup_trend" ~ "Trend",
+    Formula == "ageGroup_seasonality" ~ "Seasonality",
+    Formula == "ageGroup_trend_seasonality" ~ "Combined"
   )) %>%
   select(`   ` = Model, `  ` = Formula, ` ` = avgLogS, Parameter, Estimate = theta, `95\\% CI`) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "STEC modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "\\gls{STEC} modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   column_spec(1, bold = T) %>%
   collapse_rows(columns = 1:3, 
@@ -364,7 +334,7 @@ STEC_novel_tbl %>%
 
 ```
 
-(ref:STECnovelparplot) Considering STEC in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
+(ref:STECnovelparplot) Considering \gls{STEC} in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
 
 ```{r STECnovelparplot, echo=FALSE, out.width="100%", fig.cap="(ref:STECnovelparplot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/STEC_novel_par_plot.png")
@@ -397,13 +367,13 @@ SALM_novel_tbl %>%
            Parameter == "cos(pi/6 * periodInYear)" ~ "$\\hat{\\beta}_{\\cos}$"
          )) %>%
   mutate(Formula = case_when(
-    Formula == "ageGroup" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t +\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{\\sin}\\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}",
-    Formula == "ageGroup_trend_seasonality" ~ "\\begin{math}\\log(\\lambda_{it})=\\beta(ageGroup_{i})+\\beta_{trend} t + \\beta_{\\sin} \\sin\\Big(\\frac{\\pi\\cdot \\tau_{t}}{6}\\Big) + \\beta_{\\cos} \\cos\\Big(\\frac{\\pi \\cdot \\tau_{t}}{6}\\Big)+\\log(n_{it})\\end{math}"
+    Formula == "ageGroup" ~ "Constant",
+    Formula == "ageGroup_trend" ~ "Trend",
+    Formula == "ageGroup_seasonality" ~ "Seasonality",
+    Formula == "ageGroup_trend_seasonality" ~ "Combined"
   )) %>%
   select(`   ` = Model, `  ` = Formula, ` ` = avgLogS, Parameter, Estimate = theta, `95\\% CI`) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "SALM modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
+  kbl(booktabs = TRUE, escape = FALSE, align = "l", longtable = TRUE, caption = "\\gls{SALM} modeling results. The average logarithmic score, $\\bar{S}(G, y)$, is computed for all the fixed effects models. The parameters are estimated in a rolling window with width $k=36$ and the estimates at time $t_0$, i.e. the last time point, are presented in this table for both modeling frameworks. Confidence intervals for the parameter estimates are calculated using 95\\% profile likelihood confidence intervals.") %>%
   kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
   column_spec(1, bold = T) %>%
   collapse_rows(columns = 1:3, 
@@ -415,7 +385,7 @@ SALM_novel_tbl %>%
 
 ```
 
-(ref:SALMnovelparplot) Considering SALM in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
+(ref:SALMnovelparplot) Considering \gls{SALM} in the time period between January 2011 and December 2022. Estimate (solid line) and 95% profile likelihood confidence interval (dashed line) of $\hat\theta$ for the considered fixed effects models estimated using the rolling window with a width of $k=36$ months. 
 
 ```{r SALMnovelparplot, echo=FALSE, out.width="100%", fig.cap="(ref:SALMnovelparplot)", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/SALM_novel_par_plot.png")

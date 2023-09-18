@@ -1,11 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.6.11)  16 JUN 2023 10:35
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.8.1)  1 AUG 2023 09:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **06-Case_studies.tex
 (./06-Case_studies.tex
-LaTeX2e <2023-06-01>
-L3 programming layer <2023-06-05>
+LaTeX2e <2023-06-01> patch level 1
+L3 programming layer <2023-06-30>
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/beamer/beamer.cls
 Document Class: beamer 2023/05/15 v3.70 A class for typesetting presentations
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/beamer/beamerbasemodes.sty (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty
@@ -273,7 +273,7 @@ Package: xxcolor 2003/10/24 ver 0.1
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2023-05-16 v7.00y Hypertext links for LaTeX
+Package: hyperref 2023-07-08 v7.01b Hypertext links for LaTeX
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
 Package: ltxcmds 2020-05-10 v1.25 LaTeX kernel commands for general use (HO)
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
@@ -297,7 +297,7 @@ Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.sty
 Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2023-05-16 v2.51 Cross-referencing by name of section
+Package: nameref 2023-08-07 v2.53 Cross-referencing by name of section
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
 Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
@@ -311,13 +311,13 @@ Package: kvoptions 2022-06-15 v3.15 Key value format for package options (HO)
 \Hy@linkcounter=\count296
 \Hy@pagecounter=\count297
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2023-05-16 v7.00y Hyperref: PDFDocEncoding definition (HO)
+File: pd1enc.def 2023-07-08 v7.01b Hyperref: PDFDocEncoding definition (HO)
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
 Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
 \Hy@SavedSpaceFactor=\count298
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
-File: puenc.def 2023-05-16 v7.00y Hyperref: PDF Unicode definition (HO)
+File: puenc.def 2023-07-08 v7.01b Hyperref: PDF Unicode definition (HO)
 )
 Package hyperref Info: Option `bookmarks' set `true' on input line 4050.
 Package hyperref Info: Option `bookmarksopen' set `true' on input line 4050.
@@ -358,7 +358,7 @@ Package hyperref Message: Stopped early.
 )
 Package hyperref Info: Driver (autodetected): hxetex.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hxetex.def
-File: hxetex.def 2023-05-16 v7.00y Hyperref driver for XeTeX
+File: hxetex.def 2023-07-08 v7.01b Hyperref driver for XeTeX
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/stringenc/stringenc.sty
 Package: stringenc 2019/11/29 v1.12 Convert strings between diff. encodings (HO)
 )
@@ -535,13 +535,13 @@ LaTeX Font Info:    Trying to load font information for T1+lmss on input line 11
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2023/05/11 v3.89 The Babel package
+Package: babel 2023/07/15 v3.92 The Babel package
 \babel@savecnt=\count333
 \U@D=\dimen294
 \l@unhyphenated=\language3
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/xebabel.def)
 \bbl@readstream=\read3
-LaTeX Info: Redefining \textlatin on input line 3921.
+LaTeX Info: Redefining \textlatin on input line 3944.
 \bbl@dirlevel=\count334
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel-english/english.ldf
 Language: english 2017/06/06 v3.3r English support from the babel system
@@ -691,7 +691,7 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@lastruleclass=\count361
 \@thisrulewidth=\dimen334
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/siunitx/siunitx.sty
-Package: siunitx 2023-06-12 v3.2.6 A comprehensive (SI) units package
+Package: siunitx 2023-07-26 v3.2.9 A comprehensive (SI) units package
 \l__siunitx_angle_tmp_dim=\dimen335
 \l__siunitx_angle_marker_box=\box83
 \l__siunitx_angle_unit_box=\box84
@@ -952,7 +952,7 @@ Package biblatex Info: XeTeX detected.
 (biblatex)             Assuming input encoding 'utf8'.
 Package biblatex Info: Document encoding is UTF8 ....
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2023-06-05 L3 programming layer (loader) 
+Package: expl3 2023-06-30 L3 programming layer (loader) 
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
 File: l3backend-xetex.def 2023-04-19 L3 backend support: XeTeX
 \g__graphics_track_int=\count501
@@ -962,7 +962,7 @@ File: l3backend-xetex.def 2023-04-19 L3 backend support: XeTeX
 \g__pdf_backend_link_int=\count504
 ))
 Package biblatex Info: ... and expl3
-(biblatex)             2023-06-05 L3 programming layer (loader) 
+(biblatex)             2023-06-30 L3 programming layer (loader) 
 (biblatex)             is new enough (at least 2020/04/06),
 (biblatex)             setting 'casechanger=expl3'.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
@@ -1309,6 +1309,10 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 File: ../figures/EpiPlot.png Graphic file (type bmp)
 <../figures/EpiPlot.png>
+
+Overfull \vbox (65.94548pt too high) detected at line 80
+ []
+
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [3
@@ -1457,7 +1461,7 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 File: ../figures/Compare_stateOfTheArt_STEC.png Graphic file (type bmp)
 <../figures/Compare_stateOfTheArt_STEC.png>
 
-Overfull \vbox (16.97025pt too high) detected at line 308
+Overfull \vbox (130.93309pt too high) detected at line 308
  []
 
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1470,7 +1474,7 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 File: ../figures/Compare_novel_STEC.png Graphic file (type bmp)
 <../figures/Compare_novel_STEC.png>
 
-Overfull \vbox (7.47025pt too high) detected at line 319
+Overfull \vbox (121.43309pt too high) detected at line 319
  []
 
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1492,7 +1496,7 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 File: ../figures/Compare_stateOfTheArt_SALM.png Graphic file (type bmp)
 <../figures/Compare_stateOfTheArt_SALM.png>
 
-Overfull \vbox (4.47025pt too high) detected at line 343
+Overfull \vbox (118.43309pt too high) detected at line 343
  []
 
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1504,6 +1508,10 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 File: ../figures/Compare_novel_SALM.png Graphic file (type bmp)
 <../figures/Compare_novel_SALM.png>
+
+Overfull \vbox (106.43309pt too high) detected at line 354
+ []
+
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [24
@@ -1551,8 +1559,8 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 
 (./06-Case_studies.aux)
  ***********
-LaTeX2e <2023-06-01>
-L3 programming layer <2023-06-05>
+LaTeX2e <2023-06-01> patch level 1
+L3 programming layer <2023-06-30>
  ***********
 Package rerunfilecheck Info: File `06-Case_studies.out' has not changed.
 (rerunfilecheck)             Checksum: A4D6A4B06773D5B33B9302BB42E09CAD;3156.
@@ -1561,11 +1569,11 @@ Package logreq Info: Writing requests to '06-Case_studies.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 48838 strings out of 478386
- 1148548 string characters out of 5839517
- 1960296 words of memory out of 5000000
- 68411 multiletter control sequences out of 15000+600000
- 598912 words of font info for 101 fonts, out of 8000000 for 9000
+ 48851 strings out of 477888
+ 1149038 string characters out of 5821337
+ 1961195 words of memory out of 5000000
+ 68917 multiletter control sequences out of 15000+600000
+ 643594 words of font info for 103 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  101i,21n,107p,2168b,5001s stack positions out of 10000i,1000n,20000p,200000b,200000s
 

@@ -15,7 +15,14 @@ $if(csl-refs)$
   {$if(csl-hanging-indent)$\setlength{\parindent}{0pt}%
   \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces$endif$}%
   {\par}
-$endif$ 
+$endif$
+
+\providecommand{\keywords}[1]
+{
+  \small	
+  \textbf{\textit{Keywords---}} #1
+  \normalsize
+} 
 
 \setabbreviationstyle{long-short}% glossaries-extra.sty
 
