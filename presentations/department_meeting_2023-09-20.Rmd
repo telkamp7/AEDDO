@@ -47,7 +47,7 @@ knitr::include_graphics("../figures/family.jpg")
 \begin{columns}
 \begin{column}{.58\textwidth}
 \begin{itemize}
-  \item Establishment of the Danish Microbiology Database (MiBa) by Statens Serum Institut (SSI) in 2010
+  \item Establishment of MiBa by SSI in 2010
   \item Great opportunity for data analysis
   \item No fully automated procedures in place at SSI
 \end{itemize}
@@ -207,7 +207,7 @@ knitr::include_graphics("../figures/Compare_alarms_STEC.png")
 Simulated baseline data is generated according to a Negative Binomial distribution with mean $\mu$ and a variance parameter $\phi\mu$. The equation for the mean $\mu(t)$ is given as:
 
 \begin{equation}
-\mu(t)=\exp\Biggl(\theta+\beta_t+\sum_{j=1}^m \biggl(\gamma_1 \cos\Bigl(\frac{2\pi jt}{52}\Bigl) + \gamma_2 \sin \Bigl(\frac{2\pi jt}{52} \Bigl)\biggl)\Biggl)
+\mu(t)=\exp\Biggl(\theta+\beta_{trend} t+\sum_{j=1}^m \biggl(\gamma_1 \cos\Bigl(\frac{2\pi jt}{52}\Bigl) + \gamma_2 \sin \Bigl(\frac{2\pi jt}{52} \Bigl)\biggl)\Biggl)
 \end{equation}
 
 \vspace{.3cm}
