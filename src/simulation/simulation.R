@@ -49,7 +49,8 @@ refPar <- list(
   baselineWeeks = 313:575, # ... and the weeks for baseline
   curWeeks = 576:624, # ... and the curWeeks
   formula = y ~ 1 + t + cos(2*pi*t/52) + sin(2*pi*t/52),
-  alphaStateOfTheArt = 0.005
+  alphaStateOfTheArt = 0.005,
+  alphaNovel = 0.05
 )
 
 if(length(listArgs) > 0){
@@ -164,7 +165,7 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
                  method = "BFGS",
                  model = "PoissonNormal", 
                  k = refPar$b*52, 
-                 sig.level = 0.95,
+                 sig.level = 1-refPar$alphaNovel,
                  cpp.dir = "../models/",
                  period = "week",
                  excludePastOutbreaks = TRUE)
@@ -177,7 +178,7 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
                  method = "BFGS",
                  model = "PoissonGamma", 
                  k = refPar$b*52, 
-                 sig.level = 0.95,
+                 sig.level = 1-refPar$alphaNovel,
                  cpp.dir = "../models/",
                  period = "week",
                  excludePastOutbreaks = TRUE)
@@ -230,7 +231,7 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
                  method = "BFGS",
                  model = "PoissonNormal", 
                  k = refPar$b*52, 
-                 sig.level = 0.95,
+                 sig.level = 1-refPar$alphaNovel,
                  cpp.dir = "../models/",
                  period = "week",
                  excludePastOutbreaks = TRUE)
@@ -243,7 +244,7 @@ Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "s
                  method = "BFGS",
                  model = "PoissonGamma", 
                  k = refPar$b*52, 
-                 sig.level = 0.95,
+                 sig.level = 1-refPar$alphaNovel,
                  cpp.dir = "../models/",
                  period = "week",
                  excludePastOutbreaks = TRUE)
