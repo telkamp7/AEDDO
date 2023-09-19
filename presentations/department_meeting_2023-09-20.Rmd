@@ -207,7 +207,7 @@ knitr::include_graphics("../figures/Compare_alarms_STEC.png")
 Simulated baseline data is generated according to a Negative Binomial distribution with mean $\mu$ and a variance parameter $\phi\mu$. The equation for the mean $\mu(t)$ is given as:
 
 \begin{equation}
-\mu(t)=\exp\Biggl(\theta+\beta_{trend} t+\sum_{j=1}^m \biggl(\gamma_1 \cos\Bigl(\frac{2\pi jt}{52}\Bigl) + \gamma_2 \sin \Bigl(\frac{2\pi jt}{52} \Bigl)\biggl)\Biggl)
+\mu(t)=\exp\Biggl(\theta+\beta_{trend}p t+\sum_{j=1}^m \biggl(\gamma_1 \cos\Bigl(\frac{2\pi jt}{52}\Bigl) + \gamma_2 \sin \Bigl(\frac{2\pi jt}{52} \Bigl)\biggl)\Biggl)
 \end{equation}
 
 \vspace{.3cm}
