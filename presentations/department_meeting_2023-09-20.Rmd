@@ -20,6 +20,7 @@ knitr::knit_hooks$set(chunk = function(x, options) {
   paste0("\n \\", "tiny","\n\n", x, "\n\n \\normalsize")
 })
 
+
 ```
 
 # Introduction
@@ -207,12 +208,36 @@ knitr::include_graphics("../figures/Compare_alarms_STEC.png")
 Simulated baseline data is generated according to a Negative Binomial distribution with mean $\mu$ and a variance parameter $\phi\mu$. The equation for the mean $\mu(t)$ is given as:
 
 \begin{equation}
-\mu(t)=\exp\Biggl(\theta+\beta_{trend}p t+\sum_{j=1}^m \biggl(\gamma_1 \cos\Bigl(\frac{2\pi jt}{52}\Bigl) + \gamma_2 \sin \Bigl(\frac{2\pi jt}{52} \Bigl)\biggl)\Biggl)
+\mu(t)=\exp\Biggl(\theta+\beta_{trend} t+\sum_{j=1}^m \biggl(\gamma_1 \cos\Bigl(\frac{2\pi jt}{52}\Bigl) + \gamma_2 \sin \Bigl(\frac{2\pi jt}{52} \Bigl)\biggl)\Biggl)
 \end{equation}
 
-\vspace{.3cm}
 
-Refer to Table 6.1 in the thesis to see the 28 different scenarios
+## Scenarios
+
+```{r scenariosTbl, echo=FALSE, message=FALSE, warning=FALSE}
+library(readr)
+library(dplyr)
+library(kableExtra)
+library(psych)
+options(knitr.kable.NA = "...")
+scenarios <- read_rds(file = "../src/simulation/scenarios.Rds")
+scenarios %>%
+  mutate(Scenario = row_number()) %>%
+  select(Scenario, theta, phi, beta, gamma1, gamma2, m, trend) %>%
+  headTail(top = 8, bottom = 4, digits = 6) %>%
+  rename(`$\\theta$` = theta, `$\\beta$` = beta, `$m$` = m, `$\\phi$` = phi, `$\\gamma_1$` = gamma1, `$\\gamma_2$` = gamma2, Trend = trend) %>%
+  mutate_all(.funs = as.numeric) %>%
+  kbl(format = "latex", booktabs = TRUE, escape = FALSE, align = "l",
+      linesep = c(rep("", 3), "\\addlinespace",rep("", 3), rep("\\addlinespace",2),rep("", 3), "\\addlinespace")) %>%
+  kable_paper(latex_options = c("HOLD_position"), font_size = 10)
+
+```
+
+## Scenarios illustration
+
+```{r scenariosPlot, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/scenarioIllustration.png")
+```
 
 ## Outbreaks
 
@@ -244,18 +269,17 @@ knitr::include_graphics("../figures/FPRPlot.png")
 knitr::include_graphics("../figures/PropDetect.png")
 ```
 
-# Other relevant diseases
+## Profile of POD vs FPR
 
-## Campylobacter
-
-```{r DALY, echo=FALSE, out.width="70%", fig.cap="Disability adjusted life years (DALY) at the population level and at individual level. Reprinted from \\cite{Pires_2020}.", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../figures/DALY.jpeg")
+```{r profilePODxFPR, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/profilePODxFPR_shape.png")
 ```
 
-### Campylobacter
+## Profile of POD vs FPR in facets
 
-\center
-\huge\textbf{LIVE DEMONSTRATION}
+```{r profilePODxFPRFacet, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/profilePODxFPR_facet.png")
+```
 
 # Summary
 

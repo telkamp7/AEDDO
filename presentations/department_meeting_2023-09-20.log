@@ -1,11 +1,11 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.8.10)  18 SEP 2023 15:46
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.9.19)  19 SEP 2023 15:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **department_meeting_2023-09-20.tex
 (./department_meeting_2023-09-20.tex
 LaTeX2e <2023-06-01> patch level 1
-L3 programming layer <2023-08-03>
+L3 programming layer <2023-08-29>
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/beamer/beamer.cls
 Document Class: beamer 2023/05/15 v3.70 A class for typesetting presentations
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/beamer/beamerbasemodes.sty (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/etoolbox/etoolbox.sty
@@ -535,13 +535,13 @@ LaTeX Font Info:    Trying to load font information for T1+lmss on input line 11
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmss.fd
 File: t1lmss.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/babel.sty
-Package: babel 2023/07/15 v3.92 The Babel package
+Package: babel 2023/09/12 v3.94 The Babel package
 \babel@savecnt=\count333
 \U@D=\dimen294
 \l@unhyphenated=\language3
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel/xebabel.def)
 \bbl@readstream=\read3
-LaTeX Info: Redefining \textlatin on input line 3944.
+LaTeX Info: Redefining \textlatin on input line 3947.
 \bbl@dirlevel=\count334
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/babel-english/english.ldf
 Language: english 2017/06/06 v3.3r English support from the babel system
@@ -691,7 +691,7 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@lastruleclass=\count361
 \@thisrulewidth=\dimen334
 ) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/siunitx/siunitx.sty
-Package: siunitx 2023-08-03 v3.3.2 A comprehensive (SI) units package
+Package: siunitx 2023-09-01 v3.3.6 A comprehensive (SI) units package
 \l__siunitx_number_uncert_offset_int=\count362
 \l__siunitx_number_exponent_fixed_int=\count363
 \l__siunitx_number_min_decimal_int=\count364
@@ -953,7 +953,7 @@ Package biblatex Info: XeTeX detected.
 (biblatex)             Assuming input encoding 'utf8'.
 Package biblatex Info: Document encoding is UTF8 ....
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2023-08-03 L3 programming layer (loader) 
+Package: expl3 2023-08-29 L3 programming layer (loader) 
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-xetex.def
 File: l3backend-xetex.def 2023-04-19 L3 backend support: XeTeX
 \g__graphics_track_int=\count502
@@ -963,11 +963,11 @@ File: l3backend-xetex.def 2023-04-19 L3 backend support: XeTeX
 \g__pdf_backend_link_int=\count505
 ))
 Package biblatex Info: ... and expl3
-(biblatex)             2023-08-03 L3 programming layer (loader) 
+(biblatex)             2023-08-29 L3 programming layer (loader) 
 (biblatex)             is new enough (at least 2020/04/06),
 (biblatex)             setting 'casechanger=expl3'.
 (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/biblatex/blx-case-expl3.sty (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
-Package: xparse 2023-02-02 L3 Experimental document command parser
+Package: xparse 2023-08-29 L3 Experimental document command parser
 )
 Package: blx-case-expl3 2023/03/05 v3.19 expl3 case changing code for biblatex
 )) (c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/algorithm2e/algorithm2e.sty
@@ -1445,11 +1445,27 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+[20
+
+]
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+File: ../figures/scenarioIllustration.png Graphic file (type bmp)
+<../figures/scenarioIllustration.png>
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+[21
+
+]
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
 File: ../figures/Realizations.png Graphic file (type bmp)
 <../figures/Realizations.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[20
+[22
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1458,7 +1474,7 @@ File: ../figures/FPRPlot.png Graphic file (type bmp)
 <../figures/FPRPlot.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[21
+[23
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
@@ -1467,33 +1483,13 @@ File: ../figures/PropDetect.png Graphic file (type bmp)
 <../figures/PropDetect.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-[22
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-File: ../figures/DALY.jpeg Graphic file (type bmp)
-<../figures/DALY.jpeg>
-
-Overfull \vbox (7.21523pt too high) detected at line 405
- []
-
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-[23
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <20.74> not available
-(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 412.
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
 [24
 
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
+File: ../figures/profilePODxFPR_shape.png Graphic file (type bmp)
+<../figures/profilePODxFPR_shape.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [25
@@ -1501,21 +1497,8 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 432.
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 432.
-(c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
-File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-
-LaTeX Font Warning: Font shape `T1/lmss/m/sc' in size <10.95> not available
-(Font)              Font shape `T1/lmr/m/sc' tried instead on input line 432.
-
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 432.
-(c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-Missing character: There is no – ("2013) in font ec-lmss10!
+File: ../figures/profilePODxFPR_facet.png Graphic file (type bmp)
+<../figures/profilePODxFPR_facet.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [26
@@ -1523,8 +1506,6 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 460.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [27
@@ -1532,6 +1513,21 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
+LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 476.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 476.
+(c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
+File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+
+LaTeX Font Warning: Font shape `T1/lmss/m/sc' in size <10.95> not available
+(Font)              Font shape `T1/lmr/m/sc' tried instead on input line 476.
+
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 476.
+(c:/Users/kaspe/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+Missing character: There is no – ("2013) in font ec-lmss10!
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [28
@@ -1539,6 +1535,8 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 ]
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <12> on input line 504.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [29
@@ -1549,6 +1547,20 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 [30
+
+]
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+[31
+
+]
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+[32
 
 ]
 \tf@nav=\write7
@@ -1563,21 +1575,21 @@ File: tex_dtu_logo.pdf Graphic file (type pdf)
 (./department_meeting_2023-09-20.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
-L3 programming layer <2023-08-03>
+L3 programming layer <2023-08-29>
  ***********
 Package rerunfilecheck Info: File `department_meeting_2023-09-20.out' has not changed.
-(rerunfilecheck)             Checksum: D5B34BD8CC1ACED20769ED7C8D6AACA2;4421.
+(rerunfilecheck)             Checksum: 3133F8329FDEE20E9C54088D9D193149;4816.
 Package logreq Info: Writing requests to 'department_meeting_2023-09-20.run.xml'.
 \openout1 = `department_meeting_2023-09-20.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 48958 strings out of 477843
- 1150159 string characters out of 5821155
- 1968391 words of memory out of 5000000
- 69075 multiletter control sequences out of 15000+600000
- 650505 words of font info for 109 fonts, out of 8000000 for 9000
+ 49033 strings out of 477589
+ 1153421 string characters out of 5817165
+ 1973992 words of memory out of 5000000
+ 69404 multiletter control sequences out of 15000+600000
+ 644948 words of font info for 107 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 101i,21n,107p,2182b,5003s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 101i,21n,107p,2182b,5001s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on department_meeting_2023-09-20.pdf (30 pages).
+Output written on department_meeting_2023-09-20.pdf (32 pages).

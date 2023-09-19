@@ -332,10 +332,54 @@ equation for the mean \(\mu(t)\) is given as:
 \begin{equation}
 \mu(t)=\exp\Biggl(\theta+\beta_{trend} t+\sum_{j=1}^m \biggl(\gamma_1 \cos\Bigl(\frac{2\pi jt}{52}\Bigl) + \gamma_2 \sin \Bigl(\frac{2\pi jt}{52} \Bigl)\biggl)\Biggl)
 \end{equation}
+\end{frame}
 
-\vspace{.3cm}
+\hypertarget{scenarios}{%
+\subsection{Scenarios}\label{scenarios}}
 
-Refer to Table 6.1 in the thesis to see the 28 different scenarios
+\begin{frame}{Scenarios}
+\tiny
+
+\begin{table}[H]
+\centering\begingroup\fontsize{10}{12}\selectfont
+
+\begin{tabular}[t]{llllllll}
+\toprule
+Scenario & $\theta$ & $\phi$ & $\beta$ & $\gamma_1$ & $\gamma_2$ & $m$ & Trend\\
+\midrule
+1 & 0.1 & 1.5 & 0.0000 & 0.00 & 0.00 & 0 & 0\\
+2 & 0.1 & 1.5 & 0.0000 & 0.60 & 0.60 & 1 & 0\\
+3 & 0.1 & 1.5 & 0.0025 & 0.00 & 0.00 & 0 & 1\\
+4 & 0.1 & 1.5 & 0.0025 & 0.60 & 0.60 & 1 & 1\\
+\addlinespace
+5 & -2.0 & 2.0 & 0.0000 & 0.00 & 0.00 & 0 & 0\\
+6 & -2.0 & 2.0 & 0.0000 & 0.10 & 0.30 & 1 & 0\\
+7 & -2.0 & 2.0 & 0.0050 & 0.00 & 0.00 & 0 & 1\\
+8 & -2.0 & 2.0 & 0.0050 & 0.10 & 0.30 & 1 & 1\\
+\addlinespace
+... & ... & ... & ... & ... & ... & ... & ...\\
+\addlinespace
+25 & 5.0 & 1.2 & 0.0000 & 0.00 & 0.00 & 0 & 0\\
+26 & 5.0 & 1.2 & 0.0000 & 0.05 & 0.01 & 1 & 0\\
+27 & 5.0 & 1.2 & 0.0001 & 0.00 & 0.00 & 0 & 1\\
+28 & 5.0 & 1.2 & 0.0001 & 0.05 & 0.01 & 1 & 1\\
+\bottomrule
+\end{tabular}
+\endgroup{}
+\end{table}
+
+\normalsize
+\end{frame}
+
+\hypertarget{scenarios-illustration}{%
+\subsection{Scenarios illustration}\label{scenarios-illustration}}
+
+\begin{frame}{Scenarios illustration}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/scenarioIllustration}
+
+\normalsize
 \end{frame}
 
 \hypertarget{outbreaks}{%
@@ -388,27 +432,27 @@ detected}\label{probability-an-outbreak-is-detected}}
 \normalsize
 \end{frame}
 
-\hypertarget{other-relevant-diseases}{%
-\section{Other relevant diseases}\label{other-relevant-diseases}}
+\hypertarget{profile-of-pod-vs-fpr}{%
+\subsection{Profile of POD vs FPR}\label{profile-of-pod-vs-fpr}}
 
-\hypertarget{campylobacter}{%
-\subsection{Campylobacter}\label{campylobacter}}
-
-\begin{frame}{Campylobacter}
+\begin{frame}{Profile of POD vs FPR}
 \tiny
 
-\begin{figure}[H]
-\includegraphics[width=0.7\linewidth]{../figures/DALY} \caption{Disability adjusted life years (DALY) at the population level and at individual level. Reprinted from \cite{Pires_2020}.}\label{fig:DALY}
-\end{figure}
+\includegraphics[width=1\linewidth]{../figures/profilePODxFPR_shape}
 
 \normalsize
 \end{frame}
 
-\begin{frame}{Campylobacter}
-\protect\hypertarget{campylobacter-1}{}
-\center
+\hypertarget{profile-of-pod-vs-fpr-in-facets}{%
+\subsection{Profile of POD vs FPR in
+facets}\label{profile-of-pod-vs-fpr-in-facets}}
 
-\huge\textbf{LIVE DEMONSTRATION}
+\begin{frame}{Profile of POD vs FPR in facets}
+\tiny
+
+\includegraphics[width=1\linewidth]{../figures/profilePODxFPR_facet}
+
+\normalsize
 \end{frame}
 
 \hypertarget{summary}{%

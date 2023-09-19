@@ -3,6 +3,7 @@
 library(readr)
 library(dplyr)
 library(tidyr)
+library(stringr)
 library(ggplot2)
 
 # Set global theme options
@@ -33,59 +34,30 @@ dtuPalette <- c("#990000",
 
 # Find simulations files
 filesInDir <- list.files()
-indexFiles <- grepl(pattern = "scenario...Rds|scenario..Rds", x = filesInDir)
+indexFiles <- grepl(pattern = "alphaNovel", x = filesInDir)
 scenarioFiles <- filesInDir[indexFiles]
-scenarioFiles <- scenarioFiles[scenarioFiles!="scenarios.Rds"]
 
 # Load in simulation files and unpack
 results <- tibble()
 for(i in 1:length(scenarioFiles)){
-  scenario_no <- parse_number(scenarioFiles[i])
+  alpha_num <- as.numeric(str_extract(scenarioFiles[i], "\\d+\\.\\d+"))
   iterData <- read_rds(file = scenarioFiles[i])
   for(j in 1:length(iterData$Data)){
     
     unpackData <- iterData$Data[[j]][[1]] %>%
-      mutate(scenario = scenario_no, sim = j)
+      mutate(alpha = alpha_num, sim = j)
     
     results <- bind_rows(results,
                          unpackData) 
   }
 }
 
-Realizations <- results %>%
-  filter(scenario %in% c(8,12,13,20) & sim == 1) %>%
-  select(scenario, outbreaks) %>%
-  unnest(outbreaks) %>%
-  mutate(outbreakDate = if_else(outbreakTF, t, NA_integer_)) %>%
-  ggplot(mapping = aes(x = t, y = y)) +
-  geom_line(alpha = 0.5) +
-  geom_point(mapping = aes(x = outbreakDate)) +
-  facet_wrap(facets = vars(scenario), scales = "free_y") +
-  scale_x_continuous(name = "Week") +
-  scale_y_continuous(name = "Number of cases") +
-  annotate(geom = "rect", xmin = 575, xmax = Inf, ymin = -Inf, ymax = Inf, alpha = 0.2) +
-  theme(strip.text = element_text(size = 26),
-        axis.text = element_text(size = 24),
-        axis.title = element_text(size = 26))
-ggsave(filename = "Realizations.png",
-       plot = Realizations,
-       path = "../../figures/",
-       device = png,
-       width = 16,
-       height = 8,
-       units = "in",
-       dpi = "print")
-
-results %>%
-  arrange(scenario) %>%
-  filter(row_number() == 1)
-
 # False positive rate
 FPR <- results %>%
-  arrange(scenario) %>%
-  select(sim, scenario, outbreaks) %>%
+  arrange(alpha) %>%
+  select(sim, alpha, outbreaks) %>%
   unnest(outbreaks) %>%
-  group_by(sim, scenario) %>%
+  group_by(sim, alpha) %>%
   slice_tail(n = 49) %>%
   reframe(FP_Farrington = sum(alarm_Farrington == TRUE  & outbreakTF == FALSE),
           TN_Farrington = sum(alarm_Farrington == FALSE & outbreakTF == FALSE),
@@ -100,7 +72,7 @@ FPR <- results %>%
                names_pattern = "(\\w+)_(\\w+)",
                values_to = "value") %>%
   pivot_wider(names_from = Statistic, values_from = value) %>%
-  group_by(sim, scenario, Method) %>%
+  group_by(sim, alpha, Method) %>%
   reframe(FPR = FP/(FP+TN)) %>%
   mutate(Method = factor(Method,levels = c("Farrington",
                                            "Noufaily",
@@ -109,66 +81,21 @@ FPR <- results %>%
                          labels = c("Farrington",
                                     "Noufaily", 
                                     "Poisson Normal", 
-                                    "Poisson Gamma")),
-         scenario = factor(scenario, levels = 1:28,
-                           labels = 1:28)) 
-write_rds(x = FPR, file = "FPR.Rds")
-
-FPRPlot <- FPR %>%
-  ggplot(mapping = aes(x = scenario, y = FPR, group = scenario, fill = Method)) +
-  geom_boxplot(fatten = 3, alpha = 0.7) +
-  facet_wrap(facets = vars(Method)) +
-  scale_x_discrete(name = "Scenario") +
-  scale_fill_manual(values = dtuPalette[c(7,9:11,5)]) +
-  guides(fill = "none") +
-  theme(strip.text = element_text(size = 26),
-        axis.text.y = element_text(size = 24),
-        axis.text.x = element_text(size = 15),
-        axis.title = element_text(size = 28))
-ggsave(filename = "FPRPlot.png",
-       plot = FPRPlot,
-       path = "../../figures/",
-       device = png,
-       width = 16,
-       height = 8,
-       units = "in",
-       dpi = "print")
-
-badPerformanceScenarios <- results %>%
-  arrange(scenario) %>%
-  select(sim, scenario, outbreaks) %>%
-  unnest(outbreaks) %>% 
-  filter(t %in% 576:624 & k == 10) %>%
-  pivot_longer(cols = alarm_Farrington:alarm_PoisG, names_to = "Method", values_to = "Alarms") %>%
-  mutate(Method = factor(Method,
-                         levels = c("alarm_Farrington",
-                                    "alarm_Noufaily",
-                                    "alarm_PoisN",
-                                    "alarm_PoisG"),
-                         labels = c("Farrington",
-                                    "Noufaily", 
-                                    "Poisson Normal", 
-                                    "Poisson Gamma"))) %>%
-  group_by(sim, scenario, Method, k) %>%
-  reframe(Detected = any(outbreakTF == TRUE & Alarms == TRUE)) %>% 
-  group_by(scenario, Method, k) %>%
-  reframe(POD = mean(Detected)) %>%
-  group_by(scenario) %>%
-  mutate(badScenario = any(POD < 0.6)) %>% 
-  filter(badScenario)
+                                    "Poisson Gamma"))) 
+write_rds(x = FPR, file = "FPRalpha.Rds")
 
 # Probability of detection
 POD <- results %>%
-  arrange(scenario) %>%
-  select(sim, scenario, outbreaks) %>%
+  arrange(alpha) %>%
+  select(sim, alpha, outbreaks) %>%
   unnest(outbreaks) %>% 
   filter(t %in% 576:624) %>%
   pivot_longer(cols = alarm_Farrington:alarm_PoisG, names_to = "Method", values_to = "Alarms") %>%
-  group_by(sim, scenario, Method, k) %>%
+  group_by(sim, alpha, Method, k) %>%
   reframe(Detected = any(outbreakTF == TRUE & Alarms == TRUE)) %>% 
-  group_by(scenario, Method, k) %>%
+  group_by(alpha, Method, k) %>%
   reframe(POD = mean(Detected)) %>%
-  group_by(Method, k) %>%
+  group_by(alpha, Method, k) %>%
   mutate(medianPOD = median(POD), Method = factor(Method,
                                                   levels = c("alarm_Farrington",
                                                              "alarm_Noufaily",
@@ -178,22 +105,18 @@ POD <- results %>%
                                                              "Noufaily", 
                                                              "Poisson Normal", 
                                                              "Poisson Gamma")))
-write_rds(x = POD, file = "POD.Rds")
+write_rds(x = POD, file = "POD_alpha.Rds")
 
-PropDetect <- POD %>% 
-  ggplot(mapping = aes(x = k, colour = Method)) +
-  geom_line(mapping = aes(y = POD, group = scenario), alpha = 0.6) +
-  geom_line(mapping = aes(y = medianPOD), linewidth=2) +
-  # geom_text(data = badPerformanceScenarios, mapping = aes(x = k, y = POD, label = scenario), inherit.aes = FALSE) +
-  facet_wrap(facets = vars(Method)) +
-  scale_x_continuous(breaks = 1:10) +
-  scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
-  guides(color = "none") +
-  theme(strip.text = element_text(size = 26),
-        axis.text = element_text(size = 24),
-        axis.title = element_text(size = 28))
-ggsave(filename = "PropDetect.png",
-       plot = PropDetect,
+# Making beautiful plot
+profilePODxFPR_num <- POD %>% 
+  full_join(FPR_mean, by = join_by(alpha, Method)) %>%
+  filter(k == 5) %>%
+  ggplot(mapping = aes(x = meanFPR, y = medianPOD), nudge_x = 1, nudge_y = 1, size = 0.1) +
+  geom_line(mapping = aes(colour = Method), linewidth = 1) +
+  geom_label(aes(label = alpha)) +
+  scale_color_manual(values = dtuPalette[c(7,9:11,5)]) 
+ggsave(filename = "profilePODxFPR_num.png",
+       plot = profilePODxFPR_num,
        path = "../../figures/",
        device = png,
        width = 16,
@@ -201,23 +124,60 @@ ggsave(filename = "PropDetect.png",
        units = "in",
        dpi = "print")
 
-
-
-POD %>% 
-  filter(scenario %in% 13:16) %>%
-  ggplot(mapping = aes(x = k, colour = Method)) +
-  geom_line(mapping = aes(y = POD, group = scenario), alpha = 0.6) +
-  # geom_line(mapping = aes(y = medianPOD), linewidth=2) +
-  # geom_text(data = badPerformanceScenarios, mapping = aes(x = k, y = POD, label = scenario), inherit.aes = FALSE) +
-  facet_wrap(facets = vars(Method), labeller = label_parsed) +
-  scale_x_continuous(breaks = 1:10) +
+profilePODxFPR_shape <- POD %>% 
+  full_join(FPR_mean, by = join_by(alpha, Method)) %>%
+  filter(k == 5) %>%
+  ggplot(mapping = aes(x = meanFPR, y = medianPOD), nudge_x = 1, nudge_y = 1, size = 0.1) +
+  geom_line(mapping = aes(colour = Method), linewidth = 1) +
+  geom_point(mapping = aes(x = meanFPR, y = medianPOD, shape = factor(alpha)), size = 3) +
   scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
-  guides(color = "none") 
+  scale_shape_discrete(name = "alpha") +
+  theme(legend.position="bottom", legend.box="vertical", legend.margin=margin())
+ggsave(filename = "profilePODxFPR_shape.png",
+       plot = profilePODxFPR_shape,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
 
+profilePODxFPR_facet <- POD %>% 
+  filter(k > 2) %>%
+  full_join(FPR_mean, by = join_by(alpha, Method)) %>%
+  ggplot(mapping = aes(x = meanFPR, y = medianPOD), nudge_x = 1, nudge_y = 1, size = 0.1) +
+  geom_line(mapping = aes(colour = Method), linewidth = 1) +
+  geom_point(mapping = aes(x = meanFPR, y = medianPOD, shape = factor(alpha)), size = 3) +
+  facet_wrap(facets = vars(k), ncol = 2) +
+  scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
+  scale_shape_discrete(name = "alpha") +
+  theme(legend.position="bottom", legend.box="vertical", legend.margin=margin())
+ggsave(filename = "profilePODxFPR_facet.png",
+       plot = profilePODxFPR_facet,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
 
-
-
-
-
-
-
+scenarioIllustration <- tibble(x = 1:100, constant = 6, trend = 4 + 0.03*x, seasonality = 5 + sin(2*pi*x/50) + cos(2*pi*x/50), combined = 5 + 0.03*x + sin(2*pi*x/50) + cos(2*pi*x/50)) %>%
+  pivot_longer(cols = constant:combined) %>%
+  mutate(name = factor(name, 
+                       levels = c("constant", "trend", "seasonality", "combined"),
+                       labels = c("constant", "trend", "seasonality", "combined"))) %>%
+  ggplot(mapping = aes(x = x, y = value)) +
+  geom_line(size = 2) +
+  facet_wrap(facets = vars(name)) +
+  theme_bw() +
+  theme(strip.text = element_text(size = 26),
+        axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26))
+ggsave(filename = "scenarioIllustration.png",
+       plot = scenarioIllustration,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
