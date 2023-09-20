@@ -275,7 +275,7 @@ knitr::include_graphics("../figures/PropDetect.png")
 knitr::include_graphics("../figures/profilePODxFPR_shape.png")
 ```
 
-## Profile of POD vs FPR in facets
+## Profile of POD vs FPR for different outbreak sizes
 
 ```{r profilePODxFPRFacet, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../figures/profilePODxFPR_facet.png")
