@@ -104,7 +104,7 @@ The novel algorithm utilizes a generalized mixed effects model or a hierarchical
 ### Step 2: Inference of random effects
 
 \begin{itemize}
-  \item Infer one-step ahead random effects $u_{i{t_1}}$ for each group using the fitted model
+  \item Infer one-step ahead random effects $\hat u_{i{t_1}}$ for each group using the fitted model
   \item Define outbreak detection threshold $U_{t_0}$ as a quantile of the second stage model's random effects distribution
   \item Use either a Gaussian or Gamma distribution with respective plug-in estimates
 \end{itemize}
@@ -112,8 +112,8 @@ The novel algorithm utilizes a generalized mixed effects model or a hierarchical
 ### Step 3: Parameter estimations and outbreak detection
 
 \begin{itemize}
-  \item Compare inferred random effects $u_{i{t_1}}$ to an threshold $U_{t_0}$
-  \item Raise and alarm if the inferred random effect exceeds the threshold, i.e. $u_{i{t_1}}>U_{t_0}$
+  \item Compare inferred random effects $\hat u_{i{t_1}}$ to a threshold $U_{t_0}$
+  \item Raise and alarm if the inferred random effect exceeds the threshold, i.e. $\hat u_{i{t_1}}>U_{t_0}$
   \item Omit outbreak related observations from future parameter estimation
 \end{itemize}
 

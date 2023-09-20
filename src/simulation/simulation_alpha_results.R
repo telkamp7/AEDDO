@@ -14,8 +14,9 @@ theme_set(
           axis.text = element_text(size = 20),
           axis.title = element_text(size = 30),
           plot.title = element_text(size = 18),
-          legend.text = element_text(size = 30),
-          legend.title = element_text(size = 35))
+          legend.text = element_text(size = 24),
+          legend.title = element_text(size = 30),
+          legend.key.size = unit(x = 2, units = "cm"))
 )
 
 # DTU colours
@@ -84,6 +85,10 @@ FPR <- results %>%
                                     "Poisson Gamma"))) 
 write_rds(x = FPR, file = "FPRalpha.Rds")
 
+FPR_mean <- FPR %>%
+  group_by(alpha, Method) %>%
+  reframe(meanFPR = mean(FPR))
+
 # Probability of detection
 POD <- results %>%
   arrange(alpha) %>%
@@ -96,22 +101,22 @@ POD <- results %>%
   group_by(alpha, Method, k) %>%
   reframe(POD = mean(Detected)) %>%
   group_by(alpha, Method, k) %>%
-  mutate(medianPOD = median(POD), Method = factor(Method,
-                                                  levels = c("alarm_Farrington",
-                                                             "alarm_Noufaily",
-                                                             "alarm_PoisN",
-                                                             "alarm_PoisG"),
-                                                  labels = c("Farrington",
-                                                             "Noufaily", 
-                                                             "Poisson Normal", 
-                                                             "Poisson Gamma")))
+  mutate(Method = factor(Method,
+                         levels = c("alarm_Farrington",
+                                    "alarm_Noufaily",
+                                    "alarm_PoisN",
+                                    "alarm_PoisG"),
+                         labels = c("Farrington",
+                                    "Noufaily", 
+                                    "Poisson Normal", 
+                                    "Poisson Gamma")))
 write_rds(x = POD, file = "POD_alpha.Rds")
 
 # Making beautiful plot
 profilePODxFPR_num <- POD %>% 
   full_join(FPR_mean, by = join_by(alpha, Method)) %>%
   filter(k == 5) %>%
-  ggplot(mapping = aes(x = meanFPR, y = medianPOD), nudge_x = 1, nudge_y = 1, size = 0.1) +
+  ggplot(mapping = aes(x = meanFPR, y = POD), nudge_x = 1, nudge_y = 1, size = 0.1) +
   geom_line(mapping = aes(colour = Method), linewidth = 1) +
   geom_label(aes(label = alpha)) +
   scale_color_manual(values = dtuPalette[c(7,9:11,5)]) 
@@ -127,9 +132,9 @@ ggsave(filename = "profilePODxFPR_num.png",
 profilePODxFPR_shape <- POD %>% 
   full_join(FPR_mean, by = join_by(alpha, Method)) %>%
   filter(k == 5) %>%
-  ggplot(mapping = aes(x = meanFPR, y = medianPOD), nudge_x = 1, nudge_y = 1, size = 0.1) +
+  ggplot(mapping = aes(x = meanFPR, y = POD), nudge_x = 1, nudge_y = 1, size = 0.1) +
   geom_line(mapping = aes(colour = Method), linewidth = 1) +
-  geom_point(mapping = aes(x = meanFPR, y = medianPOD, shape = factor(alpha)), size = 3) +
+  geom_point(mapping = aes(x = meanFPR, y = POD, shape = factor(alpha)), size = 3) +
   scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
   scale_shape_discrete(name = "alpha") +
   theme(legend.position="bottom", legend.box="vertical", legend.margin=margin())
@@ -145,13 +150,14 @@ ggsave(filename = "profilePODxFPR_shape.png",
 profilePODxFPR_facet <- POD %>% 
   filter(k > 2) %>%
   full_join(FPR_mean, by = join_by(alpha, Method)) %>%
-  ggplot(mapping = aes(x = meanFPR, y = medianPOD), nudge_x = 1, nudge_y = 1, size = 0.1) +
+  ggplot(mapping = aes(x = meanFPR, y = POD), nudge_x = 1, nudge_y = 1, size = 0.1) +
   geom_line(mapping = aes(colour = Method), linewidth = 1) +
-  geom_point(mapping = aes(x = meanFPR, y = medianPOD, shape = factor(alpha)), size = 3) +
+  geom_point(mapping = aes(x = meanFPR, y = POD, shape = factor(alpha)), size = 3) +
   facet_wrap(facets = vars(k), ncol = 2) +
   scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
   scale_shape_discrete(name = "alpha") +
-  theme(legend.position="bottom", legend.box="vertical", legend.margin=margin())
+  theme(legend.position="bottom", legend.box="vertical", legend.margin=margin(),
+        axis.text = element_text(size = 16), strip.text = element_text(size = 16))
 ggsave(filename = "profilePODxFPR_facet.png",
        plot = profilePODxFPR_facet,
        path = "../../figures/",
@@ -167,7 +173,7 @@ scenarioIllustration <- tibble(x = 1:100, constant = 6, trend = 4 + 0.03*x, seas
                        levels = c("constant", "trend", "seasonality", "combined"),
                        labels = c("constant", "trend", "seasonality", "combined"))) %>%
   ggplot(mapping = aes(x = x, y = value)) +
-  geom_line(size = 2) +
+  geom_line(linewidth = 2) +
   facet_wrap(facets = vars(name)) +
   theme_bw() +
   theme(strip.text = element_text(size = 26),
