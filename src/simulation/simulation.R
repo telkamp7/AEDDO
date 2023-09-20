@@ -50,7 +50,8 @@ refPar <- list(
   curWeeks = 576:624, # ... and the curWeeks
   formula = y ~ 1 + t + cos(2*pi*t/52) + sin(2*pi*t/52),
   alphaStateOfTheArt = 0.005,
-  alphaNovel = 0.05
+  alphaNovel = 0.05,
+  seed = 42
 )
 
 if(length(listArgs) > 0){
@@ -123,6 +124,8 @@ write_rds(x = scenarios, file = "scenarios.Rds")
 scenariosConsidered <- scenarios[refPar$scenario,]
 
 Data <- foreach(sim = 1:refPar$nRep, .packages = c("dplyr", "tidyr", "purrr", "surveillance", "TMB", "plyr")) %dopar% {
+  
+  set.seed(seed = refPar$seed+sim)
   
   simulationPar <- expand_grid(scenario = refPar$scenario, t = 1:refPar$n) %>%
     mutate(par = map(scenario, function(x) scenarios[x,]))

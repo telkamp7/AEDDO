@@ -25,7 +25,7 @@ To cover a wide range of data sets encountered in practical applications, 28 dif
 \newpage
 
 ```{r scenariosTbl, echo=FALSE}
-
+scenarios <- read_rds(file = "../src/simulation/scenarios.Rds")
 scenarios %>%
   mutate(Scenario = row_number()) %>%
   select(Scenario, theta, phi, beta, gamma1, gamma2, m, trend) %>%
