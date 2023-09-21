@@ -35,7 +35,7 @@ dtuPalette <- c("#990000",
 
 # Find simulations files
 filesInDir <- list.files()
-indexFiles <- grepl(pattern = "alphaNovel", x = filesInDir)
+indexFiles <- grepl(pattern = "scenario1_alphaState", x = filesInDir)
 scenarioFiles <- filesInDir[indexFiles]
 
 # Load in simulation files and unpack
