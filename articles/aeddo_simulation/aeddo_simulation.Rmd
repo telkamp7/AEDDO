@@ -1,0 +1,371 @@
+---
+title: "Advancements in Automated Disease Outbreak Detection: A Comparative Simulation Study of a Novel Method against State-of-the-Art Approaches"
+author:
+  - name: Kasper Schou Telkamp
+    email: ksst@ssi.dk
+    affiliation: Epidemiology Research
+    correspondingauthor: true
+    footnote: 1
+  - name: Lasse Engbo Christiansen
+    email: lsec@ssi.dk
+    affiliation: Epidemiology Research
+    footnote: 1
+  - name: Jan Kloppenborg Møller
+    email: jkmo@dtu.dk
+    affiliation: Department of Applied Mathematics and Computer Science
+    footnote: 2
+address:
+  - code: Epidemiology Research
+    organization: Epidemiology Research, Statens Serum Institut
+    addressline: Artillerivej 5
+    city: Copenhagen S
+    postcode: 2300
+    country: Denmark
+  - code: Department of Applied Mathematics and Computer Science
+    organization: Department of Applied Mathematics and Computer Science, Technical University of Denmark
+    addressline: Asmussens Allé, Building 303B
+    postcode: 2800
+    city: Lyngby
+    country: Denmark
+footnote:
+  - code: 1
+    text: "This is the first author footnote."
+  - code: 2
+    text: "Another author footnote."
+abstract: |
+  *Background*: Here is a long text that tells me about the background of this 
+  article. I want to make this text long, so I can illustrate how the abstract
+  is formatted.
+  *Methods*: These methods have been crucial in the development of this outbreak
+  detection algorithm.
+  *Results*: These results are outstanding and will forever change the way we 
+  employ statistical outbreak detection.
+  *Conclusion*: Please use my method, as it will result in significant 
+  advancements within disease outbreak detection.
+keywords: 
+  - generalized mixed effects models
+  - hiearchical generalized lionear models
+  - outlier
+  - outbreak
+  - statistical surveillance
+journal: "An awesome journal"
+date: "`r Sys.Date()`"
+classoption: preprint, 3p, authoryear
+bibliography: mybibfile.bib
+linenumbers: false
+numbersections: true
+# Use a CSL with `citation_package = "default"`
+# csl: https://www.zotero.org/styles/elsevier-harvard
+output: 
+  rticles::elsevier_article:
+    keep_tex: true
+    citation_package: natbib
+---
+
+# Introduction
+
+The fight against infectious disease not only requires proper treatment of patients and implementation of preventive measure but also demands early detection of emerging disease outbreaks. Timely identification and intervention can mean the difference between containing an outbreak or facing a devastating epidemic.
+
+Statistical outbreak detection begins with the identification of an aberrant number of cases of a particular disease within a specific time and space. When an increase in the number of cases is detected, a signal or alarm is raised by the detection method. Subsequently, an epidemiologist assesses the public health relevance of the aberration to determine if further investigation is warranted.
+
+Today epidemiologists and public health professionals utilize a range of tools and methodologies to effectively tackle disease outbreaks. Here, laboratory-based approaches play a crucial role in outbreak investigations and may involve techniques such as molecular epidemiology [@Honardoost_2018, @Struelens_2013] and, more recently Whole Genome Sequencing (WGS) [@Koeser_2012, @Baldry_2010].
+
+However, in recent years, there has been a growing interest in statistical method for automated and early detection of disease outbreaks. These methodologies encompass various statistical techniques, including regression analysis, time series methodology, methods inspired by statistical process control, approaches incorporating spatial information, and multivariate outbreak detection. A comprehensive review of these method can be found in studies by @Buckeridge_2007 and @Unkel_2012.
+
+To establish a golden standard, this article will focus on the method initially proposed by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013. These methods offer advanced statistical tools for detecting and monitoring disease outbreak and are currently *the* methods of choice at European public health institute [@Hulth_2010]. They can be accessed through the R package called `surveillance` developed by @Salmon_2016.
+
+It is a well known fact, that one limitation of these detection algorithms is an occasional lack of specificity, leading to false alarms that can overwhelm the epidemiologists with verification tasks [@Bedubourg_2017]. Therefore, in this article, these established methods will be compared to a novel outbreak detection algorithm based on hierarchical models. This article introduces this new algorithm as an innovative approach to outbreak detection and aims to assess its performance in comparison to already existing methods.
+
+While hierarchical models have earned a reputation within ecology [@Bolker_2009, @Zuur_2009], urban energy modeling [@Real_2021, @Jaume_2022], and other fields, their application in the automatic detection of disease outbreaks is relatively unproven. However, there is a promising paper by @Heisterkamp_2006 that applied a hierarchical time series model to detect infectious disease outbreaks in empirical data from *Rubella* and *Salmonella*. The authors concluded that the method is a powerful and versatile way of analyzing time series of routinely recorded laboratory data.
+
+In the context of this article, the focus will be on the prospective detection of disease outbreaks, considering the potential of hierarchical models to effectively identify and respond to emerging outbreaks in a timely manner.
+
+# Materials and methods
+
+
+## Novel outbreak detection algorithm
+
+The novel algorithm utilizes a generalized mixed effects model or a hierarchical generalized linear model as a modeling framework to model the count observations $y$ and assess the unobserved random effects $u$. These random effects are used directly in the detection algorithm to characterize an outbreak. The theoretical foundations of these models will be further discussed in Sections \ref{glmm} and \ref{hglm}.
+
+The first step involves fitting either a hierarchical Poisson Normal or Poisson Gamma model with a log link to the reference data. Here, it is possible for the user to include an arbitrary number of covariates by supplying a model formula. In order to account for structural changes in the time series, e.g. an improved and more sensitive diagnostic method or a new screening strategy at hospitals, a rolling window with width $k$ is used to estimate the time-varying model parameters. Also, it is assumed that the count is proportional to the population size $n$. Hence in terms of the canonical link the model for the fixed effects is
+
+\begin{equation}
+  \log(\lambda_{it}) = x_{it}\beta + \log(n_{it}), \quad i=1,\dots,m, \quad t=1,\dots,T
+\end{equation}
+
+Here $x_{it}$ and $\beta$ are $p$-dimensional vectors of covariates and fixed effects parameters respectively, where $p$ denotes the number of covariates or fixed effects parameters, $m$ denotes the number of groups, and $T$ denotes the length of the period.
+
+In the second step of the algorithm, as a new observation becomes available, the algorithm infers the one-step ahead random effect $u_{it_1}$ for each group using the obtained model estimates $\theta_{t_0}$. Here, $t_0$ represents the current time point, and $t_1$ represent the one-step ahead time points. The threshold $U_{t_0}$ for detecting outbreak signals is defined as a quantile of the distribution of random effects in the second stage model. This threshold can be calculated based on either a Gaussian distribution using the plug-in estimate $\hat{\sigma}_{t_0}$ or a Gamma distribution using the plug-in estimate $\hat{\phi}_{t_0}$. The choice of distribution depends on the specific modeling framework and assumptions used in the analysis.
+
+In the final step, the inferred random effect $\hat{u}_{it_1}$ is compared to the upper bound $U_{t_0}$, and an alarm is raised if $\hat{u}_{it_1}>U_{t_0}$. If an outbreak is detected, the related observation $y_{it_1}$ is omitted from the parameter estimation in the future. Thus, resulting in a smaller sample size for the rolling window until that specific observation is discarded.
+
+## Generalized mixed effects models \label{glmm}
+
+The generalized mixed effects model can be represented by its likelihood function
+
+\begin{equation}\label{eq:glmm}
+  L_{M}(\theta; y)=\int_{\mathbb{R}^{q}} L(\theta;u,y) du
+\end{equation}
+
+where $y$ is the observed random variable, $\theta$ is the model parameters to be estimated and $U$ is the $q$ unobserved random variables. The likelihood function $L$ is the joint likelihood of both the observed and the unobserved random variables. The likelihood function for estimating $\theta$ is the marginal likelihood $L_{M}$ obtained by integrating out the unobserved random variables. In general it is difficult to solve the integral in \eqref{eq:glmm} if the number of unobserved random variables is more than a few and hence numerical methods must be used. Thus, an outline of the Laplace approximation is included in this section.
+
+### Hiearchical models
+
+It is useful to formulate the model as a hierarchical model containing a *first stage model*
+
+\begin{equation}\label{eq:firstStage}
+  f_{Y|u}(y;u,\beta)
+\end{equation}
+
+which is a model for the observed random variables given the unobserved random variables, and a *second stage model*
+
+\begin{equation}\label{eq:secondStage}
+  f_{U}(u; \Psi)
+\end{equation}
+
+which is a model for the unobserved random variables. Here $\beta$ represent the fixed effects parameters and $\Psi$ is a model parameter. The total set of parameters is $\theta=(\beta, \Psi)$. Hence the joint likelihood is given as
+
+\begin{equation}\label{eq:jl}
+  L(\beta, \Psi; u, y)=f_{Y|u}(y;u,\beta) f_{U}(u; \Psi)
+\end{equation}
+
+To obtain the likelihood for the model parameters $(\beta, \Psi)$ the unobserved random variables are integrated out. The likelihood function for estimating $(\beta, \Psi)$ is as in \eqref{eq:glmm} the marginal likelihood
+
+\begin{equation}\label{eq:glmm2}
+  L_{M}(\beta, \Psi; y)=\int_{\mathbb{R}^{q}} L(\beta, \Psi;u,y) du
+\end{equation}
+
+where $q$ is the number of unobserved random variables, and $\beta$ and $\Psi$ are the parameters to be estimated.
+
+### Laplace approximation
+
+The Laplace approximation will be outlined in the following. A thorough description of the Laplace approximation in nonlinear mixed effects models is found in @Wolfinger_1997.
+
+For a given set of model parameters $\theta$ the joint log-likelihood $\ell(\theta, u, y)=\log\big(L(\theta, u, y)\big)$ is approximated using a second order Taylor approximation around the optimum $\tilde{u}=\hat{u}_\theta$ of the log-likelihood function w.r.t. the unobserved random variables $u$, i.e.,
+
+\begin{equation}\label{eq:laplaceApprox}
+  \ell(\theta, u, y)\approx\ell(\theta, \tilde{u}, y) - \frac{1}{2}(u-\tilde{u})^T H(\tilde{u})(u-\tilde{u})
+\end{equation}
+
+where the first-order term of the Taylor expansion disappears since the expansion is done around the optimum $\tilde {u}$ and $H(\tilde{u})=-\ell_{uu}''(\theta, u, y)|_{u=\tilde{u}}$ is the negative Hessian of the joint log-likelihood evaluated at $\tilde{u}$. 
+
+It is readily seen that the joint log-likelihood for the hierarchical model specified in \ref{eq:firstStage} and \ref{eq:secondStage} is
+
+\begin{equation}
+  \ell(\theta, u, y) = \ell(\beta, \Psi, u, y) = \log f_{Y|u}(y;u,\beta)+\log f_U(u;\Psi)
+\end{equation}
+
+which implies that the Laplace approximation becomes
+
+\begin{equation}
+  \ell_{M,LA}(\theta, y)=\log f_{Y|u}(y; \tilde{u},\beta)+\log f_U(\tilde{u}, \Psi)-\frac{1}{2}\log\Bigg|\frac{H}(\tilde{u}){2\pi}\Bigg|
+\end{equation}
+
+### Formulation of the generalized mixed effects model
+
+The generalized mixed effects model utilized in the novel outbreak detection algorithm is formulated as a hierarchical Poisson Normal model. This section presents the joint likelihood function for the first and second stage models.
+
+In order to simplify the notation, the probability density functions are presented for a specific observation. Hence, the subscripts indicating the group and time are omitted. The conditional distribution of the count observations is assumed to be a Poisson distribution with intensities $\lambda$
+
+\begin{equation}
+  f_{Y|u}(y; u, \beta)=\frac{\lambda\exp(u)^{y}}{y!}\exp\big(-\lambda\exp(u)\big)
+\end{equation}
+
+Also, it is assumed that the count is proportional to the population size $n$. Hence, in terms of the canonical link for the Poisson distribution the model for the fixed effects is
+
+\begin{equation}
+\log(\lambda_{it})= x_{it} \beta + \log(n_{it}), \quad i=1,\dots,m, \quad t=1,\dots,T
+\end{equation}
+
+The probability density function for the distribution of the random effects is assumed to follow a zero mean Gaussian distribution, $u\sim\mathrm{N}(0,I\sigma^2)$, i.e.
+
+\begin{equation}
+  f_U(u;\sigma)=\frac{1}{\sigma\sqrt{2\pi}}\exp\Bigg(-\frac{u^2}{2\sigma^2}\Bigg)
+\end{equation}
+
+where $\sigma$ is a model parameter. 
+
+Henceforth, the total set of parameters are $\theta=(\beta,\sigma)$ and the model can be formulated as a two-level hierarchical model
+
+\begin{subequations} \label{eq:PoisN}
+  \begin{alignat}{2}
+    {Y|u} &\sim \mathrm{Pois} \big( \lambda \exp(u) \big) \label{eq:pois_n0} \\ 
+    {u} &\sim \mathrm{N}({0},I\sigma^2) \label{eq:pois_n1}
+  \end{alignat}
+\end{subequations}
+
+The joint likelihood for the count observations $y$ and the random effects $u$ becomes
+
+\begin{equation}\label{eq:jnllPoisN}
+  L(\beta, \sigma;u_{it},y_{it})=\prod_{t=1}^{T}\prod_{i=1}^{m} \frac{\big(\lambda_{it}\exp(u_{it})\big)^{y_{it}}}{y_{it}!}\exp\big(-\lambda_{it}\exp(u_{it})\big) \prod_{t=1}^{T}\prod_{i=1}^{m} \frac{1}{\sigma\sqrt{2\pi}}\exp\Bigg(-\frac{u_{it}^2}{2\sigma^2}\Bigg)
+\end{equation}
+
+## Hiearchical generalized linear models \label{hglm}
+
+In this section selected theory related to hierarchical generalized linear models is presented. The model class was initially formulated by @Lee_1996 as a natural generalization of the generalized linear model to also incorporate random effects. A starting point in hierarchical modelling is an assumption that the distribution of random effects may be modeled by an exponential dispersion family. This family of models were first introduced by @Fisher_1922, and has proven to play an important role in mathematical statistics because of their simple inferential properties. The exponential dispersion family considers a family of distributions, which can be written on the form
+
+\begin{equation}\label{eq:expDispFam}
+  f_Y(y;\theta)=c(y,\phi)\exp\big(\phi \{\theta y-\kappa(\theta) \}\big)
+\end{equation}
+
+Here the parameter $\phi>0$ is called the *precision parameter*, which in some cases represents a shape parameter as for the Gamma distribution. In other cases the precision parameter represents an over-dispersion that is not related to the mean. These distributions combine with the so-called *standard conjugate distributions* in a simple way, and lead to marginal distributions that may be expressed in a closed form suited for likelihood calculations. For an introduction to the concept of *standard conjugate distributions* and the definition of a hierarchical generalized linear model, refer to Section 6.3 and Section 6.5 of @Madsen_2010, respectively.
+
+### Formulation of the hiearchical generalzied linear model
+
+The hierarchical generalized linear model used by the novel outbreak detection algorithm is formulated as a hierarchical Poisson Gamma model. This section present the derivation of the marginal distribution of $Y$ along with the joint likelihood function for the first and second stage models.
+
+In the compound Poisson Gamma model the conditional distribution of the count observations are assumed to be a Poisson distribution with intensities $\lambda$
+
+\begin{equation}\label{eq:pdfPois}
+  f_{Y|u}(y;u,\beta)=\frac{(\lambda u)^{y}}{y!}\exp(-\lambda u)
+\end{equation}
+
+The probability density function for the random effects $u$ are assumed to follow a reparametrized Gamma distribution with mean $1$, $u \sim \mathrm{G}(1/\phi,\phi)$ that is
+
+\begin{equation} \label{eq:pdfGamma}
+  f_{u}(u;\phi)=\frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)
+\end{equation}
+
+Subsequently, the model can be formulated as a two-level hierarchical model
+
+\begin{subequations} \label{eq:PoisGam}
+  \begin{alignat}{2}
+    {Y|u} &\sim \mathrm{Pois} (\lambda u) \label{eq:pois_g0} \\ 
+    {u} &\sim \mathrm{G}( 1/\phi,\phi) \label{eq:pois_g1}
+  \end{alignat}
+\end{subequations}
+
+Given \ref{eq:pdfPois} and \ref{eq:pdfGamma}, the probability function for the marginal distribution of $Y$ is determined from
+
+\begin{equation} \label{eq:marMix}
+  \begin{aligned}
+    g_{Y}(y;\beta,\phi)&=\int_{u=0}^\infty f_{Y|u}(y;u,\beta) f_{u}(u;\phi) \,du \\
+    &=\int_{u=0}^\infty \frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u /\phi) \,du\\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}} \int_{u=0}^\infty u^{y+1/\phi-1} \exp \big(-u(\lambda \phi+1)/\phi\big) \,du
+  \end{aligned}
+\end{equation}
+
+In \ref{eq:marMix} it is noted that the integrand is the kernel in the probability density function for a Gamma distribution, $\mathrm{G}\big(y+1/\phi,\phi/(\lambda \phi+1)\big)$. As the integral of the density shall equal one, it is found by adjusting the norming constant that
+
+\begin{equation}
+  \int_{u=0}^\infty  u^{ y+ 1/\phi-1} \exp \Big(- u/\big(\phi/( \lambda \phi+1)\big)\Big) \,du = \frac{\phi^{ y+ 1/\phi}\Gamma( y+ 1/\phi)}{( \lambda \phi + 1)^{y+1/\phi}}
+\end{equation}
+
+Therefore, it is shown that the marginal distribution of $Y$ is a Negative Binomial distribution, $Y\sim\mathrm{NB}\big(1/\phi,1/(\lambda\phi+1)\big)$. The probability function for $Y$ is 
+
+\begin{equation} \label{eq:pdfMix}
+  \begin{aligned}
+    P[Y=y]&=g_{Y}(y; \beta, \phi) \\
+    &=\frac{\lambda^{y}}{y!\Gamma(1/\phi)\phi^{1/\phi}}\frac{\phi^{y+1/\phi}\Gamma(y+1/\phi)}{(\lambda \phi + 1)^{y+1/\phi}} \\
+    &=\frac{\Gamma(y+1/\phi)}{\Gamma(1/\phi)y!}\frac{1}{(\lambda\phi+1)^{1/\phi}}\bigg(\frac{\lambda\phi}{\lambda\phi+1}\bigg)^{y} \\
+    &=\begin{pmatrix} y+1/\phi-1 \\ y \end{pmatrix} \frac{1}{(\lambda\phi+1)^{1/\phi}}\bigg(\frac{\lambda\phi}{\lambda\phi+1}\bigg)^{y} \ , \quad \mathrm{for} \ y = 0, 1, 2, \dots
+  \end{aligned}
+\end{equation}
+
+where the following convention is used
+
+\begin{equation}
+  \begin{pmatrix} z\\y \end{pmatrix} = \frac{\Gamma(z+1)}{\Gamma(z+1-y)y!}
+\end{equation}
+
+for $z$ real and $y$ integer values. Consequently, the mean and variance of $Y$ are given by
+
+\begin{equation}\label{eq:meanNB}
+  \mathrm{E}[Y] = \lambda \qquad \mathrm{V}[Y] = \lambda (\lambda \phi + 1)
+\end{equation}
+
+The joint likelihood function for estimating $(\beta,\phi)$ is
+
+\begin{equation}\label{eq:jnllPoisG}
+  L( \beta, \phi; y_{it})=\prod_{t=1}^{T}\prod_{i=1}^{m} \begin{pmatrix} y_{it}+1/\phi-1 \\ y_{it} \end{pmatrix} \frac{1}{(\lambda_{it}\phi+1)^{1/\phi}}\bigg(\frac{\lambda_{it}\phi}{\lambda_{it}\phi+1}\bigg)^{y_{it}}
+\end{equation}
+
+### Inference on individual groups
+
+Consider the compound Poisson Gamma model in \ref{eq:PoisGam}, and assume that a value $Y=y$ has been observed.
+
+The conditional distribution of $u$ for given $Y=y$ is found using Bayes Theorem. In order to simplify the notation, the subscript indicating the group and time are omitted. 
+
+\begin{equation}
+  \begin{aligned}
+    g_{u}(u|Y=y)&=\frac{f_{y,u}(y,u)}{g_Y(y;\lambda, \phi)} \\
+    &=\frac{f_{y|u}(y;u)g_{u}(u)}{g_{Y}(y;\lambda,\phi)} \\
+    &=\frac{1}{g_{Y}(y;\lambda,\phi)}\Bigg(\frac{(\lambda u)^y}{y!} \exp (-\lambda u) \frac{1}{\phi \Gamma(1/\phi)} \bigg(\frac{u}{\phi}\bigg)^{1/\phi-1} \exp (-u/\phi)\Bigg) \\
+    &\propto u^{y+1/\phi-1} \exp \big(- u(\lambda\phi+1)/\phi\big)
+  \end{aligned}
+\end{equation}
+
+Here, the \textit{kernel} of the probability density function is identified
+
+\begin{equation}
+  u^{y+1/\phi-1} \exp (- u(\lambda\phi+1)/\phi)
+\end{equation}
+
+as the kernel of a Gamma distribution, $\mathrm{G}(y+1/\phi,\phi/(\lambda\phi+1))$, i.e. the conditional distribution of $u$ for given $Y=y$ can be written as
+
+\begin{equation}
+  u| Y=y\sim \mathrm{G}\big(y+1/\phi,\phi/(\lambda \phi+1)\big)
+\end{equation}
+
+The mean of the conditional distribution is given by:
+
+\begin{equation}
+  \mathrm{E}[u|Y=y]=\frac{y\phi+1}{\lambda \phi+1}
+\end{equation}
+
+And the variance of the conditional distribution is:  
+
+\begin{equation}
+  \mathrm{V}[u|Y=y]=\frac{( \phi^2+\phi)}{(\lambda \phi + 1)^2}
+\end{equation}
+
+These formulas provide the mean and variance of the conditional distribution of $u$ given the observed value $Y=y$. 
+
+### The rationale for employing the Gamma distribution as a second stage model
+
+The choice of the Gamma distribution for modeling the random effects has been motivated by several reasons. Firstly, the support of the Gamma distribution, which ranges from 0 to infinity, aligns with the mean-value space, denoted as $\mathcal{M}$, for the Poisson distribution. This ensures that the random effects are constrained within a meaningful range for the underlying Poisson process.
+
+Secondly, the two-parameter family of Gamma distributions offers considerable flexibility, encompassing a wide range of shapes and distributions that can span from exponential-like distributions to fairly symmetrical distributions on the positive real line. This flexibility allows the model to capture various patterns and characteristics observed in the data.
+
+Additionally, the choice of the Gamma distribution has benefits in terms of the derivation of the marginal distribution of the response variable $Y$. The kernel $u^{\alpha-1}\exp(-u/\beta)$ of the Gamma distribution used for modeling the random effects exhibits a similar structure to the kernel $u^y\exp(-u)$ of the likelihood function corresponding to the sampling distribution of $Y$. This similarity facilitates the analytical computation of the integral involved in deriving the marginal distribution, as it can be expressed in terms of known functions.
+
+Overall, the Gamma distribution is selected due to its alignment with the mean-value space of the Poisson distribution, its flexibility in capturing diverse distributions, and its analytical convenience in computing the marginal distribution of the response variable.
+
+## Parameter estimation
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+## Simulation study
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+### The simulated baseline data
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+### The simulated outbreaks
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+### Evaluation measures
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+# Results
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+## Simulation study
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+# Discussion
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+# Conclusion
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+# References {-}
+
