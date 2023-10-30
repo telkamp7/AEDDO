@@ -5,6 +5,9 @@ library(dplyr)
 library(tidyr)
 library(stringr)
 library(ggplot2)
+library(purrr)
+library(broom)
+
 
 # Set global theme options
 theme_set(
@@ -21,16 +24,16 @@ theme_set(
 
 # DTU colours
 dtuPalette <- c("#990000",
-                         "#2F3EEA",
-                         "#1FD082", 
-                         "#030F4F", 
-                         "#F6D04D",
-                         "#FC7634",
-                         "#F7BBB1", 
-                         "#DADADA", 
-                         "#E83F48",
-                         "#008835", 
-                         "#79238E")
+                "#2F3EEA",
+                "#1FD082",
+                "#030F4F", 
+                "#F6D04D",
+                "#FC7634",
+                "#F7BBB1", 
+                "#DADADA",
+                "#E83F48",
+                "#008835", 
+                "#79238E")
                          
 
 # Find simulations files
@@ -187,3 +190,44 @@ ggsave(filename = "scenarioIllustration.png",
        height = 8,
        units = "in",
        dpi = "print")
+
+
+POD %>% 
+  full_join(FPR_mean, by = join_by(alpha, Method)) %>%
+  reframe(`POD/meanFPR` = POD/meanFPR) %>%
+  ggplot(mapping = aes(x = alpha, y = `POD/meanFPR`, colour = factor(k), group = factor(k))) +
+  geom_line() +
+  facet_wrap(facets = vars(Method)) +
+  scale_color_manual(name = "k", values = dtuPalette)
+
+POD %>% 
+  full_join(FPR_mean, by = join_by(alpha, Method)) %>%
+  reframe(p1 = POD/(1-POD),
+          p2 = meanFPR/(1-meanFPR),
+          `Odds ratio` = p1/p2) %>%
+  ggplot(mapping = aes(x = alpha, y = `Odds ratio`, colour = factor(k), group = factor(k))) +
+  geom_line() +
+  facet_wrap(facets = vars(Method)) +
+  scale_color_manual(name = "k", values = dtuPalette)
+
+binary_logistic_regression_POD <- function(df) {
+  glm(POD ~ alpha + k, family = binomial(link = "logit"), data = df)
+}
+binary_logistic_regression_FPR <- function(df) {
+  glm(meanFPR ~ alpha + k, family = binomial(link = "logit"), data = df)
+}
+
+binary_logistic_regression_tbl <- POD %>%
+  full_join(FPR_mean, by = join_by(alpha, Method)) %>%
+  group_by(Method) %>%
+  nest() %>%
+  mutate(fit_POD = map(data, binary_logistic_regression_POD),
+         fit_FPR = map(data, binary_logistic_regression_FPR),
+         tidied_POD = map(fit_POD, tidy),
+         tidied_FPR = map(fit_FPR, tidy))
+
+binary_logistic_regression_tbl %>%
+  unnest(tidied_POD)
+binary_logistic_regression_tbl %>%
+  unnest(tidied_FPR)
+

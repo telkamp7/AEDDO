@@ -57,14 +57,21 @@ numbersections: true
 # Use a CSL with `citation_package = "default"`
 # csl: https://www.zotero.org/styles/elsevier-harvard
 output: 
-  rticles::elsevier_article:
-    keep_tex: true
-    citation_package: natbib
+  bookdown::pdf_book:
+    base_format: rticles::elsevier_article
+  keep_tex: true
+  citation_package: natbib
   header-includes:
     - \usepackage{amsmath}
     - \DeclareMathOperator*{\argmax}{arg\,max}
     - \DeclareMathOperator*{\argmin}{arg\,min}
 ---
+
+```{r import_libraries, include=FALSE}
+library(dplyr)
+library(kableExtra)
+```
+
 
 # Introduction
 
@@ -405,19 +412,109 @@ Additionally, `TMB` utilizes Automatic Differentiation (AD) techniques [@Griewan
 
 ## Simulation study
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+This subsection includes a thorough description of the simulation study conducted to evaluate the performance of the novel outbreak detection algorithm compared to state-of-the-art algorithms. The simulations cover various scenarios, adapted from the study by @Noufaily_2013. 
+
+The subsection begins by describing the method used to simulate the baseline data. These data are generated using a Negative Binomial model with a time-dependent mean $\mu(t)$. Next, the assumptions regarding the simulated outbreaks are outlined, including the outbreak size and distribution in time.
+
+The evaluation measures used to assess the performance of the outbreak detection algorithms are then presented. These measures are designed to capture relevant quantities in the context of outbreak detection.
 
 ### The simulated baseline data
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The simulated baseline data is generated using a Negative Binomial model with a mean parameter $\mu$ and a variance parameter $\phi\mu$. The dispersion parameter $\phi$ is assumed to be greater than or equal to 1. The mean $\mu(t)$ is defined by a linear predictor that includes a trend component and a seasonality component represented by Fourier terms.
+
+The equation for $\mu(t)$ is given as:
+
+\begin{equation}
+  \mu(t)=\exp\Biggl(\theta+\beta_t+\sum_{j=1}^m \biggl(\gamma_1 \cos\Bigl(\frac{2\pi jt}{52}\Bigl) + \gamma_2 \sin \Bigl(\frac{2\pi jt}{52} \Bigl)\biggl)\Biggl)
+\end{equation}
+
+In this equation, $m$ represents the number of Fourier terms used to model seasonality. When $m=0$, it indicates the absence of seasonality, while $m=1$ corresponds to annual seasonality.
+
+To cover a wide range of data sets encountered in practical applications, 28 different parameter combinations are generated. These combinations vary in terms of trends (represented by different values of $\beta$), seasonalities (represented by different values of $\gamma_1$ and $\gamma_2$), baseline frequencies of reports (represented by different values of $\theta$), and dispersion (represented by different values of $\phi$). The specific parameter values for the 28 scenarios are provided in Table \@ref(tab:scenariosTbl).
+
+```{r scenariosTbl, echo=FALSE}
+scenarios <- readr::read_rds(file = "../../src/simulation/scenarios.Rds")
+scenarios %>%
+  mutate(Scenario = row_number()) %>%
+  select(
+    Scenario, 
+    theta, 
+    phi, 
+    beta, 
+    gamma1, 
+    gamma2, 
+    m, 
+    trend) %>%
+  rename(
+    `$\\theta$` = theta, 
+    `$\\beta$` = beta, 
+    `$m$` = m, 
+    `$\\phi$` = phi, 
+    `$\\gamma_1$` = gamma1, 
+    `$\\gamma_2$` = gamma2,
+    Trend = trend) %>%
+  kbl(
+    booktabs = TRUE, 
+    escape = FALSE, 
+    align = "l", 
+    longtable = TRUE, 
+    caption = "Parameters and criteria utilized to generate the 28 scenarios.",
+    linesep = c(rep("", 3), "\\addlinespace")) %>%
+  kable_paper(
+    latex_options = c("repeat_header", "HOLD_position"),
+    repeat_header_method = c("replace"))
+```
+
+To simulate the baseline data without outbreaks, 100 replicates are generated for each of the 28 parameter scenarios. Each replicate consist of a time series of size $T=624$ weeks. 
+
+The 624 weeks are divided into three periods: weeks 1-313 are used for training, weeks 313-575 are considered as baseline weeks, and weeks 576-624 are designated as the test weeks for evaluation. 
+
+The simulation results are based on the test weeks of all the replicates, totaling $100\times 49=4900$ weeks, for each of the 28 data scenarios and each method investigated.
 
 ### The simulated outbreaks
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The outbreaks starting in week $t_i$ are simulated using the following procedure. First, a constant value $k$ is chosen at random. The size of the outbreak, denoted as $v$, is then generated randomly from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline count in that scenario.
+
+Next, the outbreak is distributed randomly in time according to a discretized log-normal distribution with a mean of $0$ and a standard deviation of $0.5$, represented as $Z \sim \lfloor \mathrm{LN}(0,0.5^2)\rfloor$. This is achieved by drawing $v$ random numbers, which correspond to the outbreak size, from the specified log-normal distribution and then rounding down these numbers to the nearest integer.
+
+The probability mass function for the discretized log-normal distribution is visualized in Figure \@ref(fig:PDFLogNormal).
+
+(ref:PDFLogNormal) Stairstep plot of the probability mass function for the discretized log-normal distribution with a mean of 0 and a standard deviation of 0.5, i.e. $Z \sim \lfloor \mathrm{LN}(0,0.5^2)\rfloor$.
+
+```{r PDFLogNormal, echo=FALSE, out.width="100%", fig.cap="(ref:PDFLogNormal)", fig.pos = "H", fig.show = "hold"}
+
+knitr::include_graphics("../../figures/PDFLogNormal.png")
+
+```
+
+Typically, outbreak durations of 2-4 weeks are observed when values of $k$ are in the range of 2-10. To simulate the outbreaks, the outbreak cases are added to the baseline count in week $t_i+z_i$, where $t_i$ represents the start time of the outbreak and $z_i$ represents the number of weeks after the start of the outbreak. The start and end times of the outbreaks are recorded for evaluating the performance of the methods.
+
+To simulate outbreaks, the following procedure is followed:
+
+\begin{itemize} 
+\item \textbf{Outbreaks in baseline weeks:} For each data series, four outbreaks are generated. The start time of each outbreak is randomly selected from the baseline weeks (weeks 313-575). The value of $k$ is sampled randomly with replacement from the set $\{2, 3, 5, 10\}$. It should be noted that different outbreaks are generated for each of the 2800 runs.
+\item \textbf{Outbreaks in current weeks:} For each data series, one outbreak is generated. The start time of the outbreak is randomly chosen from the last 49 weeks (weeks 576-624). The value of $k$ is sampled randomly in the range of 1 to 10. Similar to the previous case, different outbreaks are generated for each of the 2800 runs.
+\end{itemize}
+
+One randomly chosen realization for scenario 8, 12, 13, and 20 are visualized in Figure \@ref(fig:Realizations).
+
+(ref:Realizations) Plots of one randomly chosen realization for scenario 8, 12, 13, and 20 (see Table \@ref(tab:scenariosTbl)). During outbreaks (circles), outbreak cases are added to the baseline data. Four outbreaks are added during the baseline weeks and 1 outbreak is added during the test weeks. The results are based on the data obtained in the test weeks (grey area).
+
+```{r Realizations, echo=FALSE, out.width="100%", fig.cap="(ref:Realizations)", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../../figures/Realizations.png")
+```
+
+Evidently, the scenarios vary in their epidemiological characteristics, such as seasonality, trend, and incidence.
 
 ### Evaluation measures
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+To evaluate the performance of the outbreak detection system in the absence and presence of outbreaks, several measures are employed to assess its effectiveness. These measures are specifically designed to capture relevant quantities in the given context.
+
+In the absence of outbreaks in the data, one of the primary measures used is the FPR. This is calculated for each of the 28 scenarios, before the addition of the simulated outbreaks to the baseline data. The FPR is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold in the absence of any simulated outbreaks.
+
+Another measure is the POD of an outbreak. Likewise, this is calculated for each of the 28 scenarios, but this time it is in the presence of the simulated outbreaks. The algorithm is applied iteratively for the 49 current weeks, and an outbreak is considered detected if the observed value exceeds the threshold at least once within the start and end times of the outbreak. The POD of an outbreak is then determined as the proportion of outbreaks detected out of the 100 runs.
+
+It is important to note that the FPR is a rate per week, while the POD is a rate per realization. These evaluation measures are chosen because they provide insights into the performance of the detection system on individual time series.
 
 # Results
 
