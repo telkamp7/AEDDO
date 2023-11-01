@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.27)  30 OCT 2023 15:08
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.27)  1 NOV 2023 09:40
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -751,7 +751,7 @@ Package xcolor Warning: Incompatible color definition on input line 486.
 Package xcolor Warning: Incompatible color definition on input line 486.
 
 [7{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [8] [9]
-<../../figures/PDFLogNormal.png, id=301, 1156.32pt x 578.16pt>
+<../../figures/PDFLogNormal.png, id=309, 1156.32pt x 578.16pt>
 File: ../../figures/PDFLogNormal.png Graphic file (type png)
 <use ../../figures/PDFLogNormal.png>
 Package pdftex.def Info: ../../figures/PDFLogNormal.png  used on input line 619.
@@ -760,7 +760,7 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 62
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<../../figures/Realizations.png, id=303, 1156.32pt x 578.16pt>
+<../../figures/Realizations.png, id=311, 1156.32pt x 578.16pt>
 File: ../../figures/Realizations.png Graphic file (type png)
 <use ../../figures/Realizations.png>
 Package pdftex.def Info: ../../figures/Realizations.png  used on input line 636.
@@ -774,13 +774,40 @@ l.638
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.661 
-       <../../figures/Realizations.png>] (./aeddo_simulation.bbl
+l.664 
+       <../../figures/Realizations.png>]
+<../../figures/FPRPlot.png, id=340, 1156.32pt x 578.16pt>
+File: ../../figures/FPRPlot.png Graphic file (type png)
+<use ../../figures/FPRPlot.png>
+Package pdftex.def Info: ../../figures/FPRPlot.png  used on input line 690.
+(pdftex.def)             Requested size: 468.0pt x 233.99472pt.
+[12
+pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.697 
+      
+pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.697 
+       <../../figures/FPRPlot.png>]
+<../../figures/PropDetect.png, id=352, 1156.32pt x 578.16pt>
+File: ../../figures/PropDetect.png Graphic file (type png)
+<use ../../figures/PropDetect.png>
+Package pdftex.def Info: ../../figures/PropDetect.png  used on input line 763.
+(pdftex.def)             Requested size: 468.0pt x 233.99472pt.
+[13] (./aeddo_simulation.bbl
 Underfull \hbox (badness 4479) in paragraph at lines 9--15
 []\T1/lmr/m/n/8 Susannah Baldry.  At-tack of the clones.  \T1/lmr/m/it/8 Na-ture Re-views Mi-cro-bi-ol-ogy\T1/lmr/m/n/8 , 8(6):390, 2010.  doi: $10 . 1038 /
  []
 
-
+[14
+pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.15 
+      <../../figures/PropDetect.png>]
 Underfull \hbox (badness 3098) in paragraph at lines 34--40
 []\T1/lmr/m/n/8 Gabriel Bé-dubourg and Yann Le Strat.  Eval-u-a-tion and com-par-i-son of sta-tis-ti-cal meth-ods for early tem-po-
  []
@@ -795,7 +822,7 @@ Underfull \hbox (badness 1406) in paragraph at lines 34--40
 \T1/lmr/m/n/8 0181227$.  URL []$\T1/lmtt/m/n/8 https : / / www . scopus . com / inward / record . uri ? eid = 2 -[] s2 . 0 -[] 85024904807 & doi = 10 . 1371 % 2fjournal . pone .
  []
 
-[12]
+[15]
 Underfull \hbox (badness 4120) in paragraph at lines 156--162
 []\T1/lmr/m/n/8 Russell D. Wolfin-ger and Xi-hong Lin.  Two taylor-series ap-prox-i-ma-tion meth-ods for non-lin-ear mixed mod-
  []
@@ -805,27 +832,27 @@ Underfull \hbox (badness 6825) in paragraph at lines 156--162
 \T1/lmr/m/n/8 els.  \T1/lmr/m/it/8 Com-pu-ta-tional Statis-tics and Data Anal-y-sis\T1/lmr/m/n/8 , 25(4):465--^^U490, 1997.  doi: $10 . 1016 / S0167 -[] 9473(97 )
  []
 
-) [13] (./aeddo_simulation.aux)
+) [16] (./aeddo_simulation.aux)
  ***********
 LaTeX2e <2023-06-01> patch level 1
 L3 programming layer <2023-10-23>
  ***********
 Package rerunfilecheck Info: File `aeddo_simulation.out' has not changed.
-(rerunfilecheck)             Checksum: 469C2A9FE7A93FCF264DC6097D3DB16A;3991.
+(rerunfilecheck)             Checksum: F46F8C50B8A390818EF6BA76A495E4DD;4354.
  ) 
 Here is how much of TeX's memory you used:
- 14494 strings out of 476357
- 228393 string characters out of 5797645
- 1951036 words of memory out of 5000000
- 35900 multiletter control sequences out of 15000+600000
+ 14542 strings out of 476357
+ 229514 string characters out of 5797645
+ 1954036 words of memory out of 5000000
+ 35937 multiletter control sequences out of 15000+600000
  611912 words of font info for 79 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 72i,13n,79p,807b,615s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,13n,79p,807b,635s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on aeddo_simulation.pdf (13 pages, 644625 bytes).
+Output written on aeddo_simulation.pdf (16 pages, 1129028 bytes).
 PDF statistics:
- 509 PDF objects out of 1000 (max. 8388607)
- 430 compressed objects within 5 object streams
- 126 named destinations out of 1000 (max. 500000)
- 171 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 550 PDF objects out of 1000 (max. 8388607)
+ 464 compressed objects within 5 object streams
+ 137 named destinations out of 1000 (max. 500000)
+ 197 words of extra memory for PDF output out of 10000 (max. 10000000)
 

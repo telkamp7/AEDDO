@@ -274,7 +274,7 @@ It is readily seen that the joint log-likelihood for the hierarchical model spec
 which implies that the Laplace approximation becomes
 
 \begin{equation}
-  \ell_{M,LA}(\theta, y)=\log f_{Y|u}(y; \tilde{u},\beta)+\log f_U(\tilde{u}, \Psi)-\frac{1}{2}\log\Bigg|\frac{H}(\tilde{u}){2\pi}\Bigg|
+  \ell_{M,LA}(\theta, y)=\log f_{Y|u}(y; \tilde{u},\beta)+\log f_U(\tilde{u}, \Psi)-\frac{1}{2}\log\Bigg|\frac{H(\tilde{u})}{2\pi}\Bigg|
 \end{equation}
 
 \hypertarget{formulation-of-the-generalized-mixed-effects-model}{%
@@ -657,7 +657,115 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 \hypertarget{simulation-study-1}{%
 \subsection{Simulation study}\label{simulation-study-1}}
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+\hypertarget{false-positive-rate}{%
+\subsubsection{False positive rate}\label{false-positive-rate}}
+
+In general, the method introduced by \citet{Farrington_1996} tends to have relatively higher FPR compared to the other methods. This observation is consistent with the results presented in Table \ref{tab:FPRTbl}. However, this outcome is not surprising since the Farrington method is known to be overly sensitive, making it more prone to producing false alarms. On the other hand, the improved method by \citet{Noufaily_2013} outperforms the other methods by minimizing the FPR.
+
+Additionally, it is noted that the novel algorithms, using the two different modeling frameworks, perform somewhere in between the two state-of-the-art algorithms in terms of minimizing the FPR.
+
+\begin{table}[H]
+
+\caption{\label{tab:FPRTbl}Summary statstics of the FPR obtained in the 28 scenarios using the four different methods.}
+\centering
+\begin{tabular}[t]{llllll}
+\toprule
+Method & median(FPR) & mean(FPR) & sd(FPR) & min(FPR) & max(FPR)\\
+\midrule
+Farrington & 0.022 & 0.031 & 0.031 & 0 & 0.217\\
+Noufaily & 0.000 & 0.009 & 0.015 & 0 & 0.125\\
+Poisson Normal & 0.021 & 0.017 & 0.020 & 0 & 0.128\\
+Poisson Gamma & 0.021 & 0.017 & 0.020 & 0 & 0.128\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Upon examining Figure \ref{fig:FPR}, it becomes even more apparent that the Noufaily method consistently outperforms the other methods. Furthermore, it is interesting to note that scenario 8 and 15 consistently pose challenges for all methods, while scenarios 13-20 prove to be particularly problematic for the novel method.
+
+A closer look reveals that scenarios 13-20 have the highest overdispersion parameters, indicating increased variability in the data. On the other hand, scenario 8 incorporates both a steep trend and a seasonality component, which can complicate the detection process for all methods.
+
+
+
+\begin{figure}[H]
+\includegraphics[width=1\linewidth]{../../figures/FPRPlot} \caption{FPR obtained in each of the 28 scenarios for each of the methods applied.}\label{fig:FPR}
+\end{figure}
+
+\hypertarget{probability-of-detection}{%
+\subsubsection{Probability of detection}\label{probability-of-detection}}
+
+As expected, the POD of an outbreak increases with the size of \(k\). Intuitively, when the outbreak size \(v\) is larger, it becomes more likely to be detected by the outbreak detection algorithms. In Table \ref{tab:PODTbl}, it is evident that the Farrington method performs very well in terms of POD, closely followed by the novel method using either modeling framework. Moreover, it can be seen that the Noufaily method is outperformed by the other methods, w.r.t. POD.
+
+The high performance of the Farrington method can be attributed to its sensitivity in detecting outbreaks. Similarly, the novel method utilizing both modeling frameworks demonstrates its effectiveness in detecting outbreaks of varying sizes.
+
+\begin{longtable}[t]{lllllll}
+\caption{\label{tab:PODTbl}Summary statistics of the POD of an outbreak of size $k$ times the standard deviations of the baseline data for each of the methods applied.}\\
+\toprule
+Method & k & median(POD) & mean(POD) & sd(POD) & min(POD) & max(POD)\\
+\midrule
+\endfirsthead
+\caption[]{\textit{(continued)}}\\
+\toprule
+Method & k & median(POD) & mean(POD) & sd(POD) & min(POD) & max(POD)\\
+\midrule
+\endhead
+
+\endfoot
+\bottomrule
+\endlastfoot
+ & 2 & 0.261 & 0.285 & 0.179 & 0.000 & 0.625\\
+
+ & 4 & 0.462 & 0.493 & 0.173 & 0.091 & 0.778\\
+
+ & 6 & 0.845 & 0.800 & 0.174 & 0.375 & 1.000\\
+
+ & 8 & 0.971 & 0.914 & 0.147 & 0.375 & 1.000\\
+
+\multirow{-5}{*}{\raggedright\arraybackslash Farrington} & 10 & 1.000 & 0.932 & 0.096 & 0.714 & 1.000\\
+\cmidrule{1-7}
+ & 2 & 0.111 & 0.127 & 0.108 & 0.000 & 0.400\\
+
+ & 4 & 0.300 & 0.328 & 0.182 & 0.091 & 0.750\\
+
+ & 6 & 0.721 & 0.682 & 0.249 & 0.125 & 1.000\\
+
+ & 8 & 0.845 & 0.822 & 0.193 & 0.250 & 1.000\\
+
+\multirow{-5}{*}{\raggedright\arraybackslash Noufaily} & 10 & 1.000 & 0.913 & 0.109 & 0.700 & 1.000\\
+\cmidrule{1-7}
+ & 2 & 0.244 & 0.267 & 0.174 & 0.000 & 0.714\\
+
+ & 4 & 0.441 & 0.460 & 0.190 & 0.100 & 0.818\\
+
+ & 6 & 0.826 & 0.758 & 0.222 & 0.235 & 1.000\\
+
+ & 8 & 1.000 & 0.903 & 0.162 & 0.375 & 1.000\\
+
+\multirow{-5}{*}{\raggedright\arraybackslash Poisson Normal} & 10 & 1.000 & 0.945 & 0.108 & 0.571 & 1.000\\
+\cmidrule{1-7}
+ & 2 & 0.244 & 0.267 & 0.174 & 0.000 & 0.714\\
+
+ & 4 & 0.441 & 0.460 & 0.190 & 0.100 & 0.818\\
+
+ & 6 & 0.826 & 0.758 & 0.222 & 0.235 & 1.000\\
+
+ & 8 & 1.000 & 0.903 & 0.162 & 0.375 & 1.000\\
+
+\multirow{-5}{*}{\raggedright\arraybackslash Poisson Gamma} & 10 & 1.000 & 0.945 & 0.108 & 0.571 & 1.000\\*
+\end{longtable}
+
+In Figure \ref{fig:PropDetect}, the variability in POD of outbreaks can be observed across the 28 scenarios. The level of variability in POD is generally low when the outbreak size factor \(k\) is set to 1, indicating that only a few outbreaks are detected in these scenarios. Similarly, when \(k\) is set to 10, indicating that almost all outbreaks are detected, the variability in POD is also low.
+
+On the other hand, the variability in POD across the scenarios is highest when \(k\) is set to 5, and around \(75\%\) of the outbreaks are detected.
+
+
+
+\begin{figure}[H]
+\includegraphics[width=1\linewidth]{../../figures/PropDetect} \caption{POD of an outbreak of a random size \(v\) drawn from a Poisson distribution with mean equal to \(k\) times the standard deviations of the baseline data. The x-axis shows increasing values of \(k\). The POD for each scenario is plotted along with the median curves (bold) across all 28 scenarios.}\label{fig:PropDetect}
+\end{figure}
+
+It is important to bear in mind that an outbreak of size \(v\) is randomly distributed in time according to a discretized log-normal distribution with a mean of \(0\) and a standard deviation of \(0.5\), denoted as \(Z \sim \lfloor \mathrm{LN}(0,0.5^2)\rfloor\). The probability mass function of \(Z\) is shown in Figure \ref{fig:PDFLogNormal}. From the figure, it can be observed that \(50\%\) of the outbreak cases are added to the same week as the outbreak starts, \(42\%\) are added to the following week, and only \(7\%\) are added two weeks after the start. Therefore, the simulated outbreak cases are not observed in a single week only but rather in several concurrent weeks.
+
+Consequently, an outbreak of size \(v\) generated from a Poisson distribution with a mean equal to \(k\) times the standard deviation of the baseline series is perceived to be relatively smaller than initially perceived in the simulation setup. For example, an outbreak of size \(k=4\) times the standard deviation may only be perceived as an outbreak signal of size \(2\) times the standard deviation in an individual week.
 
 \hypertarget{discussion}{%
 \section{Discussion}\label{discussion}}
