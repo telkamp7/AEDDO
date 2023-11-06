@@ -40,23 +40,170 @@ dtuPalette <- c("#990000",
 
 # Find simulations files
 filesInDir <- list.files()
-indexFiles <- grepl(pattern = "scenario1_alphaState", x = filesInDir)
+indexFiles <- grepl(pattern = "scenario._alphaState", x = filesInDir)
 scenarioFiles <- filesInDir[indexFiles]
 
 # Load in simulation files and unpack
 results <- tibble()
 for(i in 1:length(scenarioFiles)){
   alpha_num <- as.numeric(str_extract(scenarioFiles[i], "\\d+\\.\\d+"))
+  scenario_num <- as.numeric(str_extract(scenarioFiles[i], "\\d+"))
   iterData <- read_rds(file = scenarioFiles[i])
   for(j in 1:length(iterData$Data)){
 
     unpackData <- iterData$Data[[j]][[1]] %>%
-      mutate(alpha = alpha_num, sim = j)
+      mutate(scenario = scenario_num,
+             alpha = alpha_num,
+             sim = j)
 
     results <- bind_rows(results,
                          unpackData)
   }
 }
+
+# Specificity
+tmp <- results %>%
+  arrange(scenario, alpha) %>%
+  select(scenario, sim, alpha, outbreaks) %>%
+  unnest(outbreaks) %>%
+  group_by(scenario, sim, alpha) %>%
+  slice_tail(n = 49) %>%
+  reframe(TP_Farrington = sum(alarm_Farrington == TRUE  & outbreakTF == TRUE),
+          FN_Farrington = sum(alarm_Farrington == FALSE & outbreakTF == TRUE),
+          FP_Farrington = sum(alarm_Farrington == TRUE  & outbreakTF == FALSE),
+          TN_Farrington = sum(alarm_Farrington == FALSE & outbreakTF == FALSE),
+          TP_Noufaily   = sum(alarm_Noufaily == TRUE    & outbreakTF == TRUE),
+          FN_Noufaily   = sum(alarm_Noufaily == FALSE   & outbreakTF == TRUE),
+          FP_Noufaily   = sum(alarm_Noufaily == TRUE    & outbreakTF == FALSE),
+          TN_Noufaily   = sum(alarm_Noufaily == FALSE   & outbreakTF == FALSE),
+          TP_PoisN      = sum(alarm_PoisN == TRUE       & outbreakTF == TRUE),
+          FN_PoisN      = sum(alarm_PoisN == FALSE      & outbreakTF == TRUE),
+          FP_PoisN      = sum(alarm_PoisN == TRUE       & outbreakTF == FALSE),
+          TN_PoisN      = sum(alarm_PoisN == FALSE      & outbreakTF == FALSE),
+          TP_PoisG      = sum(alarm_PoisG == TRUE       & outbreakTF == TRUE),
+          FN_PoisG      = sum(alarm_PoisG == FALSE      & outbreakTF == TRUE),
+          FP_PoisG      = sum(alarm_PoisG == TRUE       & outbreakTF == FALSE),
+          TN_PoisG      = sum(alarm_PoisG == FALSE      & outbreakTF == FALSE)) %>%
+  mutate(sensitivity_Farrington = TP_Farrington/(TP_Farrington+FN_Farrington),
+         specificity_Farrington = TN_Farrington/(TN_Farrington+FP_Farrington),
+         sensitivity_Noufaily = TP_Noufaily/(TP_Noufaily+FN_Noufaily),
+         specificity_Noufaily = TN_Noufaily/(TN_Noufaily+FP_Noufaily),
+         sensitivity_PoisN = TP_PoisN/(TP_PoisN+FN_PoisN),
+         specificity_PoisN = TN_PoisN/(TN_PoisN+FP_PoisN),
+         sensitivity_PoisG = TP_PoisG/(TP_PoisG+FN_PoisG),
+         specificity_PoisG = TN_PoisG/(TN_PoisG+FP_PoisG),
+         `LR+_Farrington` = sensitivity_Farrington/(1-specificity_Farrington),
+         `LR+_Noufaily` = sensitivity_Noufaily/(1-specificity_Noufaily),
+         `LR+_PoisN` = sensitivity_PoisN/(1-specificity_PoisN),
+         `LR+_PoisG` = sensitivity_PoisG/(1-specificity_PoisG),
+         `LR-_Farrington` = (1-specificity_Farrington)/sensitivity_Farrington,
+         `LR-_Noufaily` = (1-specificity_Noufaily)/sensitivity_Noufaily,
+         `LR-_PoisN` = (1-specificity_PoisN)/sensitivity_PoisN,
+         `LR-_PoisG` = (1-specificity_PoisG)/sensitivity_PoisG,
+         DOR_Farrington = `LR+_Farrington`/`LR-_Farrington`,
+         DOR_Noufaily = `LR+_Noufaily`/`LR-_Noufaily`,
+         DOR_PoisN = `LR+_PoisN`/`LR-_PoisN`,
+         DOR_PoisG = `LR+_PoisG`/`LR-_PoisG`) %>%
+  select(scenario, alpha, sim, k, `LR+_Farrington`:DOR_PoisG) %>%
+  pivot_longer(cols = DOR_Farrington:DOR_PoisG) %>%
+  ggplot(mapping = aes(x = factor(alpha), y = value, colour = factor(k))) +
+  geom_boxplot() +
+  facet_wrap(facets = vars(name))
+
+
+
+
+# Calculate FPR across scenarios
+FPR_scernario_alpha <- results %>%
+  arrange(scenario, alpha) %>%
+  select(scenario, sim, alpha, outbreaks) %>%
+  unnest(outbreaks) %>%
+  group_by(scenario, sim, alpha) %>%
+    slice_tail(n = 49) %>%
+  reframe(FP_Farrington = sum(alarm_Farrington == TRUE  & outbreakTF == FALSE),
+          TN_Farrington = sum(alarm_Farrington == FALSE & outbreakTF == FALSE),
+          FP_Noufaily   = sum(alarm_Noufaily == TRUE    & outbreakTF == FALSE),
+          TN_Noufaily   = sum(alarm_Noufaily == FALSE   & outbreakTF == FALSE),
+          FP_PoisN      = sum(alarm_PoisN == TRUE       & outbreakTF == FALSE),
+          TN_PoisN      = sum(alarm_PoisN == FALSE      & outbreakTF == FALSE),
+          FP_PoisG      = sum(alarm_PoisG == TRUE       & outbreakTF == FALSE),
+          TN_PoisG      = sum(alarm_PoisG == FALSE      & outbreakTF == FALSE)) %>%
+  pivot_longer(cols = FP_Farrington:TN_PoisG,
+               names_to = c("Statistic", "Method"),
+               names_pattern = "(\\w+)_(\\w+)",
+               values_to = "value") %>%
+  pivot_wider(names_from = Statistic, values_from = value) %>%
+  group_by(scenario, sim, alpha, Method) %>%
+  reframe(FPR = FP/(FP+TN)) %>%
+  mutate(Method = factor(Method,levels = c("Farrington",
+                                           "Noufaily",
+                                           "PoisN",
+                                           "PoisG"),
+                         labels = c("Farrington",
+                                    "Noufaily",
+                                    "Poisson Normal",
+                                    "Poisson Gamma")))
+write_rds(x = FPR_scernario_alpha, file = "FPR_scernario_alpha.Rds")
+
+FPR_scenario_alpha_mean <- FPR_scernario_alpha %>%
+  group_by(alpha, Method) %>%
+  reframe(meanFPR = mean(FPR))
+
+POD_scenario_alpha <- results %>%
+  arrange(scenario, alpha) %>%
+  select(scenario, sim, alpha, outbreaks) %>%
+  unnest(outbreaks) %>%
+  filter(t %in% 576:624) %>%
+  pivot_longer(cols = alarm_Farrington:alarm_PoisG, names_to = "Method", values_to = "Alarms") %>%
+  group_by(scenario, sim, alpha, Method, k) %>%
+  reframe(Detected = any(outbreakTF == TRUE & Alarms == TRUE)) %>%
+  group_by(scenario, alpha, Method, k) %>%
+  reframe(POD = mean(Detected)) %>%
+  group_by(scenario, alpha, Method, k) %>%
+  mutate(Method = factor(Method,
+                         levels = c("alarm_Farrington",
+                                    "alarm_Noufaily",
+                                    "alarm_PoisN",
+                                    "alarm_PoisG"),
+                         labels = c("Farrington",
+                                    "Noufaily",
+                                    "Poisson Normal",
+                                    "Poisson Gamma")))
+write_rds(x = POD_scenario_alpha, file = "POD_scenario_alpha.Rds")
+
+POD_scenario_alpha %>%
+  full_join(FPR_scenario_alpha_mean, by = join_by(alpha, Method)) %>%
+  reframe(`POD/meanFPR` = POD/meanFPR) %>%
+  group_by(alpha, Method, k) %>%
+  reframe(meanPODFPR = mean(`POD/meanFPR`)) %>%
+  filter(k %in% 2:7) %>%
+  ggplot(mapping = aes(x = factor(alpha), y = meanPODFPR, colour = factor(k), group = k)) +
+  geom_line() +
+  facet_wrap(facets = vars(Method))
+
+
+
+POD_scenario_alpha %>%
+  full_join(FPR_scenario_alpha_mean, by = join_by(alpha, Method)) %>%
+  reframe(`ODDS(POD)/ODDS(meanFPR)` = (POD/(1-POD))/(meanFPR/(1-meanFPR))) %>%
+  group_by(alpha, Method, k) %>%
+  reframe(meanODDS = mean(`ODDS(POD)/ODDS(meanFPR)`)) %>%
+  filter(k %in% 2:7) %>%
+  ggplot(mapping = aes(x = factor(alpha), y = meanODDS, colour = factor(k), group = k)) +
+  geom_line(linewidth = 1) +
+  facet_wrap(facets = vars(Method)) +
+  scale_color_manual(name = "k", values = dtuPalette)
+
+# Making beautiful plot
+profilePODxFPR_num <- POD_scenario_alpha %>%
+  full_join(FPR_scenario_alpha_mean, by = join_by(alpha, Method)) %>%
+  filter(k == 5) %>%
+  ungroup(scenario) %>%
+  reframe(POD = median(POD), meanFPR = median(meanFPR)) %>%
+  ggplot(mapping = aes(x = meanFPR, y = POD), nudge_x = 1, nudge_y = 1, size = 0.1) +
+  geom_line(mapping = aes(colour = Method), linewidth = 1) +
+  geom_label(aes(label = alpha)) +
+  scale_color_manual(values = dtuPalette[c(7,9:11,5)])
 
 # False positive rate
 FPR <- results %>%
