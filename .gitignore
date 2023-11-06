@@ -47,3 +47,7 @@ vignettes/*.pdf
 
 # Exlude literature folder
 /literature/
+.Rproj.user
+.Rdata
+.DS_Store
+.quarto
