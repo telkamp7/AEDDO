@@ -79,30 +79,21 @@ FPR <- read_rds(file = "../../src/simulation/FPR.Rds")
 
 # Introduction
 
-The fight against infectious disease not only requires proper treatment of patients and implementation of preventive measure but also demands early detection of emerging disease outbreaks. Timely identification and intervention can mean the difference between containing an outbreak or facing a devastating epidemic.
+The fight against infectious disease not only requires proper treatment of patients and implementation of preventive measures but also demands early detection of emerging disease outbreaks. Today epidemiologists and public health professionals utilize a range of tools and methodologies to effectively tackle disease outbreak. Here, laboratory-based approaches play a crucial role in outbreak investigations and may involve techniques such as molecular epidemiology [@Honardoost_2018, @Struelens_2013] and, more recently, Whole Genome Sequencing (WGS) [@Koeser_2012, @Baldry_2010].
 
-Statistical outbreak detection begins with the identification of an aberrant number of cases of a particular disease within a specific time and space. When an increase in the number of cases is detected, a signal or alarm is raised by the detection method. Subsequently, an epidemiologist assesses the public health relevance of the aberration to determine if further investigation is warranted.
+However, in recent years, there has been a growing interest in statistical methods for automated an early detection of disease outbreak. Statistical outbreak detection begins with the identification of an aberrant number of cases of a particular disease within a specific time and space. When an increase in the number of cases is detected, a signal or alarm is raised by the detection method. Subsequently, an epidemiologist assesses the public health relevance of the aberration to determine if further investigation is warranted. These methodologies encompass various statistical techniques, including regression analysis, time series methodology, methods inspired by statistical process control, approaches incorporating spatial information, and multivariate outbreak detection. A comprehensive review of these methods can be found in studies by @Buckeridge_2007 and @Unkel_2012. 
 
-Today epidemiologists and public health professionals utilize a range of tools and methodologies to effectively tackle disease outbreaks. Here, laboratory-based approaches play a crucial role in outbreak investigations and may involve techniques such as molecular epidemiology [@Honardoost_2018, @Struelens_2013] and, more recently Whole Genome Sequencing (WGS) [@Koeser_2012, @Baldry_2010].
+To establish a golden standard, this article will focus on the method initially proposed by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013. These methods offer advanced statistical tools for detecting and monitoring disease outbreaks and are currently *the* methods of choice at European public health institutes [@Hulth_2010]. They can be accessed through the R package called `surveillance` developed by @Salmon_2016. It is a well known fact, that one limitation of these detection algorithms is an occasional lack of specificity, leading to false alarms that can overwhelm the epidemiologists with verification tasks [@Bedubourg_2017]. Therefore, in this article, these established methods will be compared to a novel outbreak detection algorithm based on hierarchical models. This article introduces this new algorithm as an innovative approach to outbreak detection and aims to assess its performance in comparison to already existing methods.
 
-However, in recent years, there has been a growing interest in statistical method for automated and early detection of disease outbreaks. These methodologies encompass various statistical techniques, including regression analysis, time series methodology, methods inspired by statistical process control, approaches incorporating spatial information, and multivariate outbreak detection. A comprehensive review of these method can be found in studies by @Buckeridge_2007 and @Unkel_2012.
-
-To establish a golden standard, this article will focus on the method initially proposed by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013. These methods offer advanced statistical tools for detecting and monitoring disease outbreak and are currently *the* methods of choice at European public health institute [@Hulth_2010]. They can be accessed through the R package called `surveillance` developed by @Salmon_2016.
-
-It is a well known fact, that one limitation of these detection algorithms is an occasional lack of specificity, leading to false alarms that can overwhelm the epidemiologists with verification tasks [@Bedubourg_2017]. Therefore, in this article, these established methods will be compared to a novel outbreak detection algorithm based on hierarchical models. This article introduces this new algorithm as an innovative approach to outbreak detection and aims to assess its performance in comparison to already existing methods.
-
-While hierarchical models have earned a reputation within ecology [@Bolker_2009, @Zuur_2009], urban energy modeling [@Real_2021, @Jaume_2022], and other fields, their application in the automatic detection of disease outbreaks is relatively unproven. However, there is a promising paper by @Heisterkamp_2006 that applied a hierarchical time series model to detect infectious disease outbreaks in empirical data from *Rubella* and *Salmonella*. The authors concluded that the method is a powerful and versatile way of analyzing time series of routinely recorded laboratory data.
-
-In the context of this article, the focus will be on the prospective detection of disease outbreaks, considering the potential of hierarchical models to effectively identify and respond to emerging outbreaks in a timely manner.
+While hierarchical models have earned a reputation within ecology [@Bolker_2009, @Zuur_2009], urban energy modeling [@Real_2021, Jaum2_2022], and other fields, their application in the automatic detection of disease outbreaks is relatively unproved. However, there is a promising paper by @Heisterkamp_2006 that applied a hierarchical time series model to detect infectious disease outbreaks in empirical data from *Rubella* and *Salmonella*. The authors concluded that the method is a powerful and versatile way of analyzing time series of routinely recorded laboratory data. In the context of this article, the focus will be on the prospective detection of disease outbreaks, considering the potential of hierarchical models to effectively identify and respond to emerging outbreaks in a timely manner.
 
 # Materials and methods
-
 
 ## Novel outbreak detection algorithm
 
 The novel algorithm utilizes a generalized mixed effects model or a hierarchical generalized linear model as a modeling framework to model the count observations $y$ and assess the unobserved random effects $u$. These random effects are used directly in the detection algorithm to characterize an outbreak. The theoretical foundations of these models will be further discussed in Sections \ref{glmm} and \ref{hglm}.
 
-The first step involves fitting either a hierarchical Poisson Normal or Poisson Gamma model with a log link to the reference data. Here, it is possible for the user to include an arbitrary number of covariates by supplying a model formula. In order to account for structural changes in the time series, e.g. an improved and more sensitive diagnostic method or a new screening strategy at hospitals, a rolling window with width $k$ is used to estimate the time-varying model parameters. Also, it is assumed that the count is proportional to the population size $n$. Hence in terms of the canonical link the model for the fixed effects is
+The first step involves fitting either a hierarchical Poisson Normal or Poisson Gamma model with a log link to the reference data. Here, it is possible to include an arbitrary number of covariates by supplying a model formula. In order to account for structural changes in the time series, e.g. an improved and more sensitive diagnostic method or a new screening strategy at hospitals, a rolling window with width $k$ is used to estimate the time-varying model parameters. Also, it is assumed that the count is proportional to the population size $n$. Hence in terms of the canonical link the model for the fixed effects is
 
 \begin{equation}
   \log(\lambda_{it}) = x_{it}\beta + \log(n_{it}), \quad i=1,\dots,m, \quad t=1,\dots,T
@@ -524,6 +515,9 @@ It is important to note that the FPR is a rate per week, while the POD is a rate
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
+## Case studies
+
+
 ## Simulation study
 
 ### False positive rate
@@ -584,6 +578,17 @@ It is important to bear in mind that an outbreak of size $v$ is randomly distrib
 
 Consequently, an outbreak of size $v$ generated from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline series is perceived to be relatively smaller than initially perceived in the simulation setup. For example, an outbreak of size $k=4$ times the standard deviation may only be perceived as an outbreak signal of size $2$ times the standard deviation in an individual week.
 
+
+## Varying significance levels
+
+```{r POD_FPR, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../../figures/POD_FPR.png")
+```
+
+
+```{r ODDS_POD_FPR, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../../figures/ODDS_POD_FPR.png")
+```
 
 # Discussion
 

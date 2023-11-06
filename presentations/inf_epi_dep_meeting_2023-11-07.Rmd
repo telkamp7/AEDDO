@@ -48,9 +48,20 @@ knitr::include_graphics("../figures/family.jpg")
 \begin{columns}
 \begin{column}{.68\textwidth}
 \begin{itemize}
-  \item First point
-  \item Second point
-  \item Last selling point!
+  \item Establish and maintain a model preparedness
+  \begin{itemize}
+    \item Improve understanding of immunity over time
+    \item Manage lineages and mutations
+  \end{itemize}
+  \item Wastewater monitoring
+  \item Signal detection - automatically identify potential outbreaks
+  \item Analyze and model excess mortality
+  \item Antimicrobial resistance
+  \begin{itemize}
+    \item Hospital network analysis - expansion of MiBAlert
+    \item Focus on resistance in the population and its burden
+  \end{itemize}
+  \item One Health
 \end{itemize}
 \end{column}
 \hfill

@@ -1,15 +1,15 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.10.27)  1 NOV 2023 09:40
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.2)  6 NOV 2023 13:52
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **aeddo_simulation.tex
 (./aeddo_simulation.tex
-LaTeX2e <2023-06-01> patch level 1
-L3 programming layer <2023-10-23>
+LaTeX2e <2023-11-01>
+L3 programming layer <2023-11-01>
 (./elsarticle.cls
 Document Class: elsarticle 2020/11/20, 3.3: Elsevier Ltd
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2023-10-23 L3 programming layer (loader) 
+Package: expl3 2023-11-01 L3 programming layer (loader) 
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
 File: l3backend-pdftex.def 2023-10-23 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count186
@@ -261,7 +261,7 @@ Package: inputenc 2021/02/14 v1.3d Input encoding file
 \inpenc@prehook=\toks28
 \inpenc@posthook=\toks29
 ) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2023-10-21 v7.01c Hypertext links for LaTeX
+Package: hyperref 2023-10-27 v7.01d Hypertext links for LaTeX
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
 Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty
@@ -293,7 +293,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 \Hy@linkcounter=\count293
 \Hy@pagecounter=\count294
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2023-10-21 v7.01c Hyperref: PDFDocEncoding definition (HO)
+File: pd1enc.def 2023-10-27 v7.01d Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 ) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
@@ -301,7 +301,7 @@ Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
 \Hy@SavedSpaceFactor=\count295
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
-File: puenc.def 2023-10-21 v7.01c Hyperref: PDF Unicode definition (HO)
+File: puenc.def 2023-10-27 v7.01d Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
 )
@@ -341,7 +341,7 @@ package with kernel methods
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def
-File: hpdftex.def 2023-10-21 v7.01c Hyperref driver for pdfTeX
+File: hpdftex.def 2023-10-27 v7.01d Hyperref driver for pdfTeX
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty
 Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
 with kernel methods
@@ -385,7 +385,7 @@ Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 \FrameRule=\dimen176
 \FrameSep=\dimen177
 ) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
-Package: longtable 2021-09-01 v4.17 Multi-page Table package (DPC)
+Package: longtable 2025-10-25 v4.18 Multi-page Table package (DPC)
 \LTleft=\skip59
 \LTright=\skip60
 \LTpre=\skip61
@@ -422,7 +422,7 @@ Package: booktabs 2020/01/12 v1.61803398 Publication quality tables
 \@lastruleclass=\count314
 \@thisrulewidth=\dimen191
 ) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/array.sty
-Package: array 2022/09/04 v2.5g Tabular extension package (FMi)
+Package: array 2023/10/16 v2.5g Tabular extension package (FMi)
 \col@sep=\dimen192
 \ar@mcellbox=\box67
 \extrarowheight=\dimen193
@@ -431,7 +431,7 @@ Package: array 2022/09/04 v2.5g Tabular extension package (FMi)
 \backup@length=\skip64
 \ar@cellbox=\box68
 ) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/calc.sty
-Package: calc 2017/05/25 v4.3 Infix arithmetic (KKT,FJ)
+Package: calc 2023/07/08 v4.3 Infix arithmetic (KKT,FJ)
 \calc@Acount=\count315
 \calc@Bcount=\count316
 \calc@Adimen=\dimen194
@@ -670,144 +670,166 @@ Overfull \hbox (2.22221pt too wide) has occurred while \output is active
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\<def>-command' on input line 189.
+(hyperref)                removing `\<def>-command' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\cnotenum' on input line 189.
+(hyperref)                removing `\cnotenum' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\<def>-command' on input line 189.
+(hyperref)                removing `\<def>-command' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@corref' on input line 189.
+(hyperref)                removing `\@corref' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\<let>-command' on input line 189.
+(hyperref)                removing `\<let>-command' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\comma' on input line 189.
+(hyperref)                removing `\comma' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\<def>-command' on input line 189.
+(hyperref)                removing `\<def>-command' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@fnmark' on input line 189.
+(hyperref)                removing `\@fnmark' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\<let>-command' on input line 189.
+(hyperref)                removing `\<let>-command' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\comma' on input line 189.
+(hyperref)                removing `\comma' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\<def>-command' on input line 189.
+(hyperref)                removing `\<def>-command' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@fnmark' on input line 189.
+(hyperref)                removing `\@fnmark' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\<let>-command' on input line 189.
+(hyperref)                removing `\<let>-command' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\comma' on input line 189.
+(hyperref)                removing `\comma' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\<def>-command' on input line 189.
+(hyperref)                removing `\<def>-command' on input line 184.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `\@fnmark' on input line 189.
+(hyperref)                removing `\@fnmark' on input line 184.
 
 [1
 
-{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}] [2{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}] [3{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}] [4] [5] [6]
+{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}] [2{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}] [3] [4] [5] [6]
 
-Package xcolor Warning: Incompatible color definition on input line 462.
+Package xcolor Warning: Incompatible color definition on input line 454.
 
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 465.
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 476.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 457.
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 468.
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 
-Package xcolor Warning: Incompatible color definition on input line 486.
+Package xcolor Warning: Incompatible color definition on input line 478.
 
 
-Package xcolor Warning: Incompatible color definition on input line 486.
+Package xcolor Warning: Incompatible color definition on input line 478.
 
 [7{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [8] [9]
-<../../figures/PDFLogNormal.png, id=309, 1156.32pt x 578.16pt>
+<../../figures/PDFLogNormal.png, id=313, 1156.32pt x 578.16pt>
 File: ../../figures/PDFLogNormal.png Graphic file (type png)
 <use ../../figures/PDFLogNormal.png>
-Package pdftex.def Info: ../../figures/PDFLogNormal.png  used on input line 619.
+Package pdftex.def Info: ../../figures/PDFLogNormal.png  used on input line 611.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 627.
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 619.
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<../../figures/Realizations.png, id=311, 1156.32pt x 578.16pt>
+<../../figures/Realizations.png, id=315, 1156.32pt x 578.16pt>
 File: ../../figures/Realizations.png Graphic file (type png)
 <use ../../figures/Realizations.png>
-Package pdftex.def Info: ../../figures/Realizations.png  used on input line 636.
+Package pdftex.def Info: ../../figures/Realizations.png  used on input line 628.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
 [10
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.638 
+l.630 
        <../../figures/PDFLogNormal.png>] [11
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.664 
+l.659 
        <../../figures/Realizations.png>]
-<../../figures/FPRPlot.png, id=340, 1156.32pt x 578.16pt>
+<../../figures/FPRPlot.png, id=344, 1156.32pt x 578.16pt>
 File: ../../figures/FPRPlot.png Graphic file (type png)
 <use ../../figures/FPRPlot.png>
-Package pdftex.def Info: ../../figures/FPRPlot.png  used on input line 690.
+Package pdftex.def Info: ../../figures/FPRPlot.png  used on input line 685.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
 [12
 pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.697 
+l.692 
       
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.697 
+l.692 
        <../../figures/FPRPlot.png>]
-<../../figures/PropDetect.png, id=352, 1156.32pt x 578.16pt>
+<../../figures/PropDetect.png, id=357, 1156.32pt x 578.16pt>
 File: ../../figures/PropDetect.png Graphic file (type png)
 <use ../../figures/PropDetect.png>
-Package pdftex.def Info: ../../figures/PropDetect.png  used on input line 763.
+Package pdftex.def Info: ../../figures/PropDetect.png  used on input line 758.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
-[13] (./aeddo_simulation.bbl
-Underfull \hbox (badness 4479) in paragraph at lines 9--15
-[]\T1/lmr/m/n/8 Susannah Baldry.  At-tack of the clones.  \T1/lmr/m/it/8 Na-ture Re-views Mi-cro-bi-ol-ogy\T1/lmr/m/n/8 , 8(6):390, 2010.  doi: $10 . 1038 /
+[13]
+<../../figures/POD_FPR.png, id=366, 1156.32pt x 578.16pt>
+File: ../../figures/POD_FPR.png Graphic file (type png)
+<use ../../figures/POD_FPR.png>
+Package pdftex.def Info: ../../figures/POD_FPR.png  used on input line 768.
+(pdftex.def)             Requested size: 468.0pt x 233.99472pt.
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 768--769
+[][] 
  []
 
 [14
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.15 
-      <../../figures/PropDetect.png>]
+l.770 \includegraphics
+                      [width=1\linewidth]{../../figures/ODDS_POD_FPR} <../../figures/PropDetect.png>]
+<../../figures/ODDS_POD_FPR.png, id=373, 1156.32pt x 578.16pt>
+File: ../../figures/ODDS_POD_FPR.png Graphic file (type png)
+<use ../../figures/ODDS_POD_FPR.png>
+Package pdftex.def Info: ../../figures/ODDS_POD_FPR.png  used on input line 770.
+(pdftex.def)             Requested size: 468.0pt x 233.99472pt.
+
+Overfull \hbox (15.0pt too wide) in paragraph at lines 770--771
+[][] 
+ []
+
+[15 <../../figures/POD_FPR.png> <../../figures/ODDS_POD_FPR.png>] (./aeddo_simulation.bbl
+Underfull \hbox (badness 4479) in paragraph at lines 9--15
+[]\T1/lmr/m/n/8 Susannah Baldry.  At-tack of the clones.  \T1/lmr/m/it/8 Na-ture Re-views Mi-cro-bi-ol-ogy\T1/lmr/m/n/8 , 8(6):390, 2010.  doi: $10 . 1038 /
+ []
+
+
 Underfull \hbox (badness 3098) in paragraph at lines 34--40
 []\T1/lmr/m/n/8 Gabriel Bé-dubourg and Yann Le Strat.  Eval-u-a-tion and com-par-i-son of sta-tis-ti-cal meth-ods for early tem-po-
  []
@@ -822,37 +844,37 @@ Underfull \hbox (badness 1406) in paragraph at lines 34--40
 \T1/lmr/m/n/8 0181227$.  URL []$\T1/lmtt/m/n/8 https : / / www . scopus . com / inward / record . uri ? eid = 2 -[] s2 . 0 -[] 85024904807 & doi = 10 . 1371 % 2fjournal . pone .
  []
 
-[15]
-Underfull \hbox (badness 4120) in paragraph at lines 156--162
+[16]
+Underfull \hbox (badness 4120) in paragraph at lines 149--155
 []\T1/lmr/m/n/8 Russell D. Wolfin-ger and Xi-hong Lin.  Two taylor-series ap-prox-i-ma-tion meth-ods for non-lin-ear mixed mod-
  []
 
 
-Underfull \hbox (badness 6825) in paragraph at lines 156--162
+Underfull \hbox (badness 6825) in paragraph at lines 149--155
 \T1/lmr/m/n/8 els.  \T1/lmr/m/it/8 Com-pu-ta-tional Statis-tics and Data Anal-y-sis\T1/lmr/m/n/8 , 25(4):465--^^U490, 1997.  doi: $10 . 1016 / S0167 -[] 9473(97 )
  []
 
-) [16] (./aeddo_simulation.aux)
+) [17] (./aeddo_simulation.aux)
  ***********
-LaTeX2e <2023-06-01> patch level 1
-L3 programming layer <2023-10-23>
+LaTeX2e <2023-11-01>
+L3 programming layer <2023-11-01>
  ***********
 Package rerunfilecheck Info: File `aeddo_simulation.out' has not changed.
-(rerunfilecheck)             Checksum: F46F8C50B8A390818EF6BA76A495E4DD;4354.
+(rerunfilecheck)             Checksum: BF26A7D2AA1980EA57BB04EF00BD4C90;4674.
  ) 
 Here is how much of TeX's memory you used:
- 14542 strings out of 476357
- 229514 string characters out of 5797645
- 1954036 words of memory out of 5000000
- 35937 multiletter control sequences out of 15000+600000
+ 14592 strings out of 476231
+ 230992 string characters out of 5794988
+ 1951533 words of memory out of 5000000
+ 36109 multiletter control sequences out of 15000+600000
  611912 words of font info for 79 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 72i,13n,79p,807b,635s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,13n,79p,1071b,629s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on aeddo_simulation.pdf (16 pages, 1129028 bytes).
+Output written on aeddo_simulation.pdf (17 pages, 1341837 bytes).
 PDF statistics:
- 550 PDF objects out of 1000 (max. 8388607)
- 464 compressed objects within 5 object streams
- 137 named destinations out of 1000 (max. 500000)
- 197 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 565 PDF objects out of 1000 (max. 8388607)
+ 474 compressed objects within 5 object streams
+ 141 named destinations out of 1000 (max. 500000)
+ 223 words of extra memory for PDF output out of 10000 (max. 10000000)
 
