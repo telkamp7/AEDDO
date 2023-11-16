@@ -43,6 +43,33 @@ knitr::include_graphics("../figures/family.jpg")
 \end{column}
 \end{columns}
 
+## Organisation of Epimiological Infectious Disease Preparedness
+
+\begin{columns}
+\begin{column}{.48\textwidth}
+```{r epi_inf_disease_preparedness, echo=FALSE, out.width="90%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../figures/epi_inf_disease_preparedness.png")
+```
+\end{column}
+\begin{column}{.48\textwidth}
+\begin{itemize}
+  \item A total of 39 employees
+  \begin{itemize}
+    \item ... of which 6 are employed in Disease Dynamics \& Forecasting
+  \end{itemize}
+  \item High-quality research within
+  \begin{itemize}
+    \item Genetic epidemiology
+    \item Pregnancy complications
+    \item Vaccine safety
+    \item Biostatistics
+    \item Modelling of the dynamics of infectious diseases
+  \end{itemize}
+\end{itemize}
+\end{column}
+\end{columns}
+
+
 ## About Disease Dynamics & Forecasting @ Epidemiology Research
 
 \begin{columns}

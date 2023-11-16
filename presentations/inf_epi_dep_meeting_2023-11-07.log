@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.11.2)  6 NOV 2023 12:50
+This is XeTeX, Version 3.141592653-2.6-0.999995 (TeX Live 2023) (preloaded format=xelatex 2023.11.2)  6 NOV 2023 15:43
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -1328,14 +1328,14 @@ LaTeX Warning: Unexpected alignment  on input line 95.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 133.
+LaTeX Warning: Unexpected alignment  on input line 130.
 
-File: ../figures/r_packages.png Graphic file (type bmp)
-<../figures/r_packages.png>
+File: ../figures/epi_inf_disease_preparedness.png Graphic file (type bmp)
+<../figures/epi_inf_disease_preparedness.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 133.
+LaTeX Warning: Unexpected alignment  on input line 130.
 
 [3
 
@@ -1343,7 +1343,22 @@ LaTeX Warning: Unexpected alignment  on input line 133.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 158.
+LaTeX Warning: Unexpected alignment  on input line 168.
+
+File: ../figures/r_packages.png Graphic file (type bmp)
+<../figures/r_packages.png>
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+
+LaTeX Warning: Unexpected alignment  on input line 168.
+
+[4
+
+]
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+
+LaTeX Warning: Unexpected alignment  on input line 193.
 
 File: ../figures/MiBaPetriComp.png Graphic file (type bmp)
 <../figures/MiBaPetriComp.png>
@@ -1352,22 +1367,7 @@ File: ../figures/MiBa.png Graphic file (type bmp)
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 158.
-
-[4
-
-]
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-
-LaTeX Warning: Unexpected alignment  on input line 174.
-
-LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <10.95> not available
-(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 174.
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-
-LaTeX Warning: Unexpected alignment  on input line 174.
+LaTeX Warning: Unexpected alignment  on input line 193.
 
 [5
 
@@ -1375,12 +1375,14 @@ LaTeX Warning: Unexpected alignment  on input line 174.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 185.
+LaTeX Warning: Unexpected alignment  on input line 209.
 
+LaTeX Font Info:    Font shape `T1/lmss/b/n' in size <10.95> not available
+(Font)              Font shape `T1/lmss/bx/n' tried instead on input line 209.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 185.
+LaTeX Warning: Unexpected alignment  on input line 209.
 
 [6
 
@@ -1388,12 +1390,12 @@ LaTeX Warning: Unexpected alignment  on input line 185.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 205.
+LaTeX Warning: Unexpected alignment  on input line 220.
 
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 205.
+LaTeX Warning: Unexpected alignment  on input line 220.
 
 [7
 
@@ -1401,7 +1403,12 @@ LaTeX Warning: Unexpected alignment  on input line 205.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 205.
+LaTeX Warning: Unexpected alignment  on input line 240.
+
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+
+LaTeX Warning: Unexpected alignment  on input line 240.
 
 [8
 
@@ -1409,12 +1416,7 @@ LaTeX Warning: Unexpected alignment  on input line 205.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 217.
-
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-
-LaTeX Warning: Unexpected alignment  on input line 217.
+LaTeX Warning: Unexpected alignment  on input line 240.
 
 [9
 
@@ -1422,12 +1424,12 @@ LaTeX Warning: Unexpected alignment  on input line 217.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 226.
+LaTeX Warning: Unexpected alignment  on input line 252.
 
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 226.
+LaTeX Warning: Unexpected alignment  on input line 252.
 
 [10
 
@@ -1435,12 +1437,12 @@ LaTeX Warning: Unexpected alignment  on input line 226.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 235.
+LaTeX Warning: Unexpected alignment  on input line 261.
 
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 235.
+LaTeX Warning: Unexpected alignment  on input line 261.
 
 [11
 
@@ -1448,18 +1450,12 @@ LaTeX Warning: Unexpected alignment  on input line 235.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 254.
+LaTeX Warning: Unexpected alignment  on input line 270.
 
-File: ../figures/STEC_long_plot.png Graphic file (type bmp)
-<../figures/STEC_long_plot.png>
-LaTeX Font Info:    Font shape `T1/lmss/b/it' in size <12> not available
-(Font)              Font shape `T1/lmss/bx/it' tried instead on input line 254.
-LaTeX Font Info:    Font shape `T1/lmss/bx/it' in size <12> not available
-(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 254.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 254.
+LaTeX Warning: Unexpected alignment  on input line 270.
 
 [12
 
@@ -1467,12 +1463,18 @@ LaTeX Warning: Unexpected alignment  on input line 254.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 269.
+LaTeX Warning: Unexpected alignment  on input line 289.
 
+File: ../figures/STEC_long_plot.png Graphic file (type bmp)
+<../figures/STEC_long_plot.png>
+LaTeX Font Info:    Font shape `T1/lmss/b/it' in size <12> not available
+(Font)              Font shape `T1/lmss/bx/it' tried instead on input line 289.
+LaTeX Font Info:    Font shape `T1/lmss/bx/it' in size <12> not available
+(Font)              Font shape `T1/lmss/bx/sl' tried instead on input line 289.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 269.
+LaTeX Warning: Unexpected alignment  on input line 289.
 
 [13
 
@@ -1480,12 +1482,12 @@ LaTeX Warning: Unexpected alignment  on input line 269.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 283.
+LaTeX Warning: Unexpected alignment  on input line 304.
 
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 283.
+LaTeX Warning: Unexpected alignment  on input line 304.
 
 [14
 
@@ -1493,12 +1495,12 @@ LaTeX Warning: Unexpected alignment  on input line 283.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 298.
+LaTeX Warning: Unexpected alignment  on input line 318.
 
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 298.
+LaTeX Warning: Unexpected alignment  on input line 318.
 
 [15
 
@@ -1506,12 +1508,12 @@ LaTeX Warning: Unexpected alignment  on input line 298.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 313.
+LaTeX Warning: Unexpected alignment  on input line 333.
 
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 313.
+LaTeX Warning: Unexpected alignment  on input line 333.
 
 [16
 
@@ -1519,39 +1521,37 @@ LaTeX Warning: Unexpected alignment  on input line 313.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 345.
+LaTeX Warning: Unexpected alignment  on input line 348.
 
-File: ../figures/Compare_novel_STEC.png Graphic file (type bmp)
-<../figures/Compare_novel_STEC.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 345.
+LaTeX Warning: Unexpected alignment  on input line 348.
 
 [17
 
 ]
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+
+LaTeX Warning: Unexpected alignment  on input line 380.
+
 File: ../figures/Compare_novel_STEC.png Graphic file (type bmp)
 <../figures/Compare_novel_STEC.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 345.
+LaTeX Warning: Unexpected alignment  on input line 380.
 
 [18
 
 ]
+File: ../figures/Compare_novel_STEC.png Graphic file (type bmp)
+<../figures/Compare_novel_STEC.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 357.
-
-File: ../figures/Compare_alarms_STEC.png Graphic file (type bmp)
-<../figures/Compare_alarms_STEC.png>
-File: tex_dtu_logo.pdf Graphic file (type pdf)
-<use tex_dtu_logo.pdf>
-
-LaTeX Warning: Unexpected alignment  on input line 357.
+LaTeX Warning: Unexpected alignment  on input line 380.
 
 [19
 
@@ -1559,12 +1559,14 @@ LaTeX Warning: Unexpected alignment  on input line 357.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 373.
+LaTeX Warning: Unexpected alignment  on input line 392.
 
+File: ../figures/Compare_alarms_STEC.png Graphic file (type bmp)
+<../figures/Compare_alarms_STEC.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 373.
+LaTeX Warning: Unexpected alignment  on input line 392.
 
 [20
 
@@ -1572,12 +1574,12 @@ LaTeX Warning: Unexpected alignment  on input line 373.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 410.
+LaTeX Warning: Unexpected alignment  on input line 408.
 
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 410.
+LaTeX Warning: Unexpected alignment  on input line 408.
 
 [21
 
@@ -1585,14 +1587,12 @@ LaTeX Warning: Unexpected alignment  on input line 410.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 421.
+LaTeX Warning: Unexpected alignment  on input line 445.
 
-File: ../figures/scenarioIllustration.png Graphic file (type bmp)
-<../figures/scenarioIllustration.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 421.
+LaTeX Warning: Unexpected alignment  on input line 445.
 
 [22
 
@@ -1600,14 +1600,14 @@ LaTeX Warning: Unexpected alignment  on input line 421.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 448.
+LaTeX Warning: Unexpected alignment  on input line 456.
 
-File: ../figures/Realizations.png Graphic file (type bmp)
-<../figures/Realizations.png>
+File: ../figures/scenarioIllustration.png Graphic file (type bmp)
+<../figures/scenarioIllustration.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 448.
+LaTeX Warning: Unexpected alignment  on input line 456.
 
 [23
 
@@ -1615,14 +1615,14 @@ LaTeX Warning: Unexpected alignment  on input line 448.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 459.
+LaTeX Warning: Unexpected alignment  on input line 483.
 
-File: ../figures/FPRPlot.png Graphic file (type bmp)
-<../figures/FPRPlot.png>
+File: ../figures/Realizations.png Graphic file (type bmp)
+<../figures/Realizations.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 459.
+LaTeX Warning: Unexpected alignment  on input line 483.
 
 [24
 
@@ -1630,14 +1630,14 @@ LaTeX Warning: Unexpected alignment  on input line 459.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 471.
+LaTeX Warning: Unexpected alignment  on input line 494.
 
-File: ../figures/PropDetect.png Graphic file (type bmp)
-<../figures/PropDetect.png>
+File: ../figures/FPRPlot.png Graphic file (type bmp)
+<../figures/FPRPlot.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 471.
+LaTeX Warning: Unexpected alignment  on input line 494.
 
 [25
 
@@ -1645,14 +1645,14 @@ LaTeX Warning: Unexpected alignment  on input line 471.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 482.
+LaTeX Warning: Unexpected alignment  on input line 506.
 
-File: ../figures/profilePODxFPR_shape.png Graphic file (type bmp)
-<../figures/profilePODxFPR_shape.png>
+File: ../figures/PropDetect.png Graphic file (type bmp)
+<../figures/PropDetect.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 482.
+LaTeX Warning: Unexpected alignment  on input line 506.
 
 [26
 
@@ -1660,14 +1660,14 @@ LaTeX Warning: Unexpected alignment  on input line 482.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 494.
+LaTeX Warning: Unexpected alignment  on input line 517.
 
-File: ../figures/profilePODxFPR_facet.png Graphic file (type bmp)
-<../figures/profilePODxFPR_facet.png>
+File: ../figures/profilePODxFPR_shape.png Graphic file (type bmp)
+<../figures/profilePODxFPR_shape.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 494.
+LaTeX Warning: Unexpected alignment  on input line 517.
 
 [27
 
@@ -1675,12 +1675,14 @@ LaTeX Warning: Unexpected alignment  on input line 494.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 507.
+LaTeX Warning: Unexpected alignment  on input line 529.
 
+File: ../figures/profilePODxFPR_facet.png Graphic file (type bmp)
+<../figures/profilePODxFPR_facet.png>
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 507.
+LaTeX Warning: Unexpected alignment  on input line 529.
 
 [28
 
@@ -1688,27 +1690,12 @@ LaTeX Warning: Unexpected alignment  on input line 507.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 514.
+LaTeX Warning: Unexpected alignment  on input line 542.
 
-LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
-(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 514.
-LaTeX Font Info:    Trying to load font information for T1+lmr on input line 514.
-(c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
-File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-
-LaTeX Font Warning: Font shape `T1/lmss/m/sc' in size <10.95> not available
-(Font)              Font shape `T1/lmr/m/sc' tried instead on input line 514.
-
-LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 514.
-(c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
-File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
-)
-Missing character: There is no – ("2013) in font ec-lmss10!
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 514.
+LaTeX Warning: Unexpected alignment  on input line 542.
 
 [29
 
@@ -1716,14 +1703,27 @@ LaTeX Warning: Unexpected alignment  on input line 514.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 542.
+LaTeX Warning: Unexpected alignment  on input line 549.
 
-LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 542.
+LaTeX Font Info:    Font shape `T1/lmss/m/it' in size <10.95> not available
+(Font)              Font shape `T1/lmss/m/sl' tried instead on input line 549.
+LaTeX Font Info:    Trying to load font information for T1+lmr on input line 549.
+(c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
+File: t1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+
+LaTeX Font Warning: Font shape `T1/lmss/m/sc' in size <10.95> not available
+(Font)              Font shape `T1/lmr/m/sc' tried instead on input line 549.
+
+LaTeX Font Info:    Trying to load font information for T1+lmtt on input line 549.
+(c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmtt.fd
+File: t1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
+)
+Missing character: There is no – ("2013) in font ec-lmss10!
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 542.
+LaTeX Warning: Unexpected alignment  on input line 549.
 
 [30
 
@@ -1731,12 +1731,14 @@ LaTeX Warning: Unexpected alignment  on input line 542.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 560.
+LaTeX Warning: Unexpected alignment  on input line 577.
 
+LaTeX Font Info:    External font `lmex10' loaded for size
+(Font)              <12> on input line 577.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 560.
+LaTeX Warning: Unexpected alignment  on input line 577.
 
 [31
 
@@ -1744,12 +1746,12 @@ LaTeX Warning: Unexpected alignment  on input line 560.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 574.
+LaTeX Warning: Unexpected alignment  on input line 595.
 
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 574.
+LaTeX Warning: Unexpected alignment  on input line 595.
 
 [32
 
@@ -1757,14 +1759,27 @@ LaTeX Warning: Unexpected alignment  on input line 574.
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 588.
+LaTeX Warning: Unexpected alignment  on input line 609.
 
 File: tex_dtu_logo.pdf Graphic file (type pdf)
 <use tex_dtu_logo.pdf>
 
-LaTeX Warning: Unexpected alignment  on input line 588.
+LaTeX Warning: Unexpected alignment  on input line 609.
 
 [33
+
+]
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+
+LaTeX Warning: Unexpected alignment  on input line 623.
+
+File: tex_dtu_logo.pdf Graphic file (type pdf)
+<use tex_dtu_logo.pdf>
+
+LaTeX Warning: Unexpected alignment  on input line 623.
+
+[34
 
 ]
 \tf@nav=\write7
@@ -1782,18 +1797,18 @@ LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-01>
  ***********
 Package rerunfilecheck Info: File `inf_epi_dep_meeting_2023-11-07.out' has not changed.
-(rerunfilecheck)             Checksum: 451520DD680DAF521880DCD78AA4167A;5299.
+(rerunfilecheck)             Checksum: 7D82F952EB693EAB464A540B18F05216;5677.
 Package logreq Info: Writing requests to 'inf_epi_dep_meeting_2023-11-07.run.xml'.
 \openout1 = `inf_epi_dep_meeting_2023-11-07.run.xml'.
 
  ) 
 Here is how much of TeX's memory you used:
- 49100 strings out of 476927
- 1156511 string characters out of 5804637
- 1986549 words of memory out of 5000000
- 70128 multiletter control sequences out of 15000+600000
+ 49124 strings out of 476927
+ 1157512 string characters out of 5804637
+ 1987077 words of memory out of 5000000
+ 70151 multiletter control sequences out of 15000+600000
  644948 words of font info for 107 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
  101i,21n,107p,2183b,5001s stack positions out of 10000i,1000n,20000p,200000b,200000s
 
-Output written on inf_epi_dep_meeting_2023-11-07.pdf (33 pages).
+Output written on inf_epi_dep_meeting_2023-11-07.pdf (34 pages).

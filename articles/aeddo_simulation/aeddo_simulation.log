@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.2)  6 NOV 2023 13:52
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.2)  15 NOV 2023 09:05
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -385,7 +385,7 @@ Package: framed 2011/10/22 v 0.96: framed or shaded text with page breaks
 \FrameRule=\dimen176
 \FrameSep=\dimen177
 ) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/tools/longtable.sty
-Package: longtable 2025-10-25 v4.18 Multi-page Table package (DPC)
+Package: longtable 2023-11-01 v4.19 Multi-page Table package (DPC)
 \LTleft=\skip59
 \LTright=\skip60
 \LTpre=\skip61
@@ -736,75 +736,76 @@ Package hyperref Warning: Token not allowed in a PDF string (Unicode):
 
 {c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ec.enc}{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathsy.enc}] [2{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathit.enc}{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-rm.enc}{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-mathex.enc}] [3] [4] [5] [6]
 
-Package xcolor Warning: Incompatible color definition on input line 454.
+Package xcolor Warning: Incompatible color definition on input line 451.
 
 LaTeX Font Info:    Font shape `T1/lmtt/bx/n' in size <10> not available
-(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 457.
-LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 468.
+(Font)              Font shape `T1/lmtt/b/n' tried instead on input line 454.
+LaTeX Font Info:    Trying to load font information for TS1+lmtt on input line 465.
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmtt.fd
 File: ts1lmtt.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
 
-Package xcolor Warning: Incompatible color definition on input line 478.
+Package xcolor Warning: Incompatible color definition on input line 475.
 
 
-Package xcolor Warning: Incompatible color definition on input line 478.
+Package xcolor Warning: Incompatible color definition on input line 475.
 
-[7{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [8] [9]
-<../../figures/PDFLogNormal.png, id=313, 1156.32pt x 578.16pt>
+[7{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [8]
+<../../figures/PDFLogNormal.png, id=302, 1156.32pt x 578.16pt>
 File: ../../figures/PDFLogNormal.png Graphic file (type png)
 <use ../../figures/PDFLogNormal.png>
-Package pdftex.def Info: ../../figures/PDFLogNormal.png  used on input line 611.
+Package pdftex.def Info: ../../figures/PDFLogNormal.png  used on input line 608.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
-LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 619.
+[9]
+LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 616.
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<../../figures/Realizations.png, id=315, 1156.32pt x 578.16pt>
+<../../figures/Realizations.png, id=309, 1156.32pt x 578.16pt>
 File: ../../figures/Realizations.png Graphic file (type png)
 <use ../../figures/Realizations.png>
-Package pdftex.def Info: ../../figures/Realizations.png  used on input line 628.
+Package pdftex.def Info: ../../figures/Realizations.png  used on input line 625.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
 [10
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.630 
+l.627 
        <../../figures/PDFLogNormal.png>] [11
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.659 
-       <../../figures/Realizations.png>]
-<../../figures/FPRPlot.png, id=344, 1156.32pt x 578.16pt>
+l.649 A
+       dditionally, it is noted that the novel algorithms, using the two dif... <../../figures/Realizations.png>]
+<../../figures/FPRPlot.png, id=339, 1156.32pt x 578.16pt>
 File: ../../figures/FPRPlot.png Graphic file (type png)
 <use ../../figures/FPRPlot.png>
-Package pdftex.def Info: ../../figures/FPRPlot.png  used on input line 685.
+Package pdftex.def Info: ../../figures/FPRPlot.png  used on input line 674.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
 [12
 pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.692 
+l.683 
       
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.692 
+l.683 
        <../../figures/FPRPlot.png>]
-<../../figures/PropDetect.png, id=357, 1156.32pt x 578.16pt>
+<../../figures/PropDetect.png, id=350, 1156.32pt x 578.16pt>
 File: ../../figures/PropDetect.png Graphic file (type png)
 <use ../../figures/PropDetect.png>
-Package pdftex.def Info: ../../figures/PropDetect.png  used on input line 758.
+Package pdftex.def Info: ../../figures/PropDetect.png  used on input line 747.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
 [13]
-<../../figures/POD_FPR.png, id=366, 1156.32pt x 578.16pt>
+<../../figures/POD_FPR.png, id=358, 1156.32pt x 578.16pt>
 File: ../../figures/POD_FPR.png Graphic file (type png)
 <use ../../figures/POD_FPR.png>
-Package pdftex.def Info: ../../figures/POD_FPR.png  used on input line 768.
+Package pdftex.def Info: ../../figures/POD_FPR.png  used on input line 757.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 768--769
+Overfull \hbox (15.0pt too wide) in paragraph at lines 757--758
 [][] 
  []
 
@@ -812,15 +813,15 @@ Overfull \hbox (15.0pt too wide) in paragraph at lines 768--769
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.770 \includegraphics
+l.759 \includegraphics
                       [width=1\linewidth]{../../figures/ODDS_POD_FPR} <../../figures/PropDetect.png>]
-<../../figures/ODDS_POD_FPR.png, id=373, 1156.32pt x 578.16pt>
+<../../figures/ODDS_POD_FPR.png, id=365, 1156.32pt x 578.16pt>
 File: ../../figures/ODDS_POD_FPR.png Graphic file (type png)
 <use ../../figures/ODDS_POD_FPR.png>
-Package pdftex.def Info: ../../figures/ODDS_POD_FPR.png  used on input line 770.
+Package pdftex.def Info: ../../figures/ODDS_POD_FPR.png  used on input line 759.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
 
-Overfull \hbox (15.0pt too wide) in paragraph at lines 770--771
+Overfull \hbox (15.0pt too wide) in paragraph at lines 759--760
 [][] 
  []
 
@@ -845,12 +846,12 @@ Underfull \hbox (badness 1406) in paragraph at lines 34--40
  []
 
 [16]
-Underfull \hbox (badness 4120) in paragraph at lines 149--155
+Underfull \hbox (badness 4120) in paragraph at lines 156--162
 []\T1/lmr/m/n/8 Russell D. Wolfin-ger and Xi-hong Lin.  Two taylor-series ap-prox-i-ma-tion meth-ods for non-lin-ear mixed mod-
  []
 
 
-Underfull \hbox (badness 6825) in paragraph at lines 149--155
+Underfull \hbox (badness 6825) in paragraph at lines 156--162
 \T1/lmr/m/n/8 els.  \T1/lmr/m/it/8 Com-pu-ta-tional Statis-tics and Data Anal-y-sis\T1/lmr/m/n/8 , 25(4):465--^^U490, 1997.  doi: $10 . 1016 / S0167 -[] 9473(97 )
  []
 
@@ -860,21 +861,21 @@ LaTeX2e <2023-11-01>
 L3 programming layer <2023-11-01>
  ***********
 Package rerunfilecheck Info: File `aeddo_simulation.out' has not changed.
-(rerunfilecheck)             Checksum: BF26A7D2AA1980EA57BB04EF00BD4C90;4674.
+(rerunfilecheck)             Checksum: A3EE1115775362420EFC194474B099E1;4442.
  ) 
 Here is how much of TeX's memory you used:
- 14592 strings out of 476231
- 230992 string characters out of 5794988
- 1951533 words of memory out of 5000000
- 36109 multiletter control sequences out of 15000+600000
+ 14588 strings out of 476231
+ 230901 string characters out of 5794988
+ 1950533 words of memory out of 5000000
+ 36108 multiletter control sequences out of 15000+600000
  611912 words of font info for 79 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 72i,13n,79p,1071b,629s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,13n,79p,1071b,621s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on aeddo_simulation.pdf (17 pages, 1341837 bytes).
+Output written on aeddo_simulation.pdf (17 pages, 1342910 bytes).
 PDF statistics:
- 565 PDF objects out of 1000 (max. 8388607)
- 474 compressed objects within 5 object streams
- 141 named destinations out of 1000 (max. 500000)
- 223 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 557 PDF objects out of 1000 (max. 8388607)
+ 466 compressed objects within 5 object streams
+ 138 named destinations out of 1000 (max. 500000)
+ 207 words of extra memory for PDF output out of 10000 (max. 10000000)
 

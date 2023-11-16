@@ -79,17 +79,15 @@ FPR <- read_rds(file = "../../src/simulation/FPR.Rds")
 
 # Introduction
 
-The fight against infectious disease not only requires proper treatment of patients and implementation of preventive measures but also demands early detection of emerging disease outbreaks. Today epidemiologists and public health professionals utilize a range of tools and methodologies to effectively tackle disease outbreak. Here, laboratory-based approaches play a crucial role in outbreak investigations and may involve techniques such as molecular epidemiology [@Honardoost_2018, @Struelens_2013] and, more recently, Whole Genome Sequencing (WGS) [@Koeser_2012, @Baldry_2010].
+The fight against infectious disease not only requires proper treatment of patients and implementation of preventive measures but also demands early detection of emerging disease outbreaks. Today epidemiologists and public health professionals utilize a range of tools and methodologies to effectively tackle disease outbreaks. Here, laboratory-based approaches play a crucial role in outbreak investigations and may involve techniques such as molecular epidemiology [@Honardoost_2018, @Struelens_2013] and, more recently, Whole Genome Sequencing (WGS) [@Koeser_2012, @Baldry_2010].
 
-However, in recent years, there has been a growing interest in statistical methods for automated an early detection of disease outbreak. Statistical outbreak detection begins with the identification of an aberrant number of cases of a particular disease within a specific time and space. When an increase in the number of cases is detected, a signal or alarm is raised by the detection method. Subsequently, an epidemiologist assesses the public health relevance of the aberration to determine if further investigation is warranted. These methodologies encompass various statistical techniques, including regression analysis, time series methodology, methods inspired by statistical process control, approaches incorporating spatial information, and multivariate outbreak detection. A comprehensive review of these methods can be found in studies by @Buckeridge_2007 and @Unkel_2012. 
+However, in recent years, there has been a growing interest in statistical methods for automated and early detection of disease outbreak. Statistical outbreak detection begins with the identification of an aberrant number of cases of a particular disease within a specific time and space. When an increase in the number of cases is detected, a signal or alarm is raised by the detection method. Subsequently, an epidemiologist assesses the public health relevance of the aberration to determine if further investigation is warranted. These methodologies encompass various statistical techniques, including regression analysis, time series methodology, methods inspired by statistical process control, approaches incorporating spatial information, and multivariate outbreak detection. A comprehensive review of these methods can be found in studies by @Buckeridge_2007 and @Unkel_2012. 
 
 To establish a golden standard, this article will focus on the method initially proposed by @Farrington_1996 and the subsequent improvements proposed by @Noufaily_2013. These methods offer advanced statistical tools for detecting and monitoring disease outbreaks and are currently *the* methods of choice at European public health institutes [@Hulth_2010]. They can be accessed through the R package called `surveillance` developed by @Salmon_2016. It is a well known fact, that one limitation of these detection algorithms is an occasional lack of specificity, leading to false alarms that can overwhelm the epidemiologists with verification tasks [@Bedubourg_2017]. Therefore, in this article, these established methods will be compared to a novel outbreak detection algorithm based on hierarchical models. This article introduces this new algorithm as an innovative approach to outbreak detection and aims to assess its performance in comparison to already existing methods.
 
-While hierarchical models have earned a reputation within ecology [@Bolker_2009, @Zuur_2009], urban energy modeling [@Real_2021, Jaum2_2022], and other fields, their application in the automatic detection of disease outbreaks is relatively unproved. However, there is a promising paper by @Heisterkamp_2006 that applied a hierarchical time series model to detect infectious disease outbreaks in empirical data from *Rubella* and *Salmonella*. The authors concluded that the method is a powerful and versatile way of analyzing time series of routinely recorded laboratory data. In the context of this article, the focus will be on the prospective detection of disease outbreaks, considering the potential of hierarchical models to effectively identify and respond to emerging outbreaks in a timely manner.
+While hierarchical models have earned a reputation within ecology [@Bolker_2009, @Zuur_2009], urban energy modeling [@Real_2021, @Jaume_2022], and other fields, their application in the automatic detection of disease outbreaks is relatively unproved. However, there is a promising paper by @Heisterkamp_2006 that applied a hierarchical time series model to detect infectious disease outbreaks in empirical data from *Rubella* and *Salmonella*. The authors concluded that the method is a powerful and versatile way of analyzing time series of routinely recorded laboratory data. In the context of this article, the focus will be on the prospective detection of disease outbreaks, considering the potential of hierarchical models to effectively identify and respond to emerging outbreaks in a timely manner.
 
-# Materials and methods
-
-## Novel outbreak detection algorithm
+# Novel outbreak detection algorithm
 
 The novel algorithm utilizes a generalized mixed effects model or a hierarchical generalized linear model as a modeling framework to model the count observations $y$ and assess the unobserved random effects $u$. These random effects are used directly in the detection algorithm to characterize an outbreak. The theoretical foundations of these models will be further discussed in Sections \ref{glmm} and \ref{hglm}.
 
@@ -337,7 +335,7 @@ Additionally, the choice of the Gamma distribution has benefits in terms of the 
 
 Overall, the Gamma distribution is selected due to its alignment with the mean-value space of the Poisson distribution, its flexibility in capturing diverse distributions, and its analytical convenience in computing the marginal distribution of the response variable.
 
-## Parameter estimation
+# Parameter estimation
 
 The generalized mixed effect and hierarchical generalized linear models are implemented in R using the open-source R package `TMB` (Template Model Builder) developed by @Kristensen_2016. This package facilitates efficient maximum likelihood estimation and uncertainty calculations for the parameter set $\theta=(\beta, \Psi)$ and random effects $u$. The presentation of the parameter estimation conducted in `TMB` is strongly inspired by Chapter 2 in @Kristensen_2016 and Section 5.10 in @Madsen_2010.
 
@@ -405,7 +403,7 @@ The minimization of the Laplace approximation for the marginal likelihood is the
 
 Additionally, `TMB` utilizes Automatic Differentiation (AD) techniques [@Griewank_2008] to evaluate first, second, and potentially third-order derivatives. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models. Therefore, even though the random effects are analytically integrated out in the hierarchical Poisson Gamma model, and the Laplace approximation is not needed, implementing the joint log-likelihood function in `TMB` can still result in more efficient computations. For a comprehensive introduction to the concept of AD, it is recommended to read Section 2.1 and Section 2.2 of @Fournier_2012. 
 
-## Simulation study
+# Simulation study
 
 This subsection includes a thorough description of the simulation study conducted to evaluate the performance of the novel outbreak detection algorithm compared to state-of-the-art algorithms. The simulations cover various scenarios, adapted from the study by @Noufaily_2013. 
 
@@ -413,7 +411,7 @@ The subsection begins by describing the method used to simulate the baseline dat
 
 The evaluation measures used to assess the performance of the outbreak detection algorithms are then presented. These measures are designed to capture relevant quantities in the context of outbreak detection.
 
-### The simulated baseline data
+## The simulated baseline data
 
 The simulated baseline data is generated using a Negative Binomial model with a mean parameter $\mu$ and a variance parameter $\phi\mu$. The dispersion parameter $\phi$ is assumed to be greater than or equal to 1. The mean $\mu(t)$ is defined by a linear predictor that includes a trend component and a seasonality component represented by Fourier terms.
 
@@ -466,7 +464,7 @@ The 624 weeks are divided into three periods: weeks 1-313 are used for training,
 
 The simulation results are based on the test weeks of all the replicates, totaling $100\times 49=4900$ weeks, for each of the 28 data scenarios and each method investigated.
 
-### The simulated outbreaks
+## The simulated outbreaks
 
 The outbreaks starting in week $t_i$ are simulated using the following procedure. First, a constant value $k$ is chosen at random. The size of the outbreak, denoted as $v$, is then generated randomly from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline count in that scenario.
 
@@ -501,7 +499,7 @@ knitr::include_graphics("../../figures/Realizations.png")
 
 Evidently, the scenarios vary in their epidemiological characteristics, such as seasonality, trend, and incidence.
 
-### Evaluation measures
+## Evaluation measures
 
 To evaluate the performance of the outbreak detection system in the absence and presence of outbreaks, several measures are employed to assess its effectiveness. These measures are specifically designed to capture relevant quantities in the given context.
 
@@ -511,16 +509,9 @@ Another measure is the POD of an outbreak. Likewise, this is calculated for each
 
 It is important to note that the FPR is a rate per week, while the POD is a rate per realization. These evaluation measures are chosen because they provide insights into the performance of the detection system on individual time series.
 
-# Results
+# Results of the simulation study
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-## Case studies
-
-
-## Simulation study
-
-### False positive rate
+## False positive rate
 
 In general, the method introduced by @Farrington_1996 tends to have relatively higher FPR compared to the other methods. This observation is consistent with the results presented in Table \@ref(tab:FPRTbl). However, this outcome is not surprising since the Farrington method is known to be overly sensitive, making it more prone to producing false alarms. On the other hand, the improved method by @Noufaily_2013 outperforms the other methods by minimizing the FPR.
 
@@ -546,7 +537,7 @@ knitr::include_graphics("../../figures/FPRPlot.png")
 
 ```
 
-### Probability of detection
+## Probability of detection
 
 As expected, the POD of an outbreak increases with the size of $k$. Intuitively, when the outbreak size $v$ is larger, it becomes more likely to be detected by the outbreak detection algorithms. In Table \@ref(tab:PODTbl), it is evident that the Farrington method performs very well in terms of POD, closely followed by the novel method using either modeling framework. Moreover, it can be seen that the Noufaily method is outperformed by the other methods, w.r.t. POD. 
 
@@ -578,7 +569,6 @@ It is important to bear in mind that an outbreak of size $v$ is randomly distrib
 
 Consequently, an outbreak of size $v$ generated from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline series is perceived to be relatively smaller than initially perceived in the simulation setup. For example, an outbreak of size $k=4$ times the standard deviation may only be perceived as an outbreak signal of size $2$ times the standard deviation in an individual week.
 
-
 ## Varying significance levels
 
 ```{r POD_FPR, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
@@ -589,6 +579,11 @@ knitr::include_graphics("../../figures/POD_FPR.png")
 ```{r ODDS_POD_FPR, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../../figures/ODDS_POD_FPR.png")
 ```
+
+# Evaluations on data
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
 
 # Discussion
 
