@@ -1,4 +1,7 @@
 
+# Setup -------------------------------------------------------------------
+
+
 # Import libraries
 library(readr)
 library(dplyr)
@@ -41,7 +44,11 @@ dtuPalette <- c("#990000",
 # Find simulations files
 filesInDir <- list.files()
 indexFiles <- grepl(pattern = "scenario._alphaState", x = filesInDir)
-scenarioFiles <- filesInDir[indexFiles]
+indexFiles2 <- grepl(pattern = "scenario.._alphaState", x = filesInDir)
+scenarioFiles <- filesInDir[indexFiles|indexFiles2]
+
+
+# Load in data ------------------------------------------------------------
 
 # Load in simulation files and unpack
 results <- tibble()
@@ -60,6 +67,441 @@ for(i in 1:length(scenarioFiles)){
                          unpackData)
   }
 }
+
+# Unnest the data ---------------------------------------------------------
+
+baseline_results <- results %>%
+  arrange(scenario, alpha, sim) %>%
+  select(scenario, sim, alpha, baseline) %>%
+  unnest(baseline) %>%
+  group_by(scenario, sim, alpha) %>%
+  slice_tail(n = 49) %>%
+  pivot_longer(
+    cols = alarm_Farrington:alarm_PoisG,
+    names_to = "method",
+    values_to = "alarm",
+    names_prefix = "alarm_") %>%
+  group_by(scenario, alpha, method, sim) %>%
+  reframe(
+    FP = sum(alarm == TRUE),
+    TN = sum(alarm == FALSE),
+    specificity = TN/(TN+FP),
+  ) %>%
+  mutate(
+    method = factor(
+      method,
+      levels = c("Farrington",
+                 "Noufaily",
+                 "PoisN",
+                 "PoisG"),
+      labels = c("Farrington",
+                 "Noufaily",
+                 "Poisson Normal",
+                 "Poisson Gamma")),
+    alpha = factor(
+      alpha,
+      levels = c(0.005, 0.01, 0.025, 0.05, 0.1)
+    ),
+    scenario = factor(
+      scenario,
+      levels = 1:28
+    ))
+
+POD_results <- results %>%
+  arrange(scenario, alpha, sim) %>%
+  select(scenario, sim, alpha, outbreaks) %>%
+  unnest(outbreaks) %>%
+  group_by(scenario, sim, alpha, k) %>%
+  slice_tail(n = 49) %>%
+  pivot_longer(
+    cols = alarm_Farrington:alarm_PoisG,
+    names_to = "method",
+    values_to = "alarm",
+    names_prefix = "alarm_") %>%
+  group_by(scenario, sim, alpha, method, k) %>%
+  reframe(Detected = any(outbreakTF == TRUE & alarm == TRUE)) %>%
+  group_by(scenario, alpha, method, k) %>%
+  reframe(POD = mean(Detected)) %>%
+  mutate(
+    method = factor(
+      method,
+      levels = c("Farrington",
+                 "Noufaily",
+                 "PoisN",
+                 "PoisG"),
+      labels = c("Farrington",
+                 "Noufaily",
+                 "Poisson Normal",
+                 "Poisson Gamma")),
+    alpha = factor(
+      alpha,
+      levels = c(0.005, 0.01, 0.025, 0.05, 0.1)
+    ),
+    k = factor(
+      k,
+      levels = 1:10
+    ),
+    scenario = factor(
+      scenario,
+      levels = 1:28
+    ))
+
+
+
+
+outbreak_results <- results %>%
+  arrange(scenario, alpha, sim) %>%
+  select(scenario, sim, alpha, outbreaks) %>%
+  unnest(outbreaks) %>%
+  group_by(scenario, sim, alpha, k) %>%
+  slice_tail(n = 49) %>%
+  pivot_longer(
+    cols = alarm_Farrington:alarm_PoisG,
+    names_to = "method",
+    values_to = "alarm",
+    names_prefix = "alarm_") %>%
+  group_by(scenario, alpha, k, method) %>%
+  reframe(
+    TP = sum(outbreakTF == TRUE & alarm == TRUE),
+    FP = sum(outbreakTF == FALSE & alarm == TRUE),
+    TN = sum(outbreakTF == FALSE & alarm == FALSE),
+    FN = sum(outbreakTF == TRUE & alarm == FALSE),
+    sensitivity = TP/(TP+FN),
+    specificity = TN/(TN+FP),
+    `LR+` = sensitivity/(1-specificity),
+    `LR-` = (1-specificity)/sensitivity,
+    DOR = `LR+`/`LR-`,
+  ) %>%
+  mutate(
+    method = factor(
+      method,
+      levels = c("Farrington",
+                 "Noufaily",
+                 "PoisN",
+                 "PoisG"),
+      labels = c("Farrington",
+                 "Noufaily",
+                 "Poisson Normal",
+                 "Poisson Gamma")),
+    alpha = factor(
+      alpha,
+      levels = c(0.005, 0.01, 0.025, 0.05, 0.1)
+    ),
+    k = factor(
+      k,
+      levels = 1:10
+    ),
+    scenario = factor(
+      scenario,
+      levels = 1:28
+    ))
+
+
+# DOR ---------------------------------------------------------------------
+
+outbreak_results_DOR <- outbreak_results %>%
+  mutate(TP = TP + 0.5, FP = FP + 0.5, TN = TN + 0.5, FN = FN + 0.5,
+         sensitivity = TP/(TP+FN),
+         specificity = TN/(TN+FP),
+         `LR+` = sensitivity/(1-specificity),
+         `LR-` = (1-specificity)/sensitivity,
+         DOR = `LR+`/`LR-`,
+         logDOR = log(DOR))
+
+# k = 3
+medianDORk3 <- outbreak_results_DOR %>%
+  filter(k == 3) %>%
+  group_by(alpha, k, method) %>%
+  reframe(medianlogDOR = median(logDOR, na.rm = TRUE))
+
+logDORk3 <- outbreak_results_DOR %>%
+  filter(k == 3) %>%
+  ggplot(mapping = aes(x = alpha)) +
+  geom_line(mapping = aes(y = logDOR, group = scenario, colour = method), alpha = 0.5) +
+  geom_line(data = medianDORk3, mapping = aes(y = medianlogDOR, colour = method, group = method), linewidth = 2) +
+  facet_wrap(facets = vars(method)) +
+  scale_y_continuous(name = expression("log(DOR) (k = 3)")) +
+  scale_x_discrete(name = expression(alpha)) +
+  scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
+  guides(colour = "none")
+ggsave(filename = "logDORk3.png",
+       plot = logDORk3,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+# k = 5
+medianDORk5 <- outbreak_results_DOR %>%
+  filter(k == 5) %>%
+  group_by(alpha, k, method) %>%
+  reframe(medianlogDOR = median(log(DOR), na.rm = TRUE))
+
+logDORk5 <- outbreak_results_DOR %>%
+  filter(k == 5) %>%
+  ggplot(mapping = aes(x = alpha)) +
+  geom_line(mapping = aes(y = logDOR, group = scenario, colour = method), alpha = 0.5) +
+  geom_line(data = medianDORk5, mapping = aes(y = medianlogDOR, colour = method, group = method), linewidth = 2) +
+  facet_wrap(facets = vars(method)) +
+  scale_y_continuous(name = expression("log(DOR) (k = 5)")) +
+  scale_x_discrete(name = expression(alpha)) +
+  scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
+  guides(colour = "none")
+ggsave(filename = "logDORk5.png",
+       plot = logDORk5,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+# k = 7
+medianDORk7 <- outbreak_results_DOR %>%
+  filter(k == 7) %>%
+  group_by(alpha, k, method) %>%
+  reframe(medianlogDOR = median(log(DOR), na.rm = TRUE))
+
+logDORk7 <- outbreak_results_DOR %>%
+  filter(k == 7) %>%
+  ggplot(mapping = aes(x = alpha)) +
+  geom_line(mapping = aes(y = logDOR, group = scenario, colour = method), alpha = 0.5) +
+  geom_line(data = medianDORk7, mapping = aes(y = medianlogDOR, colour = method, group = method), linewidth = 2) +
+  facet_wrap(facets = vars(method)) +
+  scale_y_continuous(name = expression("log(DOR) (k = 7)")) +
+  scale_x_discrete(name = expression(alpha)) +
+  scale_color_manual(values = dtuPalette[c(7,9:11,5)]) +
+  guides(colour = "none")
+ggsave(filename = "logDORk7.png",
+       plot = logDORk7,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+
+custom_labeller <- as_labeller(
+  c(`0.005` = "alpha[0.005]",
+    `0.01` = "alpha[0.01]",
+    `0.025` = "alpha[0.025]",
+    `0.05` = "alpha[0.05]",
+    `0.1` = "alpha[0.1]"),
+  default = label_parsed
+)
+
+logDOR_alpha <- outbreak_results_DOR %>%
+  group_by(alpha, k, method) %>%
+  reframe(medianlogDOR = median(logDOR)) %>%
+  ggplot(
+    mapping = aes(
+      x = k,
+      y = medianlogDOR,
+      colour = method,
+      group = method)) +
+  geom_line(linewidth = 1.2) +
+  facet_wrap(facets = vars(alpha), labeller = custom_labeller) +
+  scale_y_continuous(name = expression("log(DOR)")) +
+  scale_x_discrete(name = "k") +
+  scale_color_manual(
+    name = "",
+    values = dtuPalette[c(7,9:11,5)])
+ggsave(filename = "logDOR_alpha.png",
+       plot = logDOR_alpha,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+
+
+# FPR ---------------------------------------------------------------------
+
+boxplot_labeller <- as_labeller(
+  c(`0.005` = "alpha[0.005]",
+    `0.01` = "alpha[0.01]",
+    `0.025` = "alpha[0.025]",
+    `0.05` = "alpha[0.05]",
+    `0.1` = "alpha[0.1]",
+    `Farrington` = "Farrington",
+    `Noufaily` = "Noufaily",
+    `Poisson Normal` = "'Poisson Normal'",
+    `Poisson Gamma` = "'Poisson Gamma'"),
+  default = label_parsed
+)
+
+every_nth = function(n) {
+  return(function(x) {x[c(TRUE, rep(FALSE, n - 1))]})
+}
+
+nominal_values <- expand_grid(
+  method = c("Farrington",
+             "Noufaily",
+             "Poisson Normal",
+             "Poisson Gamma"),
+  alpha_num = c(0.005, 0.01, 0.025, 0.05, 0.1)) %>%
+  mutate(alpha = factor(alpha_num))
+
+FPR_alpha_methods <- baseline_results %>%
+  mutate(FPR = FP/(FP+TN)) %>%
+  ggplot(mapping = aes(x = scenario, y = FPR, fill = method)) +
+  geom_boxplot() +
+  geom_hline(
+    data = nominal_values,
+    mapping = aes(yintercept = alpha_num),
+    linetype = "dashed",
+    linewidth = 0.6) +
+  facet_grid(
+    rows = vars(alpha),
+    cols = vars(method),
+    labeller = boxplot_labeller) +
+  scale_x_discrete(
+    name = "Scenario",
+    breaks = every_nth(n = 4)) +
+  scale_fill_manual(values = dtuPalette[c(7,9:11,5)]) +
+  guides(fill = "none")
+ggsave(filename = "FPR_alpha_methods.png",
+       plot = FPR_alpha_methods,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+FPR_alpha_methods_median <- baseline_results %>%
+  mutate(FPR = FP/(FP+TN)) %>%
+  group_by(scenario, alpha, method) %>%
+  reframe(medianFPR = median(FPR)) %>%
+  ggplot(
+    mapping = aes(
+      x = scenario,
+      y = medianFPR,
+      colour = method,
+      group = method)) +
+  geom_point(shape = "-", size = 12) +
+  geom_hline(
+    data = nominal_values,
+    mapping = aes(yintercept = alpha_num),
+    linetype = "dashed",
+    linewidth = 0.6) +
+  facet_wrap(
+    facets = vars(alpha),
+    labeller = boxplot_labeller) +
+  scale_x_discrete(
+    name = "Scenario",
+    breaks = every_nth(n = 4)) +
+  scale_colour_manual(
+    name = "",
+    values = dtuPalette[c(7,9:11,5)]) +
+  scale_y_continuous(name = "median(FPR)") +
+  guides(colour = guide_legend(override.aes = list(size = 30)))
+ggsave(filename = "FPR_alpha_methods_median.png",
+       plot = FPR_alpha_methods_median,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+FPR_alpha_methods_mean <- baseline_results %>%
+  mutate(FPR = FP/(FP+TN)) %>%
+  group_by(scenario, alpha, method) %>%
+  reframe(meanFPR = mean(FPR)) %>%
+  ggplot(
+    mapping = aes(
+      x = scenario,
+      y = meanFPR,
+      colour = method,
+      group = method)) +
+  geom_point(shape = "-", size = 12) +
+  geom_hline(
+    data = nominal_values,
+    mapping = aes(yintercept = alpha_num),
+    linetype = "dashed",
+    linewidth = 0.6) +
+  facet_wrap(
+    facets = vars(alpha),
+    labeller = boxplot_labeller) +
+  scale_x_discrete(
+    name = "Scenario",
+    breaks = every_nth(n = 4)) +
+  scale_colour_manual(
+    name = "",
+    values = dtuPalette[c(7,9:11,5)]) +
+  scale_y_continuous(name = "mean(FPR)") +
+  guides(colour = guide_legend(override.aes = list(size = 30)))
+ggsave(filename = "FPR_alpha_methods_mean.png",
+       plot = FPR_alpha_methods_mean,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+
+# POD ---------------------------------------------------------------------
+
+POD_labeller <- as_labeller(
+  c(`0.005` = "alpha[0.005]",
+    `0.01` = "alpha[0.01]",
+    `0.025` = "alpha[0.025]",
+    `0.05` = "alpha[0.05]",
+    `0.1` = "alpha[0.1]",
+    `Farrington` = "Farrington",
+    `Noufaily` = "Noufaily",
+    `Poisson Normal` = "'Poisson Normal'",
+    `Poisson Gamma` = "'Poisson Gamma'"),
+  default = label_parsed
+)
+
+meadian_POD_results <- POD_results %>%
+  group_by(alpha, method, k) %>%
+  reframe(medianPOD = median(POD))
+
+POD_alpha_methods <- POD_results %>%
+  ggplot(mapping = aes(x = k, y = POD, colour = method)) +
+  geom_line(mapping = aes(group = scenario)) +
+  geom_line(data = meadian_POD_results, mapping = aes(y = medianPOD, group = method), linewidth = 2) +
+  facet_grid(rows = vars(alpha), cols = vars(method), labeller = POD_labeller) +
+  scale_colour_manual(values = dtuPalette[c(7, 9:11, 5)]) +
+  guides(colour = "none") +
+  theme(panel.spacing.y = unit(1, "lines"))
+ggsave(filename = "POD_alpha_methods.png",
+       plot = POD_alpha_methods,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+POD_alpha_methods_median <- meadian_POD_results %>%
+  ggplot(mapping = aes(x = k, y = medianPOD, colour = method, group = method)) +
+  geom_line(linewidth = 2) +
+  facet_wrap(facets = vars(alpha), labeller = POD_labeller) +
+  scale_colour_manual(
+    name = "",
+    values = dtuPalette[c(7, 9:11, 5)]) +
+  scale_y_continuous(name = "median(POD)")
+ggsave(filename = "POD_alpha_methods_median.png",
+       plot = POD_alpha_methods_median,
+       path = "../../figures/",
+       device = png,
+       width = 16,
+       height = 8,
+       units = "in",
+       dpi = "print")
+
+# old ---------------------------------------------------------------------
+
 
 # Specificity
 tmp <- results %>%
