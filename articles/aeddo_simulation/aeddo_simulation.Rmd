@@ -405,7 +405,7 @@ Additionally, `TMB` utilizes Automatic Differentiation (AD) techniques [@Griewan
 
 # Simulation study
 
-This subsection includes a thorough description of the simulation study conducted to evaluate the performance of the novel outbreak detection algorithm compared to state-of-the-art algorithms. The simulations cover various scenarios, adapted from the study by @Noufaily_2013. 
+This subsection includes a thorough description of the simulation study conducted to evaluate the performance of the novel outbreak detection algorithm compared to state-of-the-art algorithms. The simulations cover various scenarios, adapted from the study by @Noufaily_2013, and are investigated using varying significance levels, $\alpha$, for the threshold calculations. In this article, the following set of significance levels are investigated for each of the methods: $\alpha=\{0.005, 0.01 0.025, 0.05, 0.1\}$.
 
 The subsection begins by describing the method used to simulate the baseline data. These data are generated using a Negative Binomial model with a time-dependent mean $\mu(t)$. Next, the assumptions regarding the simulated outbreaks are outlined, including the outbreak size and distribution in time.
 
@@ -462,7 +462,7 @@ To simulate the baseline data without outbreaks, 100 replicates are generated fo
 
 The 624 weeks are divided into three periods: weeks 1-313 are used for training, weeks 313-575 are considered as baseline weeks, and weeks 576-624 are designated as the test weeks for evaluation. 
 
-The simulation results are based on the test weeks of all the replicates, totaling $100\times 49=4900$ weeks, for each of the 28 data scenarios and each method investigated.
+The simulation results are based on the test weeks of all the replicates, totaling $100\times 49=4900$ weeks, for each of the 28 data scenarios, five significance levels, $\alpha$, and each of the methods investigated.
 
 ## The simulated outbreaks
 
@@ -503,95 +503,167 @@ Evidently, the scenarios vary in their epidemiological characteristics, such as 
 
 To evaluate the performance of the outbreak detection system in the absence and presence of outbreaks, several measures are employed to assess its effectiveness. These measures are specifically designed to capture relevant quantities in the given context.
 
-In the absence of outbreaks in the data, one of the primary measures used is the FPR. This is calculated for each of the 28 scenarios, before the addition of the simulated outbreaks to the baseline data. The FPR is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold in the absence of any simulated outbreaks.
+In the absence of outbreaks in the data, one of the primary measures used is the *false positive rate* (FPR). This is calculated for each of the 28 scenarios, before the addition of the simulated outbreaks to the baseline data. The FPR is determined by calculating the proportion of the 49 weeks and 100 replicates in which the observed value exceeds the threshold in the absence of any simulated outbreaks.
 
-Another measure is the POD of an outbreak. Likewise, this is calculated for each of the 28 scenarios, but this time it is in the presence of the simulated outbreaks. The algorithm is applied iteratively for the 49 current weeks, and an outbreak is considered detected if the observed value exceeds the threshold at least once within the start and end times of the outbreak. The POD of an outbreak is then determined as the proportion of outbreaks detected out of the 100 runs.
+Another measure is the *probability of detection* (POD) of an outbreak. Likewise, this is calculated for each of the 28 scenarios, but this time it is in the presence of the simulated outbreaks. The algorithm is applied iteratively for the 49 current weeks, and an outbreak is considered detected if the observed value exceeds the threshold at least once within the start and end times of the outbreak. The POD of an outbreak is then determined as the proportion of outbreaks detected out of the 100 runs.
 
 It is important to note that the FPR is a rate per week, while the POD is a rate per realization. These evaluation measures are chosen because they provide insights into the performance of the detection system on individual time series.
+
+Finally, the *diagnostic odds ratio* (DOR) is employed to measure the effectiveness of the outbreak detection methods. Using the terminology from a confusion matrix, the DOR is defined mathematically as:
+
+\begin{equation}
+\mathrm{DOR} = \frac{\mathrm{sensitivity} \times \mathrm{specificity}}{(1-\mathrm{sensitivity}) \times (1-\mathrm{specificity})}= \frac{\mathrm{TP}/\mathrm{FN}}{\mathrm{FP}/\mathrm{TN}}
+\end{equation}
 
 # Results of the simulation study
 
 ## False positive rate
 
-In general, the method introduced by @Farrington_1996 tends to have relatively higher FPR compared to the other methods. This observation is consistent with the results presented in Table \@ref(tab:FPRTbl). However, this outcome is not surprising since the Farrington method is known to be overly sensitive, making it more prone to producing false alarms. On the other hand, the improved method by @Noufaily_2013 outperforms the other methods by minimizing the FPR.
+In general, the method introduced by @Farrington_1996 exhibits relatively higher FPRs compared to the other methods. This outcome is not surprising since the Farrington method is known to be overly sensitive, making it more prone to producing false alarms. This sensitivity concern was further recognized by @Noufaily_2013, prompting the development of a new and improved method. Moreover, this observation is consistent with the results of the simulation study conducted in this article, as illustrated in Figure \@ref(fig:FPRalphamethodsmedian), which presents the median FPRs obtained across the 100 replications in each of the 28 simulated scenarios, demonstrating the methods performance under varying significance levels for the threshold calculation. For boxplots of the FPRs, refer to Figure \@ref(fig:FPRalphamethods).
 
-Additionally, it is noted that the novel algorithms, using the two different modeling frameworks, perform somewhere in between the two state-of-the-art algorithms in terms of minimizing the FPR.
+(ref:FPRalphamethodsmedian) Median FPRs obtained across the 100 replications in each of the 28 scenarios by employing each of the different methods with varying significance levels, $\alpha$. The dashed lines represents the nominal values.
 
-```{r FPRTbl, echo=FALSE}
-FPR %>%
-  group_by(Method) %>%
-  reframe(median(FPR), mean(FPR), sd(FPR), min(FPR), max(FPR)) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", digits = 3, caption = "Summary statstics of the FPR obtained in the 28 scenarios using the four different methods.") %>%
-  kable_paper(latex_option = c("HOLD_position"))
+```{r FPRalphamethodsmedian, echo=FALSE, fig.cap="(ref:FPRalphamethodsmedian)", out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../../figures/FPR_alpha_methods_median.png")
 ```
 
-Upon examining Figure \@ref(fig:FPR), it becomes even more apparent that the Noufaily method consistently outperforms the other methods. Furthermore, it is interesting to note that scenario 8 and 15 consistently pose challenges for all methods, while scenarios 13-20 prove to be particularly problematic for the novel method. 
-
-A closer look reveals that scenarios 13-20 have the highest overdispersion parameters, indicating increased variability in the data. On the other hand, scenario 8 incorporates both a steep trend and a seasonality component, which can complicate the detection process for all methods.
-
-(ref:FPR) FPR obtained in each of the 28 scenarios for each of the methods applied.
-
-```{r FPR, echo=FALSE, out.width="100%", fig.cap="(ref:FPR)", fig.pos = "H", fig.show = "hold"}
-
-knitr::include_graphics("../../figures/FPRPlot.png")
-
-```
+Inspecting the figure, it is clear that the Farrington method tends to underperform in scenario 7 and 8, which are scenarios characterized by a steep trend. The Noufaily method resolves this issue, generally outperforming the Farrington method. Moreover, the novel methods consistently outperforms the other methods. However, it is interesting to note that scenario 13 trough 20 prove to be particularly problematic for the novel methods. A closer look reveals that these scenarios are characterized by a high overdispersion parameter, indicating increased variability in the data. Lastly, it is crucial to acknowledge that the median FPRs for the novel methods remain within nominal values.
 
 ## Probability of detection
 
-As expected, the POD of an outbreak increases with the size of $k$. Intuitively, when the outbreak size $v$ is larger, it becomes more likely to be detected by the outbreak detection algorithms. In Table \@ref(tab:PODTbl), it is evident that the Farrington method performs very well in terms of POD, closely followed by the novel method using either modeling framework. Moreover, it can be seen that the Noufaily method is outperformed by the other methods, w.r.t. POD. 
+As anticipated, the POD of an outbreak increases with the size of $k$. Intuitively, when the outbreak size $v$ is larger, it becomes more likely to be detected by the outbreak detection algorithms. In the simulation study presented in this article, the Farrington method demonstrates excellent performance in terms of POD, closely followed by the Noufaily method. The high performance of the Farrington method can be attributed to its sensitivity in detecting outbreaks. 
 
-The high performance of the Farrington method can be attributed to its sensitivity in detecting outbreaks. Similarly, the novel method utilizing both modeling frameworks demonstrates its effectiveness in detecting outbreaks of varying sizes.
+Moreover, it is crucial to emphasize the importance of careful parametrization for the novel methods. Unlike the established methods, the novel approaches are inherently less sensitive, necessitating a higher significance level, $\alpha$, for the threshold calculations. This is illustrated in Figure \@ref(fig:PODalphamethodsmedian), which depicts the median POD for different sizes of $k$ across the 100 replications for each of the 28 scenarios. Refer to \@ref(fig:PODalphamethods), to see the variability in the POD for each scenario together with the median POD.
 
-```{r PODTbl, echo=FALSE}
-POD %>%
-  filter(k %in% c(2,4,6,8,10)) %>%
-  reframe(median(POD), mean(POD),   sd(POD), min(POD), max(POD)) %>%
-  kbl(booktabs = TRUE, escape = FALSE, align = "l", digits = 3, longtable = TRUE, caption = "Summary statistics of the POD of an outbreak of size $k$ times the standard deviations of the baseline data for each of the methods applied.", linesep = c(rep("", 4), "\\addlinespace")) %>%
-  kable_paper(latex_options = c("repeat_header", "HOLD_position"), repeat_header_method = c("replace")) %>%
-  collapse_rows(columns = 1, 
-                latex_hline = "custom",
-                valign = "middle",
-                custom_latex_hline = 1)
-```
+(ref:PODalphamethodsmedian) Median POD of an outbreak of a random size $v$ drawn from a Poisson distribution with mean equal to $k$ times the standard deviations of the baseline data for different values of $\alpha$. The x-axis shows increasing values of $k$, while the y-axis shows the median POD across the 100 replications for each of the 28 scenarios.
 
-In Figure \@ref(fig:PropDetect), the variability in POD of outbreaks can be observed across the 28 scenarios. The level of variability in POD is generally low when the outbreak size factor $k$ is set to 1, indicating that only a few outbreaks are detected in these scenarios. Similarly, when $k$ is set to 10, indicating that almost all outbreaks are detected, the variability in POD is also low.
-
-On the other hand, the variability in POD across the scenarios is highest when $k$ is set to 5, and around $75\%$ of the outbreaks are detected.
-
-(ref:PropDetect) POD of an outbreak of a random size $v$ drawn from a Poisson distribution with mean equal to $k$ times the standard deviations of the baseline data. The x-axis shows increasing values of $k$. The POD for each scenario is plotted along with the median curves (bold) across all 28 scenarios.
-
-```{r PropDetect, echo=FALSE, out.width="100%", fig.cap="(ref:PropDetect)", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../../figures/PropDetect.png")
+```{r PODalphamethodsmedian, echo=FALSE, fig.cap="(ref:PODalphamethodsmedian)", out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../../figures/POD_alpha_methods_median.png")
 ```
 
 It is important to bear in mind that an outbreak of size $v$ is randomly distributed in time according to a discretized log-normal distribution with a mean of $0$ and a standard deviation of $0.5$, denoted as $Z \sim \lfloor \mathrm{LN}(0,0.5^2)\rfloor$. The probability mass function of $Z$ is shown in Figure \@ref(fig:PDFLogNormal). From the figure, it can be observed that $50\%$ of the outbreak cases are added to the same week as the outbreak starts, $42\%$ are added to the following week, and only $7\%$ are added two weeks after the start. Therefore, the simulated outbreak cases are not observed in a single week only but rather in several concurrent weeks.
 
 Consequently, an outbreak of size $v$ generated from a Poisson distribution with a mean equal to $k$ times the standard deviation of the baseline series is perceived to be relatively smaller than initially perceived in the simulation setup. For example, an outbreak of size $k=4$ times the standard deviation may only be perceived as an outbreak signal of size $2$ times the standard deviation in an individual week.
 
-## Varying significance levels
+## Diagnostic odds ratio
 
-```{r POD_FPR, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../../figures/POD_FPR.png")
-```
+When evaluating the performance of an outbreak detection method, it is crucial to consider its relevance in real-world implementations. Historically, both of the established methods have been associated with generating an excessive number of false alarms, placing a burden on epidemiologists who must undertake tedious verification tasks. Hence, the DOR is chosen as a metric to gauge the effectiveness of the outbreak detection methods. 
 
+Upon inspecting Figure \@ref(fig:logDORalpha), it becomes apparent that the novel methods outperform the established ones concerning the DOR. The DOR consistently favors the novel methods across various sizes of $k$. Moreover, it can be seen that for medium-sized outbreaks, $4\leq k \leq 6$, a significance level of $\alpha=0.025$ maximizes the DOR for the novel methods, while for large outbreaks, $k>6$, a significance level of $\alpha\leq 0.01$ is favorable.
 
-```{r ODDS_POD_FPR, echo=FALSE, out.width="100%", fig.pos = "H", fig.show = "hold"}
-knitr::include_graphics("../../figures/ODDS_POD_FPR.png")
+(ref:logDORalpha) Logarithmic DOR of an outbreak of a random size $v$ drawn from a Poisson distribution with mean equal to $k$ times the standard deviations of the baseline data for different values of $\alpha$. The x-axis shows increasing values of $k$, while the y-axis shows the logarithmic DOR across the 100 replications for each of the 28 scenarios.
+
+```{r logDORalpha, echo=FALSE, fig.cap="(ref:logDORalpha)", out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../../figures/logDOR_alpha.png")
 ```
 
 # Evaluations on data
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+In order to evaluate the performance of the statistical outbreak detection methods considered in this article, a real-life case study of shiga toxin-producing Escherichia coli (STEC) is investigated.
+
+## Epidemiological background and notable outbreaks of shiga toxin-producing *Escherichia coli*
+
+STEC primarily spreads through contaminated food. Less common sources of infection include contaminated drinking and bathing water, as well as direct of indirect contact with infected animals. Cattle and other ruminants are primary reservoirs for STEC serotypes that are frequently associated with human disease [@Menge_2020]. Hemolytic uremic syndrome (HUS) is a severe complication that, in some cases, particularly in children, can develop following an infection with STEC. 
+
+One of the earliest documented STEC outbreaks occured in 2007, involving 18 laboratory confirmed cases over a six-week period. Investigations indicated a specific brand of organic beef sausage as the likely source of infection.
+
+In September to October 2012, a STEC outbreak with a high risk of HUS was observed. Thirteen cases were diagnosed, with eight individuals developing HUS. Epidemiological investigations suggested that ground beef was the vehicle of the outbreak [@Soborg_2013, @Helwigh_2013]. 
+
+More recent outbreaks include a 38-case outbreak from September to November 2018, with a suspected association with beef sausage as the source of infection [@Helwigh_2019]. Additionally, there were two unresolved outbreaks with 11 and 14 cases occurring from May to July 2019 and from December 2021 to January 2022, respectively. The latter outbreak included three cases of HUS
+
+Common for the above outbreaks are, that they are well-documented outbreak investigated by Statens Serum Institut (SSI).
+
+## The data
+
+The data set is publicly available and can be accessed at \url{https://statistik.ssi.dk/}. It comprises monthly counts of Danish STEC cases, denoted as $y_{it}$. For the purpose of this article, the cases are divided into six functional age groups, namely: below 1 year, between 1-4 years, 5-14 years, 15-24 years, 25-64 years, and 65 years and above. Thus the index $i=1,\dots,6$ represents the six age groups and $t=1,\dots,T$ represents the time period of $T=180$ months starting in 2008. The distribution of cases in these age groups is visualized in a stacked bar graph in Figure \@ref(fig:STEC).
+
+(ref:STEC) A stacked bar graph illustrating the number of monthly STEC cases observed in the period from 2008 to 2022 for the six age groups.
+
+```{r STEC, echo=FALSE, fig.cap="(ref:STEC)", out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../../figures/STEC_long_plot.png")
+```
+
+In the figure, a notable increase in the amplitude of the seasonal variation is observed starting from 2018, with incidences doubling compared to preceding years. At a first glance, this increase in the incidences might be recognized as a serious, reoccurring outbreak of the disease, but a more reasonable explanation can be found. Up to 2018, most departments of clinical microbiology used culture based methods as a diagnostic test for bacterial pathogens and the process of changing the test method to polymerase chain reaction (PCR) methods was ongoing [@Svendsen_2023]. In general, the PCR method resulted in higher incidences compared to the other diagnostic methods.
+
+## Applying the detection methods
+
+To investigate and compare the performance of the outbreak detection methods, the method by @Farrington_1996 and the subsequently improved method by @Noufaily_2013 are explored. The methods are controlled using specific `control` arguments. Here, a period of $b=3$ years and a window half-width of $w=2$ is chosen for the reference data. Consequently, the number of baseline months used to calculate the thresholds are based on a total of $n^{m}=15$ months. Also, the threshold calculation is based on a significance level of $\alpha=0.005$. This significance level is chosen based on the simulation results in this article, to effectively control the number of false alarms generated by the established methods, and because it was shown that this level maximizes the DOR.
+
+For the novel method, an observation is classified as an outbreak if the one-step ahead random effect $u_{it_1}$ for the specific age group exceeds the upper bound $U_{t_0}$. In this case study, the upper bound is determined as the $97.5\%$ quantile of the distribution of random effects obtained from the second stage model, as it was shown that this value maximizes the DOR for medium-sized outbreaks. Moreover, the disease intensity, $\lambda_{it}$, is modeled as follows:
+
+\begin{equation}
+  \log{\lambda_{it}}=\beta(ageGroup_i) + \beta_{trend} t + \sin\big(\frac{2\pi\cdot\tau_t}{12}\big) + \cos \big(\frac{2\pi\cdot\tau_t}{12}\big) + \log(n_{it})
+\end{equation}
+
+Here $\beta(ageGroup_i)$ represents the fixed effect specific to the age group $i$ on the outbreak intensity, $\beta_{trend}$ quantifies the rate of change in the intensity over time, $\beta_{\sin}$ and $\beta_{\cos}$ capture the effect of the seasonal pattern, and $\log(n_{it})$ acts as an offset, accounting for the population size at time $t$ for age group $i$. These parameters are estimated using a rolling window of width $k=36$ months.
+
+## Performance of statistical outbreak detection methods
+
+The primary challenge in evaluating methods for automated and early detection of disease outbreaks lies in the difficulty to precisely defining what constitutes an outbreak. In the case study presented in this article, an outbreak is defined as an event that is officially investigated and documented by SSI. However, this definition lacks standardization and reproducibility, relying heavily on individual epidemiologists' perceptions of an outbreak and their capacity to allocate resources for investigation and documentation. Consequently, in the absence of a universally accepted and standardized definition of outbreaks, the documented investigations conducted by epidemiologists at SSI have been utilized for evaluation purposes.
+
+Figure \@ref(fig:CompareAlarms) demonstrates that the established methods, especially the Farrington method, raise a higher number of alarms in comparison to the novel methods.
+
+(ref:CompareAlarms) Alarm plot displaying alarms for the STEC time series using the four different outbreak detection methods, along with well-documented outbreaks investigated by SSI.
+
+```{r CompareAlarms, echo=FALSE, fig.cap="(ref:CompareAlarms)", out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../../figures/Compare_alarms_95.png")
+```
 
 
 # Discussion
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The field of automated disease outbreak detection has witnessed substantial advancements in recent years, marked by the development of sophisticated statistical methods and the utilization of computerized databases. These advancements hold tremendous potential in supplementing epidemiologists, aiding them in efficiently prioritizing efforts and allocating resources for more targeted outbreak management strategies. However, an emerging concern in the field is the phenomenon known as "alarm fatigue" and its implications for statistical outbreak detection.
+
+Alarm fatigue refers to the desensitization and decreased responsiveness that can occur when epidemiologists are exposed to frequent or excessive alarms from outbreak detection methods. Specifically, the method introduced by @Farrington_1996 is known for its occasional lack of specificity, leading to false alarms that can overwhelm epidemiologists with verification tasks. Consequently, its usefulness and practicality in real-world settings are undermined. In an effort to address the number of false alarms, the subsequently improved method by @Noufaily_2013 was introduced. While it was found that this method greatly reduced the number of alarms while maintaining good overall performance in detecting outbreaks, it has been unable to establish itself as a reliable method.
+
+An outbreak detection algorithm that can effectively control the number of false alarms, while still maintaining the power to detect genuine outbreaks, is increasingly high demand. This article demonstrates that the proposed novel method has immense potential as a candidate tool for outbreak detection. It considerably reduces the number of alarms generated compared to the Farrington and Noufaily methods while still maintaining the ability to generate alarms that coincide in time with simulated outbreaks. This finding is underscored by the fact that the novel method consistently outperformed the established methods when measure on the *diagnostic odds ratio*. Furthermore, the novel method allows for covariate incorporation, distinguishing it from both the Farrington and Noufaily methods. These finding highlight the potential of hierarchical models as a framework for outbreak detection in general.
 
 # Conclusion
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-# References {-}
+\newpage
 
+\appendix
+
+# Additional figures
+
+## False positive rate
+
+(ref:FPRalphamethods) FPRs obtained across the 100 replications in each of the 28 scenarios by employing each of the different methods with varying significance levels, $\alpha$. The dashed lines represents the nominal values.
+
+```{r FPRalphamethods, echo=FALSE, fig.cap="(ref:FPRalphamethods)", out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../../figures/FPR_alpha_methods.png")
+```
+
+## Probability of detection
+
+(ref:PODalphamethods) POD of an outbreak of a random size $v$ drawn from a Poisson distribution with mean equal to $k$ times the standard deviations of the baseline data for different values of $\alpha$. The x-axis shows increasing values of $k$, while the y-axis shows the POD for each scenario along with the median curves (bold) across all 28 scenarios.
+
+```{r PODalphamethods, echo=FALSE, fig.cap="(ref:PODalphamethods)", out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../../figures/POD_alpha_methods.png")
+```
+
+## Diagnostic odds ratio
+
+(ref:logDORk3) Logarithmic DOR of an outbreak of a random size $v$ drawn from a Poisson distribution with mean equal to $k$ equal to three times the standard deviations of the baseline data for different values of $\alpha$. The x-axis shows the different significance levels, $\alpha$, for the threshold calculations, while the y-axis shows the logarithmic DOR for each scenario along with the median curves (bold) across all 28 scenarios.
+
+```{r logDORk3, echo=FALSE, fig.cap="(ref:logDORk3)", out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../../figures/logDORk3.png")
+```
+
+(ref:logDORk5) Logarithmic DOR of an outbreak of a random size $v$ drawn from a Poisson distribution with mean equal to $k$ equal to five times the standard deviations of the baseline data for different values of $\alpha$. The x-axis shows the different significance levels, $\alpha$, for the threshold calculations, while the y-axis shows the logarithmic DOR for each scenario along with the median curves (bold) across all 28 scenarios.
+
+```{r logDORk5, echo=FALSE, fig.cap="(ref:logDORk5)", out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../../figures/logDORk5.png")
+```
+
+(ref:logDORk7) Logarithmic DOR of an outbreak of a random size $v$ drawn from a Poisson distribution with mean equal to $k$ equal to seven times the standard deviations of the baseline data for different values of $\alpha$. The x-axis shows the different significance levels, $\alpha$, for the threshold calculations, while the y-axis shows the logarithmic DOR for each scenario along with the median curves (bold) across all 28 scenarios.
+
+```{r logDORk7, echo=FALSE, fig.cap="(ref:logDORk7)", out.width="100%", fig.pos = "H", fig.show = "hold"}
+knitr::include_graphics("../../figures/logDORk7.png")
+```
+
+\newpage
+
+# References {-}

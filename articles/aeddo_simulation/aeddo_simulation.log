@@ -1,17 +1,17 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.2)  15 NOV 2023 09:05
+This is pdfTeX, Version 3.141592653-2.6-1.40.25 (TeX Live 2023) (preloaded format=pdflatex 2023.11.17)  21 NOV 2023 09:29
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
 **aeddo_simulation.tex
 (./aeddo_simulation.tex
 LaTeX2e <2023-11-01>
-L3 programming layer <2023-11-01>
+L3 programming layer <2023-11-09>
 (./elsarticle.cls
 Document Class: elsarticle 2020/11/20, 3.3: Elsevier Ltd
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3kernel/expl3.sty
-Package: expl3 2023-11-01 L3 programming layer (loader) 
+Package: expl3 2023-11-09 L3 programming layer (loader) 
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3backend/l3backend-pdftex.def
-File: l3backend-pdftex.def 2023-10-23 L3 backend support: PDF output (pdfTeX)
+File: l3backend-pdftex.def 2023-11-09 L3 backend support: PDF output (pdfTeX)
 \l__color_backend_stack_int=\count186
 \l__pdf_internal_box=\box51
 )) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/l3packages/xparse/xparse.sty
@@ -261,7 +261,7 @@ Package: inputenc 2021/02/14 v1.3d Input encoding file
 \inpenc@prehook=\toks28
 \inpenc@posthook=\toks29
 ) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hyperref.sty
-Package: hyperref 2023-10-27 v7.01d Hypertext links for LaTeX
+Package: hyperref 2023-11-09 v7.01f Hypertext links for LaTeX
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/pdftexcmds/pdftexcmds.sty
 Package: pdftexcmds 2020-06-27 v0.33 Utility functions of pdfTeX for LuaTeX (HO)
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/infwarerr/infwarerr.sty
@@ -281,7 +281,7 @@ Package: letltxmacro 2019/12/03 v1.6 Let assignment for LaTeX macros (HO)
 ) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/auxhook/auxhook.sty
 Package: auxhook 2019-12-17 v1.6 Hooks for auxiliary files (HO)
 ) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/nameref.sty
-Package: nameref 2023-10-05 v2.54 Cross-referencing by name of section
+Package: nameref 2023-11-09 v2.55 Cross-referencing by name of section
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/refcount/refcount.sty
 Package: refcount 2019/12/15 v3.6 Data extraction from label references (HO)
 ) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
@@ -293,7 +293,7 @@ Package: gettitlestring 2019/12/15 v1.6 Cleanup title references (HO)
 \Hy@linkcounter=\count293
 \Hy@pagecounter=\count294
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/pd1enc.def
-File: pd1enc.def 2023-10-27 v7.01d Hyperref: PDFDocEncoding definition (HO)
+File: pd1enc.def 2023-11-09 v7.01f Hyperref: PDFDocEncoding definition (HO)
 Now handling font encoding PD1 ...
 ... no UTF-8 mapping file for font encoding PD1
 ) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/intcalc/intcalc.sty
@@ -301,20 +301,20 @@ Package: intcalc 2019/12/15 v1.3 Expandable calculations with integers (HO)
 )
 \Hy@SavedSpaceFactor=\count295
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/puenc.def
-File: puenc.def 2023-10-27 v7.01d Hyperref: PDF Unicode definition (HO)
+File: puenc.def 2023-11-09 v7.01f Hyperref: PDF Unicode definition (HO)
 Now handling font encoding PU ...
 ... no UTF-8 mapping file for font encoding PU
 )
-Package hyperref Info: Option `unicode' set `true' on input line 4051.
-Package hyperref Info: Hyper figures OFF on input line 4168.
-Package hyperref Info: Link nesting OFF on input line 4173.
-Package hyperref Info: Hyper index ON on input line 4176.
-Package hyperref Info: Plain pages OFF on input line 4183.
-Package hyperref Info: Backreferencing OFF on input line 4188.
+Package hyperref Info: Option `unicode' set `true' on input line 4054.
+Package hyperref Info: Hyper figures OFF on input line 4171.
+Package hyperref Info: Link nesting OFF on input line 4176.
+Package hyperref Info: Hyper index ON on input line 4179.
+Package hyperref Info: Plain pages OFF on input line 4186.
+Package hyperref Info: Backreferencing OFF on input line 4191.
 Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
-Package hyperref Info: Bookmarks ON on input line 4435.
+Package hyperref Info: Bookmarks ON on input line 4438.
 \c@Hy@tempcnt=\count296
-LaTeX Info: Redefining \url on input line 4773.
+LaTeX Info: Redefining \url on input line 4776.
 \XeTeXLinkMargin=\dimen171
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/generic/bitset/bitset.sty
 Package: bitset 2019/12/09 v1.3 Handle bit-vector datatype (HO)
@@ -324,13 +324,13 @@ Package: bigintcalc 2019/12/15 v1.5 Expandable calculations on big integers (HO)
 \Fld@menulength=\count297
 \Field@Width=\dimen172
 \Fld@charsize=\dimen173
-Package hyperref Info: Hyper figures OFF on input line 6052.
-Package hyperref Info: Link nesting OFF on input line 6057.
-Package hyperref Info: Hyper index ON on input line 6060.
-Package hyperref Info: backreferencing OFF on input line 6067.
-Package hyperref Info: Link coloring OFF on input line 6072.
-Package hyperref Info: Link coloring with OCG OFF on input line 6077.
-Package hyperref Info: PDF/A mode OFF on input line 6082.
+Package hyperref Info: Hyper figures OFF on input line 6055.
+Package hyperref Info: Link nesting OFF on input line 6060.
+Package hyperref Info: Hyper index ON on input line 6063.
+Package hyperref Info: backreferencing OFF on input line 6070.
+Package hyperref Info: Link coloring OFF on input line 6075.
+Package hyperref Info: Link coloring with OCG OFF on input line 6080.
+Package hyperref Info: PDF/A mode OFF on input line 6085.
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/atbegshi-ltx.sty
 Package: atbegshi-ltx 2021/01/10 v1.0c Emulation of the original atbegshi
 package with kernel methods
@@ -341,7 +341,7 @@ package with kernel methods
 )
 Package hyperref Info: Driver (autodetected): hpdftex.
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/hyperref/hpdftex.def
-File: hpdftex.def 2023-10-27 v7.01d Hyperref driver for pdfTeX
+File: hpdftex.def 2023-11-09 v7.01f Hyperref driver for pdfTeX
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/base/atveryend-ltx.sty
 Package: atveryend-ltx 2020/08/19 v1.0a Emulation of the original atveryend package
 with kernel methods
@@ -370,7 +370,7 @@ File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
 Package color Info: Driver file: pdftex.def on input line 149.
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/fancyvrb/fancyvrb.sty
-Package: fancyvrb 2023/01/19 4.5a verbatim text (tvz,hv)
+Package: fancyvrb 2023/11/06 4.5b verbatim text (tvz,hv)
 \FV@CodeLineNo=\count303
 \FV@InFile=\read2
 \FV@TabBox=\box61
@@ -538,22 +538,22 @@ Package: makecell 2009/08/03 V0.1e Managing of Tab Column Heads and Cells
 \c@nlinenum=\count330
 \TeXr@lab=\toks39
 ) (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/xcolor/xcolor.sty
-Package: xcolor 2022/06/12 v2.14 LaTeX color extensions (UK)
+Package: xcolor 2023/11/15 v3.01 LaTeX color extensions (UK)
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics-cfg/color.cfg
 File: color.cfg 2016/01/02 v1.6 sample color configuration
 )
-Package xcolor Info: Driver file: pdftex.def on input line 227.
-LaTeX Info: Redefining \color on input line 711.
+Package xcolor Info: Driver file: pdftex.def on input line 274.
+LaTeX Info: Redefining \color on input line 758.
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/graphics/mathcolor.ltx)
-Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1353.
-Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1357.
-Package xcolor Info: Model `RGB' extended on input line 1369.
-Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1371.
-Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1372.
-Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1373.
-Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1374.
-Package xcolor Info: Model `Gray' substituted by `gray' on input line 1375.
-Package xcolor Info: Model `wave' substituted by `hsb' on input line 1376.
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1350.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1354.
+Package xcolor Info: Model `RGB' extended on input line 1366.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1368.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1369.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1370.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1371.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1372.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1373.
 )
 LaTeX Font Info:    Trying to load font information for T1+lmr on input line 132.
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/t1lmr.fd
@@ -751,7 +751,7 @@ Package xcolor Warning: Incompatible color definition on input line 475.
 Package xcolor Warning: Incompatible color definition on input line 475.
 
 [7{c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/enc/dvips/lm/lm-ts1.enc}] [8]
-<../../figures/PDFLogNormal.png, id=302, 1156.32pt x 578.16pt>
+<../../figures/PDFLogNormal.png, id=334, 1156.32pt x 578.16pt>
 File: ../../figures/PDFLogNormal.png Graphic file (type png)
 <use ../../figures/PDFLogNormal.png>
 Package pdftex.def Info: ../../figures/PDFLogNormal.png  used on input line 608.
@@ -761,7 +761,7 @@ LaTeX Font Info:    Trying to load font information for TS1+lmr on input line 61
 (c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/tex/latex/lm/ts1lmr.fd
 File: ts1lmr.fd 2015/05/01 v1.6.1 Font defs for Latin Modern
 )
-<../../figures/Realizations.png, id=309, 1156.32pt x 578.16pt>
+<../../figures/Realizations.png, id=341, 1156.32pt x 578.16pt>
 File: ../../figures/Realizations.png Graphic file (type png)
 <use ../../figures/Realizations.png>
 Package pdftex.def Info: ../../figures/Realizations.png  used on input line 625.
@@ -775,57 +775,116 @@ l.627
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.649 A
-       dditionally, it is noted that the novel algorithms, using the two dif... <../../figures/Realizations.png>]
-<../../figures/FPRPlot.png, id=339, 1156.32pt x 578.16pt>
-File: ../../figures/FPRPlot.png Graphic file (type png)
-<use ../../figures/FPRPlot.png>
-Package pdftex.def Info: ../../figures/FPRPlot.png  used on input line 674.
+l.654 
+       <../../figures/Realizations.png>]
+<../../figures/FPR_alpha_methods_median.png, id=370, 1156.32pt x 578.16pt>
+File: ../../figures/FPR_alpha_methods_median.png Graphic file (type png)
+<use ../../figures/FPR_alpha_methods_median.png>
+Package pdftex.def Info: ../../figures/FPR_alpha_methods_median.png  used on input line 658.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
 [12
-pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.683 
-      
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.683 
-       <../../figures/FPRPlot.png>]
-<../../figures/PropDetect.png, id=350, 1156.32pt x 578.16pt>
-File: ../../figures/PropDetect.png Graphic file (type png)
-<use ../../figures/PropDetect.png>
-Package pdftex.def Info: ../../figures/PropDetect.png  used on input line 747.
+l.669 
+       <../../figures/FPR_alpha_methods_median.png>]
+<../../figures/POD_alpha_methods_median.png, id=382, 1156.32pt x 578.16pt>
+File: ../../figures/POD_alpha_methods_median.png Graphic file (type png)
+<use ../../figures/POD_alpha_methods_median.png>
+Package pdftex.def Info: ../../figures/POD_alpha_methods_median.png  used on input line 673.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
-[13]
-<../../figures/POD_FPR.png, id=358, 1156.32pt x 578.16pt>
-File: ../../figures/POD_FPR.png Graphic file (type png)
-<use ../../figures/POD_FPR.png>
-Package pdftex.def Info: ../../figures/POD_FPR.png  used on input line 757.
+<../../figures/logDOR_alpha.png, id=385, 1156.32pt x 578.16pt>
+File: ../../figures/logDOR_alpha.png Graphic file (type png)
+<use ../../figures/logDOR_alpha.png>
+Package pdftex.def Info: ../../figures/logDOR_alpha.png  used on input line 690.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
-
-Overfull \hbox (15.0pt too wide) in paragraph at lines 757--758
-[][] 
- []
-
-[14
+[13
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.759 \includegraphics
-                      [width=1\linewidth]{../../figures/ODDS_POD_FPR} <../../figures/PropDetect.png>]
-<../../figures/ODDS_POD_FPR.png, id=365, 1156.32pt x 578.16pt>
-File: ../../figures/ODDS_POD_FPR.png Graphic file (type png)
-<use ../../figures/ODDS_POD_FPR.png>
-Package pdftex.def Info: ../../figures/ODDS_POD_FPR.png  used on input line 759.
+l.692 
+       <../../figures/POD_alpha_methods_median.png>] [14
+pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.715 
+       <../../figures/logDOR_alpha.png>]
+<../../figures/STEC_long_plot.png, id=418, 1156.32pt x 578.16pt>
+File: ../../figures/STEC_long_plot.png Graphic file (type png)
+<use ../../figures/STEC_long_plot.png>
+Package pdftex.def Info: ../../figures/STEC_long_plot.png  used on input line 719.
 (pdftex.def)             Requested size: 468.0pt x 233.99472pt.
-
-Overfull \hbox (15.0pt too wide) in paragraph at lines 759--760
-[][] 
- []
-
-[15 <../../figures/POD_FPR.png> <../../figures/ODDS_POD_FPR.png>] (./aeddo_simulation.bbl
+[15
+pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.730 
+       <../../figures/STEC_long_plot.png>]
+<../../figures/Compare_alarms_STEC_article.png, id=436, 1156.32pt x 578.16pt>
+File: ../../figures/Compare_alarms_STEC_article.png Graphic file (type png)
+<use ../../figures/Compare_alarms_STEC_article.png>
+Package pdftex.def Info: ../../figures/Compare_alarms_STEC_article.png  used on input line 747.
+(pdftex.def)             Requested size: 468.0pt x 233.99472pt.
+[16
+pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.754 
+       <../../figures/Compare_alarms_STEC_article.png>] [17]
+<../../figures/FPR_alpha_methods.png, id=455, 1156.32pt x 578.16pt>
+File: ../../figures/FPR_alpha_methods.png Graphic file (type png)
+<use ../../figures/FPR_alpha_methods.png>
+Package pdftex.def Info: ../../figures/FPR_alpha_methods.png  used on input line 777.
+(pdftex.def)             Requested size: 468.0pt x 233.99472pt.
+<../../figures/POD_alpha_methods.png, id=456, 1156.32pt x 578.16pt>
+File: ../../figures/POD_alpha_methods.png Graphic file (type png)
+<use ../../figures/POD_alpha_methods.png>
+Package pdftex.def Info: ../../figures/POD_alpha_methods.png  used on input line 786.
+(pdftex.def)             Requested size: 468.0pt x 233.99472pt.
+[18
+pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.788 
+       <../../figures/FPR_alpha_methods.png>]
+<../../figures/logDORk3.png, id=464, 1156.32pt x 578.16pt>
+File: ../../figures/logDORk3.png Graphic file (type png)
+<use ../../figures/logDORk3.png>
+Package pdftex.def Info: ../../figures/logDORk3.png  used on input line 795.
+(pdftex.def)             Requested size: 468.0pt x 233.99472pt.
+[19
+pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.797 
+       <../../figures/POD_alpha_methods.png>]
+<../../figures/logDORk5.png, id=472, 1156.32pt x 578.16pt>
+File: ../../figures/logDORk5.png Graphic file (type png)
+<use ../../figures/logDORk5.png>
+Package pdftex.def Info: ../../figures/logDORk5.png  used on input line 801.
+(pdftex.def)             Requested size: 468.0pt x 233.99472pt.
+[20
+pdfTeX warning (ext4): destination with the same identifier (name{figure.10}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.803 
+       <../../figures/logDORk3.png>]
+<../../figures/logDORk7.png, id=480, 1156.32pt x 578.16pt>
+File: ../../figures/logDORk7.png Graphic file (type png)
+<use ../../figures/logDORk7.png>
+Package pdftex.def Info: ../../figures/logDORk7.png  used on input line 807.
+(pdftex.def)             Requested size: 468.0pt x 233.99472pt.
+[21
+pdfTeX warning (ext4): destination with the same identifier (name{figure.11}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.810 \newpage
+              
+pdfTeX warning (ext4): destination with the same identifier (name{figure.12}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.810 \newpage
+               <../../figures/logDORk5.png> <../../figures/logDORk7.png>] (./aeddo_simulation.bbl
 Underfull \hbox (badness 4479) in paragraph at lines 9--15
 []\T1/lmr/m/n/8 Susannah Baldry.  At-tack of the clones.  \T1/lmr/m/it/8 Na-ture Re-views Mi-cro-bi-ol-ogy\T1/lmr/m/n/8 , 8(6):390, 2010.  doi: $10 . 1038 /
  []
@@ -845,37 +904,37 @@ Underfull \hbox (badness 1406) in paragraph at lines 34--40
 \T1/lmr/m/n/8 0181227$.  URL []$\T1/lmtt/m/n/8 https : / / www . scopus . com / inward / record . uri ? eid = 2 -[] s2 . 0 -[] 85024904807 & doi = 10 . 1371 % 2fjournal . pone .
  []
 
-[16]
-Underfull \hbox (badness 4120) in paragraph at lines 156--162
+[22]
+Underfull \hbox (badness 4120) in paragraph at lines 189--195
 []\T1/lmr/m/n/8 Russell D. Wolfin-ger and Xi-hong Lin.  Two taylor-series ap-prox-i-ma-tion meth-ods for non-lin-ear mixed mod-
  []
 
 
-Underfull \hbox (badness 6825) in paragraph at lines 156--162
+Underfull \hbox (badness 6825) in paragraph at lines 189--195
 \T1/lmr/m/n/8 els.  \T1/lmr/m/it/8 Com-pu-ta-tional Statis-tics and Data Anal-y-sis\T1/lmr/m/n/8 , 25(4):465--^^U490, 1997.  doi: $10 . 1016 / S0167 -[] 9473(97 )
  []
 
-) [17] (./aeddo_simulation.aux)
+) [23] (./aeddo_simulation.aux)
  ***********
 LaTeX2e <2023-11-01>
-L3 programming layer <2023-11-01>
+L3 programming layer <2023-11-09>
  ***********
 Package rerunfilecheck Info: File `aeddo_simulation.out' has not changed.
-(rerunfilecheck)             Checksum: A3EE1115775362420EFC194474B099E1;4442.
+(rerunfilecheck)             Checksum: 4C3EE2D7606F19844FA55A4506E7A3E4;6256.
  ) 
 Here is how much of TeX's memory you used:
- 14588 strings out of 476231
- 230901 string characters out of 5794988
- 1950533 words of memory out of 5000000
- 36108 multiletter control sequences out of 15000+600000
+ 14735 strings out of 476226
+ 236260 string characters out of 5794910
+ 1954558 words of memory out of 5000000
+ 36225 multiletter control sequences out of 15000+600000
  611912 words of font info for 79 fonts, out of 8000000 for 9000
  14 hyphenation exceptions out of 8191
- 72i,13n,79p,1071b,621s stack positions out of 10000i,1000n,20000p,200000b,200000s
+ 72i,13n,79p,1071b,637s stack positions out of 10000i,1000n,20000p,200000b,200000s
 <c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmbx10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmex10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi5.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmmi8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr12.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr5.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr6.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmr8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmri8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy6.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy7.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmsy8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtk10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtt8.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/lm/lmtti10.pfb><c:/Users/b280787/AppData/Roaming/TinyTeX/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb>
-Output written on aeddo_simulation.pdf (17 pages, 1342910 bytes).
+Output written on aeddo_simulation.pdf (23 pages, 2129034 bytes).
 PDF statistics:
- 557 PDF objects out of 1000 (max. 8388607)
- 466 compressed objects within 5 object streams
- 138 named destinations out of 1000 (max. 500000)
- 207 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 683 PDF objects out of 1000 (max. 8388607)
+ 573 compressed objects within 6 object streams
+ 173 named destinations out of 1000 (max. 500000)
+ 301 words of extra memory for PDF output out of 10000 (max. 10000000)
 
