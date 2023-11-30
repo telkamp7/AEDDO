@@ -441,77 +441,6 @@ Additionally, the choice of the Gamma distribution has benefits in terms of the 
 
 Overall, the Gamma distribution is selected due to its alignment with the mean-value space of the Poisson distribution, its flexibility in capturing diverse distributions, and its analytical convenience in computing the marginal distribution of the response variable.
 
-\hypertarget{parameter-estimation}{%
-\section{Parameter estimation}\label{parameter-estimation}}
-
-The generalized mixed effect and hierarchical generalized linear models are implemented in R using the open-source R package \texttt{TMB} (Template Model Builder) developed by \citet{Kristensen_2016}. This package facilitates efficient maximum likelihood estimation and uncertainty calculations for the parameter set \(\theta=(\beta, \Psi)\) and random effects \(u\). The presentation of the parameter estimation conducted in \texttt{TMB} is strongly inspired by Chapter 2 in \citet{Kristensen_2016} and Section 5.10 in \citet{Madsen_2010}.
-
-\texttt{TMB} maximizes a user-provided objective function in the form of a C++ template, to estimate the maximum likelihood for the parameter set \(\theta=(\beta, \Psi)\). The following code chunk illustrates the C++ template for the hierarchical Poisson Normal model specified in \ref{eq:PoisN}:
-
-\begin{Shaded}
-\begin{Highlighting}[]
-\PreprocessorTok{\#include }\ImportTok{\textless{}TMB.hpp\textgreater{}}
-\KeywordTok{template}\OperatorTok{\textless{}}\KeywordTok{class}\NormalTok{ Type}\OperatorTok{\textgreater{}}
-\NormalTok{Type objective\_function}\OperatorTok{\textless{}}\NormalTok{Type}\OperatorTok{\textgreater{}::}\KeywordTok{operator}\OperatorTok{()} \OperatorTok{()}
-\OperatorTok{\{}
-  \CommentTok{// R input data}
-\NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{y}\OperatorTok{);}                               \CommentTok{// Count data}
-\NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{x}\OperatorTok{);}                               \CommentTok{// Population size}
-\NormalTok{  DATA\_MATRIX}\OperatorTok{(}\NormalTok{X}\OperatorTok{);}                               \CommentTok{// Design matrix}
-\NormalTok{  PARAMETER\_VECTOR}\OperatorTok{(}\NormalTok{u}\OperatorTok{);}                          \CommentTok{// Random effects}
-  \CommentTok{// Parameters}
-\NormalTok{  PARAMETER\_VECTOR}\OperatorTok{(}\NormalTok{beta}\OperatorTok{);}                       \CommentTok{// Fixed effects parameters}
-\NormalTok{  PARAMETER}\OperatorTok{(}\NormalTok{log\_sigma\_u}\OperatorTok{);}                       \CommentTok{// Model parameter}
-\NormalTok{  vector}\OperatorTok{\textless{}}\NormalTok{Type}\OperatorTok{\textgreater{}}\NormalTok{ lambda  }\OperatorTok{=}\NormalTok{ exp}\OperatorTok{(}\NormalTok{X}\OperatorTok{*}\NormalTok{beta}\OperatorTok{{-}}\NormalTok{log}\OperatorTok{(}\NormalTok{x}\OperatorTok{)+}\NormalTok{u}\OperatorTok{);}  \CommentTok{// Construct \textquotesingle{}lambda\textquotesingle{}}
-\NormalTok{  Type sigma\_u }\OperatorTok{=}\NormalTok{ exp}\OperatorTok{(}\NormalTok{log\_sigma\_u}\OperatorTok{);}              \CommentTok{// And the model parameters}
-\NormalTok{  Type mean\_ran }\OperatorTok{=}\NormalTok{ Type}\OperatorTok{(}\DecValTok{0}\OperatorTok{);}
-  \CommentTok{// Objective function}
-\NormalTok{  Type f }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}                                   \CommentTok{// Declare the objective}
-\NormalTok{  f }\OperatorTok{{-}=}\NormalTok{ sum}\OperatorTok{(}\NormalTok{dnorm}\OperatorTok{(}\NormalTok{u}\OperatorTok{,}\NormalTok{mean\_ran}\OperatorTok{,}\NormalTok{sigma\_u}\OperatorTok{,}\KeywordTok{true}\OperatorTok{));}     \CommentTok{// Calculate the objective}
-\NormalTok{  f }\OperatorTok{{-}=}\NormalTok{ sum}\OperatorTok{(}\NormalTok{dpois}\OperatorTok{(}\NormalTok{y}\OperatorTok{,}\NormalTok{lambda}\OperatorTok{,}\KeywordTok{true}\OperatorTok{));}               \CommentTok{// Calculate the objective}
-  \ControlFlowTok{return}\NormalTok{ f}\OperatorTok{;}
-\OperatorTok{\}}
-\end{Highlighting}
-\end{Shaded}
-
-The objective function maximizes the marginal log-likelihood function, which integrates out the random effects \(u\)
-
-\begin{equation}
-  \ell_{M}(\theta; y)=\int_{\mathbb{R}^{q}} \ell (\theta;u,y) du
-\end{equation}
-
-where \(\ell(\theta, u,y)\) is the joint log-likelihood function of the data given the parameters and random effects. The maximizer \(\hat{u}_{\theta}\) of the joint log-likelihood \(\ell(\theta;u,y)\) with respect to the random effects \(u\) is defined as:
-
-\begin{equation}
-  \hat{u}_{\theta}=\mathop{\mathrm{arg\,max}}_{u} \ell(\theta;u,y)
-\end{equation}
-
-Using \(H(\hat{u}_{\theta})\) to denote the negative Hessian of the joint log-likelihood evaluated at \(\hat{u}_{\theta}\); i.e,
-
-\begin{equation}
-  H(\hat{u}_{\theta}) =-\ell_{uu}''(\theta, u, y)|_{u=\hat{u}_{\theta}}
-\end{equation}
-
-The Laplace approximation for the marginal log-likelihood \(\ell_M(\theta)\) is
-
-\begin{equation}
-  \ell_{M,LA}(\theta, y)=\ell(\theta,u,y)-\frac{1}{2}\log \Big|\frac{H(\hat{u}_{\theta})}{2\pi}\Big|
-\end{equation}
-
-Our estimate of \(\theta\) minimizes the negative log of the Laplace approximation, i.e.,
-
-\begin{equation}
-  \hat{\theta}=\mathop{\mathrm{arg\,min}}_{\theta} - \ell_{M, LA}(\theta, y)
-\end{equation}
-
-The minimization of the Laplace approximation for the marginal likelihood is then performed using conventional R optimization routines (e.g., BFGS) to optimize the objective and obtain our estimate \(\hat{\theta}\). Uncertainty of the estimate \(\hat{\theta}\), or any differentiable function of the estimate \(\phi(\hat{\theta})\), is obtained by the \(\delta\)-method:
-
-\begin{equation}
-  \mathrm{V}\big(\phi(\hat{\theta})\big)=-\phi_{\theta}'(\hat{\theta})\Big(\Delta^2 \ell_{M,LA}(\hat{\theta}, y)\Big)^{-1} \phi_{\theta}'(\hat{\theta})^T
-\end{equation}
-
-Additionally, \texttt{TMB} utilizes Automatic Differentiation (AD) techniques \citep{Griewank_2008} to evaluate first, second, and potentially third-order derivatives. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models. Therefore, even though the random effects are analytically integrated out in the hierarchical Poisson Gamma model, and the Laplace approximation is not needed, implementing the joint log-likelihood function in \texttt{TMB} can still result in more efficient computations. For a comprehensive introduction to the concept of AD, it is recommended to read Section 2.1 and Section 2.2 of \citet{Fournier_2012}.
-
 \hypertarget{simulation-study}{%
 \section{Simulation study}\label{simulation-study}}
 
@@ -658,7 +587,30 @@ In general, the method introduced by \citet{Farrington_1996} exhibits relatively
 \includegraphics[width=1\linewidth]{../../figures/FPR_alpha_methods_median} \caption{Median FPRs obtained across the 100 replications in each of the 28 scenarios by employing each of the different methods with varying significance levels, \(\alpha\). The dashed lines represents the nominal values.}\label{fig:FPRalphamethodsmedian}
 \end{figure}
 
-Inspecting the figure, it is clear that the Farrington method tends to underperform in scenario 7 and 8, which are scenarios characterized by a steep trend. The Noufaily method resolves this issue, generally outperforming the Farrington method. Moreover, the novel methods consistently outperforms the other methods. However, it is interesting to note that scenario 13 trough 20 prove to be particularly problematic for the novel methods. A closer look reveals that these scenarios are characterized by a high overdispersion parameter, indicating increased variability in the data. Lastly, it is crucial to acknowledge that the median FPRs for the novel methods remain within nominal values.
+Inspecting the figure, it is clear that the Farrington method tends to underperform in scenario 7 and 8, which are scenarios characterized by a steep trend. The Noufaily method resolves this issue, generally outperforming the Farrington method. Moreover, the novel methods consistently outperforms the other methods. However, it is interesting to note that scenario 13 trough 20 prove to be particularly problematic for the novel methods. A closer look reveals that these scenarios are characterized by a high overdispersion parameter, indicating increased variability in the data. Lastly, it is crucial to acknowledge that the median FPRs for the novel methods remain within nominal values, while this is not the case for the established methods.
+
+Noticeably, there is a tendency for the FPRs in the established methods to surpass the nominal value. To delve deeper into this observation, Table \ref{tab:nominalvalueTbl} presents an overview of the effective nominal value.
+
+\begin{table}[H]
+
+\caption{\label{tab:nominalvalueTbl}The effective nominal value in $28 \times 49 \times 100 = 137,000$ realized weeks for each method and significance level, $\alpha$.}
+\centering
+\begin{tabular}[t]{lrrrr}
+\toprule
+\multicolumn{1}{c}{ } & \multicolumn{4}{c}{Methods} \\
+\cmidrule(l{3pt}r{3pt}){2-5}
+$\alpha$ & Farrington & Noufaily & Poisson Normal & Poisson Gamma\\
+\midrule
+0.005 & 0.0374 & 0.0127 & 0.0011 & 0.0016\\
+0.01 & 0.0507 & 0.0193 & 0.0025 & 0.0031\\
+0.025 & 0.0786 & 0.0360 & 0.0085 & 0.0088\\
+0.05 & 0.1148 & 0.0608 & 0.0215 & 0.0203\\
+0.1 & 0.1708 & 0.1040 & 0.0571 & 0.0525\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Evidently, the FPRs in the established methods consistently surpass the nominal values in the majority of simulations, prompting valid concerns about the reliability of the interpretation of the significance level, \(\alpha\). In contrast, the novel methods appears to maintain a more reliable interpretation of the significance level.
 
 \hypertarget{probability-of-detection}{%
 \subsection{Probability of detection}\label{probability-of-detection}}
@@ -744,7 +696,7 @@ Figure \ref{fig:CompareAlarms} demonstrates that the established methods, especi
 
 
 \begin{figure}[H]
-\includegraphics[width=1\linewidth]{../../figures/Compare_alarms_STEC_article} \caption{Alarm plot displaying alarms for the STEC time series using the four different outbreak detection methods, along with well-documented outbreaks investigated by SSI.}\label{fig:CompareAlarms}
+\includegraphics[width=1\linewidth]{../../figures/Compare_alarms_95} \caption{Alarm plot displaying alarms for the STEC time series using the four different outbreak detection methods, along with well-documented outbreaks investigated by SSI.}\label{fig:CompareAlarms}
 \end{figure}
 
 \hypertarget{discussion}{%
@@ -756,10 +708,7 @@ Alarm fatigue refers to the desensitization and decreased responsiveness that ca
 
 An outbreak detection algorithm that can effectively control the number of false alarms, while still maintaining the power to detect genuine outbreaks, is increasingly high demand. This article demonstrates that the proposed novel method has immense potential as a candidate tool for outbreak detection. It considerably reduces the number of alarms generated compared to the Farrington and Noufaily methods while still maintaining the ability to generate alarms that coincide in time with simulated outbreaks. This finding is underscored by the fact that the novel method consistently outperformed the established methods when measure on the \emph{diagnostic odds ratio}. Furthermore, the novel method allows for covariate incorporation, distinguishing it from both the Farrington and Noufaily methods. These finding highlight the potential of hierarchical models as a framework for outbreak detection in general.
 
-\hypertarget{conclusion}{%
-\section{Conclusion}\label{conclusion}}
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+In this article, the performance of the outbreak detection methods is evaluated using the \emph{diagnostic odds ratio}.
 
 \newpage
 
@@ -806,6 +755,77 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 \begin{figure}[H]
 \includegraphics[width=1\linewidth]{../../figures/logDORk7} \caption{Logarithmic DOR of an outbreak of a random size \(v\) drawn from a Poisson distribution with mean equal to \(k\) equal to seven times the standard deviations of the baseline data for different values of \(\alpha\). The x-axis shows the different significance levels, \(\alpha\), for the threshold calculations, while the y-axis shows the logarithmic DOR for each scenario along with the median curves (bold) across all 28 scenarios.}\label{fig:logDORk7}
 \end{figure}
+
+\hypertarget{parameter-estimation}{%
+\section{Parameter estimation}\label{parameter-estimation}}
+
+The generalized mixed effect and hierarchical generalized linear models are implemented in R using the open-source R package \texttt{TMB} (Template Model Builder) developed by \citet{Kristensen_2016}. This package facilitates efficient maximum likelihood estimation and uncertainty calculations for the parameter set \(\theta=(\beta, \Psi)\) and random effects \(u\). The presentation of the parameter estimation conducted in \texttt{TMB} is strongly inspired by Chapter 2 in \citet{Kristensen_2016} and Section 5.10 in \citet{Madsen_2010}.
+
+\texttt{TMB} maximizes a user-provided objective function in the form of a C++ template, to estimate the maximum likelihood for the parameter set \(\theta=(\beta, \Psi)\). The following code chunk illustrates the C++ template for the hierarchical Poisson Normal model specified in \ref{eq:PoisN}:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\PreprocessorTok{\#include }\ImportTok{\textless{}TMB.hpp\textgreater{}}
+\KeywordTok{template}\OperatorTok{\textless{}}\KeywordTok{class}\NormalTok{ Type}\OperatorTok{\textgreater{}}
+\NormalTok{Type objective\_function}\OperatorTok{\textless{}}\NormalTok{Type}\OperatorTok{\textgreater{}::}\KeywordTok{operator}\OperatorTok{()} \OperatorTok{()}
+\OperatorTok{\{}
+  \CommentTok{// R input data}
+\NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{y}\OperatorTok{);}                               \CommentTok{// Count data}
+\NormalTok{  DATA\_VECTOR}\OperatorTok{(}\NormalTok{x}\OperatorTok{);}                               \CommentTok{// Population size}
+\NormalTok{  DATA\_MATRIX}\OperatorTok{(}\NormalTok{X}\OperatorTok{);}                               \CommentTok{// Design matrix}
+\NormalTok{  PARAMETER\_VECTOR}\OperatorTok{(}\NormalTok{u}\OperatorTok{);}                          \CommentTok{// Random effects}
+  \CommentTok{// Parameters}
+\NormalTok{  PARAMETER\_VECTOR}\OperatorTok{(}\NormalTok{beta}\OperatorTok{);}                       \CommentTok{// Fixed effects parameters}
+\NormalTok{  PARAMETER}\OperatorTok{(}\NormalTok{log\_sigma\_u}\OperatorTok{);}                       \CommentTok{// Model parameter}
+\NormalTok{  vector}\OperatorTok{\textless{}}\NormalTok{Type}\OperatorTok{\textgreater{}}\NormalTok{ lambda  }\OperatorTok{=}\NormalTok{ exp}\OperatorTok{(}\NormalTok{X}\OperatorTok{*}\NormalTok{beta}\OperatorTok{{-}}\NormalTok{log}\OperatorTok{(}\NormalTok{x}\OperatorTok{)+}\NormalTok{u}\OperatorTok{);}  \CommentTok{// Construct \textquotesingle{}lambda\textquotesingle{}}
+\NormalTok{  Type sigma\_u }\OperatorTok{=}\NormalTok{ exp}\OperatorTok{(}\NormalTok{log\_sigma\_u}\OperatorTok{);}              \CommentTok{// And the model parameters}
+\NormalTok{  Type mean\_ran }\OperatorTok{=}\NormalTok{ Type}\OperatorTok{(}\DecValTok{0}\OperatorTok{);}
+  \CommentTok{// Objective function}
+\NormalTok{  Type f }\OperatorTok{=} \DecValTok{0}\OperatorTok{;}                                   \CommentTok{// Declare the objective}
+\NormalTok{  f }\OperatorTok{{-}=}\NormalTok{ sum}\OperatorTok{(}\NormalTok{dnorm}\OperatorTok{(}\NormalTok{u}\OperatorTok{,}\NormalTok{mean\_ran}\OperatorTok{,}\NormalTok{sigma\_u}\OperatorTok{,}\KeywordTok{true}\OperatorTok{));}     \CommentTok{// Calculate the objective}
+\NormalTok{  f }\OperatorTok{{-}=}\NormalTok{ sum}\OperatorTok{(}\NormalTok{dpois}\OperatorTok{(}\NormalTok{y}\OperatorTok{,}\NormalTok{lambda}\OperatorTok{,}\KeywordTok{true}\OperatorTok{));}               \CommentTok{// Calculate the objective}
+  \ControlFlowTok{return}\NormalTok{ f}\OperatorTok{;}
+\OperatorTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+The objective function maximizes the marginal log-likelihood function, which integrates out the random effects \(u\)
+
+\begin{equation}
+  \ell_{M}(\theta; y)=\int_{\mathbb{R}^{q}} \ell (\theta;u,y) du
+\end{equation}
+
+where \(\ell(\theta, u,y)\) is the joint log-likelihood function of the data given the parameters and random effects. The maximizer \(\hat{u}_{\theta}\) of the joint log-likelihood \(\ell(\theta;u,y)\) with respect to the random effects \(u\) is defined as:
+
+\begin{equation}
+  \hat{u}_{\theta}=\mathop{\mathrm{arg\,max}}_{u} \ell(\theta;u,y)
+\end{equation}
+
+Using \(H(\hat{u}_{\theta})\) to denote the negative Hessian of the joint log-likelihood evaluated at \(\hat{u}_{\theta}\); i.e,
+
+\begin{equation}
+  H(\hat{u}_{\theta}) =-\ell_{uu}''(\theta, u, y)|_{u=\hat{u}_{\theta}}
+\end{equation}
+
+The Laplace approximation for the marginal log-likelihood \(\ell_M(\theta)\) is
+
+\begin{equation}
+  \ell_{M,LA}(\theta, y)=\ell(\theta,u,y)-\frac{1}{2}\log \Big|\frac{H(\hat{u}_{\theta})}{2\pi}\Big|
+\end{equation}
+
+Our estimate of \(\theta\) minimizes the negative log of the Laplace approximation, i.e.,
+
+\begin{equation}
+  \hat{\theta}=\mathop{\mathrm{arg\,min}}_{\theta} - \ell_{M, LA}(\theta, y)
+\end{equation}
+
+The minimization of the Laplace approximation for the marginal likelihood is then performed using conventional R optimization routines (e.g., BFGS) to optimize the objective and obtain our estimate \(\hat{\theta}\). Uncertainty of the estimate \(\hat{\theta}\), or any differentiable function of the estimate \(\phi(\hat{\theta})\), is obtained by the \(\delta\)-method:
+
+\begin{equation}
+  \mathrm{V}\big(\phi(\hat{\theta})\big)=-\phi_{\theta}'(\hat{\theta})\Big(\Delta^2 \ell_{M,LA}(\hat{\theta}, y)\Big)^{-1} \phi_{\theta}'(\hat{\theta})^T
+\end{equation}
+
+Additionally, \texttt{TMB} utilizes Automatic Differentiation (AD) techniques \citep{Griewank_2008} to evaluate first, second, and potentially third-order derivatives. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models. Therefore, even though the random effects are analytically integrated out in the hierarchical Poisson Gamma model, and the Laplace approximation is not needed, implementing the joint log-likelihood function in \texttt{TMB} can still result in more efficient computations. For a comprehensive introduction to the concept of AD, it is recommended to read Section 2.1 and Section 2.2 of \citet{Fournier_2012}.
 
 \newpage
 

@@ -208,6 +208,38 @@ outbreak_results_DOR <- outbreak_results %>%
          DOR = `LR+`/`LR-`,
          logDOR = log(DOR))
 
+roc_model <- function(df) {
+  lm(formula = D ~ 1 + S, data = df)
+}
+
+library(broom)
+
+
+outbreak_results_DOR %>%
+  mutate(D = logDOR,
+         S = qlogis(TP/(TP+FN)) + qlogis(FP/(FP+TN))) %>%
+  group_by(alpha, k, method) %>%
+  nest() %>%
+  mutate(fit = map(data, roc_model),
+         tidyfit = map(fit, tidy)) %>%
+  select(alpha:method, tidyfit) %>%
+  unnest(tidyfit) %>%
+  filter(term == "(Intercept)") %>%
+
+outbreak_results_DOR %>%
+  group_by(alpha, k, method) %>%
+  reframe(D = logDOR,
+          S = qlogis(TP/(TP+FN)) + qlogis(FP/(FP+TN))) %>%
+  group_by(alpha, k, method) %>%
+  nest() %>%
+  mutate(fit = map(data, roc_model),
+         tidyfit = map(fit, tidy)) %>%
+  select(alpha:method, tidyfit) %>%
+  unnest(tidyfit) %>%
+  filter(term == "(Intercept)")
+
+
+
 # k = 3
 medianDORk3 <- outbreak_results_DOR %>%
   filter(k == 3) %>%
@@ -346,6 +378,34 @@ nominal_values <- expand_grid(
              "Poisson Gamma"),
   alpha_num = c(0.005, 0.01, 0.025, 0.05, 0.1)) %>%
   mutate(alpha = factor(alpha_num))
+
+effective_nominal_value <- baseline_results %>%
+  group_by(alpha, method) %>%
+  reframe(effective_nominal_value = sum(FP) / sum(FP + TN)) %>%
+  pivot_wider(names_from = method, values_from = effective_nominal_value)
+write_rds(
+  effective_nominal_value,
+  file = "../../articles/aeddo_simulation/effective_nominal_value.Rds")
+
+nominal_value_tbl <- baseline_results %>%
+  mutate(FPR = FP/(FP+TN)) %>%
+  full_join(nominal_values, by = join_by(method, alpha)) %>%
+  group_by(alpha, method) %>%
+  reframe(
+    n_exceed_nominal_value = sum(FPR > alpha_num),
+    n = n(),
+    prop_exceed_nominal_value = n_exceed_nominal_value/n)
+
+library(kableExtra)
+
+nominal_value_tbl_article <- nominal_value_tbl %>%
+  mutate(string = paste0(n_exceed_nominal_value, " (", round(prop_exceed_nominal_value,2), ")")) %>%
+  select(alpha, method, string) %>%
+  pivot_wider(names_from = method, values_from = string)
+write_rds(
+  nominal_value_tbl_article,
+  file = "../../articles/aeddo_simulation/nominal_value_tbl_article.Rds")
+
 
 FPR_alpha_methods <- baseline_results %>%
   mutate(FPR = FP/(FP+TN)) %>%

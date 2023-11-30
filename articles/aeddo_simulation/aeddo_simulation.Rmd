@@ -74,6 +74,10 @@ library(readr)
 
 POD <- read_rds(file = "../../src/simulation/POD.Rds")
 FPR <- read_rds(file = "../../src/simulation/FPR.Rds")
+nominal_value_tbl_article <- read_rds(
+  file = "../aeddo_simulation/nominal_value_tbl_article.Rds")
+effective_nominal_value <- read_rds(
+  file = "../../articles/aeddo_simulation/effective_nominal_value.Rds")
 
 ```
 
@@ -335,74 +339,6 @@ Additionally, the choice of the Gamma distribution has benefits in terms of the 
 
 Overall, the Gamma distribution is selected due to its alignment with the mean-value space of the Poisson distribution, its flexibility in capturing diverse distributions, and its analytical convenience in computing the marginal distribution of the response variable.
 
-# Parameter estimation
-
-The generalized mixed effect and hierarchical generalized linear models are implemented in R using the open-source R package `TMB` (Template Model Builder) developed by @Kristensen_2016. This package facilitates efficient maximum likelihood estimation and uncertainty calculations for the parameter set $\theta=(\beta, \Psi)$ and random effects $u$. The presentation of the parameter estimation conducted in `TMB` is strongly inspired by Chapter 2 in @Kristensen_2016 and Section 5.10 in @Madsen_2010.
-
-`TMB` maximizes a user-provided objective function in the form of a C++ template, to estimate the maximum likelihood for the parameter set $\theta=(\beta, \Psi)$. The following code chunk illustrates the C++ template for the hierarchical Poisson Normal model specified in \ref{eq:PoisN}:
-
-```{Rcpp, eval=FALSE}
-#include <TMB.hpp>
-template<class Type>
-Type objective_function<Type>::operator() ()
-{
-  // R input data
-  DATA_VECTOR(y);                               // Count data
-  DATA_VECTOR(x);                               // Population size
-  DATA_MATRIX(X);                               // Design matrix
-  PARAMETER_VECTOR(u);                          // Random effects
-  // Parameters
-  PARAMETER_VECTOR(beta);                       // Fixed effects parameters
-  PARAMETER(log_sigma_u);                       // Model parameter
-  vector<Type> lambda  = exp(X*beta-log(x)+u);  // Construct 'lambda'
-  Type sigma_u = exp(log_sigma_u);              // And the model parameters
-  Type mean_ran = Type(0);
-  // Objective function
-  Type f = 0;                                   // Declare the objective
-  f -= sum(dnorm(u,mean_ran,sigma_u,true));     // Calculate the objective
-  f -= sum(dpois(y,lambda,true));               // Calculate the objective
-  return f;
-}
-```
-
-The objective function maximizes the marginal log-likelihood function, which integrates out the random effects $u$
-
-\begin{equation}
-  \ell_{M}(\theta; y)=\int_{\mathbb{R}^{q}} \ell (\theta;u,y) du
-\end{equation}
-
-where $\ell(\theta, u,y)$ is the joint log-likelihood function of the data given the parameters and random effects. The maximizer $\hat{u}_{\theta}$ of the joint log-likelihood $\ell(\theta;u,y)$ with respect to the random effects $u$ is defined as:
-
-\begin{equation}
-  \hat{u}_{\theta}=\argmax_{u} \ell(\theta;u,y)
-\end{equation}
-
-Using $H(\hat{u}_{\theta})$ to denote the negative Hessian of the joint log-likelihood evaluated at $\hat{u}_{\theta}$; i.e,
-
-\begin{equation}
-  H(\hat{u}_{\theta}) =-\ell_{uu}''(\theta, u, y)|_{u=\hat{u}_{\theta}}
-\end{equation}
-
-The Laplace approximation for the marginal log-likelihood $\ell_M(\theta)$ is
-
-\begin{equation}
-  \ell_{M,LA}(\theta, y)=\ell(\theta,u,y)-\frac{1}{2}\log \Big|\frac{H(\hat{u}_{\theta})}{2\pi}\Big|
-\end{equation}
-
-Our estimate of $\theta$ minimizes the negative log of the Laplace approximation, i.e.,
-
-\begin{equation}
-  \hat{\theta}=\argmin_{\theta} - \ell_{M, LA}(\theta, y)
-\end{equation}
-
-The minimization of the Laplace approximation for the marginal likelihood is then performed using conventional R optimization routines (e.g., BFGS) to optimize the objective and obtain our estimate $\hat{\theta}$. Uncertainty of the estimate $\hat{\theta}$, or any differentiable function of the estimate $\phi(\hat{\theta})$, is obtained by the $\delta$-method:
-
-\begin{equation}
-  \mathrm{V}\big(\phi(\hat{\theta})\big)=-\phi_{\theta}'(\hat{\theta})\Big(\Delta^2 \ell_{M,LA}(\hat{\theta}, y)\Big)^{-1} \phi_{\theta}'(\hat{\theta})^T
-\end{equation}
-
-Additionally, `TMB` utilizes Automatic Differentiation (AD) techniques [@Griewank_2008] to evaluate first, second, and potentially third-order derivatives. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models. Therefore, even though the random effects are analytically integrated out in the hierarchical Poisson Gamma model, and the Laplace approximation is not needed, implementing the joint log-likelihood function in `TMB` can still result in more efficient computations. For a comprehensive introduction to the concept of AD, it is recommended to read Section 2.1 and Section 2.2 of @Fournier_2012. 
-
 # Simulation study
 
 This subsection includes a thorough description of the simulation study conducted to evaluate the performance of the novel outbreak detection algorithm compared to state-of-the-art algorithms. The simulations cover various scenarios, adapted from the study by @Noufaily_2013, and are investigated using varying significance levels, $\alpha$, for the threshold calculations. In this article, the following set of significance levels are investigated for each of the methods: $\alpha=\{0.005, 0.01 0.025, 0.05, 0.1\}$.
@@ -527,7 +463,24 @@ In general, the method introduced by @Farrington_1996 exhibits relatively higher
 knitr::include_graphics("../../figures/FPR_alpha_methods_median.png")
 ```
 
-Inspecting the figure, it is clear that the Farrington method tends to underperform in scenario 7 and 8, which are scenarios characterized by a steep trend. The Noufaily method resolves this issue, generally outperforming the Farrington method. Moreover, the novel methods consistently outperforms the other methods. However, it is interesting to note that scenario 13 trough 20 prove to be particularly problematic for the novel methods. A closer look reveals that these scenarios are characterized by a high overdispersion parameter, indicating increased variability in the data. Lastly, it is crucial to acknowledge that the median FPRs for the novel methods remain within nominal values.
+Inspecting the figure, it is clear that the Farrington method tends to underperform in scenario 7 and 8, which are scenarios characterized by a steep trend. The Noufaily method resolves this issue, generally outperforming the Farrington method. Moreover, the novel methods consistently outperforms the other methods. However, it is interesting to note that scenario 13 trough 20 prove to be particularly problematic for the novel methods. A closer look reveals that these scenarios are characterized by a high overdispersion parameter, indicating increased variability in the data. Lastly, it is crucial to acknowledge that the median FPRs for the novel methods remain within nominal values, while this is not the case for the established methods.
+
+Noticeably, there is a tendency for the FPRs in the established methods to surpass the nominal value. To delve deeper into this observation, Table \@ref(tab:nominalvalueTbl) presents an overview of the effective nominal value.
+
+```{r nominalvalueTbl, echo=FALSE}
+effective_nominal_value %>%
+  rename(`$\\alpha$` = alpha) %>%
+  kbl(
+    format = "latex",
+    booktabs = TRUE,
+    escape = FALSE, 
+    digits = 4,
+    caption = "The effective nominal value in $28 \\times 49 \\times 100 = 137,000$ realized weeks for each method and significance level, $\\alpha$.") %>%
+  add_header_above(c(" " = 1, "Methods" = 4)) %>%
+  kable_paper(latex_options = c("HOLD_position"))
+```
+
+Evidently, the FPRs in the established methods consistently surpass the nominal values in the majority of simulations, prompting valid concerns about the reliability of the interpretation of the significance level, $\alpha$. In contrast, the novel methods appears to maintain a more reliable interpretation of the significance level.
 
 ## Probability of detection
 
@@ -618,9 +571,7 @@ Alarm fatigue refers to the desensitization and decreased responsiveness that ca
 
 An outbreak detection algorithm that can effectively control the number of false alarms, while still maintaining the power to detect genuine outbreaks, is increasingly high demand. This article demonstrates that the proposed novel method has immense potential as a candidate tool for outbreak detection. It considerably reduces the number of alarms generated compared to the Farrington and Noufaily methods while still maintaining the ability to generate alarms that coincide in time with simulated outbreaks. This finding is underscored by the fact that the novel method consistently outperformed the established methods when measure on the *diagnostic odds ratio*. Furthermore, the novel method allows for covariate incorporation, distinguishing it from both the Farrington and Noufaily methods. These finding highlight the potential of hierarchical models as a framework for outbreak detection in general.
 
-# Conclusion
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+In this article, the performance of the outbreak detection methods is evaluated using the *diagnostic odds ratio*.
 
 \newpage
 
@@ -663,6 +614,74 @@ knitr::include_graphics("../../figures/logDORk5.png")
 ```{r logDORk7, echo=FALSE, fig.cap="(ref:logDORk7)", out.width="100%", fig.pos = "H", fig.show = "hold"}
 knitr::include_graphics("../../figures/logDORk7.png")
 ```
+
+# Parameter estimation
+
+The generalized mixed effect and hierarchical generalized linear models are implemented in R using the open-source R package `TMB` (Template Model Builder) developed by @Kristensen_2016. This package facilitates efficient maximum likelihood estimation and uncertainty calculations for the parameter set $\theta=(\beta, \Psi)$ and random effects $u$. The presentation of the parameter estimation conducted in `TMB` is strongly inspired by Chapter 2 in @Kristensen_2016 and Section 5.10 in @Madsen_2010.
+
+`TMB` maximizes a user-provided objective function in the form of a C++ template, to estimate the maximum likelihood for the parameter set $\theta=(\beta, \Psi)$. The following code chunk illustrates the C++ template for the hierarchical Poisson Normal model specified in \ref{eq:PoisN}:
+
+```{Rcpp, eval=FALSE}
+#include <TMB.hpp>
+template<class Type>
+Type objective_function<Type>::operator() ()
+{
+  // R input data
+  DATA_VECTOR(y);                               // Count data
+  DATA_VECTOR(x);                               // Population size
+  DATA_MATRIX(X);                               // Design matrix
+  PARAMETER_VECTOR(u);                          // Random effects
+  // Parameters
+  PARAMETER_VECTOR(beta);                       // Fixed effects parameters
+  PARAMETER(log_sigma_u);                       // Model parameter
+  vector<Type> lambda  = exp(X*beta-log(x)+u);  // Construct 'lambda'
+  Type sigma_u = exp(log_sigma_u);              // And the model parameters
+  Type mean_ran = Type(0);
+  // Objective function
+  Type f = 0;                                   // Declare the objective
+  f -= sum(dnorm(u,mean_ran,sigma_u,true));     // Calculate the objective
+  f -= sum(dpois(y,lambda,true));               // Calculate the objective
+  return f;
+}
+```
+
+The objective function maximizes the marginal log-likelihood function, which integrates out the random effects $u$
+
+\begin{equation}
+  \ell_{M}(\theta; y)=\int_{\mathbb{R}^{q}} \ell (\theta;u,y) du
+\end{equation}
+
+where $\ell(\theta, u,y)$ is the joint log-likelihood function of the data given the parameters and random effects. The maximizer $\hat{u}_{\theta}$ of the joint log-likelihood $\ell(\theta;u,y)$ with respect to the random effects $u$ is defined as:
+
+\begin{equation}
+  \hat{u}_{\theta}=\argmax_{u} \ell(\theta;u,y)
+\end{equation}
+
+Using $H(\hat{u}_{\theta})$ to denote the negative Hessian of the joint log-likelihood evaluated at $\hat{u}_{\theta}$; i.e,
+
+\begin{equation}
+  H(\hat{u}_{\theta}) =-\ell_{uu}''(\theta, u, y)|_{u=\hat{u}_{\theta}}
+\end{equation}
+
+The Laplace approximation for the marginal log-likelihood $\ell_M(\theta)$ is
+
+\begin{equation}
+  \ell_{M,LA}(\theta, y)=\ell(\theta,u,y)-\frac{1}{2}\log \Big|\frac{H(\hat{u}_{\theta})}{2\pi}\Big|
+\end{equation}
+
+Our estimate of $\theta$ minimizes the negative log of the Laplace approximation, i.e.,
+
+\begin{equation}
+  \hat{\theta}=\argmin_{\theta} - \ell_{M, LA}(\theta, y)
+\end{equation}
+
+The minimization of the Laplace approximation for the marginal likelihood is then performed using conventional R optimization routines (e.g., BFGS) to optimize the objective and obtain our estimate $\hat{\theta}$. Uncertainty of the estimate $\hat{\theta}$, or any differentiable function of the estimate $\phi(\hat{\theta})$, is obtained by the $\delta$-method:
+
+\begin{equation}
+  \mathrm{V}\big(\phi(\hat{\theta})\big)=-\phi_{\theta}'(\hat{\theta})\Big(\Delta^2 \ell_{M,LA}(\hat{\theta}, y)\Big)^{-1} \phi_{\theta}'(\hat{\theta})^T
+\end{equation}
+
+Additionally, `TMB` utilizes Automatic Differentiation (AD) techniques [@Griewank_2008] to evaluate first, second, and potentially third-order derivatives. This approach enhances the computational efficiency and accuracy of the parameter estimation process in the implemented models. Therefore, even though the random effects are analytically integrated out in the hierarchical Poisson Gamma model, and the Laplace approximation is not needed, implementing the joint log-likelihood function in `TMB` can still result in more efficient computations. For a comprehensive introduction to the concept of AD, it is recommended to read Section 2.1 and Section 2.2 of @Fournier_2012. 
 
 \newpage
 

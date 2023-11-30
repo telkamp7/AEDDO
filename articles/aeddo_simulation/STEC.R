@@ -161,8 +161,8 @@ STEC_PoisN_975 <- aeddo(
   seasonality = TRUE,
   theta = c(0, rep(1, 6), 0, 0, 1),
   method = "L-BFGS-B",
-  lower = c(-0.5, rep(1e-6, 6), 0, 0, -6),
-  upper = c(0.5, rep(1e2, 6), 0, 0, 1e2),
+  lower = c(-0.5, rep(1e-6, 6), -1, -1, -6),
+  upper = c(0.5, rep(1e2, 6), 1, 1, 1e2),
   model = "PoissonNormal",
   k = 36,
   sig.level = 0.975,
@@ -176,8 +176,8 @@ STEC_PoisN_95 <- aeddo(
   seasonality = TRUE,
   theta = c(0, rep(1, 6), 0, 0, 1),
   method = "L-BFGS-B",
-  lower = c(-0.5, rep(1e-6, 6), 0, 0, -6),
-  upper = c(0.5, rep(1e2, 6), 0, 0, 1e2),
+  lower = c(-0.5, rep(1e-6, 6), -1, -1, -6),
+  upper = c(0.5, rep(1e2, 6), 1, 1, 1e2),
   model = "PoissonNormal",
   k = 36,
   sig.level = 0.95,
@@ -191,10 +191,10 @@ STEC_PoisG_975 <- aeddo(
   formula = y ~ -1 + t + ageGroup + sin(pi/6*periodInYear) + cos(pi/6*periodInYear),
   trend = TRUE,
   seasonality = TRUE,
-  theta = c(0,rep(1,6),0,0,1),
+  theta = c(0,rep(1,6),0, 0,1),
   method = "L-BFGS-B",
-  lower = c(-0.5,rep(1e-6,6),0,0,-6),
-  upper = c(0.5,rep(1e2,6),0,0,1e2),
+  lower =  c(-0.5, rep(1e-6, 6),-0.8,-0.8, -6),
+  upper = c(0.5, rep(1e2, 6), 1, 1,1e2),
   model = "PoissonGamma",
   k = 36,
   sig.level = 0.975,
@@ -208,8 +208,8 @@ STEC_PoisG_95 <- aeddo(
   seasonality = TRUE,
   theta = c(0,rep(1,6),0,0,1),
   method = "L-BFGS-B",
-  lower = c(-0.5,rep(1e-6,6),0,0,-6),
-  upper = c(0.5,rep(1e2,6),0,0,1e2),
+  lower = c(-0.5,rep(1e-6,6),-0.8,-0.8,-6),
+  upper = c(0.5,rep(1e2,6),1, 1,1e2),
   model = "PoissonGamma",
   k = 36,
   sig.level = 0.95,
@@ -285,7 +285,7 @@ Compare_alarms_975 <- STEC_compare_975 %>%
   ggplot(mapping = aes(x = alarmDate, y = method, colour = method)) +
   geom_point(shape = 17, size = 4) +
   scale_color_manual(values = dtuPalette[c(7,9:11,6)]) +
-  scale_y_discrete(limits = rev(levels(STEC_compare$method))) +
+  scale_y_discrete(limits = rev(levels(STEC_compare_975$method))) +
   scale_x_date(name = "Date") +
   guides(colour = "none") +
   theme(axis.title.y = element_blank(),
@@ -304,7 +304,7 @@ Compare_alarms_95 <- STEC_compare_95 %>%
   ggplot(mapping = aes(x = alarmDate, y = method, colour = method)) +
   geom_point(shape = 17, size = 4) +
   scale_color_manual(values = dtuPalette[c(7,9:11,6)]) +
-  scale_y_discrete(limits = rev(levels(STEC_compare$method))) +
+  scale_y_discrete(limits = rev(levels(STEC_compare_95$method))) +
   scale_x_date(name = "Date") +
   guides(colour = "none") +
   theme(axis.title.y = element_blank(),
@@ -315,5 +315,36 @@ ggsave(filename = "Compare_alarms_95.png",
        device = png,
        width = 16,
        height = 8,
+       units = "in",
+       dpi = "print")
+
+Compare_novel_95 <- STEC_novel_95 %>%
+  pivot_longer(cols = c(`u_Poisson Normal`, `u_Poisson Gamma`), names_to = "method", names_prefix = "u_", values_to = "u") %>%
+  pivot_longer(cols = c(`alarm_Poisson Normal`, `alarm_Poisson Gamma`), names_to = "method2", names_prefix = "alarm_", values_to = "alarm") %>%
+  pivot_longer(cols = c(`threshold_Poisson Normal`, `threshold_Poisson Gamma`), names_to = "method3", names_prefix = "threshold_", values_to = "threshold") %>%
+  filter(method == method2 & method == method3) %>%
+  select(-method2, -method3) %>%
+  mutate_at(vars(c(u,threshold)), list(~case_when(method == "Poisson Normal" ~ exp(.),
+                                                  TRUE ~ .))) %>%
+  mutate(method = factor(method, levels = c("Poisson Normal", "Poisson Gamma"))) %>%
+  ggplot(mapping = aes(x = Date, colour = ageGroup)) +
+  geom_line(mapping = aes(y = u), linewidth = 0.4) +
+  geom_point(mapping = aes(y = u, shape = alarm), size = 2) +
+  geom_line(mapping = aes(y = threshold, group = method), lty = "dashed") +
+  facet_grid(rows = vars(ageGroup), cols = vars(method), scales = "free_y") +
+  scale_y_continuous(name = "Estimated one-step ahead random effects") +
+  scale_x_date(name = "Date") +
+  scale_colour_manual(values = dtuPalette) +
+  scale_shape_manual(values = c(1,19)) +
+  guides(colour = "none", shape = "none") +
+  theme(axis.text = element_text(size = 24),
+        axis.title = element_text(size = 26),
+        strip.text = element_text(size = 26))
+ggsave(filename = "Compare_novel_STEC_95.png",
+       plot = Compare_novel_95,
+       path = "../figures/",
+       device = png,
+       width = 16,
+       height = 14,
        units = "in",
        dpi = "print")
